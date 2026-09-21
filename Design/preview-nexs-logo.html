@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXS Solution — 10 Brand Logo Variations & Baseline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nexs-royal-blue: #222D64;
+      --nexs-royal-blue-light: #2c3a80;
+      --nexs-yellow: #FFC330;
+      --nexs-gold-shade: #E5A812;
+      --nexs-white: #FFFFFF;
+      --nexs-slate-dark: #0F172A;
+      --nexs-slate-text: #475569;
+      --nexs-bg: #F8FAFC;
+      --nexs-border: #E2E8F0;
+      --nexs-card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+      --nexs-card-hover: 0 12px 30px -4px rgba(34, 45, 100, 0.15), 0 4px 12px -2px rgba(34, 45, 100, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Reddit Sans', 'Inter', sans-serif;
+      background-color: var(--nexs-bg);
+      color: var(--nexs-slate-dark);
+      line-height: 1.6;
+      padding: 40px 24px 80px 24px;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      background-color: rgba(34, 45, 100, 0.08);
+      color: var(--nexs-royal-blue);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(34, 45, 100, 0.12);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--nexs-yellow);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--nexs-yellow);
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--nexs-royal-blue);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--nexs-slate-text);
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    /* SECTION TITLES */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin: 48px 0 24px 0;
+      border-bottom: 2px solid var(--nexs-border);
+      padding-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--nexs-royal-blue);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 28px;
+      background-color: var(--nexs-yellow);
+      border-radius: 4px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--nexs-slate-text);
+    }
+
+    /* BASELINE FAVORITE HERO CARD */
+    .favorite-hero {
+      background: linear-gradient(145deg, #FFFFFF 0%, #F1F5F9 100%);
+      border: 2px solid var(--nexs-yellow);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: 0 10px 30px -5px rgba(255, 195, 48, 0.2), var(--nexs-card-shadow);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .favorite-hero::after {
+      content: '★ BẢN GỐC ĐÃ LƯU TRỮ AN TOÀN (SAVED FAVORITE BASELINE)';
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--nexs-royal-blue);
+      background: var(--nexs-yellow);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-img-box {
+      background: #FFFFFF;
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--nexs-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .hero-img-box img {
+      max-width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .hero-content h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--nexs-royal-blue);
+      margin-bottom: 12px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(34, 45, 100, 0.08);
+      color: var(--nexs-royal-blue);
+    }
+
+    .tag-yellow {
+      background: rgba(255, 195, 48, 0.25);
+      color: #925C00;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: #334155;
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 13.5px;
+    }
+
+    .spec-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .spec-table td:first-child {
+      font-weight: 700;
+      color: var(--nexs-royal-blue);
+      width: 32%;
+    }
+
+    .hero-slogan-box {
+      background: #FFFFFF;
+      border-left: 4px solid var(--nexs-yellow);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .hero-slogan-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #64748B;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .hero-slogan-text {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--nexs-royal-blue);
+      letter-spacing: 0.05em;
+    }
+
+    /* 10 VARIATIONS GRID */
+    .variations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 30px;
+    }
+
+    .var-card {
+      background: #FFFFFF;
+      border: 1px solid var(--nexs-border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--nexs-card-shadow);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .var-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--nexs-card-hover);
+      border-color: var(--nexs-royal-blue);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .var-badge {
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+    }
+
+    .var-status {
+      font-size: 11px;
+      font-weight: 700;
+      color: #059669;
+      background: #ECFDF5;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .var-media {
+      width: 100%;
+      height: 280px;
+      background: #FFFFFF;
+      border: 1px solid #F1F5F9;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .var-media img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .var-card:hover .var-media img {
+      transform: scale(1.04);
+    }
+
+    .var-name {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--nexs-royal-blue);
+      margin-bottom: 6px;
+    }
+
+    .var-geometry {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #D97706;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .var-desc {
+      font-size: 14px;
+      color: #475569;
+      margin-bottom: 18px;
+      flex-grow: 1;
+      line-height: 1.6;
+    }
+
+    .var-slogan-wrap {
+      background: #F8FAFC;
+      border-left: 3px solid var(--nexs-yellow);
+      padding: 10px 12px;
+      border-radius: 0 8px 8px 0;
+      margin-top: auto;
+    }
+
+    .slogan-tag {
+      font-size: 10px;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+
+    .slogan-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--nexs-royal-blue);
+    }
+
+    /* FOOTER ACTIONS */
+    .footer-actions {
+      text-align: center;
+      margin-top: 60px;
+      padding: 30px;
+      background: #FFFFFF;
+      border-radius: 20px;
+      border: 1px solid var(--nexs-border);
+      box-shadow: var(--nexs-card-shadow);
+    }
+
+    .footer-actions h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--nexs-royal-blue);
+      margin-bottom: 8px;
+    }
+
+    .footer-actions p {
+      font-size: 14.5px;
+      color: var(--nexs-slate-text);
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+    }
+
+    @media (max-width: 900px) {
+      .favorite-hero {
+        grid-template-columns: 1fr;
+      }
+      .variations-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="top-badge">
+        <span class="badge-dot"></span>
+        NEXS Solution • Brand Identity Exploration
+      </div>
+      <h1>NEXS Solution: 10 Logo Variations & Baseline</h1>
+      <p class="subtitle">
+        Phát triển dựa trên phương án ưa thích bạn đã chọn và lưu trữ an toàn. Toàn bộ 10 biến thể duy trì nghiêm ngặt phong cách đồ họa phẳng 2D vector, tỷ lệ tổ ong đặc trưng, giác gấp vàng rực và khẩu hiệu tiếng Việt theo chuẩn cẩm nang thương hiệu gốc <strong>[NEXS] Brand Guidelines</strong>.
+      </p>
+    </header>
+
+    <!-- SECTION: SAVED BASELINE FAVORITE -->
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Phương Án Ưa Thích Đã Lưu Trữ (Baseline Favorite)</h2>
+        <div class="section-desc">Bản thiết kế mẫu bạn đã ưng ý được lưu giữ nguyên bản và sẵn sàng sử dụng lại bất cứ lúc nào.</div>
+      </div>
+    </div>
+
+    <div class="favorite-hero">
+      <div class="hero-img-box">
+        <img src="assets/saved-favorite/nexs-solution-favorite-base.png" alt="NEXS Solution Saved Favorite Base" />
+      </div>
+
+      <div class="hero-content">
+        <h2>NEXS Solution • Master Mark</h2>
+        
+        <div class="hero-tags">
+          <span class="tag">Màu Royal Blue #222D64</span>
+          <span class="tag tag-yellow">Giác vàng #FFC330</span>
+          <span class="tag">Khung lục giác rỗng</span>
+          <span class="tag">Vết vát chữ X thương hiệu</span>
+        </div>
+
+        <p class="hero-desc">
+          Biểu trưng tổ ong viền dày bản Royal Blue vững chắc, điểm nhấn đỉnh góc phải là giác gập màu vàng kim nổi bật. Typography chữ NEXS in hoa đậm nét với vết vát chéo thương hiệu trên chân chữ X, phụ đề SOLUTION cân đối và slogan tiếng Việt chuẩn mực.
+        </p>
+
+        <table class="spec-table">
+          <tr>
+            <td>Tên thương hiệu</td>
+            <td><strong>NEXS SOLUTION</strong> (trực thuộc NEXS Group)</td>
+          </tr>
+          <tr>
+            <td>Hệ màu quy chuẩn</td>
+            <td>Royal Blue (<code>#222D64</code>) &bull; Golden Yellow (<code>#FFC330</code>)</td>
+          </tr>
+          <tr>
+            <td>Tỷ lệ lưới</td>
+            <td>Hexagon 60° &bull; Tỷ lệ bảo vệ biên Instruction 05</td>
+          </tr>
+          <tr>
+            <td>Tệp lưu trữ an toàn</td>
+            <td><code>assets/saved-favorite/nexs-solution-favorite-base.png</code> + <code>.svg</code></td>
+          </tr>
+        </table>
+
+        <div class="hero-slogan-box">
+          <div class="hero-slogan-label">Khẩu hiệu cốt lõi (Slogan chính thức)</div>
+          <div class="hero-slogan-text">"KIẾN TẠO - DANH TIẾNG - BỀN VỮNG"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: 10 NEW VARIATIONS -->
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">10 Biến Thể Thiết Kế Mới (10 Variations Showcase)</h2>
+        <div class="section-desc">10 phương án khai triển sáng tạo xoay quanh ngôn ngữ hình học tổ ong của bản thiết kế ưa thích.</div>
+      </div>
+    </div>
+
+    <div class="variations-grid">
+
+      <!-- VAR 1 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 01</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var1_apex_chevron_1789619956369.jpg" alt="Variation 1 Apex Chevron" />
+        </div>
+        <div class="var-name">Apex Chevron Fold</div>
+        <div class="var-geometry">Đỉnh chóp Chevron Vàng</div>
+        <div class="var-desc">
+          Khung tổ ong Royal Blue dày bản với toàn bộ chóp đỉnh trên được chuyển thành mũi nhọn Chevron vàng kim vươn lên, đại diện cho tinh thần dẫn đầu và bứt phá công nghệ.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"ĐỈNH CAO GIẢI PHÁP &bull; BỨT PHÁ VƯƠN XA"</div>
+        </div>
+      </div>
+
+      <!-- VAR 2 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 02</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var2_dual_facets_1789620000100.jpg" alt="Variation 2 Dual Facets" />
+        </div>
+        <div class="var-name">Dual Symmetrical Facets</div>
+        <div class="var-geometry">Hai Giác Vàng Đối Xứng</div>
+        <div class="var-desc">
+          Hai góc trên của tổ ong đều được điểm xuyết bằng hai cánh giác vàng đối xứng, tạo nên thế cân bằng tuyệt đối giữa công nghệ vững chắc và giải pháp linh hoạt.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"SONG HÀNH BỀN VỮNG &bull; KIẾN TẠO THÀNH CÔNG"</div>
+        </div>
+      </div>
+
+      <!-- VAR 3 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 03</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var3_interlocking_bands_1789620059347.jpg" alt="Variation 3 Interlocking Bands" />
+        </div>
+        <div class="var-name">Interlocking Dual Bands</div>
+        <div class="var-geometry">Dải Băng Lồng Ghép Liên Khớp</div>
+        <div class="var-desc">
+          Hai dải băng hình học uốn lượn liên hoàn tạo hình lục giác, với dải vàng kết hợp cùng dải xanh tạo vòng tuần hoàn giải pháp khép kín xuyên suốt toàn diện.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"KẾT NỐI TOÀN TRÌNH &bull; VẬN HÀNH KHÔNG NGỪNG"</div>
+        </div>
+      </div>
+
+      <!-- VAR 4 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 04</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var4_inner_s_1789620101358.jpg" alt="Variation 4 Inner S Ribbon" />
+        </div>
+        <div class="var-name">Inner S Ribbon Flow</div>
+        <div class="var-geometry">Dải Lụa Chữ S Giải Pháp</div>
+        <div class="var-desc">
+          Tích hợp dải ribbon gập nếp tạo hình chữ S (Solution) mềm mại nhưng dứt khoát bên trong lõi tổ ong, gập ánh vàng ở nửa khúc cua trên.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"GIẢI PHÁP LINH HOẠT &bull; THÍCH ỨNG TƯƠNG LAI"</div>
+        </div>
+      </div>
+
+      <!-- VAR 5 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 05</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var5_crystal_bevel_1789620143562.jpg" alt="Variation 5 Crystal Bevel" />
+        </div>
+        <div class="var-name">Crystal Facet Bevel</div>
+        <div class="var-geometry">Góc Vát Tinh Thể Đa Cạnh</div>
+        <div class="var-desc">
+          Cạnh trên bên phải được vát phẳng thành giác cắt tinh thể đa diện, tăng thêm độ chiều sâu thị giác phẳng của khối kim cương / đá quý công nghệ.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"DANH TIẾNG TINH HOA &bull; CHẤT LƯỢNG VÀNG"</div>
+        </div>
+      </div>
+
+      <!-- VAR 6 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 06</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var6_diagonal_slice_1789620188820.jpg" alt="Variation 6 Diagonal Slice" />
+        </div>
+        <div class="var-name">Diagonal Dynamic Slice</div>
+        <div class="var-geometry">Đường Cắt Chéo Đột Phá</div>
+        <div class="var-desc">
+          Mảng vàng cắt chéo táo bạo qua thân tổ ong theo góc nghiêng đồng điệu với nét vát chéo trên chữ X của logo mẹ, mang năng lượng tốc độ chuyển đổi số.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"TIÊN PHONG CHUYỂN ĐỔI &bull; DẪN ĐẦU GIẢI PHÁP"</div>
+        </div>
+      </div>
+
+      <!-- VAR 7 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 07</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var7_tri_facet_1789620230157.jpg" alt="Variation 7 Tri-Facet Trinity" />
+        </div>
+        <div class="var-name">Tri-Facet Trinity</div>
+        <div class="var-geometry">Tam Giác Điểm Tụ Năng Lượng</div>
+        <div class="var-desc">
+          Ba giác vàng phân bổ nhịp nhàng tại 3 đỉnh then chốt của lục giác, tượng trưng cho bộ ba giá trị cốt lõi: Kiến tạo - Danh tiếng - Bền vững.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"KIẾN TẠO &bull; DANH TIẾNG &bull; BỀN VỮNG"</div>
+        </div>
+      </div>
+
+      <!-- VAR 8 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 08</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var8_quantum_aperture_1789620271502.jpg" alt="Variation 8 Quantum Aperture" />
+        </div>
+        <div class="var-name">Isometric Modular Cube</div>
+        <div class="var-geometry">Khối Hộp Giải Pháp 3 Chiều</div>
+        <div class="var-desc">
+          Hình học phẳng tạo ảo ảnh khối lập phương Isometric 3 mặt phẳng với mặt phẳng vàng ở trên cùng, tượng trưng cho các gói giải pháp phần mềm dạng khối module.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"MAY ĐO GIẢI PHÁP &bull; TỐI ƯU HIỆU SUẤT"</div>
+        </div>
+      </div>
+
+      <!-- VAR 9 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 09</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var9_delta_prism_1789620318873.jpg" alt="Variation 9 Delta Prism" />
+        </div>
+        <div class="var-name">Delta Prism Core</div>
+        <div class="var-geometry">Lõi Tam Giác Delta Cân Bằng</div>
+        <div class="var-desc">
+          Tổ ong bao bọc lấy một hạt nhân Delta vàng kim vững chãi ở trung tâm, biểu tượng cho nền tảng lõi an toàn, kiên định và công nghệ bảo mật cao cấp.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"VỮNG CHẮC NỀN TẢNG &bull; AN TÂM PHÁT TRIỂN"</div>
+        </div>
+      </div>
+
+      <!-- VAR 10 -->
+      <div class="var-card">
+        <div class="card-top">
+          <span class="var-badge">Biến thể 10</span>
+          <span class="var-status">Vector 2D</span>
+        </div>
+        <div class="var-media">
+          <img src="assets/ai-logos/nexs_solution_var10_interlock_ns_1789620341785.jpg" alt="Variation 10 Interlocking NS" />
+        </div>
+        <div class="var-name">Monogram N-S Ribbon</div>
+        <div class="var-geometry">Monogram N-S Lồng Ghép</div>
+        <div class="var-desc">
+          Khắc họa chữ cái lồng ghép tài tình giữa chữ N (NEXS) sắc xanh và chữ S (Solution) màu vàng gập khúc bên trong khuôn tổ ong, tạo nên dấu ấn nhận diện độc bản.
+        </div>
+        <div class="var-slogan-wrap">
+          <div class="slogan-tag">Khẩu hiệu đề xuất</div>
+          <div class="slogan-text">"KẾ THỪA BẢN SẮC &bull; KIẾN TẠO TƯƠNG LAI"</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER ACTIONS -->
+    <div class="footer-actions">
+      <h3>Bạn Thích Phương Án Nào Nhất Trong 10 Biến Thể Này?</h3>
+      <p>
+        Bạn có thể chọn bất kỳ phương án nào (hoặc quay lại dùng chính <strong>Bản Gốc Đã Lưu Trữ</strong>). Sau khi bạn chốt phương án ưng ý nhất, tôi sẽ tạo toàn bộ tài liệu <strong>Brand Guidelines HTML</strong> hoàn chỉnh cho NEXS Solution.
+      </p>
+    </div>
+
+  </div>
+
+</body>
+</html>

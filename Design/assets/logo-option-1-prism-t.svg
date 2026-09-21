@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 240" width="100%" height="100%" role="img" aria-label="NEXS Technologies Option 1 - NexTech Prism">
+  <defs>
+    <linearGradient id="opt1-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18214D" />
+      <stop offset="100%" stop-color="#222D64" />
+    </linearGradient>
+    <linearGradient id="opt1-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD459" />
+      <stop offset="100%" stop-color="#FFC330" />
+    </linearGradient>
+    <filter id="opt1-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#222D64" flood-opacity="0.14" />
+    </filter>
+  </defs>
+
+  <g id="option-1-lockup" transform="translate(20, 20)">
+    <!-- SYMBOL: Hexagonal Monogram 'T' (Technologies) harmonizing with NexMan/NexMall 'M' -->
+    <g id="symbol-tech-t" transform="translate(10, 0)" filter="url(#opt1-shadow)">
+      <!-- Outer Hexagon Frame (Royal Blue #222D64) -->
+      <path d="M 90,10 L 165,53.3 L 165,140 L 90,183.3 L 15,140 L 15,53.3 Z" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="16" 
+            stroke-linejoin="round" 
+            stroke-linecap="round" />
+      
+      <!-- Tech 'T' Crossbar (Horizontal bar in Royal Blue) -->
+      <path d="M 45,62 L 135,62" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="16" 
+            stroke-linecap="round" />
+      
+      <!-- Tech 'T' Stem (Vertical stem folding down with circuit notch) -->
+      <path d="M 90,62 L 90,138" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="16" 
+            stroke-linecap="round" />
+
+      <!-- Left Circuit Accent Dot -->
+      <circle cx="45" cy="85" r="7" fill="#222D64" />
+      <path d="M 45,85 L 45,115 L 65,128" fill="none" stroke="#222D64" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+
+      <!-- Right Circuit Accent Dot -->
+      <circle cx="135" cy="85" r="7" fill="#222D64" />
+      <path d="M 135,85 L 135,115 L 115,128" fill="none" stroke="#222D64" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+
+      <!-- Vibrant Golden Yellow Energy Core Node (Center Intersection of 'T') -->
+      <polygon points="90,44 105,53 105,71 90,80 75,71 75,53" fill="url(#opt1-yellow)" />
+      <circle cx="90" cy="62" r="4.5" fill="#222D64" />
+    </g>
+
+    <!-- WORDMARK & SLOGAN -->
+    <g id="typography-group" transform="translate(225, 20)">
+      <!-- NEXS Brandname -->
+      <g id="wordmark-nexs">
+        <!-- N -->
+        <path d="M 0,85 L 0,15 L 20,15 L 52,60 L 52,15 L 72,15 L 72,85 L 52,85 L 20,40 L 20,85 Z" fill="#222D64" />
+        <!-- E -->
+        <path d="M 88,85 L 88,15 L 150,15 L 150,31 L 108,31 L 108,43 L 146,43 L 146,58 L 108,58 L 108,70 L 152,70 L 152,85 Z" fill="#222D64" />
+        <!-- X with Yellow Facet -->
+        <path d="M 166,15 L 188,15 L 236,85 L 214,85 Z" fill="#222D64" />
+        <path d="M 215,15 L 236,15 L 208,54 L 190,43 Z" fill="#222D64" />
+        <path d="M 183,54 L 163,85 L 184,85 L 200,60 Z" fill="#222D64" />
+        <polygon points="198,43 209,43 202,54 191,54" fill="url(#opt1-yellow)" />
+        <!-- S -->
+        <path d="M 252,72 C 258,81 269,87 284,87 C 298,87 308,79 308,68 C 308,57 298,52 282,49 C 259,44 244,37 244,21 C 244,7 258,-1 280,-1 C 296,-1 310,6 317,17 L 302,28 C 296,20 288,15 279,15 C 268,15 262,20 262,27 C 262,35 270,40 286,43 C 311,48 326,55 326,73 C 326,90 310,100 284,100 C 264,100 248,91 238,77 Z" transform="translate(0, -5)" fill="#222D64" />
+      </g>
+
+      <!-- Descriptor: TECHNOLOGIES -->
+      <g id="descriptor" transform="translate(4, 116)">
+        <text font-family="'Reddit Sans', 'Inter', sans-serif" font-size="19" font-weight="700" letter-spacing="0.32em" fill="#222D64">
+          TECHNOLOGIES
+        </text>
+        <rect x="335" y="-7" width="90" height="3.5" rx="1.75" fill="url(#opt1-yellow)" />
+      </g>
+
+      <!-- Vietnamese Slogan: Option 1 (Official Guidelines) -->
+      <g id="slogan" transform="translate(4, 146)">
+        <text font-family="'Reddit Sans', 'Inter', sans-serif" font-size="13.5" font-weight="600" letter-spacing="0.12em" fill="#5A6588">
+          KIẾN TẠO • DANH TIẾNG • BỀN VỮNG
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

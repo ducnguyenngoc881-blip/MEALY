@@ -1,0 +1,21 @@
+{
+  "name": "MealWise - Mâm Cơm Việt",
+  "short_name": "MealWise",
+  "description": "Lên thực đơn tuần, gợi ý bữa trưa văn phòng và sổ tay nấu ăn thông minh",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#020617",
+  "theme_color": "#10b981",
+  "lang": "vi",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

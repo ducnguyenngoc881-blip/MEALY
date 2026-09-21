@@ -1,0 +1,106 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 120 120"
+  preserveAspectRatio="xMidYMid meet"
+  role="img"
+  aria-labelledby="sample-logo-title sample-logo-desc"
+  class="design-system-sample-logo"
+>
+  <title id="sample-logo-title">Apex Geometric Prism Brandmark</title>
+  <desc id="sample-logo-desc">An isometric interlocking geometric prism symbolizing precision, motion, and design system harmony.</desc>
+
+  <defs>
+    <linearGradient id="facet-gradient-alpha" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="var(--token-color-accent, #06B6D4)" stop-opacity="1" />
+      <stop offset="100%" stop-color="var(--token-color-brand-600, #4F46E5)" stop-opacity="1" />
+    </linearGradient>
+
+    <linearGradient id="facet-gradient-beta" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="var(--token-color-brand-600, #4F46E5)" stop-opacity="1" />
+      <stop offset="100%" stop-color="var(--token-color-brand-800, #312E81)" stop-opacity="1" />
+    </linearGradient>
+
+    <linearGradient id="facet-gradient-gamma" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="var(--token-color-brand-800, #312E81)" stop-opacity="1" />
+      <stop offset="100%" stop-color="var(--token-color-accent, #06B6D4)" stop-opacity="1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Ambient Backdrop Circle (Subtle Framing) -->
+  <g id="layer-ambient-frame" class="logo-ambient-frame" opacity="0.06">
+    <circle
+      cx="60"
+      cy="60"
+      r="54"
+      fill="currentColor"
+    />
+  </g>
+
+  <!-- Primary Geometry: Interlocking Hexagonal Prism Facets -->
+  <g id="layer-prism-core" class="logo-prism-core">
+    <!-- Top-Right Facet (Alpha / Accent-Lead) -->
+    <g id="facet-alpha" class="logo-facet logo-facet--alpha">
+      <path
+        d="M60 16L98.11 38V70L79.06 59V43L60 32L40.94 43L60 16z"
+        fill="url(#facet-gradient-alpha)"
+        fill-opacity="0.95"
+      />
+    </g>
+
+    <!-- Bottom-Right Facet (Beta / Deep Structural Tone) -->
+    <g id="facet-beta" class="logo-facet logo-facet--beta">
+      <path
+        d="M98.11 70L60 92L60 70L79.06 59L98.11 70z"
+        fill="url(#facet-gradient-beta)"
+        fill-opacity="0.85"
+      />
+      <path
+        d="M60 92L60 104L21.89 82L21.89 50L40.94 61L40.94 77L60 88V92z"
+        fill="url(#facet-gradient-beta)"
+        fill-opacity="0.75"
+      />
+    </g>
+
+    <!-- Left / Upward Connecting Facet (Gamma / Dynamic Convergence) -->
+    <g id="facet-gamma" class="logo-facet logo-facet--gamma">
+      <path
+        d="M21.89 50L60 16L40.94 43L21.89 50z"
+        fill="url(#facet-gradient-gamma)"
+        fill-opacity="0.90"
+      />
+      <path
+        d="M40.94 61L60 50L79.06 59L60 70L40.94 61z"
+        fill="var(--token-color-accent, #06B6D4)"
+        fill-opacity="0.65"
+      />
+    </g>
+  </g>
+
+  <!-- Precision Keyline Contours (Monochrome Definition & High-DPI Crispness) -->
+  <g id="layer-keyline-contours" class="logo-keyline-contours" opacity="0.4">
+    <path
+      d="M60 16L98.11 38V82L60 104L21.89 82V38L60 16z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M60 50L79.06 59V77L60 88L40.94 77V59L60 50z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.2"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Central Dynamic Focal Core (Optical Center Mark) -->
+  <g id="layer-focal-core" class="logo-focal-core">
+    <circle
+      cx="60"
+      cy="68"
+      r="4"
+      fill="var(--token-color-accent, #06B6D4)"
+    />
+  </g>
+</svg>

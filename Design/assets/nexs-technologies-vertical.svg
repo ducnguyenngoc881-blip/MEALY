@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 480" width="100%" height="100%" role="img" aria-label="NEXS Technologies Vertical Logo">
+  <defs>
+    <linearGradient id="nexs-blue-grad-v" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#192250" />
+      <stop offset="100%" stop-color="#222D64" />
+    </linearGradient>
+    <linearGradient id="nexs-yellow-grad-v" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD147" />
+      <stop offset="100%" stop-color="#FFC330" />
+    </linearGradient>
+    <filter id="subtle-shadow-v" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#222D64" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <g id="nexs-logo-vertical" transform="translate(0, 15)">
+    <!-- 1. CENTERED HEXAGONAL TECH SYMBOL (Width: 180, centered at X=250) -->
+    <g id="symbol-tech-nexus" transform="translate(160, 0)" filter="url(#subtle-shadow-v)">
+      <!-- Outer Hexagon Frame -->
+      <path d="M 90,12 L 164,54.7 L 164,140 L 90,182.7 L 16,140 L 16,54.7 Z" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="18" 
+            stroke-linejoin="round" 
+            stroke-linecap="round" />
+      
+      <!-- Inner Geometry: Tech 'N' & 'T' Nexus Structure -->
+      <path d="M 48,72 L 48,126" fill="none" stroke="#222D64" stroke-width="14" stroke-linecap="round" />
+      <path d="M 48,76 L 90,126" fill="none" stroke="#222D64" stroke-width="14" stroke-linecap="round" />
+      <path d="M 76,68 L 132,68" fill="none" stroke="#222D64" stroke-width="14" stroke-linecap="round" />
+      <path d="M 132,72 L 132,126" fill="none" stroke="#222D64" stroke-width="14" stroke-linecap="round" />
+      
+      <!-- Golden Accent Core Fold (Yellow #FFC330) -->
+      <polygon points="90,62 108,72 108,124 90,134 72,124 72,72" fill="url(#nexs-yellow-grad-v)" />
+      
+      <!-- Precision Tech Node -->
+      <circle cx="90" cy="98" r="8.5" fill="#222D64" />
+      <circle cx="90" cy="98" r="3.5" fill="#FFFFFF" />
+    </g>
+
+    <!-- 2. CENTERED BRAND WORDMARK: NEXS (width ~360, centered at X=250 -> translate 70) -->
+    <g id="brand-wordmark" transform="translate(70, 220)">
+      <!-- Letter N -->
+      <path d="M 0,95 L 0,15 L 22,15 L 56,66 L 56,15 L 76,15 L 76,95 L 54,95 L 20,44 L 20,95 Z" fill="#222D64" />
+      <!-- Letter E -->
+      <path d="M 94,95 L 94,15 L 162,15 L 162,33 L 115,33 L 115,46 L 157,46 L 157,63 L 115,63 L 115,77 L 164,77 L 164,95 Z" fill="#222D64" />
+      <!-- Letter X -->
+      <path d="M 180,15 L 204,15 L 256,95 L 232,95 Z" fill="#222D64" />
+      <path d="M 233,15 L 256,15 L 225,60 L 205,47 Z" fill="#222D64" />
+      <path d="M 197,60 L 175,95 L 198,95 L 216,68 Z" fill="#222D64" />
+      <!-- Accent Cut in X -->
+      <polygon points="214,48 226,48 218,60 206,60" fill="url(#nexs-yellow-grad-v)" />
+      <!-- Letter S -->
+      <path d="M 276,80 C 283,90 295,97 312,97 C 328,97 339,88 339,76 C 339,63 328,58 310,54 C 285,48 268,41 268,23 C 268,7 284,-2 308,-2 C 326,-2 342,6 350,18 L 334,31 C 327,22 318,16 307,16 C 295,16 288,22 288,30 C 288,39 297,44 314,48 C 342,54 359,62 359,82 C 359,101 341,112 312,112 C 290,112 271,102 260,86 Z" transform="translate(0, -5)" fill="#222D64" />
+    </g>
+
+    <!-- 3. BRANCH DESCRIPTOR (Centered) -->
+    <g id="branch-descriptor" transform="translate(250, 362)">
+      <text text-anchor="middle"
+            font-family="'Reddit Sans', 'Inter', -apple-system, sans-serif" 
+            font-size="22" 
+            font-weight="700" 
+            letter-spacing="0.35em" 
+            fill="#222D64">
+        TECHNOLOGIES
+      </text>
+      <!-- Accent bar centered -->
+      <rect x="-60" y="10" width="120" height="4" rx="2" fill="url(#nexs-yellow-grad-v)" />
+    </g>
+
+    <!-- 4. VIETNAMESE BRAND SLOGAN (Centered) -->
+    <g id="vietnamese-slogan" transform="translate(250, 412)">
+      <text text-anchor="middle"
+            font-family="'Reddit Sans', 'Inter', 'Roboto', sans-serif" 
+            font-size="15" 
+            font-weight="600" 
+            letter-spacing="0.12em" 
+            fill="#5A6588">
+        KIẾN TẠO • DANH TIẾNG • BỀN VỮNG
+      </text>
+    </g>
+  </g>
+</svg>

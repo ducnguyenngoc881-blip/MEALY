@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 260" width="100%" height="100%" role="img" aria-label="NEXS Solution Official Favorite Logo">
+  <defs>
+    <!-- Exact Brand Color Palette -->
+    <linearGradient id="fav-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD459" />
+      <stop offset="100%" stop-color="#FFC330" />
+    </linearGradient>
+  </defs>
+
+  <g id="nexs-solution-favorite" transform="translate(25, 20)">
+    
+    <!-- 1. HEXAGON SYMBOL WITH TOP-RIGHT GOLDEN FOLD -->
+    <g id="symbol-hexagon-fold" transform="translate(10, 0)">
+      
+      <!-- Blue Body of Hexagon Ring (Segments: Bottom, Bottom-Left, Top-Left, Bottom-Right) -->
+      <!-- Outer points: (90,15), (165,58), (165,142), (90,185), (15,142), (15,58) -->
+      <!-- Inner points: (90,55), (135,80), (135,120), (90,145), (45,120), (45,80) -->
+      
+      <!-- Main Royal Blue Hexagonal Ring Body -->
+      <path d="M 90,15 L 15,58 L 15,142 L 90,185 L 165,142 L 165,125 L 135,125 L 135,120 L 90,145 L 45,120 L 45,80 L 90,55 L 105,63.6 L 90,15 Z" 
+            fill="#222D64" />
+
+      <!-- Top-Right Golden Yellow Facet (Fold Face 1 - Bright Accent #FFC330) -->
+      <polygon points="90,15 165,58 135,80 90,55" fill="#FFC330" />
+
+      <!-- Top-Right Dimensional Shadow Facet (Fold Face 2 - Deep Gold #E5A812) -->
+      <polygon points="165,58 165,125 135,125 135,80" fill="#E5A812" />
+
+      <!-- Inner Crisp White Aperture Hexagon -->
+      <!-- Negative space automatically created: (90,55), (135,80), (135,120), (90,145), (45,120), (45,80) -->
+    </g>
+
+    <!-- 2. BRAND WORDMARK: NEXS + SOLUTION -->
+    <g id="brand-wordmark" transform="translate(225, 16)">
+      
+      <!-- NEXS Main Title -->
+      <g id="wordmark-nexs">
+        <!-- Letter N -->
+        <path d="M 0,85 L 0,15 L 20,15 L 52,60 L 52,15 L 72,15 L 72,85 L 52,85 L 20,40 L 20,85 Z" fill="#222D64" />
+        
+        <!-- Letter E -->
+        <path d="M 88,85 L 88,15 L 150,15 L 150,31 L 108,31 L 108,43 L 146,43 L 146,58 L 108,58 L 108,70 L 152,70 L 152,85 Z" fill="#222D64" />
+        
+        <!-- Letter X (with Signature Brand Angle Accent) -->
+        <path d="M 166,15 L 188,15 L 236,85 L 214,85 Z" fill="#222D64" />
+        <path d="M 215,15 L 236,15 L 208,54 L 190,43 Z" fill="#222D64" />
+        <path d="M 183,54 L 163,85 L 184,85 L 200,60 Z" fill="#222D64" />
+        <polygon points="198,43 209,43 202,54 191,54" fill="#FFC330" />
+
+        <!-- Letter S -->
+        <path d="M 252,72 C 258,81 269,87 284,87 C 298,87 308,79 308,68 C 308,57 298,52 282,49 C 259,44 244,37 244,21 C 244,7 258,-1 280,-1 C 296,-1 310,6 317,17 L 302,28 C 296,20 288,15 279,15 C 268,15 262,20 262,27 C 262,35 270,40 286,43 C 311,48 326,55 326,73 C 326,90 310,100 284,100 C 264,100 248,91 238,77 Z" 
+              transform="translate(0, -5)" fill="#222D64" />
+      </g>
+
+      <!-- Subtitle Descriptor: SOLUTION -->
+      <g id="descriptor-solution" transform="translate(2, 126)">
+        <text font-family="'Reddit Sans', 'Inter', -apple-system, sans-serif" 
+              font-size="34" 
+              font-weight="800" 
+              letter-spacing="0.12em" 
+              fill="#222D64">
+          SOLUTION
+        </text>
+      </g>
+
+    </g>
+
+    <!-- 3. VIETNAMESE BRAND SLOGAN (Centered below entire lockup) -->
+    <g id="vietnamese-slogan" transform="translate(190, 195)">
+      <text font-family="'Reddit Sans', 'Inter', sans-serif" 
+            font-size="19" 
+            font-weight="600" 
+            letter-spacing="0.04em" 
+            fill="#1E293B">
+        Kiến tạo - Danh tiếng - Bền vững
+      </text>
+    </g>
+
+  </g>
+</svg>

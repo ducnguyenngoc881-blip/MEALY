@@ -1,0 +1,20 @@
+{
+  "name": "remotion-design-system",
+  "version": "1.0.0",
+  "description": "Graphic design knowledge base, design tokens, and Remotion motion system",
+  "main": "tokens.ts",
+  "scripts": {
+    "test": "node tests/run-all.js"
+  },
+  "keywords": [
+    "design-tokens",
+    "remotion",
+    "graphic-design",
+    "color-contrast",
+    "wcag",
+    "svg",
+    "motion-design"
+  ],
+  "author": "Design Engineering Team",
+  "license": "MIT"
+}

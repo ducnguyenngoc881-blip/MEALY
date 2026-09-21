@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 230" width="100%" height="100%" role="img" aria-label="NEXS Technologies Var 9 - Delta Peak">
+  <g id="var9-lockup" transform="translate(15, 15)">
+    <!-- SYMBOL: Solid Delta Core inside Hexagon -->
+    <g id="symbol-v9" transform="translate(10, 0)">
+      <!-- Outer Hexagon Frame -->
+      <path d="M 90,12 L 164,54.7 L 164,140 L 90,182.7 L 16,140 L 16,54.7 Z" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="20" 
+            stroke-linejoin="round" />
+
+      <!-- Top Royal Blue Geometric Prism (Down-facing) -->
+      <polygon points="46,62 134,62 90,138" fill="#1C2554" />
+
+      <!-- Center Solid Golden Yellow Ascending Delta (Upward-pointing #FFC330) -->
+      <polygon points="90,56 122,112 58,112" fill="#FFC330" />
+
+      <!-- Delta Facet Shading (Right half #E5A812) -->
+      <polygon points="90,56 122,112 90,112" fill="#E5A812" />
+
+      <!-- Lower Anchor Diamond (Royal Blue) -->
+      <polygon points="90,124 104,138 90,152 76,138" fill="#222D64" />
+    </g>
+
+    <!-- WORDMARK & SLOGAN -->
+    <g id="typography-v9" transform="translate(225, 20)">
+      <g id="wordmark-nexs">
+        <path d="M 0,85 L 0,15 L 20,15 L 52,60 L 52,15 L 72,15 L 72,85 L 52,85 L 20,40 L 20,85 Z" fill="#222D64" />
+        <path d="M 88,85 L 88,15 L 150,15 L 150,31 L 108,31 L 108,43 L 146,43 L 146,58 L 108,58 L 108,70 L 152,70 L 152,85 Z" fill="#222D64" />
+        <path d="M 166,15 L 188,15 L 236,85 L 214,85 Z" fill="#222D64" />
+        <path d="M 215,15 L 236,15 L 208,54 L 190,43 Z" fill="#222D64" />
+        <path d="M 183,54 L 163,85 L 184,85 L 200,60 Z" fill="#222D64" />
+        <polygon points="198,43 209,43 202,54 191,54" fill="#FFC330" />
+        <path d="M 252,72 C 258,81 269,87 284,87 C 298,87 308,79 308,68 C 308,57 298,52 282,49 C 259,44 244,37 244,21 C 244,7 258,-1 280,-1 C 296,-1 310,6 317,17 L 302,28 C 296,20 288,15 279,15 C 268,15 262,20 262,27 C 262,35 270,40 286,43 C 311,48 326,55 326,73 C 326,90 310,100 284,100 C 264,100 248,91 238,77 Z" transform="translate(0, -5)" fill="#222D64" />
+      </g>
+      <g id="descriptor" transform="translate(4, 116)">
+        <text font-family="'Reddit Sans', 'Inter', sans-serif" font-size="19" font-weight="700" letter-spacing="0.32em" fill="#222D64">TECHNOLOGIES</text>
+        <rect x="335" y="-7" width="90" height="3.5" rx="1.75" fill="#FFC330" />
+      </g>
+      <g id="slogan" transform="translate(4, 146)">
+        <text font-family="'Reddit Sans', 'Inter', sans-serif" font-size="13.5" font-weight="600" letter-spacing="0.12em" fill="#5A6588">
+          HỘI TỤ TINH HOA • VƯƠN TẦM CAO MỚI
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

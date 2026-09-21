@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 230" width="100%" height="100%" role="img" aria-label="NEXS Technologies Logo">
+  <defs>
+    <!-- Brand Color Definitions -->
+    <linearGradient id="nexs-blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#192250" />
+      <stop offset="100%" stop-color="#222D64" />
+    </linearGradient>
+    <linearGradient id="nexs-yellow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD147" />
+      <stop offset="100%" stop-color="#FFC330" />
+    </linearGradient>
+    <filter id="subtle-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#222D64" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Group: Main Logo Lockup -->
+  <g id="nexs-logo-horizontal" transform="translate(10, 15)">
+    
+    <!-- 1. HEXAGONAL TECH SYMBOL (Size: 180x200) -->
+    <g id="symbol-tech-nexus" transform="translate(15, 0)" filter="url(#subtle-shadow)">
+      <!-- Outer Hexagon Frame (Royal Blue #222D64) -->
+      <path d="M 90,12 L 164,54.7 L 164,140 L 90,182.7 L 16,140 L 16,54.7 Z" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="18" 
+            stroke-linejoin="round" 
+            stroke-linecap="round" />
+      
+      <!-- Inner Geometry: Tech 'N' & 'T' Nexus Structure -->
+      <!-- Left Stem of 'N' / Circuit node -->
+      <path d="M 48,72 L 48,126" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="14" 
+            stroke-linecap="round" />
+      
+      <!-- Diagonal of 'N' connecting to center 'T' -->
+      <path d="M 48,76 L 90,126" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="14" 
+            stroke-linecap="round" />
+      
+      <!-- Tech 'T' Horizontal Bar & Connection -->
+      <path d="M 76,68 L 132,68" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="14" 
+            stroke-linecap="round" />
+      
+      <!-- Right Tech Stem / Data flow -->
+      <path d="M 132,72 L 132,126" 
+            fill="none" 
+            stroke="#222D64" 
+            stroke-width="14" 
+            stroke-linecap="round" />
+      
+      <!-- The Golden Accent Core: Folded Center Tech Node (Yellow #FFC330) -->
+      <polygon points="90,62 108,72 108,124 90,134 72,124 72,72" 
+               fill="url(#nexs-yellow-grad)" />
+      
+      <!-- Center Tech Core Dot / Precision Node -->
+      <circle cx="90" cy="98" r="8.5" fill="#222D64" />
+      <circle cx="90" cy="98" r="3.5" fill="#FFFFFF" />
+    </g>
+
+    <!-- 2. BRAND TYPOGRAPHY: NEXS + TECHNOLOGIES -->
+    <g id="brand-wordmark" transform="translate(230, 20)">
+      
+      <!-- Main Brand Name: NEXS (Custom Geometry matching brand guide) -->
+      <g id="nexs-text">
+        <!-- Letter N -->
+        <path d="M 0,95 L 0,15 L 22,15 L 56,66 L 56,15 L 76,15 L 76,95 L 54,95 L 20,44 L 20,95 Z" 
+              fill="#222D64" />
+        
+        <!-- Letter E -->
+        <path d="M 94,95 L 94,15 L 162,15 L 162,33 L 115,33 L 115,46 L 157,46 L 157,63 L 115,63 L 115,77 L 164,77 L 164,95 Z" 
+              fill="#222D64" />
+        
+        <!-- Letter X (with Signature Brand Angle Accent) -->
+        <!-- Main Royal Blue diagonal -->
+        <path d="M 180,15 L 204,15 L 256,95 L 232,95 Z" 
+              fill="#222D64" />
+        <!-- Complementary diagonal with signature brand gap & yellow accent facet -->
+        <path d="M 233,15 L 256,15 L 225,60 L 205,47 Z" 
+              fill="#222D64" />
+        <path d="M 197,60 L 175,95 L 198,95 L 216,68 Z" 
+              fill="#222D64" />
+        <!-- Signature Brand Accent Cut in the X -->
+        <polygon points="214,48 226,48 218,60 206,60" 
+                 fill="url(#nexs-yellow-grad)" />
+
+        <!-- Letter S -->
+        <path d="M 276,80 C 283,90 295,97 312,97 C 328,97 339,88 339,76 C 339,63 328,58 310,54 C 285,48 268,41 268,23 C 268,7 284,-2 308,-2 C 326,-2 342,6 350,18 L 334,31 C 327,22 318,16 307,16 C 295,16 288,22 288,30 C 288,39 297,44 314,48 C 342,54 359,62 359,82 C 359,101 341,112 312,112 C 290,112 271,102 260,86 Z" 
+              transform="translate(0, -5)"
+              fill="#222D64" />
+      </g>
+
+      <!-- Branch Descriptor: TECHNOLOGIES -->
+      <g id="branch-descriptor" transform="translate(4, 126)">
+        <text font-family="'Reddit Sans', 'Inter', -apple-system, sans-serif" 
+              font-size="21" 
+              font-weight="700" 
+              letter-spacing="0.32em" 
+              fill="#222D64">
+          TECHNOLOGIES
+        </text>
+        <!-- Accent line -->
+        <rect x="360" y="-8" width="95" height="4" rx="2" fill="url(#nexs-yellow-grad)" />
+      </g>
+
+      <!-- 3. VIETNAMESE BRAND SLOGAN -->
+      <g id="vietnamese-slogan" transform="translate(4, 160)">
+        <text font-family="'Reddit Sans', 'Inter', 'Roboto', sans-serif" 
+              font-size="14.5" 
+              font-weight="600" 
+              letter-spacing="0.14em" 
+              fill="#5A6588">
+          TIÊN PHONG CÔNG NGHỆ • KIẾN TẠO TƯƠNG LAI
+        </text>
+      </g>
+    </g>
+
+  </g>
+</svg>

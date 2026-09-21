@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="100%" height="100%" role="img" aria-label="NEXS Technologies App Icon">
+  <defs>
+    <linearGradient id="icon-bg-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#161D42" />
+      <stop offset="100%" stop-color="#222D64" />
+    </linearGradient>
+    <linearGradient id="icon-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD147" />
+      <stop offset="100%" stop-color="#FFC330" />
+    </linearGradient>
+    <filter id="icon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Squircle App Container (Apple/Android style) -->
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="url(#icon-bg-blue)" stroke="#313E85" stroke-width="2" />
+
+  <!-- Centered Hexagon Symbol -->
+  <g id="icon-symbol" transform="translate(38, 38)" filter="url(#icon-glow)">
+    <!-- Outer Hexagon in Crisp White -->
+    <path d="M 90,12 L 164,54.7 L 164,140 L 90,182.7 L 16,140 L 16,54.7 Z" 
+          fill="none" 
+          stroke="#FFFFFF" 
+          stroke-width="17" 
+          stroke-linejoin="round" 
+          stroke-linecap="round" />
+    
+    <!-- Internal Tech Ribbon in Pure White -->
+    <path d="M 48,72 L 48,126" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" />
+    <path d="M 48,76 L 90,126" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" />
+    <path d="M 76,68 L 132,68" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" />
+    <path d="M 132,72 L 132,126" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" />
+    
+    <!-- Signature Golden Yellow Fold Node -->
+    <polygon points="90,62 108,72 108,124 90,134 72,124 72,72" fill="url(#icon-yellow)" />
+    
+    <!-- Core Center Dot -->
+    <circle cx="90" cy="98" r="8" fill="#222D64" />
+    <circle cx="90" cy="98" r="3.5" fill="#FFFFFF" />
+  </g>
+</svg>
