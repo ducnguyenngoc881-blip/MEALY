@@ -17,37 +17,39 @@ export const Navbar: React.FC = () => {
     toggleTheme
   } = useMealWise();
 
-  const getScreenTitle = (tab: ActiveTab): string => {
+  const getScreenTitle = (tab: ActiveTab): { short: string; full: string } => {
     switch (tab) {
       case 'meal-sets':
-        return 'Mâm 3 Món';
+        return { short: 'Mâm 3 Món', full: 'Mâm 3 Món' };
       case 'weekly':
-        return 'Thực Đơn Tuần';
+        return { short: 'Thực Đơn', full: 'Thực Đơn Tuần' };
       case 'party':
-        return 'Tiệc & Catering';
+        return { short: 'Tiệc Tùng', full: 'Tiệc & Catering' };
       case 'fast-meal':
-        return 'Mở Hòm Bữa Cơm';
+        return { short: 'Mở Hòm', full: 'Mở Hòm Bữa Cơm' };
       case 'grocery':
-        return 'Đi Chợ Tự Động';
+        return { short: 'Đi Chợ', full: 'Đi Chợ Tự Động' };
       case 'recipes':
-        return 'Sổ Tay Công Thức';
+        return { short: 'Công Thức', full: 'Sổ Tay Công Thức' };
       case 'pantry':
-        return 'Tủ Lạnh & Đồ Thừa';
+        return { short: 'Tủ Lạnh', full: 'Tủ Lạnh & Đồ Thừa' };
       case 'account':
-        return 'Tài Khoản';
+        return { short: 'Tài Khoản', full: 'Tài Khoản' };
       default:
-        return 'MealWise';
+        return { short: 'MealWise', full: 'MealWise' };
     }
   };
 
+  const currentTitle = getScreenTitle(activeTab);
+
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200/90 dark:border-slate-800/90 shadow-sm transition-colors duration-200">
-      <div className="h-14 px-3 sm:px-4 flex items-center justify-between gap-2 max-w-lg mx-auto">
+      <div className="h-14 px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
         
         {/* Left: Brand Logo & Title */}
         <button
           onClick={() => setActiveTab('meal-sets')} 
-          className="flex items-center gap-2 cursor-pointer group shrink-0 text-left focus:outline-none"
+          className="flex items-center gap-1.5 sm:gap-2 cursor-pointer group shrink-0 text-left focus:outline-none"
         >
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform shrink-0">
             <UtensilsCrossed className="w-4 h-4 text-white font-bold" />
@@ -63,8 +65,10 @@ export const Navbar: React.FC = () => {
         </button>
 
         {/* Center: Active Screen Badge */}
-        <div className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-[11px] font-extrabold text-slate-700 dark:text-slate-200 truncate max-w-[110px] sm:max-w-[160px] text-center min-w-0 shrink">
-          {getScreenTitle(activeTab)}
+        <div className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-[11px] font-extrabold text-slate-700 dark:text-slate-200 max-w-[135px] sm:max-w-[180px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis">
+          <span className="xs:hidden">{currentTitle.short}</span>
+          <span className="hidden xs:inline sm:hidden">{currentTitle.short}</span>
+          <span className="hidden sm:inline">{currentTitle.full}</span>
         </div>
 
         {/* Right: Quick Action Controls */}

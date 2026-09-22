@@ -19,6 +19,7 @@ import './unit/fridgeNavigation.test';
 import './unit/inAppDialogs.test';
 import './unit/collabGrocery.test';
 import './unit/minigames.test';
+import './unit/multiDeviceResponsive.test';
 
 // 2. 4-Tier E2E Test Suites
 import './e2e/tier1-feature-coverage.test';
