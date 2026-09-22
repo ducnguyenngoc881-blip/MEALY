@@ -90,7 +90,7 @@ export const MealSetDetailModal: React.FC = () => {
         </div>
 
         {/* Scrollable Sheet Content */}
-        <div className="overflow-y-auto px-4 pb-8 space-y-4">
+        <div className="overflow-y-auto px-4 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4">
           
           {/* Hero Image & Title */}
           <div className="relative h-48 rounded-2xl overflow-hidden shadow-md shrink-0">

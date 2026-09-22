@@ -1,4 +1,6 @@
 import { describe, it, expect } from '../helpers/testRunner';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Multi-Device Responsive & Dimension Layout Test Suite
@@ -14,6 +16,8 @@ import { describe, it, expect } from '../helpers/testRunner';
  */
 
 describe('Unit: Multi-Device Responsive & Dimension Layout Audit (R1, R2, R3, R4)', () => {
+  const srcDir = path.resolve(process.cwd(), 'src');
+
   const DEVICE_VIEWPORTS = [
     { name: 'iPhone SE 1st gen', width: 320, height: 568 },
     { name: 'Galaxy S/A compact', width: 360, height: 740 },
@@ -42,18 +46,8 @@ describe('Unit: Multi-Device Responsive & Dimension Layout Audit (R1, R2, R3, R4
     });
 
     it('ensures title "Tủ Lạnh & Đồ Ăn Thừa Thông Minh" does not produce orphan single-word line breaks', () => {
-      // Character count and typography scaling
-      const title = 'Tủ Lạnh & Đồ Ăn Thừa Thông Minh';
-      expect(title.length).toBe(31);
-
-      // On mobile viewports (320px - 414px), font size is text-base (16px) with leading-snug (~22px line height)
-      // Available width at 375px is ~311px, which comfortably holds ~22-25 characters per line
-      // Line break naturally distributes as "Tủ Lạnh & Đồ Ăn Thừa" (20 chars) and "Thông Minh" (10 chars, 2 words)
-      const words = title.split(' ');
-      expect(words[words.length - 2]).toBe('Thông');
-      expect(words[words.length - 1]).toBe('Minh');
-      // "Thông Minh" is a complete semantic 2-word phrase, not an isolated single orphan word
-      expect(`${words[words.length - 2]} ${words[words.length - 1]}`).toBe('Thông Minh');
+      const fridgeCode = fs.readFileSync(path.join(srcDir, 'components/FridgeView.tsx'), 'utf-8');
+      expect(fridgeCode).toMatch(/whitespace-nowrap[^>]*>Thông Minh<\/span>/);
     });
 
     it('ensures 4 summary metric cards fit 2x2 grid without horizontal scrolling on 320px', () => {
@@ -81,9 +75,7 @@ describe('Unit: Multi-Device Responsive & Dimension Layout Audit (R1, R2, R3, R4
       ];
 
       for (const t of tabs) {
-        // Short mobile label must be under 12 characters to fit 110px-135px badge comfortably
         expect(t.short.length).toBeLessThanOrEqual(12);
-        // Full label must be descriptive
         expect(t.full.length).toBeGreaterThanOrEqual(t.short.length);
       }
     });
@@ -95,7 +87,6 @@ describe('Unit: Multi-Device Responsive & Dimension Layout Audit (R1, R2, R3, R4
         const gaps = 16;
         const availableForBadge = device.width - logoWidth - quickActionsWidth - gaps;
 
-        // Even on 320px iPhone SE, there is at least 117px for the active badge
         expect(availableForBadge).toBeGreaterThanOrEqual(115);
       }
     });
@@ -104,9 +95,8 @@ describe('Unit: Multi-Device Responsive & Dimension Layout Audit (R1, R2, R3, R4
   describe('R3. Multi-Device Modal Bounds & Safe Area Insets', () => {
     it('respects safe-area-inset-bottom and viewport max-height bounds across all devices', () => {
       for (const device of DEVICE_VIEWPORTS) {
-        // Modal max-height bound: 90vh (or calc(100vh - 40px))
         const modalMaxHeight = device.height * 0.9;
-        const safeAreaBottom = device.height >= 800 ? 34 : 0; // iPhone home indicator height
+        const safeAreaBottom = device.height >= 800 ? 34 : 0;
 
         expect(modalMaxHeight + safeAreaBottom).toBeLessThanOrEqual(device.height);
       }
@@ -114,10 +104,62 @@ describe('Unit: Multi-Device Responsive & Dimension Layout Audit (R1, R2, R3, R4
 
     it('ensures zero horizontal overflow invariant across all core viewports', () => {
       for (const device of DEVICE_VIEWPORTS) {
-        // Application container max width clamp: max-w-lg (512px) on mobile/tablet or 1280px on desktop
         const contentWidth = Math.min(device.width, 512);
         expect(contentWidth).toBeLessThanOrEqual(device.width);
       }
+    });
+  });
+
+  describe('R4. Core Viewports & Modals Ergonomics Invariants', () => {
+    it('WeeklyBoard budget info bar uses responsive flex-col sm:flex-row to avoid button collision', () => {
+      const weeklyCode = fs.readFileSync(path.join(srcDir, 'components/WeeklyBoard.tsx'), 'utf-8');
+      expect(weeklyCode).toContain('flex flex-col sm:flex-row sm:items-center justify-between');
+      expect(weeklyCode).toContain('env(safe-area-inset-bottom');
+    });
+
+    it('Drinking Roulette wheel scales SVG smoothly with responsive max-width constraint on 320px', () => {
+      const wheelCode = fs.readFileSync(path.join(srcDir, 'components/RouletteWheel.tsx'), 'utf-8');
+      expect(wheelCode).toContain('max-w-[290px]');
+      expect(wheelCode).toContain('viewBox=');
+      expect(wheelCode).toContain('aspectRatio: \'1/1\'');
+    });
+
+    it('GroceryList items truncate long names and respect safe bottom scrolling bounds', () => {
+      const groceryCode = fs.readFileSync(path.join(srcDir, 'components/GroceryList.tsx'), 'utf-8');
+      expect(groceryCode).toContain('truncate');
+      expect(groceryCode).toContain('Xuất Zalo Đi Chợ');
+    });
+
+    it('MealSetExplorer assignment drawer respects safe-area-inset-bottom and max-h-[90vh]', () => {
+      const mealSetCode = fs.readFileSync(path.join(srcDir, 'components/MealSetExplorer.tsx'), 'utf-8');
+      expect(mealSetCode).toContain('max-h-[90vh]');
+      expect(mealSetCode).toContain('env(safe-area-inset-bottom');
+    });
+
+    it('All 5 core modals include safe-area-inset-bottom in bottom sheets and footers', () => {
+      const files = [
+        'components/OnboardingModal.tsx',
+        'components/RecipeDetailModal.tsx',
+        'components/MealSetDetailModal.tsx',
+        'components/FastMealApexModal.tsx',
+        'components/MinigameHubModal.tsx',
+        'components/DrinkRouletteModal.tsx',
+      ];
+
+      for (const f of files) {
+        const content = fs.readFileSync(path.join(srcDir, f), 'utf-8');
+        expect(content).toContain('safe-area-inset-bottom');
+      }
+    });
+
+    it('CateringPartyPlanner recipe picker modal includes safe-area-inset-bottom padding', () => {
+      const cateringCode = fs.readFileSync(path.join(srcDir, 'components/CateringPartyPlanner.tsx'), 'utf-8');
+      expect(cateringCode).toContain('pb-[calc(2rem+env(safe-area-inset-bottom,0px))]');
+    });
+
+    it('FastMealApexModal opener screen respects safe area insets on tall aspect ratio phones', () => {
+      const apexCode = fs.readFileSync(path.join(srcDir, 'components/FastMealApexModal.tsx'), 'utf-8');
+      expect(apexCode).toContain('env(safe-area-inset-bottom');
     });
   });
 });

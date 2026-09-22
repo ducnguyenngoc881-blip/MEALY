@@ -93,11 +93,11 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
   }, [totalSegments, radius, center]);
 
   return (
-    <div className="relative flex flex-col items-center justify-center select-none py-2">
+    <div className="relative flex flex-col items-center justify-center select-none py-2 w-full max-w-[290px] mx-auto">
       {/* Outer Glow Halo */}
       <div 
         className="absolute rounded-full bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-emerald-500/20 blur-xl transition-opacity pointer-events-none"
-        style={{ width: size + 20, height: size + 20 }}
+        style={{ width: '100%', maxWidth: size + 20, height: 'auto', aspectRatio: '1/1' }}
       />
 
       {/* Top Pointer / Flapper Indicator */}
@@ -119,15 +119,14 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
 
       {/* Interactive SVG Wheel */}
       <div 
-        className="relative cursor-pointer transition-transform"
+        className="relative cursor-pointer transition-transform w-full flex items-center justify-center"
         onClick={!disabled && !isSpinning ? onSpin : undefined}
         title={!disabled && !isSpinning ? 'Chạm để quay!' : undefined}
       >
         <svg
-          width={size}
-          height={size}
           viewBox={`0 0 ${size} ${size}`}
-          className="overflow-visible"
+          className="w-full h-auto max-w-[290px] overflow-visible"
+          style={{ maxWidth: size, aspectRatio: '1/1' }}
         >
           <defs>
             {/* Outer Rim Gradient */}

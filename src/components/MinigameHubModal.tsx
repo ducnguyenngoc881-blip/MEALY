@@ -258,7 +258,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
         </div>
 
         {/* FOOTER NOTE */}
-        <div className="px-5 py-3 bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 text-center">
+        <div className="px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 text-center">
           <p className="text-[11px] text-slate-400">
             Chơi vui có chừng mực • Đã uống rượu bia thì không lái xe 🛵
           </p>

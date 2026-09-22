@@ -436,7 +436,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
         </div>
 
         {/* BODY CONTENT (STAGE ROUTING) */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-4 py-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] space-y-4">
 
           {/* ========================================================== */}
           {/* STAGE: SETUP (Add Players & Set Shot Range) */}
@@ -645,7 +645,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
           {/* STAGE: WHEEL_PLAYER & PLAYER_SELECTED (Wheel 1) */}
           {/* ========================================================== */}
           {(stage === 'WHEEL_PLAYER' || stage === 'PLAYER_SELECTED') && (
-            <div className="space-y-4 animate-fadeIn flex flex-col items-center">
+            <div className="space-y-4 animate-fadeIn flex flex-col items-center w-full">
               {/* Header Info */}
               <div className="w-full text-center space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-amber-500 flex items-center justify-center gap-1">
@@ -720,7 +720,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
           {/* STAGE: WHEEL_SHOTS (Wheel 2: Number of shots) */}
           {/* ========================================================== */}
           {stage === 'WHEEL_SHOTS' && (
-            <div className="space-y-4 animate-fadeIn flex flex-col items-center">
+            <div className="space-y-4 animate-fadeIn flex flex-col items-center w-full">
               {/* Header Info */}
               <div className="w-full text-center space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-rose-500 flex items-center justify-center gap-1">
@@ -764,7 +764,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
           {/* STAGE: WHEEL_DELEGATE (Wheel 3: Who drinks on behalf) */}
           {/* ========================================================== */}
           {stage === 'WHEEL_DELEGATE' && selectedPlayer && (
-            <div className="space-y-4 animate-fadeIn flex flex-col items-center">
+            <div className="space-y-4 animate-fadeIn flex flex-col items-center w-full">
               {/* Header Info */}
               <div className="w-full text-center space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-purple-500 flex items-center justify-center gap-1">

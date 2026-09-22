@@ -349,7 +349,7 @@ export const MealSetExplorer: React.FC = () => {
               transform: assignDragY > 0 ? `translateY(${assignDragY}px)` : undefined,
               transition: assignDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
             }}
-            className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-5 pb-8 space-y-4 animate-slide-up border-t border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-4 sm:p-5 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4 animate-slide-up border-t border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
           >
             {/* Swipe handle bar & Drag Zone */}
             <div 

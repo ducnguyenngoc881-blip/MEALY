@@ -455,7 +455,7 @@ export const OnboardingModal: React.FC = () => {
         </div>
 
         {/* Dedicated Sticky Action Footer outside scrollable body */}
-        <div className="shrink-0 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between backdrop-blur-md gap-2">
+        <div className="shrink-0 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 px-4 sm:px-6 py-3 sm:py-3.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] flex items-center justify-between backdrop-blur-md gap-2">
           {step > 1 ? (
             <button
               type="button"

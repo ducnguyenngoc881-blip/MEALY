@@ -512,7 +512,7 @@ export const WeeklyBoard: React.FC = () => {
             ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
             : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
         }`}>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
             <div className="flex items-center gap-1.5 min-w-0">
               {isOverBudget ? (
                 <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
@@ -529,7 +529,7 @@ export const WeeklyBoard: React.FC = () => {
                   : 'Chưa xếp món cho ngày này'}
               </span>
             </div>
-            <span className="text-[10px] font-bold opacity-80 shrink-0 ml-2">
+            <span className="text-[10px] font-bold opacity-80 shrink-0 sm:ml-2">
               Mức: {currentBudgetLevel === 'tiet-kiem' ? 'Tiết Kiệm' : currentBudgetLevel === 'thoai-mai' ? 'Thoải Mái' : 'Vừa Phải'} ({safeServings} người)
             </span>
           </div>
@@ -1061,7 +1061,7 @@ export const WeeklyBoard: React.FC = () => {
             </div>
 
             {/* Scrollable list of items with diacritic-insensitive search */}
-            <div className="overflow-y-auto p-3 space-y-2 flex-1 pb-8">
+            <div className="overflow-y-auto p-3 space-y-2 flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
               {pickerTab === 'meal-sets' ? (
                 (() => {
                   const filteredMealSets = mealSets.filter(set => matchesMealSetSearch(set, pickerSearch));

@@ -2241,7 +2241,7 @@ export const CateringPartyPlanner: React.FC = () => {
             </div>
 
             {/* Modal Recipe List */}
-            <div className="p-3 overflow-y-auto space-y-2 flex-1 pb-8">
+            <div className="p-3 overflow-y-auto space-y-2 flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
               {filteredRecipes.length === 0 ? (
                 <div className="py-8 text-center text-slate-600 dark:text-slate-300 text-xs space-y-2">
                   <p>Không tìm thấy món ăn nào phù hợp với bộ lọc hiện tại.</p>

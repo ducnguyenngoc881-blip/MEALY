@@ -171,22 +171,25 @@ export const FridgeView: React.FC = () => {
   return (
     <div className="space-y-4 animate-fadeIn pb-12">
       {/* Top Banner & Header */}
-      <div className="p-3.5 sm:p-4 rounded-3xl glass-card border border-cyan-500/20 dark:border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 via-slate-50 to-blue-500/10 dark:from-slate-900 dark:via-slate-900 dark:to-cyan-950/40 space-y-3 shadow-sm">
-        <div className="flex items-center justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-cyan-500/15 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-300 border border-cyan-500/25 dark:border-cyan-500/30 text-[11px] font-bold shrink-0">
-            <span className="text-xs sm:text-sm">🧊</span>
-            <span className="hidden sm:inline">Tủ Lạnh & Đồ Thừa</span>
-            <span className="sm:hidden">Tủ Lạnh</span>
-            <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-cyan-500/30 text-cyan-900 dark:text-cyan-200 text-[10px] font-black">
+      <div className="p-3 sm:p-4 rounded-3xl glass-card border border-cyan-500/20 dark:border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 via-slate-50 to-blue-500/10 dark:from-slate-900 dark:via-slate-900 dark:to-cyan-950/40 space-y-2.5 sm:space-y-3 shadow-sm">
+        {/* Responsive Header Action Row: flex-wrap with gap-y-2 guarantees zero collision and zero overflow */}
+        <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-1.5 sm:gap-2">
+          {/* Status Counter Badge */}
+          <div className="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full bg-cyan-500/15 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-300 border border-cyan-500/25 dark:border-cyan-500/30 text-[10.5px] sm:text-[11px] font-bold shrink-0">
+            <span className="text-xs sm:text-sm shrink-0">🧊</span>
+            <span className="hidden sm:inline whitespace-nowrap">Tủ Lạnh & Đồ Thừa</span>
+            <span className="sm:hidden whitespace-nowrap">Tủ Lạnh</span>
+            <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-cyan-500/30 text-cyan-900 dark:text-cyan-200 text-[10px] font-black shrink-0">
               {pantryItems.length}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          {/* Action Buttons: Đối Chiếu Đi Chợ and Dọn Sạch */}
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             <button
               type="button"
               onClick={() => setActiveTab('grocery')}
-              className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[11px] font-black transition-all active:scale-95 cursor-pointer whitespace-nowrap"
+              className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10.5px] sm:text-[11px] font-black transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
               title="Chuyển sang danh sách đi chợ để đối chiếu nguyên liệu"
             >
               <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
@@ -211,7 +214,7 @@ export const FridgeView: React.FC = () => {
                     }
                   });
                 }}
-                className="p-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer shrink-0"
+                className="p-1 sm:p-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer shrink-0"
                 title="Dọn sạch tủ lạnh"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -220,51 +223,54 @@ export const FridgeView: React.FC = () => {
           </div>
         </div>
 
-        <div>
-          <h1 className="text-base sm:text-lg md:text-xl font-black tracking-tight text-slate-900 dark:text-white leading-snug">
+        <div className="pt-0.5">
+          <h1 className="text-base sm:text-lg md:text-xl font-black tracking-tight text-slate-900 dark:text-white leading-snug text-balance">
             <span>Tủ Lạnh & Đồ Ăn Thừa </span>
-            <span className="whitespace-nowrap">Thông Minh</span>
+            <span className="inline-block whitespace-nowrap text-cyan-600 dark:text-cyan-400">Thông Minh</span>
           </h1>
           <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-0.5">
             Quản lý thức ăn thừa bữa trước, theo dõi hạn dùng và tận dụng nguyên liệu sẵn có để trừ bớt tiền đi chợ.
           </p>
         </div>
 
-        {/* 4 Summary Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-          <div className="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-white/10 shadow-xs">
-            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 block truncate">Trong Tủ Lạnh</span>
-            <span className="text-base sm:text-lg font-black text-cyan-700 dark:text-cyan-300 block">
+        {/* 4 Summary Metric Cards: 2x2 on mobile, 4 cols on sm+ */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 pt-1">
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-white/10 shadow-xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1 min-w-0">
+              <span className="shrink-0 text-[11px]">🧊</span>
+              <span className="truncate">Trong Tủ Lạnh</span>
+            </span>
+            <span className="text-sm sm:text-lg font-black text-cyan-700 dark:text-cyan-300 block mt-0.5 truncate">
               {pantryItems.length} món
             </span>
           </div>
 
-          <div className="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-amber-500/30 shadow-xs">
-            <span className="text-[10px] sm:text-[11px] font-bold text-amber-600 dark:text-amber-400 block flex items-center gap-1 truncate">
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-amber-500/30 shadow-xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1 min-w-0">
               <Clock className="w-3 h-3 shrink-0" />
               <span className="truncate">Ăn Gấp ≤ 2 Ngày</span>
             </span>
-            <span className="text-base sm:text-lg font-black text-amber-600 dark:text-amber-400 block">
+            <span className="text-sm sm:text-lg font-black text-amber-600 dark:text-amber-400 block mt-0.5 truncate">
               {urgentList.length} món
             </span>
           </div>
 
-          <div className="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-purple-500/30 shadow-xs">
-            <span className="text-[10px] sm:text-[11px] font-bold text-purple-600 dark:text-purple-400 block flex items-center gap-1 truncate">
-              <span className="shrink-0">🍲</span>
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-purple-500/30 shadow-xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-purple-600 dark:text-purple-400 flex items-center gap-1 min-w-0">
+              <span className="shrink-0 text-[11px]">🍲</span>
               <span className="truncate">Đồ Ăn Thừa</span>
             </span>
-            <span className="text-base sm:text-lg font-black text-purple-600 dark:text-purple-300 block">
+            <span className="text-sm sm:text-lg font-black text-purple-600 dark:text-purple-300 block mt-0.5 truncate">
               {leftoversList.length} món
             </span>
           </div>
 
-          <div className="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-emerald-500/30 shadow-xs">
-            <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 block flex items-center gap-1 truncate">
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-emerald-500/30 shadow-xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 min-w-0">
               <Sparkles className="w-3 h-3 shrink-0" />
               <span className="truncate">Tiết Kiệm Đi Chợ</span>
             </span>
-            <span className="text-base sm:text-lg font-black text-emerald-700 dark:text-emerald-400 block">
+            <span className="text-sm sm:text-lg font-black text-emerald-700 dark:text-emerald-400 block mt-0.5 truncate">
               ~{(totalPotentialSavings / 1000).toFixed(0)}k đ
             </span>
           </div>
@@ -273,20 +279,20 @@ export const FridgeView: React.FC = () => {
 
       {/* Whole-Fridge Multi-Ingredient Suggestions Section */}
       {pantryItems.length > 0 && (
-        <div className="p-4 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 border-2 border-emerald-500/40 dark:border-emerald-500/30 shadow-md space-y-3 animate-fadeIn">
+        <div className="p-3 sm:p-4 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 border-2 border-emerald-500/40 dark:border-emerald-500/30 shadow-md space-y-3 animate-fadeIn">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
               <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-xs shrink-0">
                 <ChefHat className="w-4 h-4" />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <h3 className="text-xs sm:text-sm font-black text-emerald-950 dark:text-emerald-200 uppercase tracking-wide flex items-center gap-1.5 flex-wrap">
-                  <span>Gợi Ý Nấu Từ Cả Tủ Lạnh</span>
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30">
+                  <span className="truncate">Gợi Ý Nấu Từ Cả Tủ Lạnh</span>
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 shrink-0">
                     {wholeFridgeData.totalEligible} món có thể nấu
                   </span>
                 </h3>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300">
+                <p className="text-[11px] text-slate-600 dark:text-slate-300 truncate">
                   Đối chiếu toàn bộ {pantryItems.length} thực phẩm sẵn có trong tủ với hơn 700 công thức
                 </p>
               </div>
@@ -341,12 +347,12 @@ export const FridgeView: React.FC = () => {
                             {res.recipe.cookTimeMinutes} phút • {res.recipe.calories} kcal
                           </p>
                           <div className="mt-1 flex items-center gap-1 flex-wrap">
-                            <span className="inline-flex items-center gap-1 text-[9.5px] font-extrabold px-1.5 py-0.2 rounded-md bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 truncate max-w-full">
+                            <span className="inline-flex items-center gap-1 text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 truncate max-w-full">
                               <span>✨</span>
                               <span className="truncate">{res.summary}</span>
                             </span>
                             {res.urgentMatchedCount > 0 && (
-                              <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1 py-0.2 rounded bg-amber-500/20 text-amber-800 dark:text-amber-300">
+                              <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-amber-300">
                                 <span>⚠️ Ăn gấp</span>
                               </span>
                             )}
@@ -654,9 +660,9 @@ export const FridgeView: React.FC = () => {
               {suggestedRecipes.map(recipe => (
                 <div 
                   key={recipe.id}
-                  className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-indigo-500/20 shadow-xs flex items-center justify-between gap-2.5 hover:border-indigo-500/50 transition-all"
+                  className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-indigo-500/20 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 hover:border-indigo-500/50 transition-all"
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <SafeImage
                       src={recipe.imageUrl}
                       alt={recipe.title}
@@ -664,7 +670,7 @@ export const FridgeView: React.FC = () => {
                       category={recipe.category}
                       className="w-12 h-12 rounded-xl object-cover shrink-0"
                     />
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <h4 className="text-xs font-black text-slate-900 dark:text-white truncate">
                         {recipe.title}
                       </h4>
@@ -679,7 +685,7 @@ export const FridgeView: React.FC = () => {
                     onClick={() => {
                       setSelectedRecipe(recipe);
                     }}
-                    className="px-2.5 py-1.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-[11px] font-extrabold shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer"
+                    className="w-full sm:w-auto px-2.5 py-1.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs sm:text-[11px] font-extrabold shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer text-center"
                   >
                     Xem Công Thức
                   </button>
@@ -763,24 +769,24 @@ export const FridgeView: React.FC = () => {
                   </div>
                 )}
 
-                <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" />
+                <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex flex-wrap items-center justify-between gap-y-2 gap-x-1.5">
+                  <span className="text-[10px] sm:text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1 shrink-0">
+                    <Sparkles className="w-3 h-3 shrink-0" />
                     <span>Tiết kiệm: ~{(item.discountOpportunityVnd || 15000).toLocaleString('vi-VN')} đ</span>
                   </span>
 
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 ml-auto">
                     <button
                       type="button"
                       onClick={() => {
                         handleSelectItemForRecipe(item);
                         window.scrollTo({ top: 380, behavior: 'smooth' });
                       }}
-                      className="px-2.5 py-1 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-500/30 text-[11px] font-extrabold flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+                      className="px-2 sm:px-2.5 py-1 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-500/30 text-[10.5px] sm:text-[11px] font-extrabold flex items-center gap-1 transition-all active:scale-95 cursor-pointer whitespace-nowrap"
                       title="Gợi ý món ăn có thể nấu từ nguyên liệu này"
                     >
-                      <ChefHat className="w-3 h-3" />
-                      <span>Nấu Món Này</span>
+                      <ChefHat className="w-3 h-3 shrink-0" />
+                      <span>Nấu Món<span className="hidden sm:inline">&nbsp;Này</span></span>
                     </button>
 
                     <button
@@ -789,7 +795,7 @@ export const FridgeView: React.FC = () => {
                         removePantryItem(item.id);
                         showToast(`✓ Đã dùng hết món "${item.name}"!`);
                       }}
-                      className="p-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 dark:bg-white/10 dark:hover:bg-emerald-500/20 text-slate-500 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-300 transition-colors cursor-pointer"
+                      className="p-1 sm:p-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 dark:bg-white/10 dark:hover:bg-emerald-500/20 text-slate-500 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-300 transition-colors cursor-pointer shrink-0"
                       title="Đã dùng hết (xóa khỏi tủ)"
                     >
                       <CheckCircle2 className="w-3.5 h-3.5" />
@@ -798,7 +804,7 @@ export const FridgeView: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => removePantryItem(item.id)}
-                      className="p-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 transition-colors cursor-pointer"
+                      className="p-1 sm:p-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer shrink-0"
                       title="Xóa khỏi tủ"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

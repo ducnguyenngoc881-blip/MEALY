@@ -812,7 +812,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
             </div>
 
             {/* STICKY CONFIRMATION BUTTON BAR */}
-            <div className="pt-2 sticky bottom-0 z-20 -mx-1 px-1 bg-slate-900/95 backdrop-blur-md pb-1 border-t border-white/10 space-y-1.5">
+            <div className="pt-2 sticky bottom-0 z-20 -mx-1 px-1 bg-slate-900/95 backdrop-blur-md pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] border-t border-white/10 space-y-1.5">
               <button
                 type="button"
                 onClick={handleConfirmPreference}
@@ -837,7 +837,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
           /* ======================================================== */
           /* SCREEN 2: CASE OPENER SCREEN                             */
           /* ======================================================== */
-          <div className="relative z-10 p-4 sm:p-5 space-y-3 max-h-[80vh] overflow-y-auto">
+          <div className="relative z-10 p-4 sm:p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] space-y-3 max-h-[80vh] overflow-y-auto">
             {/* 1. TITLE & STREAK HEADER (Clean & Spacious) */}
             <div className="pb-0.5">
               <div className="flex items-center gap-2 flex-wrap">

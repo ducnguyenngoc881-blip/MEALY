@@ -1238,7 +1238,7 @@ export const GroceryList: React.FC = () => {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`text-xs font-extrabold truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
+                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
                             {item.name}
                           </span>
                           {isChecked && checkInfo.checkedBy && (
@@ -1339,7 +1339,7 @@ export const GroceryList: React.FC = () => {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`text-xs font-extrabold truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
+                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
                             {item.name}
                           </span>
                           {isChecked && checkInfo.checkedBy && (
@@ -1464,7 +1464,12 @@ export const GroceryList: React.FC = () => {
           >
             {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-slate-500" />}
             <span className="truncate">
-              {copied ? 'Đã Chép Zalo' : 'Xuất Zalo Đi Chợ'}
+              {copied ? 'Đã Chép Zalo' : (
+                <>
+                  <span className="sm:hidden">Xuất Zalo Đi Chợ</span>
+                  <span className="hidden sm:inline">Xuất Zalo Đi Chợ</span>
+                </>
+              )}
             </span>
           </button>
         </div>
