@@ -11,3 +11,4 @@ test-output.txt
 .env.local
 Thumbs.db
 .DS_Store
+.github/

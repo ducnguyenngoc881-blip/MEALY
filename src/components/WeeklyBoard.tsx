@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { MealSlot, Recipe, VietnameseMealSet } from '../types';
 import { 
@@ -65,6 +65,7 @@ export const WeeklyBoard: React.FC = () => {
   const [activeSlotPicker, setActiveSlotPicker] = useState<{ dayId: string; slot: MealSlot } | null>(null);
   const [pickerTab, setPickerTab] = useState<'meal-sets' | 'single-recipes'>('meal-sets');
   const [pickerSearch, setPickerSearch] = useState<string>('');
+  const [onlyWithinBudget, setOnlyWithinBudget] = useState<boolean>(true);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   const handleAutoFillWeekly = () => {
@@ -200,12 +201,26 @@ export const WeeklyBoard: React.FC = () => {
 
   const hasAnyOverBudgetDay = weeklyPlan.some(d => getDayCost(d) > dailyBudgetTarget * 1.1);
 
+  const dayRemainingBudget = Math.max(0, dailyBudgetTarget - scaledDayCost);
+
+  // Quick snack suggestions that strictly fit within remaining budget room, or lowest-cost fallback
+  const quickSnackSuggestions = useMemo(() => {
+    const desserts = recipes.filter(r => r.category === 'trang-mieng');
+    if (dayRemainingBudget > 0) {
+      const affordable = desserts.filter(r => scaleCost(r.estimatedCostVnd || 25000, safeServings) <= dayRemainingBudget);
+      if (affordable.length > 0) return affordable;
+    }
+    return [...desserts].sort((a, b) => (a.estimatedCostVnd || 0) - (b.estimatedCostVnd || 0));
+  }, [recipes, dayRemainingBudget, safeServings]);
+
   const handleOpenSlotPicker = (dayId: string, slot: MealSlot) => {
-    if (slot === 'breakfast' || isSingleDishMode) {
+    if (slot === 'breakfast' || slot === 'snack' || isSingleDishMode) {
       setPickerTab('single-recipes');
     } else {
       setPickerTab('meal-sets');
     }
+    setPickerSearch('');
+    setOnlyWithinBudget(true);
     setActiveSlotPicker({ dayId, slot });
   };
 
@@ -216,6 +231,15 @@ export const WeeklyBoard: React.FC = () => {
       const randomBreakfast = breakfastList[Math.floor(Math.random() * breakfastList.length)] || recipes[0];
       addRecipeToSlot(dayId, slot, randomBreakfast.id);
       showToast(`🔄 Đã đổi sang món "${randomBreakfast.title}"!`);
+    } else if (slot === 'snack') {
+      const snackList = recipes.filter(r => r.category === 'trang-mieng');
+      const currentSnackCost = activeDay.meals.snack ? scaleCost((activeDay.meals.snack as Recipe).estimatedCostVnd || 25000, safeServings) : 0;
+      const availableRoom = Math.max(0, (dailyBudgetTarget - scaledDayCost) + currentSnackCost);
+      const affordableSnacks = snackList.filter(r => scaleCost(r.estimatedCostVnd || 25000, safeServings) <= availableRoom);
+      const pool = affordableSnacks.length > 0 ? affordableSnacks : snackList;
+      const randomSnack = pool[Math.floor(Math.random() * pool.length)] || snackList[0];
+      addRecipeToSlot(dayId, slot, randomSnack.id);
+      showToast(`🔄 Đã đổi sang món xế "${randomSnack.title}"!`);
     } else {
       if (isSingleDishMode) {
         const eligibleRecipes = recipes.filter(r => r.category !== 'an-sang' && r.category !== 'trang-mieng');
@@ -936,205 +960,391 @@ export const WeeklyBoard: React.FC = () => {
           </div>
 
           {/* SLOT 4: BỮA PHỤ / XẾ / TRÁNG MIỆNG */}
-          <div className="p-3 rounded-2xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 shrink-0">
-                <Apple className="w-3.5 h-3.5" />
+          {activeDay.meals.snack ? (
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Apple className="w-4 h-4 text-amber-500" />
+                  <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                    Xế / Tráng Miệng ({safeServings} người)
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => handleRandomSwap(activeDay.dayId, 'snack')}
+                    className="px-2 py-0.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 transition-colors shrink-0"
+                    title="Đổi món xế ngẫu nhiên"
+                  >
+                    <RefreshCw className="w-3 h-3 shrink-0" />
+                    <span>Đổi</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeMealFromSlot(activeDay.dayId, 'snack')}
+                    className="px-2 py-0.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-[11px] text-rose-600 dark:text-rose-400 font-bold transition-colors shrink-0"
+                  >
+                    Xóa
+                  </button>
+                </div>
               </div>
-              <div className="min-w-0 flex-1">
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block truncate">
-                  Xế / Tráng Miệng Gợi Ý
-                </span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate block">
-                  Chè bưởi An Giang • Sâm bổ lượng hạt sen
-                </span>
+
+              {/* Single dish presentation for snack */}
+              <div 
+                onClick={() => setSelectedRecipe(activeDay.meals.snack as Recipe)}
+                className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <SafeImage 
+                    src={(activeDay.meals.snack as Recipe).imageUrl} 
+                    alt={(activeDay.meals.snack as Recipe).title} 
+                    fallbackTitle={(activeDay.meals.snack as Recipe).title}
+                    category="Tráng Miệng"
+                    className="w-11 h-11 rounded-lg object-cover shrink-0"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-extrabold text-slate-900 dark:text-white leading-tight truncate">
+                      {(activeDay.meals.snack as Recipe).title}
+                    </p>
+                    <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                      {scaleCost((activeDay.meals.snack as Recipe).estimatedCostVnd || 25000, safeServings).toLocaleString('vi-VN')} đ • {Math.round(((activeDay.meals.snack as Recipe).calories || 200) * scale)} kcal
+                    </p>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
               </div>
             </div>
-            <button
-              onClick={() => setActiveTab('recipes')}
-              className="text-[10px] text-emerald-600 dark:text-emerald-400 font-extrabold hover:underline shrink-0 whitespace-nowrap"
-            >
-              Chọn món
-            </button>
-          </div>
+          ) : (
+            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-500/5 via-slate-50/70 to-emerald-500/5 dark:from-amber-950/20 dark:via-slate-900/60 dark:to-emerald-950/20 border border-amber-500/20 dark:border-amber-500/20 space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 shrink-0">
+                    <Apple className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block truncate">
+                      Xế / Tráng Miệng Gợi Ý
+                    </span>
+                    <span className="text-[10.5px] text-slate-600 dark:text-slate-300 truncate block">
+                      {dayRemainingBudget > 0
+                        ? `Ví còn dư ${dayRemainingBudget.toLocaleString('vi-VN')} đ • Gợi ý món xế vừa vặn ví:`
+                        : 'Món tráng miệng thanh mát chuẩn vị:'}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleOpenSlotPicker(activeDay.dayId, 'snack')}
+                  className="px-2.5 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 text-[11px] font-extrabold transition-all shrink-0 cursor-pointer"
+                >
+                  Chọn món
+                </button>
+              </div>
+
+              {/* Quick suggestion chips */}
+              <div className="flex flex-wrap gap-1.5 pt-0.5">
+                {quickSnackSuggestions.slice(0, 4).map(item => {
+                  const itemCost = scaleCost(item.estimatedCostVnd || 25000, safeServings);
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => addRecipeToSlot(activeDay.dayId, 'snack', item.id)}
+                      className="group px-2 py-1 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-emerald-500 hover:text-slate-950 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 text-[10px] font-bold text-slate-700 dark:text-slate-200 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer"
+                      title={`Thêm ${item.title} (${itemCost.toLocaleString('vi-VN')} đ)`}
+                    >
+                      <span className="text-emerald-600 dark:text-emerald-400 group-hover:text-slate-950 font-black">+</span>
+                      <span className="truncate max-w-[120px]">{item.title}</span>
+                      <span className="text-[9px] text-slate-500 dark:text-slate-400 group-hover:text-slate-950/80 font-normal">
+                        {itemCost.toLocaleString('vi-VN')} đ
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
         </div>
 
       </div>
 
       {/* SLOT PICKER AS NATIVE MOBILE BOTTOM SHEET */}
-      {activeSlotPicker && (
-        <div 
-          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-sm animate-fade-in"
-          onClick={() => setActiveSlotPicker(null)}
-        >
+      {activeSlotPicker && (() => {
+        const activeDayForPicker = weeklyPlan.find(d => d.dayId === activeSlotPicker.dayId) || activeDay;
+        const currentMealInSlot = activeDayForPicker.meals[activeSlotPicker.slot];
+        const currentMealCost = currentMealInSlot
+          ? (isMealSet(currentMealInSlot)
+              ? scaleCost(currentMealInSlot.totalCostVnd, safeServings)
+              : scaleCost(currentMealInSlot.estimatedCostVnd || 35000, safeServings))
+          : 0;
+
+        const dayCostWithoutThisSlot = getDayCost(activeDayForPicker) - currentMealCost;
+        const availableBudgetRoom = Math.max(0, dailyBudgetTarget - dayCostWithoutThisSlot);
+
+        const slotTitle = activeSlotPicker.slot === 'breakfast'
+          ? 'Bữa Sáng'
+          : activeSlotPicker.slot === 'lunch'
+          ? 'Bữa Trưa'
+          : activeSlotPicker.slot === 'dinner'
+          ? 'Bữa Tối'
+          : 'Xế / Tráng Miệng';
+
+        // Only allow meal sets for lunch/dinner in multi-person or meal-set mode
+        const showMealSetsTab = (activeSlotPicker.slot === 'lunch' || activeSlotPicker.slot === 'dinner') && !isSingleDishMode;
+
+        // Filter recipes strictly by category
+        let eligibleRecipes: Recipe[] = [];
+        if (activeSlotPicker.slot === 'breakfast') {
+          eligibleRecipes = recipes.filter(r => r.category === 'an-sang');
+        } else if (activeSlotPicker.slot === 'snack') {
+          eligibleRecipes = recipes.filter(r => r.category === 'trang-mieng');
+        } else {
+          eligibleRecipes = recipes.filter(r => r.category !== 'an-sang' && r.category !== 'trang-mieng');
+        }
+
+        const affordableRecipes = eligibleRecipes.filter(r => 
+          scaleCost(r.estimatedCostVnd || 35000, safeServings) <= availableBudgetRoom
+        );
+        const affordableMealSets = mealSets.filter(s => 
+          scaleCost(s.totalCostVnd, safeServings) <= availableBudgetRoom
+        );
+
+        let recipesToDisplay = eligibleRecipes;
+        let isRecipesFallback = false;
+        if (onlyWithinBudget && availableBudgetRoom > 0) {
+          if (affordableRecipes.length > 0) {
+            recipesToDisplay = affordableRecipes;
+          } else {
+            // "and if the budget have room in it the system should suggest all of it rather than not having anything"
+            recipesToDisplay = [...eligibleRecipes].sort((a, b) => (a.estimatedCostVnd || 0) - (b.estimatedCostVnd || 0));
+            isRecipesFallback = true;
+          }
+        }
+
+        let mealSetsToDisplay = mealSets;
+        let isMealSetsFallback = false;
+        if (onlyWithinBudget && availableBudgetRoom > 0) {
+          if (affordableMealSets.length > 0) {
+            mealSetsToDisplay = affordableMealSets;
+          } else {
+            mealSetsToDisplay = [...mealSets].sort((a, b) => a.totalCostVnd - b.totalCostVnd);
+            isMealSetsFallback = true;
+          }
+        }
+
+        const filteredMealSets = mealSetsToDisplay.filter(set => matchesMealSetSearch(set, pickerSearch));
+        const filteredRecipes = recipesToDisplay.filter(recipe => 
+          matchesRecipeSearch(recipe, pickerSearch) || matchesSearchTerm(recipe.title, pickerSearch)
+        );
+
+        return (
           <div 
-            onClick={e => e.stopPropagation()}
-            style={{
-              transform: pickerDragY > 0 ? `translateY(${pickerDragY}px)` : undefined,
-              transition: pickerDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
-            }}
-            className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col animate-slide-up border-t border-slate-200 dark:border-slate-800"
+            className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+            onClick={() => setActiveSlotPicker(null)}
           >
-            {/* Swipe Handle Bar & Drag Zone */}
             <div 
-              onTouchStart={(e) => { pickerTouchStartY.current = e.touches[0].clientY; }}
-              onTouchMove={(e) => {
-                if (pickerTouchStartY.current === null) return;
-                const diff = e.touches[0].clientY - pickerTouchStartY.current;
-                setPickerDragY(Math.max(0, diff));
+              onClick={e => e.stopPropagation()}
+              style={{
+                transform: pickerDragY > 0 ? `translateY(${pickerDragY}px)` : undefined,
+                transition: pickerDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
               }}
-              onTouchEnd={() => {
-                if (pickerDragY > 75) setActiveSlotPicker(null);
-                setPickerDragY(0);
-                pickerTouchStartY.current = null;
-              }}
-              className="w-full py-3 cursor-grab active:cursor-grabbing shrink-0 flex items-center justify-center touch-none select-none"
+              className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col animate-slide-up border-t border-slate-200 dark:border-slate-800"
             >
-              <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
-            </div>
-
-            {/* Header with Title & Close Button */}
-            <div className="px-4 pb-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 shrink-0 select-none gap-2">
-              <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
-                  <Utensils className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span className="truncate">Chọn Món Cho {weeklyPlan.find(d => d.dayId === activeSlotPicker.dayId)?.dayName} ({activeSlotPicker.slot === 'breakfast' ? 'Bữa Sáng' : activeSlotPicker.slot === 'lunch' ? 'Bữa Trưa' : 'Bữa Tối'})</span>
-                </h3>
-                <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate block">
-                  Chạm để gán trực tiếp vào thực đơn ngày
-                </span>
+              {/* Swipe Handle Bar & Drag Zone */}
+              <div 
+                onTouchStart={(e) => { pickerTouchStartY.current = e.touches[0].clientY; }}
+                onTouchMove={(e) => {
+                  if (pickerTouchStartY.current === null) return;
+                  const diff = e.touches[0].clientY - pickerTouchStartY.current;
+                  setPickerDragY(Math.max(0, diff));
+                }}
+                onTouchEnd={() => {
+                  if (pickerDragY > 75) setActiveSlotPicker(null);
+                  setPickerDragY(0);
+                  pickerTouchStartY.current = null;
+                }}
+                className="w-full py-3 cursor-grab active:cursor-grabbing shrink-0 flex items-center justify-center touch-none select-none"
+              >
+                <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
               </div>
-              <button 
-                onClick={() => setActiveSlotPicker(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors shrink-0"
-                aria-label="Đóng"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
 
-            {/* Tab Selector: Mâm Cơm 3 Món vs Món Lẻ */}
-            <div className="p-3 pb-2 flex gap-2 shrink-0">
-              <button
-                onClick={() => setPickerTab('meal-sets')}
-                className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
-                  pickerTab === 'meal-sets'
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
-              >
-                Bộ Mâm 3 Món ({mealSets.length})
-              </button>
-              <button
-                onClick={() => setPickerTab('single-recipes')}
-                className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
-                  pickerTab === 'single-recipes'
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
-              >
-                Món Lẻ ({recipes.length})
-              </button>
-            </div>
+              {/* Header with Title & Close Button */}
+              <div className="px-4 pb-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 shrink-0 select-none gap-2">
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
+                    <Utensils className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span className="truncate">Chọn Món Cho {activeDayForPicker.dayName} ({slotTitle})</span>
+                  </h3>
+                  <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate block">
+                    Chỉ hiển thị các món phù hợp với {slotTitle}
+                  </span>
+                </div>
+                <button 
+                  onClick={() => setActiveSlotPicker(null)}
+                  className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors shrink-0"
+                  aria-label="Đóng"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
 
-            {/* Search filter in bottom sheet with diacritic tolerance */}
-            <div className="px-3 pb-2 shrink-0">
-              <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={pickerSearch}
-                  onChange={e => setPickerSearch(e.target.value)}
-                  placeholder="Tìm kiếm mâm cơm hoặc món ăn..."
-                  className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                />
-                {pickerSearch && (
+              {/* Tab Selector: only when meal sets are applicable */}
+              {showMealSetsTab ? (
+                <div className="p-3 pb-2 flex gap-2 shrink-0">
                   <button
-                    onClick={() => setPickerSearch('')}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white"
+                    onClick={() => setPickerTab('meal-sets')}
+                    className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
+                      pickerTab === 'meal-sets'
+                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    }`}
                   >
-                    <X className="w-3.5 h-3.5" />
+                    Bộ Mâm 3 Món ({mealSetsToDisplay.length})
                   </button>
+                  <button
+                    onClick={() => setPickerTab('single-recipes')}
+                    className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
+                      pickerTab === 'single-recipes'
+                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    Món Lẻ Trưa/Tối ({recipesToDisplay.length})
+                  </button>
+                </div>
+              ) : (
+                <div className="px-4 pt-2.5 pb-1 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 shrink-0">
+                  <span className="text-emerald-700 dark:text-emerald-400 font-extrabold flex items-center gap-1.5">
+                    <span>Danh mục:</span>
+                    <span className="px-2 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 text-[11px]">
+                      {activeSlotPicker.slot === 'breakfast' ? 'Món Ăn Sáng' : 'Món Xế & Tráng Miệng'}
+                    </span>
+                  </span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                    ({recipesToDisplay.length} món phù hợp)
+                  </span>
+                </div>
+              )}
+
+              {/* Budget Room Suggestion Bar */}
+              {availableBudgetRoom > 0 && (
+                <div className="mx-3 my-1 px-3 py-1.5 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-between gap-2 shrink-0">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 min-w-0">
+                    <span>💰 Hạn mức còn dư:</span>
+                    <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
+                      ≤ {availableBudgetRoom.toLocaleString('vi-VN')} đ
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setOnlyWithinBudget(!onlyWithinBudget)}
+                    className={`px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold transition-all shrink-0 cursor-pointer ${
+                      onlyWithinBudget
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : 'bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-500/30'
+                    }`}
+                  >
+                    {onlyWithinBudget ? '✓ Đang lọc vừa ví' : 'Xem tất cả giá'}
+                  </button>
+                </div>
+              )}
+
+              {/* Fallback explanation when budget is tight */}
+              {onlyWithinBudget && availableBudgetRoom > 0 && ((pickerTab === 'single-recipes' && isRecipesFallback) || (pickerTab === 'meal-sets' && isMealSetsFallback)) && (
+                <div className="mx-3 mb-1 px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-800 dark:text-amber-300 font-medium shrink-0">
+                  💡 Hạn mức ({availableBudgetRoom.toLocaleString('vi-VN')} đ) khá tiết kiệm. Hệ thống gợi ý tất cả các món tiết kiệm nhất gần với ngân sách:
+                </div>
+              )}
+
+              {/* Search filter in bottom sheet with diacritic tolerance */}
+              <div className="px-3 py-1 shrink-0">
+                <div className="relative">
+                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={pickerSearch}
+                    onChange={e => setPickerSearch(e.target.value)}
+                    placeholder="Tìm kiếm mâm cơm hoặc món ăn..."
+                    className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  />
+                  {pickerSearch && (
+                    <button
+                      onClick={() => setPickerSearch('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Scrollable list of items with diacritic-insensitive search */}
+              <div className="overflow-y-auto p-3 space-y-2 flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
+                {showMealSetsTab && pickerTab === 'meal-sets' ? (
+                  filteredMealSets.length === 0 ? (
+                    <div className="p-6 text-center text-xs text-slate-600 dark:text-slate-400">
+                      Không tìm thấy mâm cơm phù hợp với &quot;{pickerSearch}&quot;.
+                    </div>
+                  ) : (
+                    filteredMealSets.map(set => (
+                      <div
+                        key={set.id}
+                        onClick={() => {
+                          addMealSetToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, set.id);
+                          setActiveSlotPicker(null);
+                        }}
+                        className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-emerald-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
+                      >
+                        <div className="min-w-0">
+                          <span className="text-xs font-extrabold text-slate-900 dark:text-white block truncate">
+                            {set.title}
+                          </span>
+                          <p className="text-[10px] text-slate-600 dark:text-slate-400 truncate mt-0.5">
+                            {set.mainDish.title} + {set.soupDish.title} + {set.sideDish.title}
+                          </p>
+                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold block mt-1">
+                            {scaleCost(set.totalCostVnd, safeServings).toLocaleString('vi-VN')} đ • {Math.round(set.totalCalories * scale)} kcal
+                          </span>
+                        </div>
+                        <PlusCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      </div>
+                    ))
+                  )
+                ) : (
+                  filteredRecipes.length === 0 ? (
+                    <div className="p-6 text-center text-xs text-slate-600 dark:text-slate-400">
+                      Không tìm thấy món ăn phù hợp với &quot;{pickerSearch}&quot;.
+                    </div>
+                  ) : (
+                    filteredRecipes.map(recipe => (
+                      <div
+                        key={recipe.id}
+                        onClick={() => {
+                          addRecipeToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, recipe.id);
+                          setActiveSlotPicker(null);
+                        }}
+                        className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-emerald-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
+                      >
+                        <div className="min-w-0">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
+                            {recipe.title}
+                          </span>
+                          <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">
+                            {scaleCost(recipe.estimatedCostVnd || 30000, safeServings).toLocaleString('vi-VN')} đ • {Math.round((recipe.calories || 300) * scale)} kcal
+                          </p>
+                        </div>
+                        <PlusCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      </div>
+                    ))
+                  )
                 )}
               </div>
-            </div>
 
-            {/* Scrollable list of items with diacritic-insensitive search */}
-            <div className="overflow-y-auto p-3 space-y-2 flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
-              {pickerTab === 'meal-sets' ? (
-                (() => {
-                  const filteredMealSets = mealSets.filter(set => matchesMealSetSearch(set, pickerSearch));
-                  if (filteredMealSets.length === 0) {
-                    return (
-                      <div className="p-6 text-center text-xs text-slate-600 dark:text-slate-400">
-                        Không tìm thấy mâm cơm phù hợp với &quot;{pickerSearch}&quot;.
-                      </div>
-                    );
-                  }
-                  return filteredMealSets.map(set => (
-                    <div
-                      key={set.id}
-                      onClick={() => {
-                        addMealSetToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, set.id);
-                        setActiveSlotPicker(null);
-                      }}
-                      className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-emerald-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
-                    >
-                      <div className="min-w-0">
-                        <span className="text-xs font-extrabold text-slate-900 dark:text-white block truncate">
-                          {set.title}
-                        </span>
-                        <p className="text-[10px] text-slate-600 dark:text-slate-400 truncate mt-0.5">
-                          {set.mainDish.title} + {set.soupDish.title} + {set.sideDish.title}
-                        </p>
-                        <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold block mt-1">
-                          {scaleCost(set.totalCostVnd, safeServings).toLocaleString('vi-VN')} đ • {Math.round(set.totalCalories * scale)} kcal
-                        </span>
-                      </div>
-                      <PlusCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                    </div>
-                  ));
-                })()
-              ) : (
-                (() => {
-                  const filteredRecipes = recipes.filter(recipe => 
-                    matchesRecipeSearch(recipe, pickerSearch) || matchesSearchTerm(recipe.title, pickerSearch)
-                  );
-                  if (filteredRecipes.length === 0) {
-                    return (
-                      <div className="p-6 text-center text-xs text-slate-600 dark:text-slate-400">
-                        Không tìm thấy món ăn phù hợp với &quot;{pickerSearch}&quot;.
-                      </div>
-                    );
-                  }
-                  return filteredRecipes.map(recipe => (
-                    <div
-                      key={recipe.id}
-                      onClick={() => {
-                        addRecipeToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, recipe.id);
-                        setActiveSlotPicker(null);
-                      }}
-                      className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-emerald-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
-                    >
-                      <div className="min-w-0">
-                        <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
-                          {recipe.title}
-                        </span>
-                        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">
-                          {scaleCost(recipe.estimatedCostVnd || 35000, safeServings).toLocaleString('vi-VN')} đ • {Math.round((recipe.calories || 400) * scale)} kcal
-                        </p>
-                      </div>
-                      <PlusCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                    </div>
-                  ));
-                })()
-              )}
             </div>
-
           </div>
-        </div>
-      )}
+        );
+      })()}
 
     </div>
   );

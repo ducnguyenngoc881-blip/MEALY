@@ -414,3 +414,55 @@ Create automated test suite in `tests/unit/minigames.test.ts`:
 - [ ] `cmd /c npm test` passes 100% of test suites.
 - [ ] Live serving verified on ngrok tunnel and port 5173.
 
+## 2026-09-22T02:42:16Z
+
+Deploy full responsive design & QA team to audit and optimize all screen dimensions (320px to 4K desktop).
+
+Optimize MealWise layout, typography, navigation, cards, and modals for flawless responsive design across all device dimensions (narrow mobile 320px–375px, standard mobile 390px–428px, tablet 768px–1024px, and desktop). Eliminate all overlapping buttons, awkward multi-line word breaks, title collisions, and truncated header badges.
+
+Working directory: `d:\New folder\Remotion`
+Integrity mode: development
+
+## Requirements
+
+### R1. Fridge & Leftover View (Tủ Lạnh) Responsive Ergonomics
+Eliminate element collision and awkward line breaks shown in `FridgeView.tsx`:
+- Header action row: cleanly stack or refactor the "🧊 Tủ Lạnh", "🛒 Đối Chiếu Đi Chợ", and "🗑️ Dọn sạch" buttons so they never collide or overlap with the title below on 320px–375px viewports.
+- Title & counter badge: streamline "Tủ Lạnh & Đồ Ăn Thừa Thông Minh" with responsive text scaling (`text-base sm:text-lg md:text-xl`) to prevent orphan word wrapping ("Thông" / "Minh").
+- Metric cards & recipe suggestion grids: ensure 2x2 metric cards and recipe carousels fit comfortably without horizontal overflow on narrow viewports.
+
+### R2. Global Navbar & Header Badge Adaptation
+- Fix the active screen badge pill in `Navbar.tsx` (e.g. `Tủ Lạnh & Đồ T...`) so titles fit gracefully without harsh truncation on 320px–375px screens (use responsive font sizing, concise mobile labels, or auto-fit pills).
+- Ensure brand title ("MealWise • Mâm Cơm Việt"), active badge, and action toggles maintain balanced horizontal spacing across all viewports.
+
+### R3. Comprehensive Multi-Device Dimension Audit Across All Tabs & Modals
+Audit and optimize all core application views across the full device spectrum:
+- **WeeklyBoard (Thực Đơn Tuần)**: Day selector tabs, macro nutrition cards, meal slot cards, and 1-click action buttons must fit smoothly without clipping on 320px–375px.
+- **MealSetExplorer (Mâm 3 Món)**: Filter chips, search bar, meal set cards, dish preview pills, and slot assignment drawer.
+- **GroceryList (Đi Chợ Tự Động)**: Store channel filters, collaboration header, participant roster, shopping items, and sticky footer.
+- **CateringPartyPlanner (Tiệc & Catering)**: Guest stepper, budget breakdown, course selection tabs, and quotation export bar.
+- **Modals (Minigame Hub, Drinking Roulette, Apex Case, Recipe Detail, Onboarding)**: Ensure max-height, scrolling bounds, and safe-area insets (`pb-[env(safe-area-inset-bottom)]`) prevent off-screen cutoff on both short and tall phones.
+
+### R4. Automated Multi-Dimension Visual & Layout Test Suite
+Expand `tests/` with programmatic dimension layout assertions:
+- Test container bounds, width calculations, and flex wrapping behavior across standard device widths: `320px` (iPhone SE 1st gen), `360px` (Galaxy S/A), `375px` (iPhone SE/mini), `390px` (iPhone 13/14/15/16), `414px/428px` (Plus/Max), `768px` (iPad/Tablet), and `1280px+` (Desktop).
+- Assert zero horizontal scrollbar overflow (`overflow-x` invariant).
+- Verify 100% test suite pass rate (241+ tests).
+
+## Acceptance Criteria
+
+### Layout & Spacing Integrity
+- [ ] No overlapping buttons, text collisions, or clipped icons in `FridgeView` on 375px x 858px and 320px screens.
+- [ ] Title "Tủ Lạnh & Đồ Ăn Thừa" does not wrap into an orphan single word on mobile.
+- [ ] Navbar screen badge displays clean, legible titles without awkward mid-word truncation ellipsis.
+- [ ] 0 horizontal scroll overflow on any tab across 320px, 360px, 375px, 390px, 414px, 768px, and desktop widths.
+
+### Cross-Device Modal & Sheet Bounds
+- [ ] Modals (Minigame Hub, Drinking Roulette, Case Opening, Recipe Details) fit within viewport height with smooth vertical scrolling and sticky action footers.
+- [ ] Safe area insets respected for iOS notch/home indicator and Android navigation bars.
+
+### Verification & Quality
+- [ ] `cmd /c npx tsc --noEmit` exits with 0 errors.
+- [ ] `cmd /c npm test` passes 100% of test suites with multi-dimension test coverage.
+- [ ] Production build synced to showcase and verified on live ngrok tunnel.
+

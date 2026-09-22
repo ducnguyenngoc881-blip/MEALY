@@ -2,7 +2,7 @@ export type MealCategory = 'mon-man' | 'mon-canh' | 'mon-rau' | 'mon-chay' | 'an
 
 export type Region = 'bac' | 'trung' | 'nam' | 'toan-quoc';
 
-export type MealSlot = 'breakfast' | 'lunch' | 'dinner';
+export type MealSlot = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 
 export interface Ingredient {
   name: string;
@@ -58,6 +58,7 @@ export interface DailyMealPlan {
     breakfast: Recipe | VietnameseMealSet | null;
     lunch: Recipe | VietnameseMealSet | null;
     dinner: Recipe | VietnameseMealSet | null;
+    snack?: Recipe | VietnameseMealSet | null;
   };
   totalCalories?: number;
   totalCost?: number;

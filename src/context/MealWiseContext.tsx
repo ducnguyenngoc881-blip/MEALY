@@ -1132,7 +1132,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
       return day;
     }));
-    const slotLabel = slot === 'breakfast' ? 'Bữa Sáng' : slot === 'lunch' ? 'Bữa Trưa' : 'Bữa Tối';
+    const slotLabel = slot === 'breakfast' ? 'Bữa Sáng' : slot === 'lunch' ? 'Bữa Trưa' : slot === 'dinner' ? 'Bữa Tối' : 'Xế / Tráng Miệng';
     showToast(`✅ Đã gán "${targetSet.title}" vào ${slotLabel}!`);
   };
 
@@ -1154,7 +1154,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
       return day;
     }));
-    const slotLabel = slot === 'breakfast' ? 'Bữa Sáng' : slot === 'lunch' ? 'Bữa Trưa' : 'Bữa Tối';
+    const slotLabel = slot === 'breakfast' ? 'Bữa Sáng' : slot === 'lunch' ? 'Bữa Trưa' : slot === 'dinner' ? 'Bữa Tối' : 'Xế / Tráng Miệng';
     showToast(`✅ Đã thêm món "${targetRecipe.title}" vào ${slotLabel}!`);
   };
 
