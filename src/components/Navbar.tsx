@@ -66,8 +66,7 @@ export const Navbar: React.FC = () => {
 
         {/* Center: Active Screen Badge */}
         <div className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-[11px] font-extrabold text-slate-700 dark:text-slate-200 max-w-[135px] sm:max-w-[180px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis">
-          <span className="xs:hidden">{currentTitle.short}</span>
-          <span className="hidden xs:inline sm:hidden">{currentTitle.short}</span>
+          <span className="sm:hidden">{currentTitle.short}</span>
           <span className="hidden sm:inline">{currentTitle.full}</span>
         </div>
 

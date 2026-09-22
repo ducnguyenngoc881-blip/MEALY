@@ -175,8 +175,8 @@ export const FridgeView: React.FC = () => {
         <div className="flex items-center justify-between gap-2">
           <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-cyan-500/15 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-300 border border-cyan-500/25 dark:border-cyan-500/30 text-[11px] font-bold shrink-0">
             <span className="text-xs sm:text-sm">🧊</span>
-            <span className="hidden xs:inline sm:inline">Tủ Lạnh & Đồ Thừa</span>
-            <span className="xs:hidden">Tủ Lạnh</span>
+            <span className="hidden sm:inline">Tủ Lạnh & Đồ Thừa</span>
+            <span className="sm:hidden">Tủ Lạnh</span>
             <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-cyan-500/30 text-cyan-900 dark:text-cyan-200 text-[10px] font-black">
               {pantryItems.length}
             </span>
@@ -222,7 +222,8 @@ export const FridgeView: React.FC = () => {
 
         <div>
           <h1 className="text-base sm:text-lg md:text-xl font-black tracking-tight text-slate-900 dark:text-white leading-snug">
-            Tủ Lạnh & Đồ Ăn Thừa Thông Minh
+            <span>Tủ Lạnh & Đồ Ăn Thừa </span>
+            <span className="whitespace-nowrap">Thông Minh</span>
           </h1>
           <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-0.5">
             Quản lý thức ăn thừa bữa trước, theo dõi hạn dùng và tận dụng nguyên liệu sẵn có để trừ bớt tiền đi chợ.
