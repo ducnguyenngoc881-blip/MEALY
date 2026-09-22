@@ -1116,7 +1116,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
               {/* Rotating Golden Rays for Legendary Gold */}
               {selectedTier === 'gold' && (
                 <div className="absolute -inset-10 pointer-events-none opacity-25 overflow-hidden flex items-center justify-center">
-                  <div className="w-[500px] h-[500px] apex-rays-spin bg-[conic-gradient(from_0deg,#fbbf24,transparent_30deg,#f59e0b,transparent_60deg,#fbbf24,transparent_90deg,#f59e0b,transparent_120deg,#fbbf24,transparent_150deg,#f59e0b,transparent_180deg,#fbbf24,transparent_210deg,#f59e0b,transparent_240deg,#fbbf24,transparent_270deg,#f59e0b,transparent_300deg,#fbbf24,transparent_330deg,#f59e0b)] rounded-full blur-sm" />
+                  <div className="w-full max-w-lg aspect-square apex-rays-spin bg-[conic-gradient(from_0deg,#fbbf24,transparent_30deg,#f59e0b,transparent_60deg,#fbbf24,transparent_90deg,#f59e0b,transparent_120deg,#fbbf24,transparent_150deg,#f59e0b,transparent_180deg,#fbbf24,transparent_210deg,#f59e0b,transparent_240deg,#fbbf24,transparent_270deg,#f59e0b,transparent_300deg,#fbbf24,transparent_330deg,#f59e0b)] rounded-full blur-sm" />
                 </div>
               )}
 
