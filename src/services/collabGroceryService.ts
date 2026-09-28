@@ -78,16 +78,47 @@ export function saveCollabShopper(shopper: CollabShopper): void {
   } catch {}
 }
 
+export const ROOM_TTL_MS = 60 * 60 * 1000; // 1 hour maximum room lifetime
+
+/**
+ * Check if a collaborative room has exceeded its 1-hour TTL
+ */
+export function isRoomExpired(room: CollabRoom | null | undefined): boolean {
+  if (!room) return true;
+  const expiresAt = room.expiresAt || (room.createdAt + ROOM_TTL_MS);
+  return Date.now() > expiresAt;
+}
+
+/**
+ * Format remaining TTL time into friendly Vietnamese string (e.g. "Còn 45p", "Còn 30s")
+ */
+export function formatTtlRemaining(expiresAt?: number, createdAt?: number): string {
+  const target = expiresAt || ((createdAt || Date.now()) + ROOM_TTL_MS);
+  const diffMs = target - Date.now();
+  if (diffMs <= 0) return 'Đã hết hạn';
+  if (diffMs < 60000) {
+    const seconds = Math.max(1, Math.round(diffMs / 1000));
+    return `Còn ${seconds}s`;
+  }
+  const minutes = Math.round(diffMs / 60000);
+  return `Còn ${minutes}p`;
+}
+
 /**
  * Encode room items and basic metadata into URL-safe base64 string
  * Ensures link opens with 100% of ingredients intact even without server pre-warming
  */
 export function encodeRoomDataForUrl(room: CollabRoom): string {
   try {
+    const now = Date.now();
+    const expiresAt = room.expiresAt !== undefined 
+      ? room.expiresAt 
+      : (room.createdAt && Math.abs(now - room.createdAt) < ROOM_TTL_MS ? room.createdAt + ROOM_TTL_MS : now + ROOM_TTL_MS);
     const compact = {
       r: room.roomId,
       t: room.title,
       h: room.hostName,
+      e: expiresAt,
       i: room.items.map(it => [
         it.id,
         it.name,
@@ -127,6 +158,15 @@ export function decodeRoomDataFromUrl(encoded: string): Partial<CollabRoom> | nu
     const compact = JSON.parse(json);
     if (!compact || !compact.r) return null;
 
+    const now = Date.now();
+    const expiresAt = compact.e || (now + ROOM_TTL_MS);
+
+    // If payload has expired, reject it
+    if (now > expiresAt) {
+      console.warn('Decoded collab room URL has expired (exceeded 1-hour TTL)');
+      return null;
+    }
+
     const items: CollabCartItem[] = (compact.i || []).map((arr: any[]) => ({
       id: arr[0],
       name: arr[1],
@@ -156,6 +196,8 @@ export function decodeRoomDataFromUrl(encoded: string): Partial<CollabRoom> | nu
       roomId: compact.r,
       title: compact.t || 'Giỏ Đi Chợ Tuần',
       hostName: compact.h || 'Chủ phòng',
+      expiresAt,
+      ttlMs: ROOM_TTL_MS,
       items,
       checkedMap
     };

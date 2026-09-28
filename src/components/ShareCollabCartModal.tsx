@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { X, Copy, Check, Users, Share2, Sparkles, MessageCircle, ExternalLink, QrCode, Palette } from 'lucide-react';
-import { encodeRoomDataForUrl, SHOPPER_PALETTE } from '../services/collabGroceryService';
+import { encodeRoomDataForUrl, SHOPPER_PALETTE, formatTtlRemaining } from '../services/collabGroceryService';
 
 export const ShareCollabCartModal: React.FC = () => {
   const { 
@@ -129,6 +129,20 @@ export const ShareCollabCartModal: React.FC = () => {
           >
             <X className="w-4 h-4" />
           </button>
+        </div>
+
+        {/* TTL Security & Auto-Expire Notice */}
+        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-xs text-amber-900 dark:text-amber-200">
+          <div className="flex items-center gap-2">
+            <span className="text-sm">⏳</span>
+            <div>
+              <p className="font-extrabold text-[11.5px] leading-tight">Thời hạn phòng: Tối đa 1 giờ</p>
+              <p className="text-[10px] text-amber-700 dark:text-amber-400">Tự động hủy để bảo mật và xóa dữ liệu thừa</p>
+            </div>
+          </div>
+          <span className="px-2.5 py-1 rounded-xl bg-amber-200/70 dark:bg-amber-800/60 text-amber-900 dark:text-amber-100 font-black text-xs font-mono">
+            {formatTtlRemaining(collabRoom.expiresAt, collabRoom.createdAt)}
+          </span>
         </div>
 
         {/* User Nickname & Color customizer */}

@@ -323,7 +323,7 @@ describe('Unit: MultiDeviceResponsive - Flex Wrapping & Dynamic Collision Avoida
   it('FridgeView title preserves semantic integrity with whitespace-nowrap on "Thông Minh" and text-balance', () => {
     const fridgeCode = fs.readFileSync(path.join(srcDir, 'components/FridgeView.tsx'), 'utf-8');
     expect(fridgeCode).toContain('text-balance');
-    expect(fridgeCode).toContain('whitespace-nowrap text-cyan-600 dark:text-cyan-400');
+    expect(fridgeCode).toMatch(/whitespace-nowrap text-(amber|cyan)-600 dark:text-(amber|cyan)-400/);
     expect(fridgeCode).toContain('Thông Minh');
   });
 

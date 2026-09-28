@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealWise • Modern Minimalism Research & Design Proposals</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Newsreader', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            canvas: {
+              light: '#FAF8F5',
+              dark: '#0B0D0E',
+            },
+            surface: {
+              light: '#FFFFFF',
+              dark: '#141719',
+            },
+            terracotta: {
+              DEFAULT: '#B85D38',
+              light: '#E07A5F',
+            },
+            pine: {
+              DEFAULT: '#2D5A43',
+              light: '#10B981',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .hairline-b { border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .dark .hairline-b { border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .hairline-t { border-top: 1px solid rgba(0,0,0,0.06); }
+    .dark .hairline-t { border-top: 1px solid rgba(255,255,255,0.08); }
+    .hairline-all { border: 1px solid rgba(0,0,0,0.08); }
+    .dark .hairline-all { border: 1px solid rgba(255,255,255,0.08); }
+  </style>
+</head>
+<body class="bg-[#FAF8F5] dark:bg-[#0B0D0E] text-stone-900 dark:text-stone-100 min-h-screen py-10 px-4 sm:px-8 transition-colors duration-200">
+
+  <div class="max-w-6xl mx-auto space-y-10">
+
+    <!-- Top Bar with Theme Toggle -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hairline-b pb-6">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-200/60 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-semibold tracking-wide">
+          <span>🌿 BÁO CÁO NGHIÊN CỨU THIẾT KẾ UX/UI</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 font-serif italic text-stone-900 dark:text-white">
+          MealWise • Modern Minimalism
+        </h1>
+        <p class="text-sm text-stone-500 dark:text-stone-400 mt-1">
+          Nghiên cứu chuyên sâu & Các phương án thiết kế tối giản hiện đại cho Mâm Cơm Việt
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="toggleDarkMode()" class="px-4 py-2 rounded-xl text-xs font-bold hairline-all bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 shadow-sm hover:scale-105 transition-all">
+          🌓 Đổi Chế Độ Sáng / Tối
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 1: The Recommended Hybrid "Editorial Precision" -->
+    <div class="rounded-3xl p-6 sm:p-8 hairline-all bg-white dark:bg-[#141719] shadow-sm space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs uppercase tracking-wider font-extrabold text-[#B85D38] dark:text-[#E07A5F]">
+            ★ Phương án đề xuất tối ưu (Recommended Hybrid)
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-bold font-serif text-stone-900 dark:text-white mt-1">
+            Editorial Precision (Tạp Chí Ẩm Thực & Kỹ Nghệ Tinh Gọn)
+          </h2>
+          <p class="text-sm text-stone-600 dark:text-stone-400 max-w-3xl mt-1">
+            Kết hợp sự ấm cúng, sang trọng của tạp chí ẩm thực Kinfolk (cho Mâm Cơm 3 món & Công thức) với độ chuẩn xác, sắc nét của Linear/Apple (cho Bảng Tuần, Tủ Lạnh & Giỏ Đi Chợ).
+          </p>
+        </div>
+      </div>
+
+      <!-- Side-by-side Mobile Mockups -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+        <!-- Mockup 1: Light Mode (Mâm Cơm) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between text-xs font-bold text-stone-500 dark:text-stone-400">
+            <span>MẶT DIỆN 1: MÂM CƠM ẤM CÚNG (LIGHT MODE)</span>
+            <a href="/mockups/editorial-precision-light.jpg" target="_blank" class="text-[#B85D38] dark:text-[#E07A5F] hover:underline">Phóng to ảnh ↗</a>
+          </div>
+          <div class="rounded-3xl overflow-hidden hairline-all shadow-xl bg-stone-100 dark:bg-stone-950 aspect-[9/16] relative flex items-center justify-center">
+            <img src="/mockups/editorial-precision-light.jpg" alt="Editorial Precision Light Mode" class="w-full h-full object-cover">
+          </div>
+          <p class="text-xs text-stone-500 leading-relaxed">
+            • Nền men sứ ngà <code class="font-mono text-[11px]">#FAF8F5</code> không chói mắt.<br>
+            • Tiêu đề Serif sang trọng, mâm gốm mộc tôn vinh cá kho tộ, canh chua, rau muống.<br>
+            • Thanh điều hướng đáy 4 tab chuẩn ngón cái.
+          </p>
+        </div>
+
+        <!-- Mockup 2: Dark Mode (Thực Đơn & Tủ Lạnh) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between text-xs font-bold text-stone-500 dark:text-stone-400">
+            <span>MẶT DIỆN 2: THỰC ĐƠN TUẦN & TỦ LẠNH (DARK PRECISION)</span>
+            <a href="/mockups/editorial-precision-dark.jpg" target="_blank" class="text-[#B85D38] dark:text-[#E07A5F] hover:underline">Phóng to ảnh ↗</a>
+          </div>
+          <div class="rounded-3xl overflow-hidden hairline-all shadow-xl bg-stone-100 dark:bg-stone-950 aspect-[9/16] relative flex items-center justify-center">
+            <img src="/mockups/editorial-precision-dark.jpg" alt="Editorial Precision Dark Mode" class="w-full h-full object-cover">
+          </div>
+          <p class="text-xs text-stone-500 leading-relaxed">
+            • Nền than chì sâu <code class="font-mono text-[11px]">#0B0D0E</code> viền 1px sub-pixel.<br>
+            • Dải chọn thứ T2-CN liền mạch, các bữa ăn chia module ngăn nắp.<br>
+            • Thẻ cảnh báo đồ tồn tủ lạnh thông minh, tiến độ calo & ngân sách xanh ngọc mint.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Architectural Comparison Matrix -->
+    <div class="rounded-3xl p-6 sm:p-8 hairline-all bg-white dark:bg-[#141719] shadow-sm space-y-6">
+      <h3 class="text-xl font-bold font-serif text-stone-900 dark:text-white">
+        Bảng So Sánh 5 Trường Phái Thiết Kế Tối Giản Hiện Đại
+      </h3>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead>
+            <tr class="hairline-b text-stone-500 font-semibold">
+              <th class="py-3 pr-4">Trường phái</th>
+              <th class="py-3 px-4">Đặc trưng thị giác</th>
+              <th class="py-3 px-4">Điểm mạnh cho MealWise</th>
+              <th class="py-3 pl-4">Rủi ro cần khắc phục</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-stone-100 dark:divide-stone-800">
+            <tr>
+              <td class="py-4 pr-4 font-bold text-stone-900 dark:text-stone-100">1. Swiss Typographic</td>
+              <td class="py-4 px-4 text-stone-600 dark:text-stone-400">Lưới hệ thống chuẩn, font Sans đậm, điểm nhấn Klein Blue</td>
+              <td class="py-4 px-4 text-emerald-600 dark:text-emerald-400">Số liệu dinh dưỡng cực kỳ kỷ luật, khoa học</td>
+              <td class="py-4 pl-4 text-stone-500">Hơi mang tính y tế / bệnh viện, thiếu ấm cúng</td>
+            </tr>
+            <tr>
+              <td class="py-4 pr-4 font-bold text-stone-900 dark:text-stone-100">2. Dieter Rams / Braun</td>
+              <td class="py-4 px-4 text-stone-600 dark:text-stone-400">Xám nhôm mờ (#F2F2EE), cam di sản (#FF5500), vạch chia</td>
+              <td class="py-4 px-4 text-emerald-600 dark:text-emerald-400">Cảm giác tin cậy như thiết bị gia dụng nhà bếp Đức</td>
+              <td class="py-4 pl-4 text-stone-500">Dễ rơi vào retro hoài niệm nếu lạm dụng núm xoay</td>
+            </tr>
+            <tr>
+              <td class="py-4 pr-4 font-bold text-stone-900 dark:text-stone-100">3. Japanese Zen / Muji</td>
+              <td class="py-4 px-4 text-stone-600 dark:text-stone-400">Khoảng trống 'Ma', giấy Washi ấm (#F8F6F0), gốm mộc</td>
+              <td class="py-4 px-4 text-emerald-600 dark:text-emerald-400">Thanh tịnh, chữa lành, nấu nướng không áp lực</td>
+              <td class="py-4 pl-4 text-stone-500">Dễ bị rỗng tính năng nếu cắt giảm quá đà</td>
+            </tr>
+            <tr>
+              <td class="py-4 pr-4 font-bold text-stone-900 dark:text-stone-100">4. Linear Precision Dark</td>
+              <td class="py-4 px-4 text-stone-600 dark:text-stone-400">Than chì (#0B0D0E), viền 1px, xanh ngọc mint (#10B981)</td>
+              <td class="py-4 px-4 text-emerald-600 dark:text-emerald-400">Mật độ thông tin cao, thao tác vuốt siêu bén</td>
+              <td class="py-4 pl-4 text-stone-500">Cần xử lý ảnh khéo để không bị chìm món ăn Việt</td>
+            </tr>
+            <tr>
+              <td class="py-4 pr-4 font-bold text-stone-900 dark:text-stone-100">5. Warm Editorial ("Cuisine Mới")</td>
+              <td class="py-4 px-4 text-stone-600 dark:text-stone-400">Tiêu đề Serif, men sứ ngà, ảnh mâm cơm niêu đất flat-lay</td>
+              <td class="py-4 px-4 text-emerald-600 dark:text-emerald-400">Tôn vinh món Việt tuyệt đẹp, gợi cảm giác thèm ăn</td>
+              <td class="py-4 pl-4 text-stone-500">Cần bộ khung điều hướng dứt khoát</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3: Concrete UX Improvements Proposed -->
+    <div class="rounded-3xl p-6 sm:p-8 hairline-all bg-white dark:bg-[#141719] shadow-sm space-y-6">
+      <h3 class="text-xl font-bold font-serif text-stone-900 dark:text-white">
+        3 Thay Đổi Công Thái Học Đột Phá Khi Tái Thiết Kế MealWise
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-5 rounded-2xl hairline-all bg-stone-50 dark:bg-stone-900/40 space-y-2">
+          <div class="text-xl">📱</div>
+          <h4 class="font-bold text-stone-900 dark:text-white">1. Tinh Gọn Bottom Bar</h4>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            Giảm từ 7 nút bị nén nghẹt xuống còn <strong>4 Tab Chính</strong> (Mâm Cơm, Thực Đơn, Đi Chợ, Tủ Lạnh) + 1 nút Menu phụ. Ngón tay cái thao tác tự nhiên, không bấm nhầm.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl hairline-all bg-stone-50 dark:bg-stone-900/40 space-y-2">
+          <div class="text-xl">✨</div>
+          <h4 class="font-bold text-stone-900 dark:text-white">2. Loại Bỏ Quả Cầu Minigame RGB</h4>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            Thay thế quả cầu game chớp giật lòe loẹt thành nút <strong>"Gợi Ý Bữa Cơm Bất Ngờ"</strong> đặt tinh tế ở góc phải màn hình Thực Đơn với viền sáng êm dịu, không gây xao nhãng.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl hairline-all bg-stone-50 dark:bg-stone-900/40 space-y-2">
+          <div class="text-xl">🍲</div>
+          <h4 class="font-bold text-stone-900 dark:text-white">3. Giao Diện "Chiếc Mâm Sạch"</h4>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            Giao diện đóng vai trò phông nền tôn vinh màu sắc tươi ngon của món ăn. Dữ liệu calo và giá tiền hiển thị dạng chỉ số sub-pixel thanh lịch, không dùng banner cảnh báo chói mắt.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Note -->
+    <div class="text-center text-xs text-stone-400 pb-8">
+      MealWise Design Architecture • Thẩm định độc lập & Báo cáo nghiên cứu UX/UI 2026
+    </div>
+
+  </div>
+
+  <script>
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>

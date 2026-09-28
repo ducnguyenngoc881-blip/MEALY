@@ -4,7 +4,9 @@ import {
   UtensilsCrossed, 
   RotateCcw,
   Sun,
-  Moon
+  Moon,
+  Lock,
+  Sparkles
 } from 'lucide-react';
 import { ActiveTab } from '../types';
 
@@ -14,7 +16,9 @@ export const Navbar: React.FC = () => {
     setActiveTab, 
     resetOnboarding,
     theme,
-    toggleTheme
+    toggleTheme,
+    isRegistered,
+    openAuthModal
   } = useMealWise();
 
   const getScreenTitle = (tab: ActiveTab): { short: string; full: string } => {
@@ -24,7 +28,10 @@ export const Navbar: React.FC = () => {
       case 'weekly':
         return { short: 'Thực Đơn', full: 'Thực Đơn Tuần' };
       case 'party':
-        return { short: 'Tiệc Tùng', full: 'Tiệc & Catering' };
+        return { 
+          short: isRegistered ? 'Tiệc Tùng' : 'Tiệc 🔒', 
+          full: isRegistered ? 'Tiệc & Catering' : 'Tiệc & Catering 🔒' 
+        };
       case 'fast-meal':
         return { short: 'Mở Hòm', full: 'Mở Hòm Bữa Cơm' };
       case 'grocery':
@@ -43,7 +50,7 @@ export const Navbar: React.FC = () => {
   const currentTitle = getScreenTitle(activeTab);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200/90 dark:border-slate-800/90 shadow-sm transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
+    <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/95 dark:bg-[#121110]/95 backdrop-blur-xl border-b border-[#EBE5DC] dark:border-[#252220] shadow-sm transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
       <div className="h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
         
         {/* Left: Brand Logo & Title */}
@@ -54,14 +61,14 @@ export const Navbar: React.FC = () => {
           title="Trang chủ: Mâm Cơm Việt"
           aria-label="MealWise - Về trang Mâm Cơm 3 Món"
         >
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 flex items-center justify-center shadow-md shadow-amber-500/25 group-hover:scale-105 transition-transform shrink-0">
             <UtensilsCrossed className="w-4 h-4 text-white font-bold" />
           </div>
           <div className="leading-tight">
-            <span className="text-sm font-black text-slate-900 dark:text-white tracking-tight block whitespace-nowrap">
+            <span className="text-sm font-black text-stone-900 dark:text-white tracking-tight block whitespace-nowrap">
               MealWise
             </span>
-            <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold block -mt-0.5 whitespace-nowrap">
+            <span className="text-[9px] text-amber-700 dark:text-amber-400 font-extrabold block -mt-0.5 whitespace-nowrap">
               Mâm Cơm Việt
             </span>
           </div>
@@ -69,7 +76,7 @@ export const Navbar: React.FC = () => {
 
         {/* Center: Active Screen Badge Pill */}
         <div 
-          className="px-2 min-[360px]:px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-[10.5px] min-[360px]:text-[11px] sm:text-xs font-extrabold text-slate-700 dark:text-slate-200 max-w-[115px] min-[360px]:max-w-[150px] min-[390px]:max-w-[185px] sm:max-w-[240px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis"
+          className="px-2 min-[360px]:px-2.5 py-1 rounded-full bg-[#F3EFEA] dark:bg-[#1C1A18] border border-[#E5DFD5] dark:border-[#292524] text-[10.5px] min-[360px]:text-[11px] sm:text-xs font-extrabold text-stone-800 dark:text-stone-200 max-w-[115px] min-[360px]:max-w-[150px] min-[390px]:max-w-[185px] sm:max-w-[240px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis"
           title={currentTitle.full}
         >
           <span className="sm:hidden">{currentTitle.short}</span>
@@ -78,16 +85,39 @@ export const Navbar: React.FC = () => {
 
         {/* Right: Quick Action Controls */}
         <div className="flex items-center gap-1.5 shrink-0">
+          {/* Guest / Member Account Status Badge */}
+          {isRegistered ? (
+            <button
+              type="button"
+              onClick={() => setActiveTab('account')}
+              className="px-2 py-1 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-black flex items-center gap-1 hover:bg-emerald-500/25 transition-all cursor-pointer"
+              title="Tài khoản thành viên (Đã đăng nhập)"
+            >
+              <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+              <span className="hidden min-[360px]:inline">Thành Viên</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => openAuthModal('register')}
+              className="px-2 py-1 rounded-xl bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 text-[10px] font-black flex items-center gap-1 hover:bg-amber-500/25 transition-all cursor-pointer"
+              title="Bạn đang ở chế độ khách (Chưa đăng nhập). Bấm để đăng ký mở khóa toàn bộ tính năng."
+            >
+              <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+              <span>Khách 🔒</span>
+            </button>
+          )}
+
           {/* Theme Mode Toggle (Sun / Moon) */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-amber-400 transition-all flex items-center justify-center shadow-sm active:scale-90 focus:outline-none"
+            className="w-8 h-8 rounded-xl bg-[#F3EFEA] hover:bg-[#EBE5DC] dark:bg-[#1C1A18] dark:hover:bg-[#292524] border border-[#E5DFD5] dark:border-[#292524] text-stone-700 dark:text-amber-400 transition-all flex items-center justify-center shadow-sm active:scale-90 focus:outline-none"
             title={theme === 'light' ? 'Chuyển sang Chế độ Tối' : 'Chuyển sang Chế độ Sáng'}
             aria-label="Chuyển đổi giao diện Sáng / Tối"
           >
             {theme === 'light' ? (
-              <Moon className="w-4 h-4 text-slate-700" />
+              <Moon className="w-4 h-4 text-stone-700" />
             ) : (
               <Sun className="w-4 h-4 text-amber-400" />
             )}
@@ -97,7 +127,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={resetOnboarding}
-            className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-slate-800 transition-all flex items-center justify-center shadow-sm active:scale-90 focus:outline-none"
+            className="w-8 h-8 rounded-xl bg-[#F3EFEA] hover:bg-[#EBE5DC] dark:bg-[#1C1A18] dark:hover:bg-[#292524] text-stone-600 dark:text-stone-400 hover:text-amber-700 dark:hover:text-amber-400 border border-[#E5DFD5] dark:border-[#292524] transition-all flex items-center justify-center shadow-sm active:scale-90 focus:outline-none"
             title="Cài đặt lại khẩu vị (Onboarding)"
             aria-label="Cài đặt lại khẩu vị"
           >

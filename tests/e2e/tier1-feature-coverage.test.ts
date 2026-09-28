@@ -880,11 +880,11 @@ describe('Tier 1: Feature Coverage — Domain 6 (AccountView & Onboarding: Tài 
     expect(sundayLunch.id).not.toBe(sundayDinner.id);
   });
 
-  it('T1-D6-18: Mock meal sets library contains 16 diverse authentic Vietnamese meal sets', () => {
-    expect(mockMealSets.length).toBe(16);
+  it('T1-D6-18: Mock meal sets library contains diverse authentic meal sets (16 Vietnamese + 24 Western)', () => {
+    expect(mockMealSets.length).toBe(40);
     const setIds = new Set(mockMealSets.map(s => s.id));
-    // All 16 meal sets have unique IDs
-    expect(setIds.size).toBe(16);
+    // All 40 meal sets have unique IDs
+    expect(setIds.size).toBe(40);
   });
 
   it('T1-D6-19: Recalibration produces realistic, healthy, substantial daily meals (avoiding unrealistic <$1 rock-bottom prices & sweet soups)', () => {

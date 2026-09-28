@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealWise • Dribbble Food App UI Benchmark & Redesign Concepts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Outfit', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAF7F2',
+            sage: {
+              DEFAULT: '#2E5A44',
+              light: '#E8F5EE',
+              dark: '#1C3A2B',
+            },
+            terracotta: {
+              DEFAULT: '#E05A36',
+              light: '#FDEEE9',
+              dark: '#B83F20',
+            },
+            sunflower: '#F59E0B',
+          },
+          boxShadow: {
+            'dribbble': '0 20px 40px -15px rgba(0, 0, 0, 0.07)',
+            'float': '0 12px 28px -8px rgba(46, 90, 68, 0.12)',
+            'soft': '0 8px 20px -4px rgba(0, 0, 0, 0.04)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .squircle { border-radius: 28px; }
+  </style>
+</head>
+<body class="bg-[#F8F9FA] text-slate-800 min-h-screen py-10 px-4 sm:px-8">
+
+  <div class="max-w-6xl mx-auto space-y-10">
+
+    <!-- Header -->
+    <div class="text-center space-y-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold tracking-wide">
+        <span>🏀 DRIBBLE TOP FOOD APPS BENCHMARK</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black font-display tracking-tight text-slate-900">
+        4 Phong Cách UI Đỉnh Cao Từ Dribbble Cho MealWise
+      </h1>
+      <p class="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
+        Tổng hợp các xu hướng thiết kế Food & Recipe Mobile App đoạt giải từ các studio hàng đầu (RonDesignLab, Purrweb, tubik, Outcrowd, Paperpillar).
+      </p>
+    </div>
+
+    <!-- Style Selector Tabs -->
+    <div class="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
+      <button onclick="switchTab(1)" id="tab-1" class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-black transition-all bg-[#1E6B47] text-white shadow-lg shadow-emerald-700/20">
+        1. Fresh Organic Market (Outcrowd & tubik) ★ Khuyên dùng
+      </button>
+      <button onclick="switchTab(2)" id="tab-2" class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all bg-white text-slate-600 border border-slate-200 hover:border-slate-300">
+        2. Clean Modern Consumer (Lifesum & Wolt)
+      </button>
+      <button onclick="switchTab(3)" id="tab-3" class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all bg-white text-slate-600 border border-slate-200 hover:border-slate-300">
+        3. Neo-Bento Precision (Phenomenon Studio)
+      </button>
+      <button onclick="switchTab(4)" id="tab-4" class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all bg-white text-slate-600 border border-slate-200 hover:border-slate-300">
+        4. Pastel Playful Smart Fridge (Paperpillar)
+      </button>
+    </div>
+
+    <!-- Interactive Interactive Phone Screen Frame -->
+    <div class="flex justify-center">
+      <div class="w-full max-w-[390px] rounded-[48px] p-3.5 bg-slate-900 shadow-2xl shadow-slate-900/30 border-4 border-slate-800">
+        <div class="rounded-[40px] overflow-hidden bg-[#FAF7F2] min-h-[740px] relative flex flex-col justify-between" id="phone-content">
+          
+          <!-- Content injected dynamically -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Design System Specs for the 4 Styles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
+      
+      <!-- Style 1 -->
+      <div class="p-6 rounded-3xl bg-white border border-slate-100 shadow-soft space-y-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">01</div>
+        <h3 class="font-display font-extrabold text-slate-900 text-base">Fresh Organic Market</h3>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Nền kem ấm <code class="text-[11px] bg-slate-100 px-1 py-0.5 rounded">#FAF7F2</code>, xanh lá thảo mộc <code class="text-[11px] bg-slate-100 px-1 py-0.5 rounded">#1E6B47</code>, đất nung <code class="text-[11px] bg-slate-100 px-1 py-0.5 rounded">#E05A36</code>. Tạo cảm giác rau tươi vườn nhà, mâm cơm gia đình ấm cúng chuẩn vị Việt.
+        </p>
+      </div>
+
+      <!-- Style 2 -->
+      <div class="p-6 rounded-3xl bg-white border border-slate-100 shadow-soft space-y-3">
+        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">02</div>
+        <h3 class="font-display font-extrabold text-slate-900 text-base">Clean Modern Consumer</h3>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Nền trắng tinh khiết, bóng đổ mềm khuếch tán (floating elevation), thẻ thông tin bo tròn lớn, các pill dinh dưỡng (Carbs, Protein, Fat) nhiều màu thanh thoát kiểu Lifesum/Yuka.
+        </p>
+      </div>
+
+      <!-- Style 3 -->
+      <div class="p-6 rounded-3xl bg-white border border-slate-100 shadow-soft space-y-3">
+        <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">03</div>
+        <h3 class="font-display font-extrabold text-slate-900 text-base">Neo-Bento Precision</h3>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Lưới Bento bất đối xứng 2:1 và 1:2. Món mặn chiếm khối to nổi bật, 2 món canh và xào xếp gọn bên cạnh. Dữ liệu calo và thời gian nấu hiển thị dạng micro-widget hiện đại.
+        </p>
+      </div>
+
+      <!-- Style 4 -->
+      <div class="p-6 rounded-3xl bg-white border border-slate-100 shadow-soft space-y-3">
+        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">04</div>
+        <h3 class="font-display font-extrabold text-slate-900 text-base">Pastel Playful Fridge</h3>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Giao diện đèn giao thông thông minh: Đỏ đào (dưới 24h), Vàng cam (3 ngày), Xanh bạc hà (rất tươi). Nút bấm phồng 3D phẳng dễ thương, biến việc dọn tủ lạnh thành trải nghiệm vui vẻ.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const STYLES = {
+      1: `
+        <!-- Status Bar -->
+        <div class="px-6 pt-4 pb-2 flex items-center justify-between text-xs font-bold text-slate-400">
+          <span>9:41</span>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span>MealWise</span>
+          </div>
+        </div>
+
+        <!-- Scrollable Body -->
+        <div class="px-5 space-y-4 pb-24 overflow-y-auto">
+          <!-- Top Greeting & Date -->
+          <div class="flex items-center justify-between pt-1">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-[#1E6B47]">MÂM CƠM HÔM NAY</p>
+              <h2 class="text-xl font-black font-display text-slate-900">Bữa Trưa Gia Đình</h2>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-emerald-100/70 text-[#1E6B47] text-xs font-bold">4 người ăn</span>
+          </div>
+
+          <!-- Hero Dish Bento Card -->
+          <div class="bg-white rounded-3xl p-3 shadow-dribbble border border-[#ECE7E0] space-y-3">
+            <div class="relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100">
+              <img src="/mockups/warm_earthy_gourmet_1790158550082.jpg" class="w-full h-full object-cover">
+              <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-xl bg-black/60 backdrop-blur-md text-white text-[11px] font-bold">
+                MÓN MẶN CHÍNH
+              </span>
+              <button class="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/90 backdrop-blur-md text-slate-700 flex items-center justify-center text-xs shadow-md">
+                🔄
+              </button>
+            </div>
+            <div class="px-1 flex items-center justify-between">
+              <div>
+                <h3 class="font-extrabold text-sm text-slate-900">Cá Bống Kho Tiêu Niêu Đất</h3>
+                <p class="text-[11px] text-slate-400">350 kcal • 25 phút nấu</p>
+              </div>
+              <span class="font-black text-xs text-[#E05A36]">65.000 đ</span>
+            </div>
+          </div>
+
+          <!-- Two Side Dishes (Bento Twin Cards) -->
+          <div class="grid grid-cols-2 gap-3">
+            <!-- Soup -->
+            <div class="bg-white rounded-2xl p-3 border border-[#ECE7E0] shadow-soft space-y-2">
+              <div class="flex items-center justify-between text-[10px] font-extrabold text-sky-600">
+                <span>MÓN CANH</span>
+                <span class="text-slate-400">🔄</span>
+              </div>
+              <p class="font-bold text-xs text-slate-800 line-clamp-1">Canh Chua Cá Lóc</p>
+              <div class="flex items-center justify-between text-[10px] text-slate-400">
+                <span>120 kcal</span>
+                <span class="font-bold text-slate-700">45.000 đ</span>
+              </div>
+            </div>
+            <!-- Veggies -->
+            <div class="bg-white rounded-2xl p-3 border border-[#ECE7E0] shadow-soft space-y-2">
+              <div class="flex items-center justify-between text-[10px] font-extrabold text-emerald-600">
+                <span>MÓN RAU</span>
+                <span class="text-slate-400">🔄</span>
+              </div>
+              <p class="font-bold text-xs text-slate-800 line-clamp-1">Rau Muống Xào Tỏi</p>
+              <div class="flex items-center justify-between text-[10px] text-slate-400">
+                <span>80 kcal</span>
+                <span class="font-bold text-slate-700">25.000 đ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nutrition Ring Bar -->
+          <div class="bg-white rounded-2xl p-3.5 border border-[#ECE7E0] flex items-center justify-between">
+            <div class="space-y-0.5">
+              <p class="text-[11px] font-bold text-slate-400">TỔNG MÂM CƠM</p>
+              <p class="text-base font-black text-slate-900 font-display">1.840 kcal • 135.000 đ</p>
+            </div>
+            <button class="px-4 py-2 rounded-xl bg-[#1E6B47] text-white text-xs font-bold shadow-md shadow-emerald-800/20 active:scale-95 transition-all">
+              Nấu Mâm Này
+            </button>
+          </div>
+        </div>
+
+        <!-- Floating Bottom Navigation -->
+        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl p-2 border border-slate-200/80 shadow-float flex items-center justify-around">
+          <div class="flex flex-col items-center gap-0.5 text-[#1E6B47] font-black text-[10px]">
+            <span class="text-base">🍲</span>
+            <span>Mâm Cơm</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">📅</span>
+            <span>Thực Đơn</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🛒</span>
+            <span>Đi Chợ</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🧊</span>
+            <span>Tủ Lạnh</span>
+          </div>
+        </div>
+      `,
+      2: `
+        <!-- Clean Modern Consumer (Lifesum Style) -->
+        <div class="px-6 pt-4 pb-2 flex items-center justify-between text-xs font-bold text-slate-400">
+          <span>9:41</span>
+          <span class="text-orange-500 font-black">Clean Consumer</span>
+        </div>
+        <div class="px-5 space-y-4 pb-24 overflow-y-auto">
+          <div class="pt-1">
+            <p class="text-xs font-bold uppercase text-slate-400 tracking-wider">HÔM NAY ĂN GÌ?</p>
+            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Kế Hoạch Dinh Dưỡng</h2>
+          </div>
+
+          <!-- Lifesum Nutrition Progress Triple Pills -->
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-white p-3 rounded-2xl shadow-soft text-center space-y-1">
+              <span class="text-[10px] font-bold text-slate-400">CARBS</span>
+              <p class="text-sm font-black text-amber-500">145g</p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-amber-400 h-full w-[70%]"></div>
+              </div>
+            </div>
+            <div class="bg-white p-3 rounded-2xl shadow-soft text-center space-y-1">
+              <span class="text-[10px] font-bold text-slate-400">PROTEIN</span>
+              <p class="text-sm font-black text-rose-500">85g</p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-rose-400 h-full w-[85%]"></div>
+              </div>
+            </div>
+            <div class="bg-white p-3 rounded-2xl shadow-soft text-center space-y-1">
+              <span class="text-[10px] font-bold text-slate-400">FAT</span>
+              <p class="text-sm font-black text-sky-500">42g</p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-sky-400 h-full w-[50%]"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Meal Card with Floating Shadow -->
+          <div class="bg-white rounded-3xl p-4 shadow-dribbble space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="px-3 py-1 rounded-full bg-orange-50 text-orange-600 font-extrabold text-[11px]">BỮA TRƯA • 650 kcal</span>
+              <span class="text-xs font-bold text-emerald-600">Trong ngân sách</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <img src="/mockups/bento_tech_dark_1790158526666.jpg" class="w-16 h-16 rounded-2xl object-cover shadow-sm">
+              <div class="flex-1">
+                <h4 class="font-extrabold text-sm text-slate-900">Bò Xào Cần Tây & Canh Bí</h4>
+                <p class="text-xs text-slate-400 mt-0.5">3 món chuẩn vị gia đình</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl p-2 border border-slate-200/80 shadow-float flex items-center justify-around">
+          <div class="flex flex-col items-center gap-0.5 text-orange-600 font-black text-[10px]">
+            <span class="text-base">🍱</span>
+            <span>Mâm Cơm</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">📅</span>
+            <span>Thực Đơn</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🛒</span>
+            <span>Đi Chợ</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🧊</span>
+            <span>Tủ Lạnh</span>
+          </div>
+        </div>
+      `,
+      3: `
+        <!-- Neo Bento Precision -->
+        <div class="px-6 pt-4 pb-2 flex items-center justify-between text-xs font-bold text-slate-400">
+          <span>9:41</span>
+          <span class="text-indigo-600 font-black">Neo-Bento UI</span>
+        </div>
+        <div class="px-5 space-y-4 pb-24 overflow-y-auto">
+          <!-- Horizontal 7-Day Matrix -->
+          <div class="flex items-center justify-between gap-1.5 overflow-x-auto pb-1">
+            <div class="px-2.5 py-3 rounded-2xl bg-white text-center shadow-soft flex-1">
+              <span class="text-[10px] text-slate-400 block font-bold">T2</span>
+              <span class="text-xs font-black text-slate-800">22</span>
+            </div>
+            <div class="px-2.5 py-3 rounded-2xl bg-indigo-600 text-white text-center shadow-lg shadow-indigo-600/25 flex-1">
+              <span class="text-[10px] opacity-80 block font-bold">T3</span>
+              <span class="text-xs font-black">23</span>
+            </div>
+            <div class="px-2.5 py-3 rounded-2xl bg-white text-center shadow-soft flex-1">
+              <span class="text-[10px] text-slate-400 block font-bold">T4</span>
+              <span class="text-xs font-black text-slate-800">24</span>
+            </div>
+            <div class="px-2.5 py-3 rounded-2xl bg-white text-center shadow-soft flex-1">
+              <span class="text-[10px] text-slate-400 block font-bold">T5</span>
+              <span class="text-xs font-black text-slate-800">25</span>
+            </div>
+          </div>
+
+          <!-- Bento Grid Split -->
+          <div class="grid grid-cols-12 gap-3">
+            <div class="col-span-7 bg-white p-3.5 rounded-3xl shadow-soft space-y-2">
+              <span class="px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[10px] font-black">BỮA TRƯA</span>
+              <h4 class="font-extrabold text-xs text-slate-900">Mâm Tôm Rim Thịt & Canh Cua</h4>
+              <p class="text-[11px] text-indigo-600 font-bold">520 kcal • 55k</p>
+            </div>
+            <div class="col-span-5 bg-white p-3.5 rounded-3xl shadow-soft flex flex-col justify-between">
+              <span class="text-[10px] text-slate-400 font-bold">NGÂN SÁCH</span>
+              <p class="text-lg font-black text-slate-900">92k <span class="text-[10px] text-slate-400 font-normal">/ 95k</span></p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-indigo-600 h-full w-[92%]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl p-2 border border-slate-200/80 shadow-float flex items-center justify-around">
+          <div class="flex flex-col items-center gap-0.5 text-indigo-600 font-black text-[10px]">
+            <span class="text-base">🍱</span>
+            <span>Mâm Cơm</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">📅</span>
+            <span>Thực Đơn</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🛒</span>
+            <span>Đi Chợ</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🧊</span>
+            <span>Tủ Lạnh</span>
+          </div>
+        </div>
+      `,
+      4: `
+        <!-- Pastel Playful Smart Fridge -->
+        <div class="px-6 pt-4 pb-2 flex items-center justify-between text-xs font-bold text-slate-400">
+          <span>9:41</span>
+          <span class="text-rose-500 font-black">Smart Fridge</span>
+        </div>
+        <div class="px-5 space-y-3 pb-24 overflow-y-auto">
+          <div class="pt-1">
+            <h2 class="text-xl font-black text-slate-900">🧊 Tủ Lạnh Vét Món</h2>
+            <p class="text-xs text-slate-400">12 nguyên liệu • 3 món sắp hỏng</p>
+          </div>
+
+          <!-- Magic Wand Hero Button -->
+          <div class="p-4 rounded-3xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 space-y-1">
+            <div class="flex items-center gap-1.5 text-xs font-black">
+              <span>🪄</span>
+              <span>GỢI Ý VÉT TỦ THÔNG MINH</span>
+            </div>
+            <p class="text-[11px] opacity-90">Có thể nấu ngay: Cơm rang dưa bò & Canh trứng cà chua!</p>
+          </div>
+
+          <!-- Traffic-light Freshness List -->
+          <div class="space-y-2">
+            <div class="p-3 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-base">🥩</span>
+                <div>
+                  <p class="text-xs font-extrabold text-rose-900">300g Thịt ba chỉ</p>
+                  <p class="text-[10px] text-rose-600 font-semibold">Cần dùng trong 24h</p>
+                </div>
+              </div>
+              <span class="text-xs font-black px-2 py-1 rounded-xl bg-rose-200/60 text-rose-800">Ăn Ngay</span>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-base">🥬</span>
+                <div>
+                  <p class="text-xs font-extrabold text-amber-900">1 bó Cải ngọt</p>
+                  <p class="text-[10px] text-amber-600 font-semibold">Dùng trong 3 ngày tới</p>
+                </div>
+              </div>
+              <span class="text-xs font-black px-2 py-1 rounded-xl bg-amber-200/60 text-amber-800">Nấu Sớm</span>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-base">🥚</span>
+                <div>
+                  <p class="text-xs font-extrabold text-emerald-900">6 quả Trứng gà</p>
+                  <p class="text-[10px] text-emerald-600 font-semibold">Tươi ngon (còn 7 ngày)</p>
+                </div>
+              </div>
+              <span class="text-xs font-black px-2 py-1 rounded-xl bg-emerald-200/60 text-emerald-800">Tươi</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl p-2 border border-slate-200/80 shadow-float flex items-center justify-around">
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🍲</span>
+            <span>Mâm Cơm</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">📅</span>
+            <span>Thực Đơn</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-slate-400 font-bold text-[10px]">
+            <span class="text-base">🛒</span>
+            <span>Đi Chợ</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 text-emerald-600 font-black text-[10px]">
+            <span class="text-base">🧊</span>
+            <span>Tủ Lạnh</span>
+          </div>
+        </div>
+      `
+    };
+
+    function switchTab(index) {
+      document.getElementById('phone-content').innerHTML = STYLES[index];
+      for (let i = 1; i <= 4; i++) {
+        const btn = document.getElementById('tab-' + i);
+        if (i === index) {
+          btn.className = "px-5 py-2.5 rounded-full text-xs sm:text-sm font-black transition-all bg-[#1E6B47] text-white shadow-lg shadow-emerald-700/20";
+        } else {
+          btn.className = "px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all bg-white text-slate-600 border border-slate-200 hover:border-slate-300";
+        }
+      }
+    }
+
+    // Initialize with style 1
+    switchTab(1);
+  </script>
+</body>
+</html>

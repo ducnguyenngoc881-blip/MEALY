@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
   ShoppingCart, 
@@ -24,12 +24,16 @@ import {
   X,
   Edit3,
   Palette,
-  Smile
+  Smile,
+  Plus,
+  Minus,
+  AlertCircle,
+  Lock
 } from 'lucide-react';
 import { VietnameseMealSet, Recipe, StoreChannel, CollabCartItem, CollabShopper } from '../types';
 import { copyTextToClipboard } from './CateringPartyPlanner';
 import { FridgeLeftoverModal } from './FridgeLeftoverModal';
-import { SHOPPER_PALETTE, getShopperStyle } from '../services/collabGroceryService';
+import { SHOPPER_PALETTE, getShopperStyle, formatTtlRemaining } from '../services/collabGroceryService';
 
 // Store Channel Configuration for the 4 Vietnamese retail channels
 export interface StoreChannelConfig {
@@ -123,16 +127,16 @@ export function parseAmount(val: number | string | undefined | null): number {
     return Number.isFinite(val) && val > 0 ? val : 1;
   }
   if (typeof val === 'string') {
-    const trimmed = val.trim();
-    if (trimmed.includes('/')) {
-      const parts = trimmed.split('/');
+    const sanitized = val.trim().replace(',', '.');
+    if (sanitized.includes('/')) {
+      const parts = sanitized.split('/');
       const num = parseFloat(parts[0]);
       const den = parseFloat(parts[1]);
       if (Number.isFinite(num) && Number.isFinite(den) && den !== 0) {
         return Math.max(0.01, num / den);
       }
     }
-    const parsed = parseFloat(trimmed);
+    const parsed = parseFloat(sanitized);
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
   }
   return 1;
@@ -156,11 +160,20 @@ export function normalizeIngredientUnitAndAmount(
   const parsedAmt = parseAmount(rawAmount);
   const u = (rawUnit || '').trim().toLowerCase();
 
-  // 1. Weight family: g, gram, gam, kg, kilogram, kí, ký
+  // 1. Weight family: g, gram, gam, kg, kilogram, kí, ký, lạng, lang
   if (u === 'kg' || u === 'kilogram' || u === 'kí' || u === 'ký') {
     return {
       cleanName,
       baseAmount: parsedAmt * 1000,
+      baseUnit: 'g',
+      family: 'weight',
+      groupKey: `${cleanName.toLowerCase()}__weight`
+    };
+  }
+  if (u === 'lạng' || u === 'lang') {
+    return {
+      cleanName,
+      baseAmount: parsedAmt * 100,
       baseUnit: 'g',
       family: 'weight',
       groupKey: `${cleanName.toLowerCase()}__weight`
@@ -431,7 +444,15 @@ export const GroceryList: React.FC = () => {
     startCollabRoom,
     leaveCollabRoom,
     toggleCollabChecked,
-    setIsShareModalOpen
+    setIsShareModalOpen,
+    groceryItemBuyerCounts,
+    incrementGroceryItemBuyer,
+    decrementGroceryItemBuyer,
+    incrementCollabItemBuyer,
+    decrementCollabItemBuyer,
+    isRegistered,
+    openAuthModal,
+    openConfirmModal
   } = useMealWise();
 
   const [copied, setCopied] = useState<boolean>(false);
@@ -442,6 +463,8 @@ export const GroceryList: React.FC = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [customShopperName, setCustomShopperName] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
+  const [isLobbyOpen, setIsLobbyOpen] = useState<boolean>(false);
+  const lobbyRef = useRef<HTMLDivElement | null>(null);
 
   // Accumulate ingredients with unit normalization & mathematically correct cost tracking
   interface AccumulatorEntry {
@@ -547,16 +570,17 @@ export const GroceryList: React.FC = () => {
   });
 
   // Effective list: if connected to a collaborative room, use room items (preserves items for User B)
-  const effectiveList: ProcessedGroceryItem[] = (collabRoom?.items && collabRoom.items.length > 0)
+  const isCollabActive = Boolean(isRegistered && collabRoom?.roomId);
+  const effectiveList: ProcessedGroceryItem[] = (isCollabActive && collabRoom?.items && collabRoom.items.length > 0)
     ? collabRoom.items.map(it => ({
         ...it,
         storeChannel: (it.storeChannel as any) || 'cho-dan-sinh'
       }))
     : allList;
 
-  // Helper to determine check status & user attribution
+  // Helper to determine check status, user attribution, and multi-buyer count
   const getItemCheckInfo = (item: ProcessedGroceryItem) => {
-    if (collabRoom?.roomId) {
+    if (isCollabActive && collabRoom?.roomId) {
       const state = collabCheckedMap[item.id] || collabCheckedMap[item.name];
       const isChecked = !!state?.checked;
       const checkedBy = state?.checked ? (state.checkedBy || 'Người mua cùng') : '';
@@ -564,17 +588,40 @@ export const GroceryList: React.FC = () => {
       const isMine = isChecked && (checkedById ? checkedById === collabUser.id : checkedBy === collabUser.name);
       const checkedByColor = state?.checkedByColor || (isMine ? (collabUser.color || '#10b981') : '#8b5cf6');
       const style = getShopperStyle(checkedByColor);
-      return { isChecked, checkedBy, checkedById, checkedByColor, isMine, style };
+      const buyerCount = state?.buyerCount !== undefined ? state.buyerCount : (isChecked ? 1 : 0);
+      return { isChecked, checkedBy, checkedById, checkedByColor, isMine, style, buyerCount };
     }
     const isChecked = Boolean(groceryCheckedItems[item.id] || groceryCheckedItems[item.name]);
+    const buyerCount = groceryItemBuyerCounts[item.id] || groceryItemBuyerCounts[item.name] || (isChecked ? 1 : 0);
     return { 
       isChecked, 
       checkedBy: '', 
       checkedById: '', 
       checkedByColor: '#10b981', 
       isMine: isChecked, 
-      style: getShopperStyle('#10b981') 
+      style: getShopperStyle('#10b981'),
+      buyerCount
     };
+  };
+
+  // Increment buyer count for an item (indicates another person bought this item too)
+  const handleIncrementBuyer = (item: ProcessedGroceryItem) => {
+    if (isCollabActive && collabRoom?.roomId) {
+      incrementCollabItemBuyer(item.id);
+    } else {
+      incrementGroceryItemBuyer(item.id);
+    }
+    const current = getItemCheckInfo(item).buyerCount;
+    showToast(`👥 Đã ghi nhận thêm 1 người mua "${item.name}"! (Tổng: ${current + 1} người mua)`);
+  };
+
+  // Decrement buyer count for an item
+  const handleDecrementBuyer = (item: ProcessedGroceryItem) => {
+    if (isCollabActive && collabRoom?.roomId) {
+      decrementCollabItemBuyer(item.id);
+    } else {
+      decrementGroceryItemBuyer(item.id);
+    }
   };
 
   // Total items & cost
@@ -586,7 +633,7 @@ export const GroceryList: React.FC = () => {
     const channelMatch = storeFilter === 'all' || item.storeChannel === storeFilter;
     if (!channelMatch) return false;
 
-    if (collabRoom?.roomId && collabFilter !== 'all') {
+    if (isCollabActive && collabRoom?.roomId && collabFilter !== 'all') {
       const info = getItemCheckInfo(item);
       if (collabFilter === 'unclaimed') return !info.isChecked;
       if (collabFilter === 'mine') return info.isChecked && info.isMine;
@@ -653,7 +700,7 @@ export const GroceryList: React.FC = () => {
       {/* Header Banner */}
       <div className="p-4 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-emerald-950/10 via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-900 dark:to-emerald-950/40 space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/25 dark:border-emerald-500/30 text-[11px] font-bold shrink-0">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-[11px] font-bold shrink-0">
             <ShoppingCart className="w-3.5 h-3.5" />
             <span>Tự Động Gom Nguyên Liệu</span>
           </div>
@@ -698,7 +745,7 @@ export const GroceryList: React.FC = () => {
 
         <div className="pt-2 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 border-t border-slate-200/80 dark:border-white/10 font-medium">
           <span>{totalCount} nguyên liệu ({overallCheckedCount} đã mua)</span>
-          <span className="font-extrabold text-emerald-700 dark:text-emerald-400">
+          <span className="font-extrabold text-amber-800 dark:text-amber-300">
             Ước tính: {totalCostEstimate.toLocaleString('vi-VN')} đ
           </span>
         </div>
@@ -733,7 +780,7 @@ export const GroceryList: React.FC = () => {
             {/* Chợ Dân Sinh */}
             <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-emerald-500/30 space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                <span className="text-xs font-black text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
                   <span>🏪</span> Chợ Dân Sinh
                 </span>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-bold">
@@ -893,23 +940,59 @@ export const GroceryList: React.FC = () => {
         </div>
       )}
 
-      {/* COLLABORATIVE ROOM ACTIVE BANNER */}
-      {collabRoom && (
-        <div className="p-3.5 sm:p-4 rounded-3xl bg-emerald-50/70 dark:bg-slate-900 border border-emerald-200 dark:border-emerald-500/30 text-slate-900 dark:text-white space-y-3 shadow-sm animate-fade-in">
+      {/* COMPACT COLLAB STATUS PILL (WHEN LOBBY IS CLOSED) */}
+      {isCollabActive && collabRoom && !isLobbyOpen && (
+        <div 
+          onClick={() => {
+            setIsLobbyOpen(true);
+            setTimeout(() => {
+              lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+          }}
+          className="p-3 px-4 rounded-2xl bg-amber-500/15 dark:bg-amber-950/40 border border-amber-500/30 flex items-center justify-between gap-2 cursor-pointer hover:bg-amber-500/25 transition-all text-xs shadow-xs animate-fade-in"
+          title="Bấm để mở sảnh phòng mua chung"
+        >
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+            </span>
+            <div className="min-w-0">
+              <span className="font-extrabold text-amber-950 dark:text-amber-200 truncate block">
+                Phòng Mua Chung: #{collabRoom.roomId} (Live Sync • {formatTtlRemaining(collabRoom.expiresAt, collabRoom.createdAt)})
+              </span>
+              <span className="text-[10.5px] text-amber-800/80 dark:text-amber-300/80 truncate block">
+                Chủ phòng: {collabRoom.hostName} • Đang kết nối
+              </span>
+            </div>
+          </div>
+          <span className="text-[11px] font-black text-amber-900 dark:text-amber-300 px-2.5 py-1 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center gap-1 shrink-0">
+            Mở Sảnh ▼
+          </span>
+        </div>
+      )}
+
+      {/* COLLABORATIVE ROOM ACTIVE LOBBY: ONLY OPEN IF USER CLICKS ON THE BUTTON */}
+      {isCollabActive && collabRoom && isLobbyOpen && (
+        <div ref={lobbyRef} className="p-3.5 sm:p-4 rounded-3xl bg-amber-50/50 dark:bg-stone-900 border border-amber-500/30 dark:border-amber-500/30 text-slate-900 dark:text-white space-y-3 shadow-sm animate-fade-in">
           {/* Header */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
               <span className="relative flex h-2.5 w-2.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
               </span>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-xs font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-400">
+                  <span className="text-xs font-black uppercase tracking-wider text-amber-900 dark:text-amber-300">
                     Phòng Mua Chung: #{collabRoom.roomId}
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-300/60 dark:border-emerald-500/30">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 font-bold border border-amber-300/60 dark:border-amber-500/30">
                     Live Sync
+                  </span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold border border-amber-300/60 dark:border-amber-500/30 flex items-center gap-1" title="Thời hạn phòng tối đa 1 giờ">
+                    <Clock className="w-2.5 h-2.5" />
+                    <span>{formatTtlRemaining(collabRoom.expiresAt, collabRoom.createdAt)}</span>
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-600 dark:text-slate-400 truncate mt-0.5">
@@ -922,7 +1005,7 @@ export const GroceryList: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsShareModalOpen(true)}
-                className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[11.5px] font-black flex items-center gap-1.5 shadow-sm transition-all active:scale-95 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 text-[11.5px] font-black flex items-center gap-1.5 shadow-sm transition-all active:scale-95 cursor-pointer"
                 title="Xem liên kết & mã QR"
               >
                 <QrCode className="w-3.5 h-3.5" />
@@ -931,9 +1014,30 @@ export const GroceryList: React.FC = () => {
 
               <button
                 type="button"
-                onClick={leaveCollabRoom}
-                className="p-1.5 rounded-xl bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-rose-950/40 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-300 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+                onClick={() => {
+                  openConfirmModal({
+                    title: 'Rời Phòng Mua Chung',
+                    message: 'Bạn có chắc chắn muốn rời khỏi phòng mua chung này?',
+                    confirmLabel: 'Rời Phòng',
+                    cancelLabel: 'Ở Lại',
+                    isDanger: true,
+                    onConfirm: () => {
+                      leaveCollabRoom();
+                      setIsLobbyOpen(false);
+                    }
+                  });
+                }}
+                className="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 text-[11px] font-bold transition-colors cursor-pointer"
                 title="Rời phòng mua chung"
+              >
+                Rời phòng
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsLobbyOpen(false)}
+                className="p-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+                title="Đóng sảnh mua chung (Thu gọn)"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -944,7 +1048,7 @@ export const GroceryList: React.FC = () => {
           <div className="pt-2.5 border-t border-emerald-200/60 dark:border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-[10.5px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                <Users className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                <Users className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                 Người đi chợ trong phòng:
               </span>
               <button
@@ -954,7 +1058,7 @@ export const GroceryList: React.FC = () => {
                   setSelectedColor(collabUser.color || '#10b981');
                   setIsProfileModalOpen(true);
                 }}
-                className="text-[11px] font-black text-emerald-700 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-[11px] font-black text-amber-800 dark:text-amber-300 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Edit3 className="w-3 h-3" />
                 <span>Đổi tên & màu của bạn</span>
@@ -1068,7 +1172,7 @@ export const GroceryList: React.FC = () => {
                 onClick={() => setCollabFilter(tab.id as any)}
                 className={`px-2.5 py-1 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
                   collabFilter === tab.id
-                    ? 'bg-emerald-600 text-white shadow-sm'
+                    ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
                     : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                 }`}
               >
@@ -1076,6 +1180,15 @@ export const GroceryList: React.FC = () => {
               </button>
             ))}
           </div>
+
+          {/* Collapse Lobby Button */}
+          <button
+            type="button"
+            onClick={() => setIsLobbyOpen(false)}
+            className="w-full py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-200 text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer"
+          >
+            <span>▲ Thu Gọn Sảnh Mua Chung</span>
+          </button>
         </div>
       )}
 
@@ -1083,7 +1196,7 @@ export const GroceryList: React.FC = () => {
       <div className="space-y-1.5">
         <div className="flex items-center justify-between px-1">
           <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1">
-            <Store className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <Store className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             Lọc Theo Kênh Mua Hàng ({displayedList.length} món)
           </span>
 
@@ -1106,7 +1219,7 @@ export const GroceryList: React.FC = () => {
             onClick={() => setStoreFilter('all')}
             className={`py-2 px-2 sm:px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] shrink-0 sm:shrink cursor-pointer ${
               storeFilter === 'all'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm font-black'
+                ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold'
             }`}
           >
@@ -1121,7 +1234,7 @@ export const GroceryList: React.FC = () => {
             onClick={() => setStoreFilter('cho-dan-sinh')}
             className={`py-2 px-2 sm:px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] shrink-0 sm:shrink cursor-pointer ${
               storeFilter === 'cho-dan-sinh'
-                ? 'bg-emerald-600 text-white shadow-sm font-black'
+                ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold'
             }`}
           >
@@ -1195,7 +1308,7 @@ export const GroceryList: React.FC = () => {
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-black text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wider">
-                <Store className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <Store className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 Chợ Tươi (Thịt, Cá, Rau Củ)
               </span>
               <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">
@@ -1220,7 +1333,7 @@ export const GroceryList: React.FC = () => {
                     className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 min-h-[52px] active:scale-[0.99] select-none ${
                       isChecked
                         ? 'bg-slate-100/70 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800/60 opacity-60'
-                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 shadow-sm'
+                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-amber-500/40 shadow-sm'
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -1241,14 +1354,20 @@ export const GroceryList: React.FC = () => {
                           <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
                             {item.name}
                           </span>
-                          {isChecked && checkInfo.checkedBy && (
+                          {isChecked && (
                             <span className={`inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border ${
                               checkInfo.isMine 
                                 ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' 
                                 : `${checkInfo.style.badgeBg} ${checkInfo.style.badgeText} ${checkInfo.style.badgeBorder}`
                             }`}>
                               <UserCheck className="w-2.5 h-2.5 shrink-0" />
-                              <span>{checkInfo.isMine ? 'Bạn đã nhặt' : `${checkInfo.checkedBy} đã nhặt`}</span>
+                              <span>{checkInfo.isMine ? 'Bạn đã nhặt' : `${checkInfo.checkedBy || 'Đã mua'}`}</span>
+                            </span>
+                          )}
+                          {checkInfo.buyerCount > 1 && (
+                            <span className="inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/35 animate-pulse">
+                              <Users className="w-2.5 h-2.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                              <span>{checkInfo.buyerCount} người mua trùng!</span>
                             </span>
                           )}
                         </div>
@@ -1283,6 +1402,47 @@ export const GroceryList: React.FC = () => {
                       <span className="text-[11px] font-black text-emerald-800 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-950/60 px-2 sm:px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-800 whitespace-nowrap">
                         {item.displayAmount}
                       </span>
+
+                      {/* Multi-buyer Plus Button & Counter */}
+                      <div className="flex items-center gap-1">
+                        {checkInfo.buyerCount > 1 && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDecrementBuyer(item);
+                            }}
+                            className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-rose-500/20 text-slate-600 dark:text-slate-300 hover:text-rose-600 text-xs font-black flex items-center justify-center border border-slate-300 dark:border-slate-700 transition-all active:scale-90 cursor-pointer"
+                            title="Bỏ bớt 1 người mua trùng"
+                          >
+                            <Minus className="w-3 h-3 stroke-[3]" />
+                          </button>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleIncrementBuyer(item);
+                          }}
+                          className={`h-7 px-2 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black transition-all active:scale-90 border shadow-xs cursor-pointer ${
+                            checkInfo.buyerCount > 1
+                              ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-400 shadow-amber-500/20'
+                              : isChecked
+                              ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border-emerald-500/40'
+                              : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700'
+                          }`}
+                          title="Đánh dấu thêm người mua món này (nhiều người cùng mua)"
+                        >
+                          <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                          {checkInfo.buyerCount > 1 && (
+                            <span className="flex items-center gap-0.5 font-black">
+                              <Users className="w-2.5 h-2.5" />
+                              <span>{checkInfo.buyerCount}</span>
+                            </span>
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
@@ -1342,14 +1502,20 @@ export const GroceryList: React.FC = () => {
                           <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
                             {item.name}
                           </span>
-                          {isChecked && checkInfo.checkedBy && (
+                          {isChecked && (
                             <span className={`inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border ${
                               checkInfo.isMine 
                                 ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' 
                                 : `${checkInfo.style.badgeBg} ${checkInfo.style.badgeText} ${checkInfo.style.badgeBorder}`
                             }`}>
                               <UserCheck className="w-2.5 h-2.5 shrink-0" />
-                              <span>{checkInfo.isMine ? 'Bạn đã nhặt' : `${checkInfo.checkedBy} đã nhặt`}</span>
+                              <span>{checkInfo.isMine ? 'Bạn đã nhặt' : `${checkInfo.checkedBy || 'Đã mua'}`}</span>
+                            </span>
+                          )}
+                          {checkInfo.buyerCount > 1 && (
+                            <span className="inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-500/35 animate-pulse">
+                              <Users className="w-2.5 h-2.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                              <span>{checkInfo.buyerCount} người mua trùng!</span>
                             </span>
                           )}
                         </div>
@@ -1384,6 +1550,47 @@ export const GroceryList: React.FC = () => {
                       <span className="text-[11px] font-black text-amber-900 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-2 sm:px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-800 whitespace-nowrap">
                         {item.displayAmount}
                       </span>
+
+                      {/* Multi-buyer Plus Button & Counter */}
+                      <div className="flex items-center gap-1">
+                        {checkInfo.buyerCount > 1 && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDecrementBuyer(item);
+                            }}
+                            className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-rose-500/20 text-slate-600 dark:text-slate-300 hover:text-rose-600 text-xs font-black flex items-center justify-center border border-slate-300 dark:border-slate-700 transition-all active:scale-90 cursor-pointer"
+                            title="Bỏ bớt 1 người mua trùng"
+                          >
+                            <Minus className="w-3 h-3 stroke-[3]" />
+                          </button>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleIncrementBuyer(item);
+                          }}
+                          className={`h-7 px-2 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black transition-all active:scale-90 border shadow-xs cursor-pointer ${
+                            checkInfo.buyerCount > 1
+                              ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-400 shadow-amber-500/20'
+                              : isChecked
+                              ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border-emerald-500/40'
+                              : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700'
+                          }`}
+                          title="Đánh dấu thêm người mua món này (nhiều người cùng mua)"
+                        >
+                          <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                          {checkInfo.buyerCount > 1 && (
+                            <span className="flex items-center gap-0.5 font-black">
+                              <Users className="w-2.5 h-2.5" />
+                              <span>{checkInfo.buyerCount}</span>
+                            </span>
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
@@ -1410,14 +1617,14 @@ export const GroceryList: React.FC = () => {
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5 font-black text-slate-900 dark:text-white">
             {progressPercent === 100 ? (
-              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <span className="text-amber-600 dark:text-amber-400 flex items-center gap-1">
                 <CheckCircle2 className="w-4 h-4" /> Đã gom đủ {totalCount} món!
               </span>
             ) : (
               <span>Đã mua: {overallCheckedCount} / {totalCount} món ({progressPercent}%)</span>
             )}
           </div>
-          <span className="text-xs font-black text-emerald-700 dark:text-emerald-400">
+          <span className="text-xs font-black text-amber-800 dark:text-amber-300">
             {totalCostEstimate.toLocaleString('vi-VN')} đ
           </span>
         </div>
@@ -1436,23 +1643,57 @@ export const GroceryList: React.FC = () => {
           <button
             type="button"
             onClick={async () => {
+              if (!isRegistered) {
+                openConfirmModal({
+                  title: 'Tính Năng Dành Cho Thành Viên',
+                  message: 'Tính năng chia sẻ giỏ hàng đi chợ và cùng người thân tích chọn thời gian thực chỉ dành cho tài khoản thành viên. Đăng ký tài khoản miễn phí chỉ mất 10 giây!',
+                  confirmLabel: 'Đăng Ký / Đăng Nhập',
+                  cancelLabel: 'Để sau',
+                  onConfirm: () => openAuthModal('register')
+                });
+                return;
+              }
               if (collabRoom) {
-                setIsShareModalOpen(true);
+                const nextState = !isLobbyOpen;
+                setIsLobbyOpen(nextState);
+                if (nextState) {
+                  setTimeout(() => {
+                    lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }, 50);
+                }
               } else {
                 await startCollabRoom(allList, `Giỏ Đi Chợ Tuần Này (${allList.length} món)`);
+                setIsLobbyOpen(true);
+                setTimeout(() => {
+                  lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
               }
             }}
-            className="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs shadow-md shadow-emerald-500/25 flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer"
-            title="Tạo liên kết chia sẻ danh sách để nhiều người cùng tick chọn thời gian thực"
+            className={`py-2.5 px-2 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer ${
+              !isRegistered
+                ? 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 border border-amber-500/40 shadow-xs'
+                : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-md shadow-emerald-500/25'
+            }`}
+            title={!isRegistered ? 'Tính năng dành cho thành viên' : (collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng mua chung')}
           >
-            <Users className="w-4 h-4 shrink-0" />
+            {!isRegistered ? (
+              <Lock className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            ) : (
+              <Users className="w-4 h-4 shrink-0" />
+            )}
             <span className="truncate">
-              {collabRoom ? 'Mua Chung (Live)' : 'Chia Sẻ Mua Chung'}
+              {!isRegistered
+                ? 'Chia Sẻ Mua Chung 🔒'
+                : collabRoom
+                ? (isLobbyOpen ? 'Đóng Sảnh (Live)' : 'Mua Chung (Live)')
+                : 'Chia Sẻ Mua Chung'}
             </span>
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-950 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-950"></span>
-            </span>
+            {isRegistered && (
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-950 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-950"></span>
+              </span>
+            )}
           </button>
 
           {/* Button 2: Quick Zalo Export */}
@@ -1496,7 +1737,7 @@ export const GroceryList: React.FC = () => {
           >
             <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                   <Palette className="w-4 h-4" />
                 </div>
                 <div>
@@ -1590,7 +1831,7 @@ export const GroceryList: React.FC = () => {
                   setIsProfileModalOpen(false);
                   showToast(`✓ Đã lưu hồ sơ: ${finalName}!`);
                 }}
-                className="px-4 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black shadow-sm transition-all cursor-pointer"
+                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 text-xs font-black shadow-sm transition-all cursor-pointer"
               >
                 Lưu thay đổi
               </button>

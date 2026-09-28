@@ -80,7 +80,7 @@ export interface OnboardingData {
   familySize: number; // 1, 2, 4, 6
   singleMealFormat?: 'single-dish' | 'meal-set'; // When familySize === 1: 'single-dish' vs 'meal-set'
   budgetLevel: 'tiet-kiem' | 'vua-phai' | 'thoai-mai';
-  specialNeeds: string[]; // 'gym-protein', 'eat-clean', 'single-prep', 'nhieu-rau', 'it-cay', 'chay', 'nhanh-gon'
+  specialNeeds: string[]; // 'gym-protein', 'eat-clean', 'western-food', 'single-prep', 'nhieu-rau', 'it-cay', 'chay', 'nhanh-gon'
   completed: boolean;
 }
 
@@ -249,6 +249,7 @@ export interface CollabCheckState {
   checkedById?: string; // unique ID e.g. "usr_178997..."
   checkedByColor?: string; // shopper badge color
   checkedAt: number; // timestamp
+  buyerCount?: number; // count of people who bought this item (default 1 when checked)
 }
 
 export interface CollabRoom {
@@ -257,9 +258,23 @@ export interface CollabRoom {
   hostName: string;
   createdAt: number;
   updatedAt: number;
+  expiresAt?: number; // timestamp when room expires (1 hour TTL)
+  ttlMs?: number; // TTL duration in milliseconds (default 3600000 = 1 hour)
+  isExpired?: boolean;
   items: CollabCartItem[];
   checkedMap: Record<string, CollabCheckState>;
   participants?: Record<string, CollabShopper>;
+}
+
+export const isMealSet = (item: any): item is VietnameseMealSet => {
+  return Boolean(item && typeof item === 'object' && 'mainDish' in item && 'soupDish' in item && 'sideDish' in item);
+};
+
+export interface RegisteredUser {
+  name: string;
+  email: string;
+  isRegistered: boolean;
+  registeredAt?: string;
 }
 
 

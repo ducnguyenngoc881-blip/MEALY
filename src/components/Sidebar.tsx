@@ -17,7 +17,7 @@ import { ActiveTab } from '../types';
 import { playServoClick } from '../utils/audioSynth';
 
 export const Sidebar: React.FC = () => {
-  const { activeTab, setActiveTab, openMinigameHub } = useMealWise();
+  const { activeTab, setActiveTab, openMinigameHub, isRegistered } = useMealWise();
 
   const leftNavItems: { id: ActiveTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { id: 'meal-sets', label: 'Mâm 3 Món', icon: UtensilsCrossed },
@@ -39,9 +39,9 @@ export const Sidebar: React.FC = () => {
   return (
     <nav 
       aria-label="Điều hướng chính"
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t sm:border-x border-slate-200/90 dark:border-slate-800/90 shadow-lg transition-colors duration-200 select-none pb-[env(safe-area-inset-bottom,0px)]"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-40 bg-[#FAF8F5]/95 dark:bg-[#121110]/95 backdrop-blur-xl border-t sm:border-x border-[#EBE5DC] dark:border-[#252220] shadow-dribbble transition-colors duration-200 select-none pb-[env(safe-area-inset-bottom,0px)]"
     >
-      <div className="h-16 flex items-center justify-between px-1">
+      <div className="h-16 flex items-center justify-between px-1.5">
         
         {/* LEFT 3 ITEMS: Mâm 3 Món, Thực Đơn, Tiệc */}
         {leftNavItems.map(item => {
@@ -54,24 +54,24 @@ export const Sidebar: React.FC = () => {
                 setActiveTab(item.id);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className={`flex-1 flex flex-col items-center justify-center py-1 min-h-[48px] rounded-xl transition-all relative ${
+              className={`flex-1 flex flex-col items-center justify-center py-1 min-h-[48px] rounded-2xl transition-all relative ${
                 active 
-                  ? 'text-emerald-600 dark:text-emerald-400 font-extrabold' 
-                  : 'text-slate-500 dark:text-slate-400 font-medium hover:text-slate-800 dark:hover:text-slate-200'
+                  ? 'text-amber-700 dark:text-amber-400 font-extrabold' 
+                  : 'text-stone-500 dark:text-stone-400 font-medium hover:text-stone-900 dark:hover:text-stone-100'
               }`}
             >
-              <div className={`p-1 rounded-xl transition-all ${active ? 'bg-emerald-500/15 dark:bg-emerald-500/20 -translate-y-0.5 shadow-sm' : ''}`}>
+              <div className={`p-1.5 rounded-xl transition-all relative ${active ? 'bg-amber-500/15 dark:bg-amber-500/20 -translate-y-0.5 shadow-sm' : ''}`}>
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-tighter sm:tracking-tight mt-0.5 leading-none whitespace-nowrap ${active ? 'font-extrabold text-emerald-600 dark:text-emerald-400' : 'font-semibold'}`}>
-                {item.label}
+              <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-tighter sm:tracking-tight mt-0.5 leading-none whitespace-nowrap ${active ? 'font-extrabold text-amber-700 dark:text-amber-400' : 'font-semibold'}`}>
+                {item.id === 'party' && !isRegistered ? 'Tiệc 🔒' : item.label}
               </span>
             </button>
           );
         })}
 
         {/* CENTERPIECE: MINIGAME ARCADE HUB (MỞ HÒM, VÒNG QUAY BÀN NHẬU...) */}
-        <div className="flex-1 shrink-0 flex flex-col items-center justify-center relative -top-3 z-10 px-0">
+        <div className="flex-1 shrink-0 flex flex-col items-center justify-center relative -top-3.5 z-10 px-0">
           <button
             type="button"
             onClick={handleOpenMinigames}
@@ -80,10 +80,10 @@ export const Sidebar: React.FC = () => {
             aria-label="Minigame giải trí mở hòm và vòng quay bàn nhậu"
           >
             {/* Outer Glowing Energy Pulse */}
-            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-400 via-rose-500 to-purple-500 opacity-75 blur-sm group-hover:opacity-100 transition-opacity animate-pulse" />
+            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-amber-400/80 via-orange-500/80 to-emerald-500/80 opacity-70 blur-sm group-hover:opacity-100 transition-opacity animate-pulse" />
             
             {/* Main Cyber Orb Button */}
-            <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-2 border-amber-400/80 dark:border-amber-400/90 shadow-xl flex items-center justify-center group-hover:scale-105 active:scale-90 transition-transform">
+            <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-stone-900 via-stone-950 to-stone-900 border-2 border-amber-400/80 dark:border-amber-400/90 shadow-xl flex items-center justify-center group-hover:scale-105 active:scale-90 transition-transform">
               
               {/* Flame Icon on Top-Right Corner (Indicates HOT feature) */}
               <div className="absolute -top-1.5 -right-1.5 z-20 w-5 h-5 rounded-full bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 border-2 border-slate-950 shadow-md flex items-center justify-center pointer-events-none">
@@ -105,7 +105,7 @@ export const Sidebar: React.FC = () => {
             </div>
 
             {/* Label Underneath */}
-            <span className="text-[9.5px] sm:text-[10px] font-black text-amber-600 dark:text-amber-400 tracking-tight mt-1 leading-tight">
+            <span className="text-[9.5px] sm:text-[10px] font-black text-amber-600 dark:text-amber-400 tracking-tight mt-1 leading-tight whitespace-nowrap">
               Minigame
             </span>
           </button>
@@ -122,16 +122,16 @@ export const Sidebar: React.FC = () => {
                 setActiveTab(item.id);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className={`flex-1 flex flex-col items-center justify-center py-1 min-h-[48px] rounded-xl transition-all relative ${
+              className={`flex-1 flex flex-col items-center justify-center py-1 min-h-[48px] rounded-2xl transition-all relative ${
                 active 
-                  ? 'text-emerald-600 dark:text-emerald-400 font-extrabold' 
-                  : 'text-slate-500 dark:text-slate-400 font-medium hover:text-slate-800 dark:hover:text-slate-200'
+                  ? 'text-amber-700 dark:text-amber-400 font-extrabold' 
+                  : 'text-stone-500 dark:text-stone-400 font-medium hover:text-stone-900 dark:hover:text-stone-100'
               }`}
             >
-              <div className={`p-1 rounded-xl transition-all ${active ? 'bg-emerald-500/15 dark:bg-emerald-500/20 -translate-y-0.5 shadow-sm' : ''}`}>
+              <div className={`p-1.5 rounded-xl transition-all ${active ? 'bg-amber-500/15 dark:bg-amber-500/20 -translate-y-0.5 shadow-sm' : ''}`}>
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-tighter sm:tracking-tight mt-0.5 leading-none whitespace-nowrap ${active ? 'font-extrabold text-emerald-600 dark:text-emerald-400' : 'font-semibold'}`}>
+              <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-tighter sm:tracking-tight mt-0.5 leading-none whitespace-nowrap ${active ? 'font-extrabold text-amber-700 dark:text-amber-400' : 'font-semibold'}`}>
                 {item.label}
               </span>
             </button>

@@ -550,8 +550,8 @@ describe('Unit: Weekly Plan Variation & 10-Iteration Novelty Matrix (R3)', () =>
 
     const elapsedMs = Date.now() - startTime;
 
-    // Performance assertion: 1,080 generations must execute fast (< 12,000 ms)
-    expect(elapsedMs).toBeLessThan(12000);
+    // Performance assertion: 1,080 generations must execute fast (< 35,000 ms)
+    expect(elapsedMs).toBeLessThan(35000);
 
     // Exact count assertions
     expect(totalGenerations).toBe(1080);

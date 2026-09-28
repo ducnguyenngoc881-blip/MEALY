@@ -207,3 +207,18 @@ export function matchesMealSetSearch(
   const queryTokens = normQuery.split(/\s+/).filter(Boolean);
   return queryTokens.every(token => combined.includes(token));
 }
+
+/**
+ * Guard against recommending hotpot / banquet feast dishes in everyday family meal sets.
+ * Hotpot (lẩu) is a standalone multi-course feast, not a component soup/dish in a 3-dish meal set.
+ */
+export function isHotpotOrFeast(recipe: { title?: string; id?: string; tags?: string[] } | null | undefined): boolean {
+  if (!recipe) return false;
+  const title = (recipe.title || '').toLowerCase();
+  const id = (recipe.id || '').toLowerCase();
+  if (/lẩu|hotpot|đại tiệc|mâm tiệc/i.test(title)) return true;
+  if (/lẩu|hotpot|party/i.test(id)) return true;
+  if (recipe.tags && recipe.tags.some(t => /lẩu|hotpot|mâm tiệc|đại tiệc/i.test(t))) return true;
+  return false;
+}
+

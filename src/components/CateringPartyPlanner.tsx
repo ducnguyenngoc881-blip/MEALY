@@ -34,7 +34,8 @@ import {
   ChevronUp,
   Save,
   FolderHeart,
-  Timer
+  Timer,
+  Lock
 } from 'lucide-react';
 import { PartyDishItem, Recipe, SavedPartyPreset } from '../types';
 import { CORPORATE_PARTY_PRESETS } from '../data/corporatePartyPresets';
@@ -352,7 +353,9 @@ export const CateringPartyPlanner: React.FC = () => {
     deleteUserPartyPlan,
     loadUserPartyPlan,
     setSelectedRecipe, 
-    showToast 
+    showToast,
+    isRegistered,
+    openAuthModal
   } = useMealWise();
 
   const [activeMode, setActiveMode] = useState<'builder' | 'presets'>('builder');
@@ -656,6 +659,71 @@ export const CateringPartyPlanner: React.FC = () => {
       return true;
     });
   }, [recipes, recipeSearch, selectedModalCourseTab, selectedFilterCategory]);
+
+  if (!isRegistered) {
+    return (
+      <div className="space-y-4 max-w-lg mx-auto pb-24 animate-in fade-in duration-300">
+        <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-600/5 dark:from-stone-900 dark:via-amber-950/20 dark:to-stone-900 border border-amber-500/30 text-center shadow-lg relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="w-16 h-16 mx-auto mb-3.5 rounded-3xl bg-gradient-to-tr from-amber-500 to-amber-400 text-stone-950 flex items-center justify-center shadow-lg shadow-amber-500/30">
+            <Lock className="w-8 h-8" />
+          </div>
+
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30 text-[11px] font-black uppercase tracking-wider mb-2">
+            <Sparkles className="w-3.5 h-3.5" /> Tính Năng Thành Viên
+          </span>
+
+          <h2 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white tracking-tight mb-2">
+            Lên Thực Đơn Tiệc & Catering
+          </h2>
+
+          <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-md mx-auto leading-relaxed mb-6">
+            Đăng ký tài khoản miễn phí để mở khóa hệ thống tính toán định lượng mâm tiệc cho <strong>10 đến 200+ khách</strong>, tự động chia bàn, danh mục thiết bị và xuất bảng báo giá chuyên nghiệp.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-left mb-6">
+            <div className="p-3 rounded-2xl bg-white/80 dark:bg-stone-850/80 border border-stone-200/80 dark:border-stone-800">
+              <span className="text-lg block mb-1">🍗</span>
+              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">50+ Mâm Tiệc Chuẩn</h4>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400">Đầy đủ 5 món: Khai vị, Món chính, Lẩu ấm, Tinh bột & Tráng miệng.</p>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-white/80 dark:bg-stone-850/80 border border-stone-200/80 dark:border-stone-800">
+              <span className="text-lg block mb-1">👥</span>
+              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Chia Bàn Tự Động</h4>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400">Tự chia bàn 6, 8, 10 người và nhân suất ăn chuẩn xác từng gram.</p>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-white/80 dark:bg-stone-850/80 border border-stone-200/80 dark:border-stone-800">
+              <span className="text-lg block mb-1">📋</span>
+              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Báo Giá Zalo 1 Chạm</h4>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400">Xuất bảng báo giá chi tiết, danh mục trang thiết bị gửi đối tác.</p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => openAuthModal('register')}
+              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-sm shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Đăng Ký Miễn Phí Để Mở Khóa</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => openAuthModal('login')}
+              className="w-full py-2.5 px-4 text-xs font-extrabold text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white cursor-pointer"
+            >
+              Đã có tài khoản? Đăng nhập ngay
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 w-full max-w-full overflow-x-hidden pb-36">

@@ -22,7 +22,7 @@ import {
   AlertTriangle,
   Apple
 } from 'lucide-react';
-import { matchesSearchTerm, matchesMealSetSearch, matchesRecipeSearch } from '../utils/textUtils';
+import { matchesSearchTerm, matchesMealSetSearch, matchesRecipeSearch, isHotpotOrFeast } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
 import { roundToThousand, scaleCost, getDailyBudgetTarget } from '../utils/currency';
 
@@ -46,6 +46,7 @@ export const WeeklyBoard: React.FC = () => {
     recalibrateWeeklyMenu,
     clearWeeklyMenu, 
     addMealSetToSlot,
+    swapDishInWeeklySlot,
     addRecipeToSlot,
     removeMealFromSlot,
     setSelectedRecipe,
@@ -131,28 +132,33 @@ export const WeeklyBoard: React.FC = () => {
 
   const activeDay = weeklyPlan[selectedDayIndex] || weeklyPlan[0];
 
-  // Calculate overall weekly totals
-  let totalWeeklyCost = 0;
-  let totalWeeklyMeals = 0;
+  const isMealSet = (item: any): item is VietnameseMealSet => {
+    return item && 'mainDish' in item;
+  };
 
+  const getDayCost = (day: typeof weeklyPlan[0]) => {
+    let cost = 0;
+    Object.values(day.meals).forEach(m => {
+      if (m) {
+        if (isMealSet(m)) cost += m.totalCostVnd;
+        else cost += m.estimatedCostVnd || 35000;
+      }
+    });
+    return scaleCost(cost, safeServings);
+  };
+
+  // Calculate overall weekly totals
+  let totalWeeklyMeals = 0;
   weeklyPlan.forEach(day => {
     Object.values(day.meals).forEach(meal => {
       if (meal) {
         totalWeeklyMeals += 1;
-        if ('totalCostVnd' in meal) {
-          totalWeeklyCost += meal.totalCostVnd;
-        } else {
-          totalWeeklyCost += meal.estimatedCostVnd || 0;
-        }
       }
     });
   });
 
-  const scaledTotalWeeklyCost = scaleCost(totalWeeklyCost, safeServings);
-
-  const isMealSet = (item: any): item is VietnameseMealSet => {
-    return item && 'mainDish' in item;
-  };
+  // Sum the 7 displayed scaledDayCost values for exact arithmetic alignment with the day pills
+  const scaledTotalWeeklyCost = weeklyPlan.reduce((sum, d) => sum + getDayCost(d), 0);
 
   // Active day nutrition & cost calculation
   let dayCalories = 0;
@@ -182,22 +188,11 @@ export const WeeklyBoard: React.FC = () => {
   // vua-phai: 95,000 VND/person/day
   // thoai-mai: 140,000 VND/person/day
   const currentBudgetLevel = onboardingData?.budgetLevel || 'vua-phai';
-  const dailyBudgetTarget = getDailyBudgetTarget(currentBudgetLevel, safeServings);
+  const dailyBudgetTarget = getDailyBudgetTarget(currentBudgetLevel, safeServings, onboardingData?.specialNeeds);
 
   const isOverBudget = scaledDayCost > dailyBudgetTarget * 1.1; // Exceeds by >10%
   const budgetExcess = scaledDayCost - dailyBudgetTarget;
   const isSingleDishMode = safeServings === 1 && onboardingData?.singleMealFormat !== 'meal-set';
-
-  const getDayCost = (day: typeof weeklyPlan[0]) => {
-    let cost = 0;
-    Object.values(day.meals).forEach(m => {
-      if (m) {
-        if (isMealSet(m)) cost += m.totalCostVnd;
-        else cost += m.estimatedCostVnd || 35000;
-      }
-    });
-    return scaleCost(cost, safeServings);
-  };
 
   const hasAnyOverBudgetDay = weeklyPlan.some(d => getDayCost(d) > dailyBudgetTarget * 1.1);
 
@@ -214,8 +209,16 @@ export const WeeklyBoard: React.FC = () => {
   }, [recipes, dayRemainingBudget, safeServings]);
 
   const handleOpenSlotPicker = (dayId: string, slot: MealSlot) => {
-    if (slot === 'breakfast' || slot === 'snack' || isSingleDishMode) {
+    const targetDay = weeklyPlan.find(d => d.dayId === dayId) || activeDay;
+    const currentMeal = targetDay.meals[slot];
+    if (slot === 'snack' || isSingleDishMode) {
       setPickerTab('single-recipes');
+    } else if (slot === 'breakfast') {
+      if (currentMeal && isMealSet(currentMeal)) {
+        setPickerTab('meal-sets');
+      } else {
+        setPickerTab('single-recipes');
+      }
     } else {
       setPickerTab('meal-sets');
     }
@@ -242,12 +245,13 @@ export const WeeklyBoard: React.FC = () => {
       showToast(`🔄 Đã đổi sang món xế "${randomSnack.title}"!`);
     } else {
       if (isSingleDishMode) {
-        const eligibleRecipes = recipes.filter(r => r.category !== 'an-sang' && r.category !== 'trang-mieng');
+        const eligibleRecipes = recipes.filter(r => r.category !== 'an-sang' && r.category !== 'trang-mieng' && !isHotpotOrFeast(r));
         const randomRecipe = eligibleRecipes[Math.floor(Math.random() * eligibleRecipes.length)] || recipes[0];
         addRecipeToSlot(dayId, slot, randomRecipe.id);
         showToast(`🔄 Đã đổi sang món "${randomRecipe.title}"!`);
       } else {
-        const randomSet = mealSets[Math.floor(Math.random() * mealSets.length)];
+        const eligibleSets = mealSets.filter(s => !isHotpotOrFeast(s.mainDish) && !isHotpotOrFeast(s.soupDish) && !isHotpotOrFeast(s.sideDish));
+        const randomSet = eligibleSets[Math.floor(Math.random() * eligibleSets.length)] || mealSets[0];
         addMealSetToSlot(dayId, slot, randomSet.id);
         showToast(`🔄 Đã đổi sang mâm "${randomSet.title}"!`);
       }
@@ -258,9 +262,9 @@ export const WeeklyBoard: React.FC = () => {
     <div className="space-y-4">
       
       {/* Top Banner & Quick Controls */}
-      <div className="p-4 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-emerald-950/10 via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-900 dark:to-emerald-950/50 space-y-3">
+      <div className="p-4 rounded-3xl glass-card border border-[#EBE5DC] dark:border-[#252220] bg-gradient-to-br from-amber-950/10 via-stone-50 to-stone-100 dark:from-[#1C1A18] dark:via-[#1C1A18] dark:to-amber-950/30 space-y-3">
         <div className="flex items-center justify-between">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/25 dark:border-emerald-500/30 text-[11px] font-bold">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-[11px] font-bold">
             <Calendar className="w-3.5 h-3.5" />
             <span>Thực Đơn 7 Ngày Mâm Cơm Việt</span>
           </div>
@@ -279,7 +283,7 @@ export const WeeklyBoard: React.FC = () => {
                 }
               });
             }}
-            className="p-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-slate-600 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-300 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-stone-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-stone-600 hover:text-rose-600 dark:text-stone-300 dark:hover:text-rose-300 border border-[#EBE5DC] dark:border-white/10 transition-colors cursor-pointer"
             title="Xóa thực đơn tuần"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -287,29 +291,42 @@ export const WeeklyBoard: React.FC = () => {
         </div>
 
         <div>
-          <h1 className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-lg font-black tracking-tight text-stone-900 dark:text-white">
             Kế Hoạch Ăn Uống Tròn Vị
           </h1>
-          <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">
+          <p className="text-xs text-stone-600 dark:text-stone-300 mt-0.5 leading-relaxed">
             Mâm cơm 3 món chuẩn vị gia đình, tự động cân đối chi phí và dinh dưỡng.
           </p>
         </div>
 
         {/* Active User Goal Summary Chip */}
         {onboardingData && onboardingData.completed && (
-          <div className="flex items-start sm:items-center justify-between gap-2.5 px-3 py-2 rounded-2xl bg-white/80 dark:bg-slate-850/80 border border-emerald-500/20 shadow-sm text-xs">
+          <div className="flex items-start sm:items-center justify-between gap-2.5 px-3 py-2 rounded-2xl bg-white/80 dark:bg-[#1C1A18]/80 border border-[#EBE5DC] dark:border-[#292524] shadow-sm text-xs">
             <div className="flex items-start gap-1.5 min-w-0 flex-1">
               <span className="text-sm shrink-0 leading-none mt-0.5 sm:mt-0">🎯</span>
               <div className="min-w-0 flex-1 leading-snug">
-                <span className="font-extrabold text-slate-900 dark:text-white shrink-0">Mục tiêu: </span>
-                <span className="text-emerald-700 dark:text-emerald-400 font-bold break-words">
-                  {onboardingData.specialNeeds?.includes('gym-protein') ? 'Tập Gym / Giàu Đạm'
-                    : onboardingData.specialNeeds?.includes('eat-clean') ? 'Eat Clean / Lành Mạnh'
-                    : onboardingData.specialNeeds?.includes('chay') ? 'Ăn Chay Thanh Tịnh'
-                    : onboardingData.specialNeeds?.includes('nhieu-rau') ? 'Nhiều Rau Xanh'
-                    : onboardingData.familySize === 1 
-                      ? (onboardingData.singleMealFormat === 'meal-set' ? 'Độc Thân • Mâm 3 Món' : 'Độc Thân • Món Đơn')
-                    : 'Gia Đình Cân Bằng'}
+                <span className="font-extrabold text-stone-900 dark:text-white shrink-0">Mục tiêu: </span>
+                <span className="text-amber-800 dark:text-amber-400 font-bold break-words">
+                  {(() => {
+                    const needsMap: Record<string, string> = {
+                      'gym-protein': 'Tập Gym',
+                      'eat-clean': 'Eat Clean',
+                      'western-food': 'Món Âu',
+                      'chay': 'Ăn Chay',
+                      'nhieu-rau': 'Nhiều Rau',
+                      'it-cay': 'Ít Cay',
+                      'nhanh-gon': 'Nhanh Gọn'
+                    };
+                    const activeNeeds = (onboardingData.specialNeeds || [])
+                      .map(k => needsMap[k])
+                      .filter(Boolean);
+
+                    return activeNeeds.length > 0
+                      ? activeNeeds.join(' • ')
+                      : onboardingData.familySize === 1
+                        ? (onboardingData.singleMealFormat === 'meal-set' ? 'Độc Thân • Mâm 3 Món' : 'Độc Thân • Món Đơn')
+                        : 'Gia Đình Cân Bằng';
+                  })()}
                   {' • '}
                   {onboardingData.regionPreference === 'bac' ? 'Vị Bắc'
                     : onboardingData.regionPreference === 'nam' ? 'Vị Nam'
@@ -323,7 +340,7 @@ export const WeeklyBoard: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowOnboarding(true)}
-              className="text-[11px] font-black text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:underline px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 shrink-0 transition-colors self-start sm:self-center whitespace-nowrap"
+              className="text-[11px] font-black text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 hover:underline px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 shrink-0 transition-colors self-start sm:self-center whitespace-nowrap"
             >
               Đổi mục tiêu
             </button>
@@ -336,15 +353,15 @@ export const WeeklyBoard: React.FC = () => {
             type="button"
             onClick={handleAutoFillWeekly}
             disabled={isGenerating}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs rounded-xl shadow-md shadow-emerald-500/25 active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-stone-950 font-extrabold text-xs rounded-xl shadow-md shadow-amber-500/25 active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
           >
-            <Sparkles className={`w-3.5 h-3.5 text-slate-950 fill-slate-950 shrink-0 ${isGenerating ? 'animate-spin' : ''}`} />
+            <Sparkles className={`w-3.5 h-3.5 text-stone-950 fill-stone-950 shrink-0 ${isGenerating ? 'animate-spin' : ''}`} />
             <span>{isGenerating ? 'Đang Tạo Thực Đơn...' : 'Gợi Ý 1-Click Cả Tuần'}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('grocery')}
-            className="flex items-center gap-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white border border-slate-200 dark:border-white/15 text-xs font-bold rounded-xl transition-all active:scale-95 shrink-0"
+            className="flex items-center gap-1 py-2 px-3 bg-stone-100 hover:bg-stone-200 dark:bg-white/10 dark:hover:bg-white/20 text-stone-800 dark:text-white border border-[#EBE5DC] dark:border-white/15 text-xs font-bold rounded-xl transition-all active:scale-95 shrink-0"
           >
             <span>Đi Chợ</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -352,15 +369,17 @@ export const WeeklyBoard: React.FC = () => {
         </div>
 
         {/* Weekly Stats Micro Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-2 pt-2 border-t border-slate-200/80 dark:border-white/10 text-[11px] text-slate-600 dark:text-slate-300 font-medium">
+        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-2 pt-2 border-t border-[#EBE5DC] dark:border-white/10 text-[11px] text-stone-600 dark:text-stone-300 font-medium">
           <span className="shrink-0">{totalWeeklyMeals} / 21 bữa đã xếp</span>
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <span className={`font-extrabold whitespace-nowrap ${
-              hasAnyOverBudgetDay ? 'text-rose-700 dark:text-rose-400' : 'text-emerald-700 dark:text-emerald-400'
+              hasAnyOverBudgetDay || scaledTotalWeeklyCost > (dailyBudgetTarget * 7) 
+                ? 'text-rose-700 dark:text-rose-400' 
+                : 'text-emerald-700 dark:text-emerald-400'
             }`}>
               {scaledTotalWeeklyCost.toLocaleString('vi-VN')} đ / {(dailyBudgetTarget * 7).toLocaleString('vi-VN')} đ/tuần
             </span>
-            {hasAnyOverBudgetDay && (
+            {(hasAnyOverBudgetDay || scaledTotalWeeklyCost > (dailyBudgetTarget * 7)) && (
               <button
                 type="button"
                 onClick={() => recalibrateWeeklyMenu()}
@@ -376,7 +395,7 @@ export const WeeklyBoard: React.FC = () => {
       </div>
 
       {/* NATIVE MOBILE HORIZONTAL DAY PICKER STRIP (T2 -> CN) */}
-      <div className="bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="bg-white dark:bg-[#1C1A18] p-1.5 rounded-2xl border border-[#EBE5DC] dark:border-[#252220] shadow-sm">
         <div className="grid grid-cols-7 gap-1">
           {weeklyPlan.map((day, index) => {
             const active = selectedDayIndex === index;
@@ -392,22 +411,22 @@ export const WeeklyBoard: React.FC = () => {
                 onClick={() => setSelectedDayIndex(index)}
                 className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center transition-all min-h-[54px] relative ${
                   active
-                    ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/25 scale-[1.02]'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'bg-amber-500 text-stone-950 font-black shadow-md shadow-amber-500/25 scale-[1.02]'
+                    : 'text-stone-600 dark:text-stone-400 hover:bg-[#F3EFEA] dark:hover:bg-[#252220]'
                 }`}
               >
                 <span className="text-xs font-black tracking-tight leading-none">
                   {dayMeta.short}
                 </span>
                 
-                <span className={`text-[10px] mt-1 font-bold leading-none ${active ? 'text-slate-950' : 'text-slate-500 dark:text-slate-400'}`}>
+                <span className={`text-[10px] mt-1 font-bold leading-none ${active ? 'text-stone-950' : 'text-stone-500 dark:text-stone-400'}`}>
                   {mealsCount}/3
                 </span>
 
                 {thisDayOverBudget && !active ? (
-                  <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1 right-1 ring-2 ring-white dark:ring-slate-900" title="Vượt ngân sách ngày" />
+                  <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1 right-1 ring-2 ring-white dark:ring-stone-900" title="Vượt ngân sách ngày" />
                 ) : isFull && !active ? (
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 absolute top-1 right-1" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 absolute top-1 right-1" />
                 ) : null}
               </button>
             );
@@ -430,7 +449,7 @@ export const WeeklyBoard: React.FC = () => {
               <h2 className="text-base font-black text-slate-900 dark:text-white">
                 {activeDay.dayName}
               </h2>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-extrabold">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold">
                 {Object.values(activeDay.meals).filter(Boolean).length} / 3 bữa
               </span>
             </div>
@@ -442,7 +461,7 @@ export const WeeklyBoard: React.FC = () => {
           {/* Servings Stepper: [ - ] [ input ] [ + ] bounded [1..20] */}
           <div className="flex items-center justify-between sm:justify-end gap-2 bg-slate-100 dark:bg-slate-900/90 px-3 py-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shrink-0">
             <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1 whitespace-nowrap">
-              <Users className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <Users className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
               Khẩu phần:
             </span>
             <div className="flex items-center gap-1.5 shrink-0">
@@ -469,7 +488,7 @@ export const WeeklyBoard: React.FC = () => {
                       handleServingsChange(1);
                     }
                   }}
-                  className="w-9 sm:w-10 text-center text-xs font-black text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1 focus:outline-none focus:ring-1 focus:ring-emerald-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-9 sm:w-10 text-center text-xs font-black text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1 focus:outline-none focus:ring-1 focus:ring-amber-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   aria-label="Số người ăn"
                 />
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">người</span>
@@ -492,15 +511,15 @@ export const WeeklyBoard: React.FC = () => {
           <div className={`p-2 sm:p-2.5 rounded-2xl border text-center transition-all min-w-0 ${
             isOverBudget
               ? 'bg-rose-500/10 border-rose-500/30'
-              : 'bg-emerald-500/10 border-emerald-500/20'
+              : 'bg-amber-500/10 border-amber-500/20'
           }`}>
             <span className={`text-[9px] font-extrabold uppercase tracking-wider block truncate ${
-              isOverBudget ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'
+              isOverBudget ? 'text-rose-700 dark:text-rose-300' : 'text-amber-800 dark:text-amber-300'
             }`}>
               CHI PHÍ NGÀY
             </span>
             <p className={`text-xs font-black mt-0.5 truncate ${
-              isOverBudget ? 'text-rose-800 dark:text-rose-300' : 'text-emerald-800 dark:text-emerald-300'
+              isOverBudget ? 'text-rose-800 dark:text-rose-300' : 'text-amber-800 dark:text-amber-300'
             }`}>
               {scaledDayCost.toLocaleString('vi-VN')} đ
             </p>
@@ -533,7 +552,7 @@ export const WeeklyBoard: React.FC = () => {
           isOverBudget
             ? 'bg-rose-500/15 border-rose-500/40 text-rose-700 dark:text-rose-300 shadow-sm shadow-rose-500/10'
             : scaledDayCost > 0
-            ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
+            ? 'bg-emerald-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
             : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
         }`}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
@@ -541,7 +560,7 @@ export const WeeklyBoard: React.FC = () => {
               {isOverBudget ? (
                 <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
               ) : scaledDayCost > 0 ? (
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
               ) : (
                 <Utensils className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               )}
@@ -630,7 +649,7 @@ export const WeeklyBoard: React.FC = () => {
             </div>
             <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shrink-0 self-start sm:self-center ${
               scaledDayProtein >= safeServings * 65
-                ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
+                ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30'
                 : 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30'
             }`}>
               {scaledDayProtein >= safeServings * 65 ? '✓ Đạt Chuẩn Gym' : `Cần Thêm ~${Math.max(0, safeServings * 70 - scaledDayProtein)}g Đạm`}
@@ -639,7 +658,7 @@ export const WeeklyBoard: React.FC = () => {
         )}
 
         {onboardingData?.specialNeeds?.includes('eat-clean') && (
-          <div className="px-3 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between text-xs text-emerald-800 dark:text-emerald-300">
+          <div className="px-3 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="text-sm">🥗</span>
               <span className="truncate">Lối sống Eat Clean: Kiểm soát calo ({scaledDayCalories} kcal) & ưu tiên món luộc, hấp thanh nhẹ.</span>
@@ -658,6 +677,18 @@ export const WeeklyBoard: React.FC = () => {
             </div>
             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-200 shrink-0 ml-2 font-extrabold">
               Meal Prep
+            </span>
+          </div>
+        )}
+
+        {onboardingData?.specialNeeds?.includes('western-food') && (
+          <div className="px-3 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-sm">🥩</span>
+              <span className="truncate">Phong Vị Món Âu: Ưu tiên các món bít tết, mì Ý, súp kem & salad đổi vị bữa ăn.</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-200 shrink-0 ml-2 font-extrabold">
+              Món Âu
             </span>
           </div>
         )}
@@ -701,22 +732,73 @@ export const WeeklyBoard: React.FC = () => {
                 /* Rich 3-Dish Set Card for Breakfast */
                 <div 
                   onClick={() => setSelectedMealSet(activeDay.meals.breakfast as VietnameseMealSet)}
-                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-emerald-500/30 hover:border-emerald-500 cursor-pointer space-y-2 shadow-sm transition-all"
+                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-amber-500/30 hover:border-amber-500 cursor-pointer space-y-2 shadow-sm transition-all"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-emerald-700 dark:text-emerald-300 truncate min-w-0 flex-1">
+                    <span className="text-xs font-black text-amber-800 dark:text-amber-300 truncate min-w-0 flex-1">
                       {(activeDay.meals.breakfast as VietnameseMealSet).title}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-extrabold shrink-0 whitespace-nowrap">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold shrink-0 whitespace-nowrap">
                       Mâm 3 Món
                     </span>
                   </div>
 
                   {/* 3 Dishes Details */}
-                  <div className="space-y-1 text-[11px] text-slate-700 dark:text-slate-300">
-                    <p className="truncate">🔴 <strong className="text-rose-600 dark:text-rose-400">Mặn:</strong> {(activeDay.meals.breakfast as VietnameseMealSet).mainDish.title}</p>
-                    <p className="truncate">🔵 <strong className="text-sky-600 dark:text-sky-400">Canh:</strong> {(activeDay.meals.breakfast as VietnameseMealSet).soupDish.title}</p>
-                    <p className="truncate">🟢 <strong className="text-emerald-600 dark:text-emerald-400">Rau:</strong> {(activeDay.meals.breakfast as VietnameseMealSet).sideDish.title}</p>
+                  <div className="space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-rose-600 dark:text-rose-400">🔴 Mặn:</span>
+                        <span className="truncate">{(activeDay.meals.breakfast as VietnameseMealSet).mainDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'mainDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-rose-500/15 active:scale-95 text-slate-600 hover:text-rose-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-rose-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món mặn này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-sky-600 dark:text-sky-400">🔵 Canh:</span>
+                        <span className="truncate">{(activeDay.meals.breakfast as VietnameseMealSet).soupDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'soupDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-sky-500/15 active:scale-95 text-slate-600 hover:text-sky-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-sky-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món canh này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-emerald-600 dark:text-emerald-400">🟢 Rau:</span>
+                        <span className="truncate">{(activeDay.meals.breakfast as VietnameseMealSet).sideDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'sideDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-amber-500/15 active:scale-95 text-slate-600 hover:text-amber-800 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-emerald-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món rau này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="pt-2 flex items-center justify-between text-[10px] text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800">
@@ -730,7 +812,7 @@ export const WeeklyBoard: React.FC = () => {
                 /* Single Dish for Breakfast */
                 <div 
                   onClick={() => setSelectedRecipe(activeDay.meals.breakfast as Recipe)}
-                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <SafeImage 
@@ -755,7 +837,7 @@ export const WeeklyBoard: React.FC = () => {
             ) : (
               <button
                 onClick={() => handleOpenSlotPicker(activeDay.dayId, 'breakfast')}
-                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-amber-500 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>Thêm món ăn sáng (Phở, Bún chả, Xôi...)</span>
@@ -799,22 +881,73 @@ export const WeeklyBoard: React.FC = () => {
                 /* Rich 3-Dish Set Card */
                 <div 
                   onClick={() => setSelectedMealSet(activeDay.meals.lunch as VietnameseMealSet)}
-                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-emerald-500/30 hover:border-emerald-500 cursor-pointer space-y-2 shadow-sm transition-all"
+                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-amber-500/30 hover:border-amber-500 cursor-pointer space-y-2 shadow-sm transition-all"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-emerald-700 dark:text-emerald-300 truncate min-w-0 flex-1">
+                    <span className="text-xs font-black text-amber-800 dark:text-amber-300 truncate min-w-0 flex-1">
                       {activeDay.meals.lunch.title}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-extrabold shrink-0 whitespace-nowrap">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold shrink-0 whitespace-nowrap">
                       Mâm 3 Món
                     </span>
                   </div>
 
                   {/* 3 Dishes Details */}
-                  <div className="space-y-1 text-[11px] text-slate-700 dark:text-slate-300">
-                    <p className="truncate">🔴 <strong className="text-rose-600 dark:text-rose-400">Mặn:</strong> {activeDay.meals.lunch.mainDish.title}</p>
-                    <p className="truncate">🔵 <strong className="text-sky-600 dark:text-sky-400">Canh:</strong> {activeDay.meals.lunch.soupDish.title}</p>
-                    <p className="truncate">🟢 <strong className="text-emerald-600 dark:text-emerald-400">Rau:</strong> {activeDay.meals.lunch.sideDish.title}</p>
+                  <div className="space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-rose-600 dark:text-rose-400">🔴 Mặn:</span>
+                        <span className="truncate">{activeDay.meals.lunch.mainDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'lunch', 'mainDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-rose-500/15 active:scale-95 text-slate-600 hover:text-rose-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-rose-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món mặn này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-sky-600 dark:text-sky-400">🔵 Canh:</span>
+                        <span className="truncate">{activeDay.meals.lunch.soupDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'lunch', 'soupDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-sky-500/15 active:scale-95 text-slate-600 hover:text-sky-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-sky-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món canh này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-emerald-600 dark:text-emerald-400">🟢 Rau:</span>
+                        <span className="truncate">{activeDay.meals.lunch.sideDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'lunch', 'sideDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-amber-500/15 active:scale-95 text-slate-600 hover:text-amber-800 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-emerald-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món rau này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="pt-2 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800">
@@ -828,7 +961,7 @@ export const WeeklyBoard: React.FC = () => {
                 /* Single Dish */
                 <div 
                   onClick={() => setSelectedRecipe(activeDay.meals.lunch as Recipe)}
-                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <SafeImage 
@@ -853,7 +986,7 @@ export const WeeklyBoard: React.FC = () => {
             ) : (
               <button
                 onClick={() => handleOpenSlotPicker(activeDay.dayId, 'lunch')}
-                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-amber-500 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>{isSingleDishMode ? 'Thêm Món Ăn Trưa Gọn Nhẹ' : 'Thêm Mâm Cơm 3 Món Trưa'}</span>
@@ -897,22 +1030,73 @@ export const WeeklyBoard: React.FC = () => {
                 /* Rich 3-Dish Set Card */
                 <div 
                   onClick={() => setSelectedMealSet(activeDay.meals.dinner as VietnameseMealSet)}
-                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-emerald-500/30 hover:border-emerald-500 cursor-pointer space-y-2 shadow-sm transition-all"
+                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-amber-500/30 hover:border-amber-500 cursor-pointer space-y-2 shadow-sm transition-all"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-emerald-700 dark:text-emerald-300 truncate min-w-0 flex-1">
+                    <span className="text-xs font-black text-amber-800 dark:text-amber-300 truncate min-w-0 flex-1">
                       {activeDay.meals.dinner.title}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-extrabold shrink-0 whitespace-nowrap">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold shrink-0 whitespace-nowrap">
                       Mâm 3 Món
                     </span>
                   </div>
 
                   {/* 3 Dishes Details */}
-                  <div className="space-y-1 text-[11px] text-slate-700 dark:text-slate-300">
-                    <p className="truncate">🔴 <strong className="text-rose-600 dark:text-rose-400">Mặn:</strong> {activeDay.meals.dinner.mainDish.title}</p>
-                    <p className="truncate">🔵 <strong className="text-sky-600 dark:text-sky-400">Canh:</strong> {activeDay.meals.dinner.soupDish.title}</p>
-                    <p className="truncate">🟢 <strong className="text-emerald-600 dark:text-emerald-400">Rau:</strong> {activeDay.meals.dinner.sideDish.title}</p>
+                  <div className="space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-rose-600 dark:text-rose-400">🔴 Mặn:</span>
+                        <span className="truncate">{activeDay.meals.dinner.mainDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'dinner', 'mainDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-rose-500/15 active:scale-95 text-slate-600 hover:text-rose-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-rose-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món mặn này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-sky-600 dark:text-sky-400">🔵 Canh:</span>
+                        <span className="truncate">{activeDay.meals.dinner.soupDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'dinner', 'soupDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-sky-500/15 active:scale-95 text-slate-600 hover:text-sky-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-sky-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món canh này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                        <span className="w-14 shrink-0 font-bold text-emerald-600 dark:text-emerald-400">🟢 Rau:</span>
+                        <span className="truncate">{activeDay.meals.dinner.sideDish.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          swapDishInWeeklySlot(activeDay.dayId, 'dinner', 'sideDish');
+                        }}
+                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-amber-500/15 active:scale-95 text-slate-600 hover:text-amber-800 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-emerald-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        title="Đổi riêng món rau này"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
+                        <span>Đổi</span>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="pt-2 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800">
@@ -926,7 +1110,7 @@ export const WeeklyBoard: React.FC = () => {
                 /* Single Dish */
                 <div 
                   onClick={() => setSelectedRecipe(activeDay.meals.dinner as Recipe)}
-                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <SafeImage 
@@ -951,7 +1135,7 @@ export const WeeklyBoard: React.FC = () => {
             ) : (
               <button
                 onClick={() => handleOpenSlotPicker(activeDay.dayId, 'dinner')}
-                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-amber-500 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>{isSingleDishMode ? 'Thêm Món Ăn Tối Gọn Nhẹ' : 'Thêm Mâm Cơm 3 Món Tối'}</span>
@@ -992,7 +1176,7 @@ export const WeeklyBoard: React.FC = () => {
               {/* Single dish presentation for snack */}
               <div 
                 onClick={() => setSelectedRecipe(activeDay.meals.snack as Recipe)}
-                className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
               >
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
                   <SafeImage 
@@ -1035,7 +1219,7 @@ export const WeeklyBoard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleOpenSlotPicker(activeDay.dayId, 'snack')}
-                  className="px-2.5 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 text-[11px] font-extrabold transition-all shrink-0 cursor-pointer"
+                  className="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 text-[11px] font-extrabold transition-all shrink-0 cursor-pointer"
                 >
                   Chọn món
                 </button>
@@ -1050,10 +1234,10 @@ export const WeeklyBoard: React.FC = () => {
                       key={item.id}
                       type="button"
                       onClick={() => addRecipeToSlot(activeDay.dayId, 'snack', item.id)}
-                      className="group px-2 py-1 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-emerald-500 hover:text-slate-950 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 text-[10px] font-bold text-slate-700 dark:text-slate-200 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer"
+                      className="group px-2 py-1 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-amber-500 hover:text-stone-950 border border-slate-200 dark:border-slate-700 hover:border-amber-500 text-[10px] font-bold text-slate-700 dark:text-slate-200 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer"
                       title={`Thêm ${item.title} (${itemCost.toLocaleString('vi-VN')} đ)`}
                     >
-                      <span className="text-emerald-600 dark:text-emerald-400 group-hover:text-slate-950 font-black">+</span>
+                      <span className="text-amber-600 dark:text-amber-400 group-hover:text-stone-950 font-black">+</span>
                       <span className="truncate max-w-[120px]">{item.title}</span>
                       <span className="text-[9px] text-slate-500 dark:text-slate-400 group-hover:text-slate-950/80 font-normal">
                         {itemCost.toLocaleString('vi-VN')} đ
@@ -1090,8 +1274,8 @@ export const WeeklyBoard: React.FC = () => {
           ? 'Bữa Tối'
           : 'Xế / Tráng Miệng';
 
-        // Only allow meal sets for lunch/dinner in multi-person or meal-set mode
-        const showMealSetsTab = (activeSlotPicker.slot === 'lunch' || activeSlotPicker.slot === 'dinner') && !isSingleDishMode;
+        // Allow meal sets for breakfast, lunch, and dinner when not in single-dish mode (snack is single dish only)
+        const showMealSetsTab = activeSlotPicker.slot !== 'snack' && !isSingleDishMode;
 
         // Filter recipes strictly by category
         let eligibleRecipes: Recipe[] = [];
@@ -1173,7 +1357,7 @@ export const WeeklyBoard: React.FC = () => {
               <div className="px-4 pb-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 shrink-0 select-none gap-2">
                 <div className="min-w-0 flex-1">
                   <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
-                    <Utensils className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <Utensils className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                     <span className="truncate">Chọn Món Cho {activeDayForPicker.dayName} ({slotTitle})</span>
                   </h3>
                   <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate block">
@@ -1196,7 +1380,7 @@ export const WeeklyBoard: React.FC = () => {
                     onClick={() => setPickerTab('meal-sets')}
                     className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
                       pickerTab === 'meal-sets'
-                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                        ? 'bg-amber-500 text-stone-950 font-black shadow-md shadow-amber-500/20'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
@@ -1206,18 +1390,18 @@ export const WeeklyBoard: React.FC = () => {
                     onClick={() => setPickerTab('single-recipes')}
                     className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
                       pickerTab === 'single-recipes'
-                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                        ? 'bg-amber-500 text-stone-950 font-black shadow-md shadow-amber-500/20'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
-                    Món Lẻ Trưa/Tối ({recipesToDisplay.length})
+                    {activeSlotPicker.slot === 'breakfast' ? 'Món Ăn Sáng' : 'Món Lẻ Trưa/Tối'} ({recipesToDisplay.length})
                   </button>
                 </div>
               ) : (
                 <div className="px-4 pt-2.5 pb-1 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 shrink-0">
-                  <span className="text-emerald-700 dark:text-emerald-400 font-extrabold flex items-center gap-1.5">
+                  <span className="text-amber-800 dark:text-amber-400 font-extrabold flex items-center gap-1.5">
                     <span>Danh mục:</span>
-                    <span className="px-2 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 text-[11px]">
+                    <span className="px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 text-[11px]">
                       {activeSlotPicker.slot === 'breakfast' ? 'Món Ăn Sáng' : 'Món Xế & Tráng Miệng'}
                     </span>
                   </span>
@@ -1229,10 +1413,10 @@ export const WeeklyBoard: React.FC = () => {
 
               {/* Budget Room Suggestion Bar */}
               {availableBudgetRoom > 0 && (
-                <div className="mx-3 my-1 px-3 py-1.5 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-between gap-2 shrink-0">
-                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 min-w-0">
+                <div className="mx-3 my-1 px-3 py-1.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 flex items-center justify-between gap-2 shrink-0">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-amber-900 dark:text-amber-200 min-w-0">
                     <span>💰 Hạn mức còn dư:</span>
-                    <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
+                    <span className="font-extrabold text-amber-600 dark:text-amber-400">
                       ≤ {availableBudgetRoom.toLocaleString('vi-VN')} đ
                     </span>
                   </div>
@@ -1241,8 +1425,8 @@ export const WeeklyBoard: React.FC = () => {
                     onClick={() => setOnlyWithinBudget(!onlyWithinBudget)}
                     className={`px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold transition-all shrink-0 cursor-pointer ${
                       onlyWithinBudget
-                        ? 'bg-emerald-600 text-white shadow-sm'
-                        : 'bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-500/30'
+                        ? 'bg-amber-500 text-stone-950 font-black shadow-sm'
+                        : 'bg-amber-500/20 text-amber-900 dark:text-amber-200 hover:bg-amber-500/30'
                     }`}
                   >
                     {onlyWithinBudget ? '✓ Đang lọc vừa ví' : 'Xem tất cả giá'}
@@ -1266,7 +1450,7 @@ export const WeeklyBoard: React.FC = () => {
                     value={pickerSearch}
                     onChange={e => setPickerSearch(e.target.value)}
                     placeholder="Tìm kiếm mâm cơm hoặc món ăn..."
-                    className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                    className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-amber-500"
                   />
                   {pickerSearch && (
                     <button
@@ -1294,7 +1478,7 @@ export const WeeklyBoard: React.FC = () => {
                           addMealSetToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, set.id);
                           setActiveSlotPicker(null);
                         }}
-                        className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-emerald-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
+                        className="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-amber-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
                       >
                         <div className="min-w-0">
                           <span className="text-xs font-extrabold text-slate-900 dark:text-white block truncate">
@@ -1303,11 +1487,11 @@ export const WeeklyBoard: React.FC = () => {
                           <p className="text-[10px] text-slate-600 dark:text-slate-400 truncate mt-0.5">
                             {set.mainDish.title} + {set.soupDish.title} + {set.sideDish.title}
                           </p>
-                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold block mt-1">
+                          <span className="text-[10px] text-amber-700 dark:text-amber-300 font-bold block mt-1">
                             {scaleCost(set.totalCostVnd, safeServings).toLocaleString('vi-VN')} đ • {Math.round(set.totalCalories * scale)} kcal
                           </span>
                         </div>
-                        <PlusCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <PlusCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
                       </div>
                     ))
                   )
@@ -1324,17 +1508,17 @@ export const WeeklyBoard: React.FC = () => {
                           addRecipeToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, recipe.id);
                           setActiveSlotPicker(null);
                         }}
-                        className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-emerald-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
+                        className="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-amber-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
                       >
                         <div className="min-w-0">
                           <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
                             {recipe.title}
                           </span>
-                          <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">
+                          <p className="text-[10px] text-amber-700 dark:text-amber-300 font-bold mt-0.5">
                             {scaleCost(recipe.estimatedCostVnd || 30000, safeServings).toLocaleString('vi-VN')} đ • {Math.round((recipe.calories || 300) * scale)} kcal
                           </p>
                         </div>
-                        <PlusCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <PlusCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
                       </div>
                     ))
                   )

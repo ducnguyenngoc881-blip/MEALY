@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealWise • 5 Phong Cách Thiết Kế Giao Diện</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen py-8 px-4 sm:px-8">
+  <div class="max-w-6xl mx-auto space-y-8">
+    
+    <!-- Header -->
+    <div class="text-center space-y-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+        <span>🎨 UI/UX DESIGN SHOWCASE</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
+        5 Phong Cách Thiết Kế Giao Diện MealWise
+      </h1>
+      <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+        Bấm vào từng phong cách bên dưới để xem hình ảnh mockup chi tiết và lựa chọn phong cách bạn ưng ý nhất!
+      </p>
+    </div>
+
+    <!-- Style Selector Tabs -->
+    <div class="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
+      <button onclick="selectStyle(1)" id="tab-1" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25">
+        1. Bento Tech Dark (Linear / Apple Pro)
+      </button>
+      <button onclick="selectStyle(2)" id="tab-2" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">
+        2. Warm Artisanal Gourmet (Kinfolk / Gốm Mộc)
+      </button>
+      <button onclick="selectStyle(3)" id="tab-3" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">
+        3. Neo-Brutalist Pop (Figma / Trẻ Trung)
+      </button>
+      <button onclick="selectStyle(4)" id="tab-4" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">
+        4. VisionOS Spatial Glass (Kính Mờ Không Gian)
+      </button>
+      <button onclick="selectStyle(5)" id="tab-5" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">
+        5. Japanese Zen Bento (Gỗ Tre & Muji)
+      </button>
+    </div>
+
+    <!-- Main Showcase Display -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-5xl mx-auto">
+      
+      <!-- Left: Phone Mockup Frame -->
+      <div class="lg:col-span-6 flex justify-center">
+        <div class="relative w-full max-w-[340px] rounded-[40px] p-3 bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 shadow-2xl shadow-emerald-500/10 border border-slate-700/60">
+          <div class="overflow-hidden rounded-[32px] bg-black aspect-[9/16] relative shadow-inner">
+            <img id="mockup-img" src="/mockups/style1-bento-dark.jpg" alt="MealWise UI Design" class="w-full h-full object-cover transition-opacity duration-300">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Detailed Info & Description -->
+      <div class="lg:col-span-6 space-y-6 flex flex-col justify-center py-4">
+        
+        <div class="space-y-2">
+          <span id="style-tag" class="text-xs font-black px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            PHONG CÁCH 1 • TECH DARK BENTO
+          </span>
+          <h2 id="style-title" class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            Modern Dark Bento Grid
+          </h2>
+          <p id="style-desc" class="text-sm text-slate-300 leading-relaxed">
+            Lấy cảm hứng từ giao diện Linear, Raycast và phong cách Apple Pro Dark Mode. Tông màu than chì huyền bí kết hợp viền vi mảnh phát sáng neon emerald, đồng hồ đo ngân sách vòng tròn 340.000 đ sắc nét và nút bấm hành động nổi bật.
+          </p>
+        </div>
+
+        <!-- Highlights List -->
+        <div class="space-y-3 p-5 rounded-2xl bg-slate-900/80 border border-slate-800">
+          <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider">Đặc Trưng Thiết Kế</h3>
+          <ul id="style-features" class="space-y-2 text-sm text-slate-200">
+            <li class="flex items-center gap-2">✓ Nền Obsidian (#0B0F17) sâu thẳm, dịu mắt trong đêm</li>
+            <li class="flex items-center gap-2">✓ Thẻ bento chia ngăn khoa học, viền phát sáng vi mô</li>
+            <li class="flex items-center gap-2">✓ Vòng tròn SVG hiển thị ngân sách 340.000 đ/ngày và Macro</li>
+            <li class="flex items-center gap-2">✓ Nút '1-Click Optimize' tỏa hào quang neon xanh ngọc</li>
+          </ul>
+        </div>
+
+        <!-- Direct Image Links -->
+        <div class="flex items-center gap-3 pt-2">
+          <a id="full-img-link" href="/mockups/style1-bento-dark.jpg" target="_blank" class="px-5 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs hover:bg-emerald-400 transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+            <span>🔍 Xem Ảnh Kích Thước Gốc (HD)</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Gallery Grid of All 5 Styles Below -->
+    <div class="pt-12 border-t border-slate-800/80 space-y-6">
+      <h2 class="text-xl font-black text-center text-white">Xem Nhanh Cả 5 Phong Cách Cùng Lúc</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        
+        <div onclick="selectStyle(1)" class="cursor-pointer group p-2.5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all">
+          <div class="aspect-[9/16] rounded-xl overflow-hidden bg-black mb-2">
+            <img src="/mockups/style1-bento-dark.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <p class="text-xs font-bold text-center text-slate-200 group-hover:text-emerald-400">1. Bento Dark</p>
+        </div>
+
+        <div onclick="selectStyle(2)" class="cursor-pointer group p-2.5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all">
+          <div class="aspect-[9/16] rounded-xl overflow-hidden bg-black mb-2">
+            <img src="/mockups/style2-warm-gourmet.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <p class="text-xs font-bold text-center text-slate-200 group-hover:text-emerald-400">2. Warm Gourmet</p>
+        </div>
+
+        <div onclick="selectStyle(3)" class="cursor-pointer group p-2.5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all">
+          <div class="aspect-[9/16] rounded-xl overflow-hidden bg-black mb-2">
+            <img src="/mockups/style3-neo-brutalist.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <p class="text-xs font-bold text-center text-slate-200 group-hover:text-emerald-400">3. Neo-Brutalist</p>
+        </div>
+
+        <div onclick="selectStyle(4)" class="cursor-pointer group p-2.5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all">
+          <div class="aspect-[9/16] rounded-xl overflow-hidden bg-black mb-2">
+            <img src="/mockups/style4-spatial-glass.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <p class="text-xs font-bold text-center text-slate-200 group-hover:text-emerald-400">4. Spatial Glass</p>
+        </div>
+
+        <div onclick="selectStyle(5)" class="cursor-pointer group p-2.5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all">
+          <div class="aspect-[9/16] rounded-xl overflow-hidden bg-black mb-2">
+            <img src="/mockups/style5-zen-bento.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <p class="text-xs font-bold text-center text-slate-200 group-hover:text-emerald-400">5. Zen Bento</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const styles = {
+      1: {
+        tag: 'PHONG CÁCH 1 • TECH DARK BENTO',
+        title: 'Modern Dark Bento Grid',
+        desc: 'Lấy cảm hứng từ giao diện Linear, Raycast và Apple Pro Dark Mode. Tông màu than chì huyền bí kết hợp viền vi mảnh phát sáng neon emerald, đồng hồ đo ngân sách vòng tròn 340.000 đ sắc nét và nút bấm hành động nổi bật.',
+        features: [
+          'Nền Obsidian (#0B0F17) sâu thẳm, dịu mắt trong đêm',
+          'Thẻ bento chia ngăn khoa học, viền phát sáng vi mô',
+          'Vòng tròn SVG hiển thị ngân sách 340.000 đ/ngày và Macro',
+          'Nút 1-Click Optimize tỏa hào quang neon xanh ngọc'
+        ],
+        img: '/mockups/style1-bento-dark.jpg'
+      },
+      2: {
+        tag: 'PHONG CÁCH 2 • KINFOLK GOURMET',
+        title: 'Warm Artisanal & Earthy Gourmet',
+        desc: 'Lấy cảm hứng từ tạp chí ẩm thực Kinfolk, Aesop và nghệ thuật gốm mộc Việt Nam. Mang lại cảm giác mâm cơm gia đình truyền thống ấm cúng, tinh tế và gợi sự ngon miệng tuyệt đối.',
+        features: [
+          'Nền vải lanh mộc mạc (#F6F3EB) ấm áp, tự nhiên',
+          'Font Serif trang nhã, giàu bản sắc văn hóa ẩm thực',
+          'Mâm cơm dĩa gốm mộc (Cá bống kho tiêu, Canh cua mồng tơi, Cà pháo)',
+          'Tông màu đất nung Terracotta (#BD5338) và xanh ô-liu trầm'
+        ],
+        img: '/mockups/style2-warm-gourmet.jpg'
+      },
+      3: {
+        tag: 'PHONG CÁCH 3 • NEO-BRUTALIST POP',
+        title: 'Neo-Brutalist & Playful Pop',
+        desc: 'Xu hướng thiết kế trẻ trung thịnh hành từ Figma, Gumroad và Notion. Viền đen đậm dứt khoát 2px cùng bóng đổ khối cứng, màu pastel tươi mát tạo trải nghiệm bấm chạm tương tác cực kỳ vui tươi.',
+        features: [
+          'Viền đen 2px cùng bóng đổ cứng (hard drop-shadow) 0 blur',
+          'Phối màu pastel tươi mát: Xanh mint, vàng bơ, tím lilac',
+          'Nút bấm to bản dứt khoát: ĐỔI MÓN NGAY và QUAY MÓN NGẪU NHIÊN',
+          'Hình minh họa sticker quả bơ đáng yêu, tràn đầy năng lượng'
+        ],
+        img: '/mockups/style3-neo-brutalist.jpg'
+      },
+      4: {
+        tag: 'PHONG CÁCH 4 • VISIONOS SPATIAL',
+        title: 'VisionOS Spatial Glassmorphism',
+        desc: 'Phong cách kính mờ tương lai từ Apple VisionOS và iOS 18. Lớp kính mờ xuyên thấu siêu thực với ánh sáng cực quang lung linh tỏa ra từ phía sau, mang lại đẳng cấp giao diện ứng dụng triệu đô.',
+        features: [
+          'Bề mặt kính mờ nhiều lớp (backdrop-blur-3xl) với cạnh phản xạ ánh sáng',
+          'Ánh sáng cực quang (Aurora Glow) chuyển sắc xanh ngọc - vàng hổ phách',
+          'Đồng hồ vòm hiển thị ngân sách tuần và khay mâm cơm 3 món lơ lửng',
+          'Thanh Dock điều hướng nổi trong suốt phong cách không gian'
+        ],
+        img: '/mockups/style4-spatial-glass.jpg'
+      },
+      5: {
+        tag: 'PHONG CÁCH 5 • ZEN BENTO CRAFT',
+        title: 'Japanese Zen Bento Craft',
+        desc: 'Lấy cảm hứng từ triết lý Muji và hộp cơm bento truyền thống Nhật Bản. Khay gỗ tre tự nhiên chia 3 ngăn hoàn hảo cho Món Mặn, Món Canh và Món Rau, mang lại cảm giác bình yên và ngăn nắp tuyệt đối.',
+        features: [
+          'Nền giấy dó Washi nhẹ nhàng kết hợp vân gỗ tre tự nhiên',
+          'Cấu trúc khay chia 3 ngăn bento khoa học và cân đối',
+          'Điểm nhấn dấu ấn triện đỏ truyền thống và nút bấm vân gỗ tre',
+          'Nút Gợi Ý Mâm Cơm màu xanh matcha mộc mạc và thanh tịnh'
+        ],
+        img: '/mockups/style5-zen-bento.jpg'
+      }
+    };
+
+    function selectStyle(id) {
+      const data = styles[id];
+      const img = document.getElementById('mockup-img');
+      img.style.opacity = '0';
+      
+      setTimeout(() => {
+        img.src = data.img;
+        document.getElementById('style-tag').innerText = data.tag;
+        document.getElementById('style-title').innerText = data.title;
+        document.getElementById('style-desc').innerText = data.desc;
+        document.getElementById('full-img-link').href = data.img;
+
+        const featList = document.getElementById('style-features');
+        featList.innerHTML = data.features.map(f => `<li class="flex items-center gap-2">✓ ${f}</li>`).join('');
+
+        // Update tabs active state
+        for (let i = 1; i <= 5; i++) {
+          const tab = document.getElementById(`tab-${i}`);
+          if (i === id) {
+            tab.className = 'tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25';
+          } else {
+            tab.className = 'tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700';
+          }
+        }
+
+        img.style.opacity = '1';
+      }, 150);
+    }
+  </script>
+</body>
+</html>

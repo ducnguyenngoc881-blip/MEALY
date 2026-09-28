@@ -377,4 +377,27 @@ describe('Unit: Real-Time Collaborative Grocery Sharing (Đi Chợ Cùng Nhau Re
     onTabChange('weekly');
     expect(currentTab).toBe('weekly');
   });
+
+  it('COLLAB-15: Grocery item multi-buyer tracking records multiple people buying same item', () => {
+    const groceryListPath = path.join(srcDir, 'components', 'GroceryList.tsx');
+    const content = fs.readFileSync(groceryListPath, 'utf-8');
+
+    // Asserts plus button and buyer count logic
+    expect(content.includes('handleIncrementBuyer')).toBe(true);
+    expect(content.includes('handleDecrementBuyer')).toBe(true);
+    expect(content.includes('checkInfo.buyerCount')).toBe(true);
+    expect(content.includes('người mua trùng!')).toBe(true);
+  });
+
+  it('COLLAB-16: MealWiseContext supports persistent buyer counts and increment/decrement', () => {
+    const contextPath = path.join(srcDir, 'context', 'MealWiseContext.tsx');
+    const content = fs.readFileSync(contextPath, 'utf-8');
+
+    expect(content.includes('groceryItemBuyerCounts')).toBe(true);
+    expect(content.includes('incrementGroceryItemBuyer')).toBe(true);
+    expect(content.includes('decrementGroceryItemBuyer')).toBe(true);
+    expect(content.includes('incrementCollabItemBuyer')).toBe(true);
+    expect(content.includes('decrementCollabItemBuyer')).toBe(true);
+  });
 });
+

@@ -69,18 +69,26 @@ function logError(message) {
 function buildProductionBundle() {
   logStep(1, 'Compiling fresh production build via Vite...');
 
+  const builtIndexCheck = path.join(distDir, 'index.html');
+  const isFresh = fs.existsSync(builtIndexCheck) && (Date.now() - fs.statSync(builtIndexCheck).mtimeMs < 10 * 60 * 1000);
+  if ((process.argv.includes('--no-build') || isFresh) && fs.existsSync(builtIndexCheck)) {
+    console.log('  Reusing fresh production build in dist/ (< 10m old)');
+    return;
+  }
+
   if (fs.existsSync(distDir)) {
     console.log(`  Cleaning existing dist folder: ${distDir}`);
     fs.rmSync(distDir, { recursive: true, force: true });
   }
 
-  const buildCommand = process.platform === 'win32' ? 'npm.cmd run build' : 'npm run build';
+  const viteBin = path.join(workspaceRoot, 'node_modules', 'vite', 'bin', 'vite.js');
+  const buildCommand = `node "${viteBin}" build`;
   console.log(`  Running: ${buildCommand}`);
-  execSync(buildCommand, {
+  const out = execSync(buildCommand, {
     cwd: workspaceRoot,
-    stdio: 'inherit',
-    shell: true
+    stdio: 'pipe'
   });
+  console.log(out.toString());
 
   const builtIndex = path.join(distDir, 'index.html');
   const builtAssetsDir = path.join(distDir, 'assets');
@@ -174,8 +182,8 @@ function verifyDeployedFiles() {
   if (indexContent.length === 0) {
     throw new Error('Target index.html is empty (0 bytes)');
   }
-  if (!indexContent.includes('<div id="root"></div>')) {
-    throw new Error('Target index.html is missing root mounting node (<div id="root"></div>)');
+  if (!indexContent.includes('id="root"')) {
+    throw new Error('Target index.html is missing root mounting node (<div id="root">)');
   }
 
   const deployedAssets = fs.readdirSync(showcaseAssetsDir);
@@ -278,7 +286,7 @@ async function verifyHttpServing(referencedFiles) {
       throw new Error(`GET / returned HTTP ${rootRes.status}`);
     }
     const rootText = await rootRes.text();
-    if (!rootText.includes('<div id="root"></div>')) {
+    if (!rootText.includes('id="root"')) {
       throw new Error('GET / did not return MealWise HTML');
     }
     logSuccess(`HTTP GET / -> 200 OK (${formatBytes(Buffer.byteLength(rootText, 'utf-8'))}, text/html)`);

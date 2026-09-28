@@ -23,6 +23,7 @@ export const OVERUSED_PLACEHOLDER_IDS = [
   'photo-176107232684-1279f3908594', // DEAD URL (HTTP 404 Not Found)
   'photo-1627054234057-a41764661031', // DEAD URL (HTTP 404 Not Found)
   'photo-1621996346565-e3d5d6281744', // DEAD URL (HTTP 404 Not Found in snackPool)
+  'photo-1573140247632-f8fd74997d5c', // HUMAN FACE - strictly blacklisted from all food displays
 ];
 
 // ============================================================================

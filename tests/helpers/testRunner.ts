@@ -26,6 +26,16 @@ export interface SuiteSummary {
   results: TestResult[];
 }
 
+let assertionCounter = 0;
+
+export function getAssertionCount(): number {
+  return assertionCounter;
+}
+
+export function resetAssertionCount(): void {
+  assertionCounter = 0;
+}
+
 class TestRegistry {
   private currentSuite = 'Default Suite';
   private testQueue: TestCase[] = [];
@@ -57,6 +67,22 @@ class TestRegistry {
     });
   }
 
+  getAssertionCount(): number {
+    return assertionCounter;
+  }
+
+  printSummary() {
+    const totalTests = this.testQueue.length;
+    const passed = this.results.filter(r => r.passed).length;
+    const failed = this.results.length - passed;
+    console.log(`\n\x1b[1m\x1b[36m======================================================================\x1b[0m`);
+    console.log(`\x1b[1mASSERTION & TEST TELEMETRY METRICS:\x1b[0m`);
+    console.log(`  • Registered Test Scenarios: \x1b[1m\x1b[36m${totalTests.toLocaleString()}\x1b[0m distinct test cases`);
+    console.log(`  • Programmatic Assertions:   \x1b[1m\x1b[35m${assertionCounter.toLocaleString()}\x1b[0m assertions executed`);
+    console.log(`  • Status:                    \x1b[32m${passed.toLocaleString()} passed\x1b[0m, ${failed > 0 ? `\x1b[31m${failed} failed\x1b[0m` : '0 failed'}`);
+    console.log(`\x1b[1m\x1b[36m======================================================================\x1b[0m`);
+  }
+
   async executeAll(options: { silent?: boolean } = {}): Promise<{
     results: TestResult[];
     total: number;
@@ -64,6 +90,7 @@ class TestRegistry {
     failed: number;
     durationMs: number;
     summaries: SuiteSummary[];
+    totalAssertions: number;
   }> {
     const startTime = Date.now();
     this.results = [];
@@ -151,7 +178,8 @@ class TestRegistry {
       passed,
       failed,
       durationMs: Date.now() - startTime,
-      summaries
+      summaries,
+      totalAssertions: assertionCounter
     };
   }
 
@@ -168,6 +196,10 @@ class TestRegistry {
 }
 
 export const registry = new TestRegistry();
+
+export function printSummary() {
+  registry.printSummary();
+}
 
 export function describe(name: string, fn: () => void) {
   registry.setSuite(name);
@@ -216,6 +248,7 @@ function deepEqual(a: any, b: any): boolean {
 export function expect(actual: any) {
   const createMatcher = (negated: boolean) => ({
     toBe(expected: any) {
+      assertionCounter++;
       const pass = actual === expected;
       if (negated ? pass : !pass) {
         throw new Error(
@@ -226,6 +259,7 @@ export function expect(actual: any) {
       }
     },
     toEqual(expected: any) {
+      assertionCounter++;
       const pass = deepEqual(actual, expected);
       if (negated ? pass : !pass) {
         throw new Error(
@@ -236,30 +270,35 @@ export function expect(actual: any) {
       }
     },
     toBeGreaterThan(expected: number) {
+      assertionCounter++;
       const pass = typeof actual === 'number' && actual > expected;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be greater than ${expected}`);
       }
     },
     toBeGreaterThanOrEqual(expected: number) {
+      assertionCounter++;
       const pass = typeof actual === 'number' && actual >= expected;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be >= ${expected}`);
       }
     },
     toBeLessThan(expected: number) {
+      assertionCounter++;
       const pass = typeof actual === 'number' && actual < expected;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be less than ${expected}`);
       }
     },
     toBeLessThanOrEqual(expected: number) {
+      assertionCounter++;
       const pass = typeof actual === 'number' && actual <= expected;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be <= ${expected}`);
       }
     },
     toBeCloseTo(expected: number, numDigits = 2) {
+      assertionCounter++;
       const diff = Math.abs(actual - expected);
       const tolerance = Math.pow(10, -numDigits) / 2;
       const pass = diff < tolerance;
@@ -268,6 +307,7 @@ export function expect(actual: any) {
       }
     },
     toContain(expected: any) {
+      assertionCounter++;
       let pass = false;
       if (typeof actual === 'string') {
         pass = actual.includes(String(expected));
@@ -281,42 +321,49 @@ export function expect(actual: any) {
       }
     },
     toBeTruthy() {
+      assertionCounter++;
       const pass = !!actual;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be truthy`);
       }
     },
     toBeFalsy() {
+      assertionCounter++;
       const pass = !actual;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be falsy`);
       }
     },
     toBeDefined() {
+      assertionCounter++;
       const pass = actual !== undefined;
       if (negated ? pass : !pass) {
         throw new Error(`Expected value ${negated ? 'NOT ' : ''}to be defined`);
       }
     },
     toBeUndefined() {
+      assertionCounter++;
       const pass = actual === undefined;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be undefined`);
       }
     },
     toBeNull() {
+      assertionCounter++;
       const pass = actual === null;
       if (negated ? pass : !pass) {
         throw new Error(`Expected ${actual} ${negated ? 'NOT ' : ''}to be null`);
       }
     },
     toMatch(regex: RegExp) {
+      assertionCounter++;
       const pass = typeof actual === 'string' && regex.test(actual);
       if (negated ? pass : !pass) {
         throw new Error(`Expected "${actual}" ${negated ? 'NOT ' : ''}to match ${regex}`);
       }
     },
     toThrow(optPattern?: string | RegExp) {
+      assertionCounter++;
       if (typeof actual !== 'function') {
         throw new Error('Expected function to be passed to expect(...) when using toThrow()');
       }
@@ -356,3 +403,4 @@ export function expect(actual: any) {
   matcher.not = createMatcher(true);
   return matcher;
 }
+

@@ -26,9 +26,39 @@ function collabSyncPlugin(): Plugin {
 export default defineConfig({
   plugins: [react(), collabSyncPlugin()],
   base: './', // Ensures relative assets work in static showcase launcher
+  server: {
+    host: true,
+    port: 5173,
+    strictPort: true,
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      port: 5173
+    }
+  },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    sourcemap: false
+    sourcemap: false,
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+            return 'vendor-react';
+          }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor-icons';
+          }
+          if (id.includes('recipesDatabase') || id.includes('westernDishes500')) {
+            return 'data-recipes';
+          }
+          if (id.includes('casePools')) {
+            return 'data-minigames';
+          }
+        }
+      }
+    }
   }
 });

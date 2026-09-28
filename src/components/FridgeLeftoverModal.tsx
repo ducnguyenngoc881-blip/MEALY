@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   X, 
   Plus, 
@@ -11,7 +11,11 @@ import {
 } from 'lucide-react';
 import { useMealWise } from '../context/MealWiseContext';
 import { PantryItem } from '../types';
-import { findLeftoverRecipeSuggestions } from '../utils/fridgeMatcher';
+import { 
+  findLeftoverRecipeSuggestions,
+  matchRecipeWithPantryItem,
+  isCondiment
+} from '../utils/fridgeMatcher';
 
 interface FridgeLeftoverModalProps {
   isOpen: boolean;
@@ -109,16 +113,22 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
     setIsAddingOpen(false);
   };
 
-  const handleReloadModalSuggestions = () => {
-    setIsReloading(true);
-    setModalReloadOffset(prev => prev + 4);
-    setTimeout(() => setIsReloading(false), 250);
-  };
-
   // Find recipes that can use this ingredient
   const suggestedRecipes = selectedItemForRecipe 
     ? findLeftoverRecipeSuggestions(selectedItemForRecipe, recipes, 4, modalReloadOffset, pantryItems)
     : [];
+
+  const modalTotalEligible = useMemo(() => {
+    if (!selectedItemForRecipe) return 0;
+    return findLeftoverRecipeSuggestions(selectedItemForRecipe, recipes, 9999, 0, pantryItems).length;
+  }, [selectedItemForRecipe, recipes, pantryItems]);
+
+  const handleReloadModalSuggestions = () => {
+    if (modalTotalEligible <= 4) return;
+    setIsReloading(true);
+    setModalReloadOffset(prev => prev + 4);
+    setTimeout(() => setIsReloading(false), 250);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
@@ -399,6 +409,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                     isDanger: true,
                     onConfirm: () => {
                       clearPantryItems();
+                      setSelectedItemForRecipe(null);
                       showToast('🧹 Đã dọn sạch thực phẩm trong tủ lạnh!');
                     }
                   });
@@ -492,7 +503,12 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
 
                       <button
                         type="button"
-                        onClick={() => removePantryItem(item.id)}
+                        onClick={() => {
+                          removePantryItem(item.id);
+                          if (selectedItemForRecipe?.id === item.id) {
+                            setSelectedItemForRecipe(null);
+                          }
+                        }}
                         className="text-[11px] font-bold text-slate-400 hover:text-rose-500 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-rose-500/10 transition-colors"
                         title="Đã nấu hết hoặc dọn đi"
                       >
@@ -520,8 +536,9 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                   <button
                     type="button"
                     onClick={handleReloadModalSuggestions}
-                    className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white shadow-xs active:scale-95 transition-all cursor-pointer"
-                    title="Đổi sang các món khác"
+                    disabled={modalTotalEligible <= 4}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white shadow-xs active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                    title={modalTotalEligible <= 4 ? 'Chỉ có 4 món hoặc ít hơn phù hợp' : 'Đổi sang các món khác'}
                   >
                     <RotateCcw className={`w-3 h-3 ${isReloading ? 'animate-spin' : ''}`} />
                     <span>Đổi Món</span>
@@ -542,16 +559,42 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                 </p>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {suggestedRecipes.map(recipe => (
-                    <div key={recipe.id} className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-between text-xs">
-                      <span className="font-bold text-slate-800 dark:text-slate-200 truncate mr-2">
-                        {recipe.title}
-                      </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold shrink-0">
-                        {recipe.cookTimeMinutes}p
-                      </span>
-                    </div>
-                  ))}
+                  {suggestedRecipes.map(recipe => {
+                    const matchDetail = matchRecipeWithPantryItem(recipe, selectedItemForRecipe);
+                    const synergizedItems = pantryItems.filter(
+                      p => p.id !== selectedItemForRecipe.id && !isCondiment(p.name) && matchRecipeWithPantryItem(recipe, p).matched
+                    );
+                    const synergyCount = synergizedItems.length;
+                    const isUrgent = selectedItemForRecipe.daysLeft <= 2 || synergizedItems.some(p => p.daysLeft <= 2);
+
+                    return (
+                      <div key={recipe.id} className="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex flex-col justify-between gap-1.5 text-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-slate-800 dark:text-slate-200 truncate">
+                            {recipe.title}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold shrink-0">
+                            {recipe.cookTimeMinutes}p
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1">
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 truncate max-w-full">
+                            ✓ Khớp: {matchDetail.matchedAs || selectedItemForRecipe.name}
+                          </span>
+                          {synergyCount > 0 && (
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 shrink-0">
+                              ✨ +{synergyCount} món hợp
+                            </span>
+                          )}
+                          {isUrgent && (
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-extrabold px-1 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-amber-300 shrink-0">
+                              ⚠️ Ăn gấp
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

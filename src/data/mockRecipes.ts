@@ -470,7 +470,465 @@ export const LEFTOVER_RECIPES: Recipe[] = [
   }
 ];
 
-import { recipesDatabase } from './recipesDatabase';
+export const WESTERN_RECIPES: Recipe[] = [
+  // --- BỮA SÁNG KIỂU TÂY (WESTERN BREAKFAST) ---
+  {
+    id: 'omelette-nam-pho-mai-mozzarella',
+    title: 'Trứng Cuộn Omelette Nấm & Phô Mai Kéo Sợi',
+    description: 'Bữa sáng chuẩn vị Âu: Trứng gà tươi đánh bông cuộn nấm mỡ xào bơ thơm lừng, nhân phô mai mozzarella béo ngậy kéo sợi tan chảy, ăn kèm bánh mì nướng giòn.',
+    category: 'an-sang',
+    region: 'toan-quoc',
+    prepTimeMinutes: 5,
+    cookTimeMinutes: 7,
+    servings: 4,
+    calories: 380,
+    estimatedCostVnd: 48000,
+    imageUrl: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Trứng gà tươi', amount: 6, unit: 'quả', category: 'khac' },
+      { name: 'Nấm mỡ hoặc nấm đùi gà baby thái lát', amount: 150, unit: 'g', category: 'rau-cu' },
+      { name: 'Phô mai Mozzarella bào sợi', amount: 80, unit: 'g', category: 'khac' },
+      { name: 'Bơ lạt Anchor', amount: 20, unit: 'g', category: 'khac' },
+      { name: 'Sữa tươi không đường', amount: 50, unit: 'ml', category: 'khac' },
+      { name: 'Bánh mì sandwich nướng bơ tỏi', amount: 4, unit: 'lát', category: 'do-kho' }
+    ],
+    instructions: [
+      { step: 1, title: 'Đánh trứng & xào nấm', content: 'Đánh tan trứng gà cùng sữa tươi và nhúm muối tiêu. Xào nấm với chút bơ lạt trên lửa vừa đến khi nấm chín thơm.' },
+      { step: 2, title: 'Cuộn Omelette', content: 'Làm nóng chảo với bơ lạt, trút trứng vào lắc đều chảo. Khi mặt dưới se lại nhưng lòng còn mềm ẩm, rải nấm xào và phô mai vào giữa rồi khéo léo cuộn lại.' },
+      { step: 3, title: 'Trình bày', content: 'Trượt trứng ra đĩa, rắc thêm chút mùi tây cắt nhỏ và ăn kèm bánh mì sandwich nướng giòn.' }
+    ],
+    tags: ['Món Âu', 'Ăn Sáng', 'Trứng', 'Omelette', 'Western Food', 'Nhanh Gọn']
+  },
+  {
+    id: 'banh-mi-nuong-bo-trung-chan-avocado-toast',
+    title: 'Bánh Mì Bơ Tươi & Trứng Chần Lòng Đào (Avocado Toast)',
+    description: 'Bữa sáng dinh dưỡng hiện đại phong cách Úc & Bắc Mỹ: Bánh mì nướng bơ tỏi giòn tan, phủ lớp bơ sáp nghiền béo bùi, trứng chần mềm chảy lòng đào và rắc mè tiêu thơm.',
+    category: 'an-sang',
+    region: 'toan-quoc',
+    prepTimeMinutes: 5,
+    cookTimeMinutes: 5,
+    servings: 4,
+    calories: 360,
+    estimatedCostVnd: 55000,
+    imageUrl: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Bánh mì đen hoặc sandwich ngũ cốc', amount: 4, unit: 'lát', category: 'do-kho' },
+      { name: 'Bơ sáp 034 chín tới', amount: 2, unit: 'quả', category: 'rau-cu' },
+      { name: 'Trứng gà tươi (chần lòng đào)', amount: 4, unit: 'quả', category: 'khac' },
+      { name: 'Dầu ô liu nguyên chất Extra Virgin', amount: 1, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Nước cốt chanh vàng & Muối hồng, tiêu đập dập', amount: 1, unit: 'ít', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Nướng bánh mì', content: 'Nướng áp chảo hoặc máy nướng cho 4 lát bánh mì vàng giòn rụm.' },
+      { step: 2, title: 'Nghiền bơ sáp', content: 'Dằm nhuyễn bơ sáp cùng chút muối, tiêu đen và nước cốt chanh vàng.' },
+      { step: 3, title: 'Chần trứng lòng đào', content: 'Khuấy nước sôi tạo xoáy nhẹ, thả trứng vào chần 3 phút lấy ra ngâm nước ấm.' },
+      { step: 4, title: 'Hoàn thành', content: 'Phết bơ nghiền lên lát bánh mì, đặt trứng chần lên trên, rưới chút dầu ô liu và rắc ớt bột hoặc tiêu đen.' }
+    ],
+    tags: ['Món Âu', 'Ăn Sáng', 'Avocado Toast', 'Eat Clean', 'Western Food', 'Healthy']
+  },
+  {
+    id: 'trung-khuay-scrambled-eggs-xuc-xich-banh-mi',
+    title: 'Trứng Khuấy Bơ Scrambled Eggs & Xúc Xích Nướng',
+    description: 'Bữa sáng kinh điển kiểu Mỹ: Trứng khuấy bơ lạt mềm mịn mượt mà tan ngay trong miệng, kèm xúc xích Đức nướng xém cạnh thơm nức và bánh mì nướng bơ.',
+    category: 'an-sang',
+    region: 'toan-quoc',
+    prepTimeMinutes: 5,
+    cookTimeMinutes: 8,
+    servings: 4,
+    calories: 440,
+    estimatedCostVnd: 58000,
+    imageUrl: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Trứng gà tươi', amount: 6, unit: 'quả', category: 'khac' },
+      { name: 'Xúc xích Đức xông khói nướng', amount: 4, unit: 'cây', category: 'thit-ca' },
+      { name: 'Bơ lạt Anchor', amount: 25, unit: 'g', category: 'khac' },
+      { name: 'Kem tươi whipping cream hoặc sữa tươi', amount: 40, unit: 'ml', category: 'khac' },
+      { name: 'Bánh mì sandwich bơ nướng', amount: 4, unit: 'lát', category: 'do-kho' }
+    ],
+    instructions: [
+      { step: 1, title: 'Nướng xúc xích', content: 'Khía nhẹ thân xúc xích, áp chảo lửa vừa cho vàng thơm xém cạnh.' },
+      { step: 2, title: 'Khuấy trứng bơ mịn', content: 'Đánh tan trứng và kem tươi. Đun chảy bơ trên lửa thật nhỏ, đổ trứng vào dùng thìa gỗ đảo nhẹ nhàng tạo những vân trứng gợn sóng mềm mượt.' },
+      { step: 3, title: 'Dọn đĩa', content: 'Bày trứng khuấy, xúc xích và bánh mì nướng ra đĩa, nêm tiêu đen xay thơm nức.' }
+    ],
+    tags: ['Món Âu', 'Ăn Sáng', 'Scrambled Eggs', 'American Breakfast', 'Western Food']
+  },
+  {
+    id: 'pancake-mat-ong-bo-lat-chuoi',
+    title: 'Bánh Pancake Xốp Mềm Bơ Mật Ong & Chuối Lát',
+    description: 'Bữa sáng ngọt ngào được trẻ nhỏ và cả gia đình yêu thích: Bánh pancake xốp mềm vàng óng, rưới mật ong hoa rừng ngọt dịu, lát bơ béo ngậy và chuối chín tươi.',
+    category: 'an-sang',
+    region: 'toan-quoc',
+    prepTimeMinutes: 8,
+    cookTimeMinutes: 10,
+    servings: 4,
+    calories: 390,
+    estimatedCostVnd: 42000,
+    imageUrl: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Bột làm bánh pancake hoặc bột mì đa dụng', amount: 200, unit: 'g', category: 'do-kho' },
+      { name: 'Sữa tươi tiệt trùng không đường', amount: 180, unit: 'ml', category: 'khac' },
+      { name: 'Trứng gà tươi', amount: 2, unit: 'quả', category: 'khac' },
+      { name: 'Mật ong hoa rừng nguyên chất', amount: 3, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Chuối tiêu chín thái lát & Bơ lạt', amount: 2, unit: 'quả/miếng', category: 'rau-cu' }
+    ],
+    instructions: [
+      { step: 1, title: 'Trộn bột', content: 'Khuấy đều bột mì, trứng gà, sữa tươi và chút đường vani thành hỗn hợp sánh mịn.' },
+      { step: 2, title: 'Rán bánh', content: 'Thoa chút bơ lên chảo chống dính, múc 1 muôi bột vào rán lửa nhỏ đến khi sủi tăm bóng thì lật mặt rán thêm 1 phút cho vàng đều.' },
+      { step: 3, title: 'Xếp tầng & rưới mật ong', content: 'Xếp các lát bánh chồng lên nhau, xếp chuối lát, đặt viên bơ lạt lên đỉnh và rưới mật ong thơm lừng.' }
+    ],
+    tags: ['Món Âu', 'Ăn Sáng', 'Pancake', 'Bánh Ngọt', 'Western Food', 'Trẻ Em']
+  },
+  {
+    id: 'french-toast-banh-mi-nuong-kieu-phap',
+    title: 'Bánh Mì Nướng Kiểu Pháp Sốt Bơ Quế (French Toast)',
+    description: 'Món ăn sáng trứ danh của nước Pháp: Lát bánh mì ngâm đẫm trong hỗn hợp trứng sữa béo ngậy, áp chảo bơ lạt thơm lừng mùi bột quế và đường mịn.',
+    category: 'an-sang',
+    region: 'toan-quoc',
+    prepTimeMinutes: 5,
+    cookTimeMinutes: 8,
+    servings: 4,
+    calories: 370,
+    estimatedCostVnd: 45000,
+    imageUrl: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Bánh mì sandwich lát dày hoặc baguette', amount: 6, unit: 'lát', category: 'do-kho' },
+      { name: 'Trứng gà tươi', amount: 3, unit: 'quả', category: 'khac' },
+      { name: 'Sữa tươi tiệt trùng & Whipping cream', amount: 120, unit: 'ml', category: 'khac' },
+      { name: 'Bơ lạt Anchor', amount: 25, unit: 'g', category: 'khac' },
+      { name: 'Bột quế & Mật ong hoa nhãn', amount: 1, unit: 'muỗng cà phê', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Pha hỗn hợp trứng sữa', content: 'Đánh tan trứng gà, sữa tươi, whipping cream, chút đường và xíu bột quế.' },
+      { step: 2, title: 'Nhúng bánh mì', content: 'Nhúng từng lát bánh mì vào hỗn hợp khoảng 15 giây cho thấm đều 2 mặt.' },
+      { step: 3, title: 'Áp chảo bơ', content: 'Đun chảy bơ lạt trên chảo, áp chảo bánh mỗi mặt 2-3 phút đến khi vàng giòn caramel.' }
+    ],
+    tags: ['Món Âu', 'Ăn Sáng', 'French Toast', 'Phong Cách Pháp', 'Western Food']
+  },
+  {
+    id: 'yen-mach-sua-chua-hoa-qua-say-overnight-oats',
+    title: 'Yến Mạch Sữa Chua Hy Lạp & Hoa Quả Hạt Chia',
+    description: 'Bữa sáng thực dưỡng chuẩn Healthy Âu - Mỹ: Yến mạch cán mỏng ngâm sữa chua Hy Lạp sánh đặc, hạt chia giàu Omega-3 và hoa quả tươi mọng mát lành.',
+    category: 'an-sang',
+    region: 'toan-quoc',
+    prepTimeMinutes: 5,
+    cookTimeMinutes: 0,
+    servings: 4,
+    calories: 320,
+    estimatedCostVnd: 46000,
+    imageUrl: 'https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Yến mạch Úc nguyên hạt cán mỏng', amount: 150, unit: 'g', category: 'do-kho' },
+      { name: 'Sữa chua Hy Lạp hoặc sữa chua không đường', amount: 2, unit: 'hộp', category: 'khac' },
+      { name: 'Sữa hạnh nhân hoặc sữa tươi', amount: 200, unit: 'ml', category: 'khac' },
+      { name: 'Hạt chia & Hạnh nhân lát', amount: 30, unit: 'g', category: 'do-kho' },
+      { name: 'Hoa quả tươi (chuối, dâu tây, việt quất)', amount: 150, unit: 'g', category: 'rau-cu' }
+    ],
+    instructions: [
+      { step: 1, title: 'Trộn yến mạch', content: 'Trộn đều yến mạch, hạt chia, sữa tươi và sữa chua trong hũ thủy tinh.' },
+      { step: 2, title: 'Ủ mát', content: 'Đậy kín để ngăn mát tủ lạnh qua đêm hoặc tối thiểu 2 tiếng cho yến mạch nở mềm dẻo quánh.' },
+      { step: 3, title: 'Thưởng thức', content: 'Rải hoa quả tươi cắt lát và hạnh nhân giòn lên trên, rưới chút mật ong là có bữa sáng tiện lợi.' }
+    ],
+    tags: ['Món Âu', 'Ăn Sáng', 'Overnight Oats', 'Eat Clean', 'Western Food', 'Healthy']
+  },
 
-export const mockRecipes: Recipe[] = [...INITIAL_RECIPES, ...LEFTOVER_RECIPES, ...recipesDatabase];
+  // --- SÚP & KHAI VỊ KIỂU ÂU (WESTERN SOUPS & STARTERS) ---
+  {
+    id: 'sup-kem-nam-tuoi-thao-moc',
+    title: 'Súp Kem Nấm Tươi Thảo Mộc & Bánh Mì Bơ Giòn',
+    description: 'Món súp kem nấm kinh điển phương Tây: Nấm mỡ và nấm hương tươi xào bơ tỏi dậy mùi, nấu cùng nước hầm xương gà và whipping cream béo ngậy, rắc lá thyme thơm ngát.',
+    category: 'mon-canh',
+    region: 'toan-quoc',
+    prepTimeMinutes: 10,
+    cookTimeMinutes: 15,
+    servings: 4,
+    calories: 220,
+    estimatedCostVnd: 55000,
+    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Nấm mỡ tươi hoặc nấm đùi gà baby', amount: 300, unit: 'g', category: 'rau-cu' },
+      { name: 'Hành tây trắng thái hạt lựu', amount: 1, unit: 'củ', category: 'rau-cu' },
+      { name: 'Bơ lạt tự nhiên Anchor', amount: 30, unit: 'g', category: 'khac' },
+      { name: 'Kem tươi Whipping Cream', amount: 100, unit: 'ml', category: 'khac' },
+      { name: 'Sữa tươi không đường', amount: 200, unit: 'ml', category: 'khac' },
+      { name: 'Bánh mì bơ tỏi nướng giòn ăn kèm', amount: 4, unit: 'lát', category: 'do-kho' }
+    ],
+    instructions: [
+      { step: 1, title: 'Xào nấm bơ tỏi', content: 'Xào hành tây với bơ cho thơm ngọt, cho nấm vào xào chín vàng xém cạnh.' },
+      { step: 2, title: 'Nấu súp kem', content: 'Thêm sữa tươi và nước dùng gà vào đun sôi lăn tăn 8 phút. Xay mịn 2/3 lượng nấm để tạo độ sánh mượt tự nhiên.' },
+      { step: 3, title: 'Hoàn thiện', content: 'Rưới whipping cream vào khuấy đều trên lửa nhỏ, nêm muối tiêu vừa ăn và dọn kèm bánh mì bơ nướng.' }
+    ],
+    tags: ['Món Âu', 'Súp Kem', 'Khai Vị', 'Nấm Tươi', 'Western Food']
+  },
+  {
+    id: 'sup-ca-chua-hung-que-y',
+    title: 'Súp Cà Chua Nướng Húng Quế Kiểu Ý (Tomato Basil Soup)',
+    description: 'Món súp nổi tiếng vùng Địa Trung Hải: Cà chua chín mọng nướng đượm vị ngọt ngào, nấu nhuyễn cùng lá húng tây basil thơm nồng và chút kem béo, xua tan mọi mỏi mệt.',
+    category: 'mon-canh',
+    region: 'toan-quoc',
+    prepTimeMinutes: 8,
+    cookTimeMinutes: 15,
+    servings: 4,
+    calories: 190,
+    estimatedCostVnd: 45000,
+    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Cà chua chín đỏ mọng', amount: 500, unit: 'g', category: 'rau-cu' },
+      { name: 'Hành tây & Tỏi khô băm', amount: 1, unit: 'củ', category: 'rau-cu' },
+      { name: 'Lá húng tây Basil tươi hoặc khô', amount: 10, unit: 'g', category: 'rau-cu' },
+      { name: 'Dầu ô liu nguyên chất', amount: 2, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Kem tươi whipping cream', amount: 60, unit: 'ml', category: 'khac' }
+    ],
+    instructions: [
+      { step: 1, title: 'Nướng/xào cà chua', content: 'Xào hành tỏi thơm với dầu ô liu, cho cà chua thái múi cau vào đun chín nhừ.' },
+      { step: 2, title: 'Xay nhuyễn mịn', content: 'Cho cà chua vào máy xay mịn cùng lá basil tươi và nước dùng.' },
+      { step: 3, title: 'Khuấy kem béo', content: 'Đun sôi lại súp, nêm muối tiêu, rưới kem whipping tạo hoa văn xoáy hấp dẫn.' }
+    ],
+    tags: ['Món Âu', 'Súp Kem', 'Kiểu Ý', 'Tomato Basil', 'Western Food']
+  },
+  {
+    id: 'sup-kem-bap-ngot-ga-xe',
+    title: 'Súp Kem Bắp Ngọt & Gà Xé Sữa Tươi',
+    description: 'Món súp ngô ngọt ngọt lịm bổ dưỡng: Hạt bắp Mỹ vàng tươi nấu sữa tươi kem béo, hòa quyện ức gà xé sợi mềm ngọt, rắc tiêu đen thơm nức mũi.',
+    category: 'mon-canh',
+    region: 'toan-quoc',
+    prepTimeMinutes: 10,
+    cookTimeMinutes: 12,
+    servings: 4,
+    calories: 230,
+    estimatedCostVnd: 50000,
+    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Bắp ngọt Mỹ tách hạt', amount: 2, unit: 'bắp', category: 'rau-cu' },
+      { name: 'Ức gà tươi luộc xé sợi', amount: 150, unit: 'g', category: 'thit-ca' },
+      { name: 'Sữa tươi & Kem tươi', amount: 200, unit: 'ml', category: 'khac' },
+      { name: 'Bơ lạt Anchor', amount: 20, unit: 'g', category: 'khac' },
+      { name: 'Hành tây hạt lựu', amount: 0.5, unit: 'củ', category: 'rau-cu' }
+    ],
+    instructions: [
+      { step: 1, title: 'Xào bắp ngọt bơ', content: 'Xào hành tây và bắp ngọt với bơ lạt cho chín dậy mùi thơm ngọt.' },
+      { step: 2, title: 'Nấu súp sánh', content: 'Cho sữa tươi và nước luộc gà vào nấu mềm bắp, xay nhuyễn một nửa số bắp để tạo độ sánh tự nhiên.' },
+      { step: 3, title: 'Thêm gà xé', content: 'Thả ức gà xé sợi vào nồi súp đun sôi nhẹ, nêm muối tiêu vừa ăn.' }
+    ],
+    tags: ['Món Âu', 'Súp Bắp', 'Khai Vị', 'Gà Xé', 'Western Food']
+  },
+
+  // --- MÓN RAU, SALAD & TINH BỘT KÈM KIỂU ÂU (WESTERN SIDES & SALADS) ---
+  {
+    id: 'salad-caesar-xac-lach-romaine',
+    title: 'Salad Caesar Xà Lách Romaine & Bánh Mì Sấy Giòn Sốt Phô Mai',
+    description: 'Món salad nổi tiếng thế giới: Xà lách Romaine tươi giòn mọng nước, bánh mì sấy tỏi croutons vàng ươm, bào ngập phô mai Parmesan và trộn sốt Caesar ngậy béo.',
+    category: 'mon-rau',
+    region: 'toan-quoc',
+    prepTimeMinutes: 10,
+    cookTimeMinutes: 0,
+    servings: 4,
+    calories: 180,
+    estimatedCostVnd: 45000,
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Xà lách Romaine hoặc xà lách mỡ giòn', amount: 300, unit: 'g', category: 'rau-cu' },
+      { name: 'Bánh mì sấy giòn bơ tỏi (Croutons)', amount: 60, unit: 'g', category: 'do-kho' },
+      { name: 'Phô mai bột Parmesan', amount: 30, unit: 'g', category: 'khac' },
+      { name: 'Sốt Salad Caesar hoặc Mayonnaise chanh tỏi', amount: 3, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Cà chua bi tươi', amount: 100, unit: 'g', category: 'rau-cu' }
+    ],
+    instructions: [
+      { step: 1, title: 'Rửa rau xà lách', content: 'Xà lách Romaine ngâm nước đá cho giòn tan, vắt thật ráo nước và cắt khúc vừa ăn.' },
+      { step: 2, title: 'Trộn sốt Caesar', content: 'Rưới sốt Caesar đều lên xà lách và cà chua bi, đảo nhẹ tay bằng kẹp salad.' },
+      { step: 3, title: 'Hoàn thiện', content: 'Rải bánh mì croutons giòn rụm và rắc đầy phô mai Parmesan bào mịn lên mặt đĩa.' }
+    ],
+    tags: ['Món Âu', 'Salad', 'Caesar Salad', 'Rau Củ', 'Western Food', 'Eat Clean']
+  },
+  {
+    id: 'khoai-tay-nghien-bo-toi-thao-moc',
+    title: 'Khoai Tây Nghiền Bơ Tỏi Thảo Mộc (Garlic Mashed Potatoes)',
+    description: 'Món ăn kèm hoàn hảo cho bít tết và sườn nướng: Khoai tây hấp chín nghiền mịn mượt như nhung, hòa quyện bơ lạt, sữa tươi béo ngậy và tỏi phi thảo mộc thơm lừng.',
+    category: 'mon-rau',
+    region: 'toan-quoc',
+    prepTimeMinutes: 10,
+    cookTimeMinutes: 15,
+    servings: 4,
+    calories: 240,
+    estimatedCostVnd: 38000,
+    imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Khoai tây vàng Đà Lạt', amount: 600, unit: 'g', category: 'rau-cu' },
+      { name: 'Bơ lạt Anchor hoặc bơ tự nhiên', amount: 40, unit: 'g', category: 'khac' },
+      { name: 'Sữa tươi tiệt trùng không đường ấm', amount: 80, unit: 'ml', category: 'khac' },
+      { name: 'Tỏi băm phi thơm & Tiêu đen xay', amount: 1, unit: 'muỗng cà phê', category: 'gia-vi' },
+      { name: 'Muối tinh & Nhánh hương thảo tươi', amount: 1, unit: 'ít', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Luộc mềm khoai tây', content: 'Khoai tây gọt vỏ cắt khối, luộc ngập nước muối loãng 15 phút đến khi xiên đũa qua dễ dàng.' },
+      { step: 2, title: 'Nghiền mịn', content: 'Vớt khoai ráo nước, dùng nĩa hoặc dụng cụ nghiền mịn khi khoai còn nóng hổi.' },
+      { step: 3, title: 'Hòa quyện bơ sữa', content: 'Cho bơ lạt và sữa ấm vào quậy đều tay đến khi khoai tây bóng mượt như kem, rắc tiêu tỏi lên trên.' }
+    ],
+    tags: ['Món Âu', 'Khoai Tây Nghiền', 'Món Kèm', 'Mashed Potatoes', 'Western Food']
+  },
+  {
+    id: 'banh-mi-bo-toi-nuong-gion-rum',
+    title: 'Bánh Mì Bơ Tỏi Nướng Giòn Rụm Thảo Mộc',
+    description: 'Món ăn kèm kinh điển của ẩm thực Âu: Bánh mì baguette phết đẫm bơ lạt tỏi tươi phi thơm cùng lá mùi tây oregano, nướng vàng ươm giòn tan thơm lừng gian bếp.',
+    category: 'mon-rau',
+    region: 'toan-quoc',
+    prepTimeMinutes: 5,
+    cookTimeMinutes: 7,
+    servings: 4,
+    calories: 210,
+    estimatedCostVnd: 28000,
+    imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Bánh mì baguette hoặc bánh mì chuột', amount: 2, unit: 'ổ', category: 'do-kho' },
+      { name: 'Bơ lạt Anchor làm mềm', amount: 40, unit: 'g', category: 'khac' },
+      { name: 'Tỏi tươi băm thật nhuyễn', amount: 3, unit: 'tép', category: 'rau-cu' },
+      { name: 'Lá mùi tây Oregano khô', amount: 1, unit: 'muỗng cà phê', category: 'gia-vi' },
+      { name: 'Chút xíu muối tinh', amount: 1, unit: 'nhúm', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Làm sốt bơ tỏi', content: 'Trộn bơ lạt mềm cùng tỏi băm nhuyễn, lá mùi tây oregano và nhúm muối nhỏ.' },
+      { step: 2, title: 'Phết bánh mì', content: 'Cắt bánh mì thành từng lát chéo dày 2cm, phết đều hỗn hợp bơ tỏi lên bề mặt.' },
+      { step: 3, title: 'Nướng giòn', content: 'Nướng nồi chiên không dầu hoặc chảo áp 5-7 phút ở 170°C cho mặt bánh vàng ươm giòn tan.' }
+    ],
+    tags: ['Món Âu', 'Bánh Mì Bơ Tỏi', 'Món Kèm', 'Garlic Bread', 'Western Food']
+  },
+  {
+    id: 'salad-dia-trung-hai-feta-dau-oliu',
+    title: 'Salad Địa Trung Hải Dưa Leo Cà Chua & Dầu Ô-Liu',
+    description: 'Hương vị Địa Trung Hải tươi mát: Dưa leo giòn rụm kết hợp cà chua mọng nước, hành tây tím, quả ô liu đen và dầu ô liu nguyên chất chanh vàng sảng khoái.',
+    category: 'mon-rau',
+    region: 'toan-quoc',
+    prepTimeMinutes: 8,
+    cookTimeMinutes: 0,
+    servings: 4,
+    calories: 160,
+    estimatedCostVnd: 42000,
+    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Dưa leo baby giòn', amount: 300, unit: 'g', category: 'rau-cu' },
+      { name: 'Cà chua chín tới hoặc cà chua bi', amount: 200, unit: 'g', category: 'rau-cu' },
+      { name: 'Hành tây tím thái lát mỏng', amount: 0.5, unit: 'củ', category: 'rau-cu' },
+      { name: 'Quả ô-liu đen ngâm muối', amount: 40, unit: 'g', category: 'khac' },
+      { name: 'Dầu ô-liu Extra Virgin & Nước cốt chanh vàng', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Cắt rau củ', content: 'Dưa leo cắt khoanh tròn giòn, cà chua cắt múi cau, hành tây tím ngâm nước đá cho bớt hăng.' },
+      { step: 2, title: 'Pha sốt dầu giấm', content: 'Khuấy đều dầu ô liu, nước cốt chanh vàng, muối tiêu và lá oregano.' },
+      { step: 3, title: 'Trộn nhẹ', content: 'Rưới sốt lên đĩa rau củ, thả quả ô liu đen lên trên và thưởng thức ngay.' }
+    ],
+    tags: ['Món Âu', 'Salad', 'Địa Trung Hải', 'Greek Salad', 'Western Food', 'Eat Clean']
+  },
+  {
+    id: 'mang-tay-ap-chao-bo-toi',
+    title: 'Măng Tây & Cà Rốt Baby Áp Chảo Bơ Tỏi Thơm Nức',
+    description: 'Món rau cao cấp cho bữa tiệc kiểu Âu: Đọt măng tây xanh mướt giòn ngọt cùng cà rốt baby áp chảo lửa lớn với bơ tỏi thơm lừng, rắc tiêu đen muối hồng.',
+    category: 'mon-rau',
+    region: 'toan-quoc',
+    prepTimeMinutes: 5,
+    cookTimeMinutes: 6,
+    servings: 4,
+    calories: 140,
+    estimatedCostVnd: 48000,
+    imageUrl: 'https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Đọt măng tây xanh tươi giòn', amount: 250, unit: 'g', category: 'rau-cu' },
+      { name: 'Cà rốt baby ngọt hoặc cà rốt củ', amount: 150, unit: 'g', category: 'rau-cu' },
+      { name: 'Bơ lạt Anchor', amount: 25, unit: 'g', category: 'khac' },
+      { name: 'Tỏi băm nhuyễn', amount: 3, unit: 'tép', category: 'rau-cu' },
+      { name: 'Muối tiêu gia vị', amount: 1, unit: 'ít', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Sơ chế măng tây', content: 'Cắt bỏ gốc già măng tây, rửa sạch để ráo.' },
+      { step: 2, title: 'Áp chảo bơ tỏi', content: 'Đun chảy bơ lạt, phi tỏi thơm lừng, cho cà rốt và măng tây vào đảo nhanh tay trên lửa lớn 4-5 phút.' },
+      { step: 3, title: 'Rắc muối tiêu', content: 'Nêm muối hồng và tiêu đen giã dập, tắt bếp khi măng tây còn giòn ngọt mọng nước.' }
+    ],
+    tags: ['Món Âu', 'Món Rau', 'Măng Tây', 'Bơ Tỏi', 'Western Food', 'Eat Clean']
+  },
+
+  // --- MÓN CHÍNH KIỂU ÂU (WESTERN MAINS) ---
+  {
+    id: 'ga-nuong-parmigiana-pho-mai',
+    title: 'Gà Nướng Parmigiana Phô Mai Mozzarella Đút Lò & Mì Ý Bơ Tỏi',
+    description: 'Món gà đút lò phong cách Ý - Mỹ trứ danh: Miếng ức gà chiên giòn phủ đẫm sốt cà chua marinara đậm đà, phô mai mozzarella kéo sợi vàng ươm mặt, ăn kèm mì Ý bơ tỏi thơm lừng.',
+    category: 'mon-man',
+    region: 'toan-quoc',
+    prepTimeMinutes: 10,
+    cookTimeMinutes: 18,
+    servings: 4,
+    calories: 590,
+    estimatedCostVnd: 125000,
+    imageUrl: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Ức gà phi lê tươi', amount: 500, unit: 'g', category: 'thit-ca' },
+      { name: 'Sốt cà chua Marinara kiểu Ý', amount: 150, unit: 'g', category: 'gia-vi' },
+      { name: 'Phô mai Mozzarella kéo sợi', amount: 120, unit: 'g', category: 'khac' },
+      { name: 'Bột chiên xù & Bột mì', amount: 100, unit: 'g', category: 'do-kho' },
+      { name: 'Mì Ý luộc chín tới xóc bơ tỏi', amount: 200, unit: 'g', category: 'do-kho' }
+    ],
+    instructions: [
+      { step: 1, title: 'Tẩm bột rán gà', content: 'Đập dẹt ức gà, tẩm bột mì, trứng và bột chiên xù, rán vàng ươm hai mặt.' },
+      { step: 2, title: 'Đút lò phô mai', content: 'Rưới sốt cà chua marinara lên miếng gà, phủ đầy phô mai mozzarella rồi đút lò hoặc nồi chiên không dầu 6 phút cho phô mai tan chảy xém vàng.' },
+      { step: 3, title: 'Thưởng thức', content: 'Dọn gà nóng hổi kéo sợi phô mai ăn kèm đĩa mì Ý bơ tỏi thảo mộc.' }
+    ],
+    tags: ['Món Âu', 'Món Mặn', 'Chicken Parmigiana', 'Đút Lò', 'Western Food']
+  },
+  {
+    id: 'bo-ham-ruou-vang-beef-bourguignon',
+    title: 'Bò Hầm Rượu Vang & Rau Củ Kiểu Pháp (Bœuf Bourguignon)',
+    description: 'Đặc sản trứ danh nước Pháp: Thịt thăn bò mềm tan ninh nhừ trong nước sốt rượu vang nồng ấm, hòa quyện cà rốt ngọt lịm, nấm tươi và hành tây, chấm cùng bánh mì nướng bơ tỏi giòn tan.',
+    category: 'mon-man',
+    region: 'toan-quoc',
+    prepTimeMinutes: 15,
+    cookTimeMinutes: 35,
+    servings: 4,
+    calories: 560,
+    estimatedCostVnd: 165000,
+    imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Bắp bò hoặc thăn bò cắt khối vuông', amount: 500, unit: 'g', category: 'thit-ca' },
+      { name: 'Cà rốt & Khoai tây cắt miếng lớn', amount: 300, unit: 'g', category: 'rau-cu' },
+      { name: 'Nấm mỡ tươi hoặc nấm hương', amount: 150, unit: 'g', category: 'rau-cu' },
+      { name: 'Rượu vang đỏ đà lạt nấu ăn', amount: 150, unit: 'ml', category: 'gia-vi' },
+      { name: 'Lá thơm Thyme, lá nguyệt quế & Bơ tỏi', amount: 1, unit: 'gói nhỏ', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Áp chảo thịt bò', content: 'Thịt bò ướp muối tiêu, áp chảo lửa lớn cho xém nâu vàng các mặt rồi gắp ra.' },
+      { step: 2, title: 'Hầm sốt rượu vang', content: 'Xào hành tây, tỏi, cà rốt với bơ. Đổ rượu vang và nước dùng bò vào ninh lửa nhỏ 30 phút cho thịt bò mềm rục.' },
+      { step: 3, title: 'Hoàn thiện', content: 'Thêm nấm mỡ vào đun thêm 5 phút cho nước sốt sánh kẹo nâu óng ả, chấm bánh mì nóng hổi.' }
+    ],
+    tags: ['Món Âu', 'Món Mặn', 'Bò Hầm Pháp', 'Beef Bourguignon', 'Western Food', 'Tiệc Gia Đình']
+  },
+  {
+    id: 'mi-y-pesto-hai-san-tom-muc',
+    title: 'Mì Ý Sốt Húng Tây Pesto Hải Sản Tôm Mực',
+    description: 'Hương vị biển Địa Trung Hải thanh khiết: Tôm sú và mực tươi xào chín tới ngọt đậm, quyện đều từng sợi mì Ý sốt Pesto xanh mướt từ húng tây, hạt thông bùi béo và dầu ô liu nguyên chất.',
+    category: 'mon-man',
+    region: 'toan-quoc',
+    prepTimeMinutes: 10,
+    cookTimeMinutes: 12,
+    servings: 4,
+    calories: 520,
+    estimatedCostVnd: 145000,
+    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80',
+    ingredients: [
+      { name: 'Mì Ý sợi dài Spaghetti lúa mì cứng', amount: 300, unit: 'g', category: 'do-kho' },
+      { name: 'Tôm sú tươi bóc nõn', amount: 200, unit: 'g', category: 'thit-ca' },
+      { name: 'Mực ống tươi cắt khoanh', amount: 150, unit: 'g', category: 'thit-ca' },
+      { name: 'Sốt Pesto húng tây kiểu Ý (Basil Pesto)', amount: 80, unit: 'g', category: 'gia-vi' },
+      { name: 'Dầu ô liu & Tỏi lát', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Luộc mì Ý', content: 'Luộc mì Ý với nước muối 8 phút cho chín chuẩn al dente, vớt ráo giữ lại 1 muôi nước luộc mì.' },
+      { step: 2, title: 'Xào hải sản tỏi ớt', content: 'Phi thơm tỏi lát với dầu ô liu, cho tôm mực vào xào lửa lớn chín tới trong 2 phút.' },
+      { step: 3, title: 'Trộn sốt Pesto', content: 'Tắt lửa, cho mì và sốt Pesto vào xóc đều chảo cho lớp sốt xanh ngọc bám đều từng sợi mì.' }
+    ],
+    tags: ['Món Âu', 'Món Mặn', 'Mì Ý Pesto', 'Hải Sản', 'Địa Trung Hải', 'Western Food']
+  }
+];
+
+import { recipesDatabase } from './recipesDatabase';
+import { westernDishes500 } from './westernDishes500';
+
+export { westernDishes500 };
+export const mockRecipes: Recipe[] = [...INITIAL_RECIPES, ...LEFTOVER_RECIPES, ...WESTERN_RECIPES, ...westernDishes500, ...recipesDatabase];
 export { recipesDatabase };
+

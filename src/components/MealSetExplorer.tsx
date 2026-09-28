@@ -22,6 +22,11 @@ import { SafeImage } from './SafeImage';
 
 const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Bán Chạy', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
 
+const cleanDishTitle = (title: string) => {
+  if (!title) return '';
+  return title.replace(/^Mâm Cơm[:\s-]+/i, '').trim();
+};
+
 export const MealSetExplorer: React.FC = () => {
   const { 
     mealSets, 
@@ -32,7 +37,7 @@ export const MealSetExplorer: React.FC = () => {
     viewMode
   } = useMealWise();
 
-  const [regionFilter, setRegionFilter] = useState<'all' | 'bac' | 'trung' | 'nam' | 'chay'>('all');
+  const [regionFilter, setRegionFilter] = useState<'all' | 'bac' | 'trung' | 'nam' | 'chay' | 'western'>('all');
   const [selectedTag, setSelectedTag] = useState<string>('Tất Cả');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [assigningMealSet, setAssigningMealSet] = useState<VietnameseMealSet | null>(null);
@@ -44,8 +49,16 @@ export const MealSetExplorer: React.FC = () => {
   const filteredSets = useMemo(() => {
     return mealSets.filter(set => {
       // 1. Region filter
-      if (regionFilter !== 'all' && set.region !== regionFilter) {
-        return false;
+      if (regionFilter !== 'all') {
+        if (regionFilter === 'western') {
+          const isWestern = (set.region as string) === 'western' || 
+            (set.region as string) === 'au' || 
+            set.id.startsWith('mam-com-au') || 
+            (set.tags && set.tags.some(t => t.toLowerCase().includes('âu') || t.toLowerCase().includes('western')));
+          if (!isWestern) return false;
+        } else if (set.region !== regionFilter) {
+          return false;
+        }
       }
       // 2. Tag filter
       if (selectedTag !== 'Tất Cả') {
@@ -64,7 +77,7 @@ export const MealSetExplorer: React.FC = () => {
 
   const handleApplySet = () => {
     if (!assigningMealSet) return;
-    addMealSetToSlot(targetDay, targetSlot, assigningMealSet.id);
+    addMealSetToSlot(targetDay, targetSlot, assigningMealSet);
     setAssigningMealSet(null);
   };
 
@@ -74,34 +87,34 @@ export const MealSetExplorer: React.FC = () => {
     <div className="space-y-6">
       
       {/* Top Banner */}
-      <div className="p-5 sm:p-7 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-emerald-950/10 via-slate-50 to-slate-100 dark:from-slate-900 dark:via-emerald-950/30 dark:to-slate-900 relative overflow-hidden">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/25 dark:border-emerald-500/30 text-xs font-bold mb-3">
+      <div className="p-5 sm:p-7 rounded-3xl glass-card border border-[#EBE5DC] dark:border-[#252220] bg-gradient-to-r from-amber-950/10 via-stone-50 to-stone-100 dark:from-[#1C1A18] dark:via-amber-950/25 dark:to-[#1C1A18] relative overflow-hidden">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-xs font-bold mb-3">
           <Utensils className="w-3.5 h-3.5" />
           <span>Văn Hóa Ẩm Thực Việt</span>
         </div>
 
-        <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+        <h1 className="text-xl sm:text-3xl font-extrabold text-stone-900 dark:text-white tracking-tight">
           Bộ Mâm Cơm Gia Đình Tròn Vị (3 Món)
         </h1>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed">
-          Người Việt không chỉ ăn 1 món duy nhất. Mỗi mâm cơm gia đình là sự kết hợp hoàn hảo giữa <strong className="text-emerald-700 dark:text-emerald-400 font-extrabold">Món Mặn + Canh Thanh Mát + Rau Xào Giòn</strong> cùng nước chấm chuẩn vị.
+        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 mt-1 max-w-2xl leading-relaxed">
+          Người Việt không chỉ ăn 1 món duy nhất. Mỗi mâm cơm gia đình là sự kết hợp hoàn hảo giữa <strong className="text-amber-700 dark:text-amber-400 font-extrabold">Món Mặn + Canh Thanh Mát + Rau Xào Giòn</strong> cùng nước chấm chuẩn vị.
         </p>
 
         {/* Diacritic-Insensitive Search Bar */}
         <div className="relative mt-4 max-w-xl">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Tìm theo tên mâm, món mặn, canh, rau..."
-            className="w-full pl-10 pr-9 py-2 rounded-2xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-xs font-medium border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-sm"
+            className="w-full pl-10 pr-9 py-2 rounded-2xl bg-white dark:bg-[#1C1A18] text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 text-xs font-medium border border-[#EBE5DC] dark:border-[#292524] focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all shadow-sm"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/20 dark:hover:bg-white/30 text-slate-600 dark:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-white/20 dark:hover:bg-white/30 text-stone-600 dark:text-white flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Xóa tìm kiếm"
             >
               <X className="w-3.5 h-3.5" />
@@ -116,7 +129,8 @@ export const MealSetExplorer: React.FC = () => {
             { id: 'bac', label: 'Miền Bắc' },
             { id: 'nam', label: 'Miền Nam' },
             { id: 'trung', label: 'Miền Trung' },
-            { id: 'chay', label: 'Mâm Cơm Chay' }
+            { id: 'chay', label: 'Mâm Cơm Chay' },
+            { id: 'western', label: 'Món Âu' }
           ].map(tab => {
             const active = regionFilter === tab.id;
             return (
@@ -125,8 +139,8 @@ export const MealSetExplorer: React.FC = () => {
                 onClick={() => setRegionFilter(tab.id as any)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all shrink-0 whitespace-nowrap ${
                   active
-                    ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25'
-                    : 'bg-white dark:bg-slate-800/80 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm'
+                    ? 'bg-amber-500 text-stone-950 shadow-lg shadow-amber-500/25 font-black'
+                    : 'bg-white dark:bg-[#1C1A18] text-stone-700 dark:text-stone-200 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-[#252220] border border-[#EBE5DC] dark:border-[#292524] shadow-sm'
                 }`}
               >
                 {tab.label}
@@ -236,46 +250,46 @@ export const MealSetExplorer: React.FC = () => {
                     </span>
 
                     {/* Món Mặn */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <span className="px-2 py-0.5 rounded-md bg-rose-500/15 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2.5">
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <span className="w-[72px] py-1 rounded-md bg-rose-500/15 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
                           MÓN MẶN
                         </span>
-                        <span className="text-xs font-bold text-slate-900 dark:text-white truncate" title={set.mainDish.title}>
-                          {set.mainDish.title}
+                        <span className="text-xs font-bold text-slate-900 dark:text-white break-words leading-tight" title={set.mainDish.title}>
+                          {cleanDishTitle(set.mainDish.title)}
                         </span>
                       </div>
-                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap">
+                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap min-w-[64px] text-right tabular-nums">
                         {set.mainDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                       </span>
                     </div>
 
                     {/* Món Canh */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <span className="px-2 py-0.5 rounded-md bg-sky-500/15 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2.5">
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <span className="w-[72px] py-1 rounded-md bg-sky-500/15 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
                           MÓN CANH
                         </span>
-                        <span className="text-xs font-bold text-slate-900 dark:text-white truncate" title={set.soupDish.title}>
-                          {set.soupDish.title}
+                        <span className="text-xs font-bold text-slate-900 dark:text-white break-words leading-tight" title={set.soupDish.title}>
+                          {cleanDishTitle(set.soupDish.title)}
                         </span>
                       </div>
-                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap">
+                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap min-w-[64px] text-right tabular-nums">
                         {set.soupDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                       </span>
                     </div>
 
                     {/* Món Rau */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2.5">
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <span className="w-[72px] py-1 rounded-md bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
                           MÓN RAU
                         </span>
-                        <span className="text-xs font-bold text-slate-900 dark:text-white truncate" title={set.sideDish.title}>
-                          {set.sideDish.title}
+                        <span className="text-xs font-bold text-slate-900 dark:text-white break-words leading-tight" title={set.sideDish.title}>
+                          {cleanDishTitle(set.sideDish.title)}
                         </span>
                       </div>
-                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap">
+                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap min-w-[64px] text-right tabular-nums">
                         {set.sideDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                       </span>
                     </div>
@@ -302,7 +316,7 @@ export const MealSetExplorer: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setAssigningMealSet(set)}
-                  className="flex-1 py-2.5 px-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-[11px] sm:text-xs shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-1.5 active:scale-95 leading-tight"
+                  className="flex-1 py-2.5 px-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-extrabold text-[11px] sm:text-xs shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-1.5 active:scale-95 leading-tight"
                 >
                   <PlusCircle className="w-4 h-4 shrink-0" />
                   <span className="whitespace-nowrap">Chọn Mâm Này</span>
@@ -412,8 +426,8 @@ export const MealSetExplorer: React.FC = () => {
                   onClick={() => setTargetSlot('breakfast')}
                   className={`p-2.5 rounded-xl border text-xs font-extrabold transition-all flex flex-col items-center justify-center gap-1 ${
                     targetSlot === 'breakfast'
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 shadow-sm'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 hover:bg-slate-100'
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 shadow-sm'
+                      : 'border-[#EBE5DC] dark:border-[#292524] bg-stone-50 dark:bg-[#1C1A18] text-stone-700 dark:text-stone-300 hover:bg-stone-100'
                   }`}
                 >
                   <span className="text-sm">☀️</span>
@@ -424,8 +438,8 @@ export const MealSetExplorer: React.FC = () => {
                   onClick={() => setTargetSlot('lunch')}
                   className={`p-2.5 rounded-xl border text-xs font-extrabold transition-all flex flex-col items-center justify-center gap-1 ${
                     targetSlot === 'lunch'
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 shadow-sm'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 hover:bg-slate-100'
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 shadow-sm'
+                      : 'border-[#EBE5DC] dark:border-[#292524] bg-stone-50 dark:bg-[#1C1A18] text-stone-700 dark:text-stone-300 hover:bg-stone-100'
                   }`}
                 >
                   <span className="text-sm">🌤️</span>
@@ -436,8 +450,8 @@ export const MealSetExplorer: React.FC = () => {
                   onClick={() => setTargetSlot('dinner')}
                   className={`p-2.5 rounded-xl border text-xs font-extrabold transition-all flex flex-col items-center justify-center gap-1 ${
                     targetSlot === 'dinner'
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 shadow-sm'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 hover:bg-slate-100'
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 shadow-sm'
+                      : 'border-[#EBE5DC] dark:border-[#292524] bg-stone-50 dark:bg-[#1C1A18] text-stone-700 dark:text-stone-300 hover:bg-stone-100'
                   }`}
                 >
                   <span className="text-sm">🌙</span>
@@ -450,13 +464,13 @@ export const MealSetExplorer: React.FC = () => {
             <div className="pt-2 flex gap-2">
               <button
                 onClick={() => setAssigningMealSet(null)}
-                className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors"
+                className="flex-1 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#292524] dark:hover:bg-[#34302C] text-stone-700 dark:text-stone-300 font-bold text-xs transition-colors"
               >
                 Hủy
               </button>
               <button
                 onClick={handleApplySet}
-                className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-slate-950 font-extrabold text-xs shadow-md shadow-emerald-500/20 active:scale-95 transition-all"
+                className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-extrabold text-xs shadow-md shadow-amber-500/20 active:scale-95 transition-all"
               >
                 Xác Nhận Gán
               </button>

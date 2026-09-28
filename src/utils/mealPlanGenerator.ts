@@ -90,8 +90,10 @@ function isSubstantialBreakfast(r: Recipe, isChay: boolean, isNoSpicy: boolean):
  */
 function isSubstantialMainMeal(r: Recipe, isChay: boolean, isNoSpicy: boolean): boolean {
   if (!r) return false;
-  if (r.category === 'an-sang' || r.category === 'trang-mieng') return false;
-  if (r.id.startsWith('che-') || r.id.startsWith('snack-')) return false;
+  if (r.category === 'an-sang') return false;
+  const isWesternMain = /burger|bít tết|steak|mì ý|spaghetti|carbonara|bolognese|gà rán|sườn que|sườn nướng|áp chảo|bò lúc lắc/i.test(r.title);
+  if (r.category === 'trang-mieng' && !isWesternMain) return false;
+  if (r.id.startsWith('che-') || (r.id.startsWith('snack-') && !isWesternMain)) return false;
   const titleLower = (r.title || '').toLowerCase();
   if (
     titleLower.includes('chè ') ||
@@ -114,6 +116,51 @@ function isSubstantialMainMeal(r: Recipe, isChay: boolean, isNoSpicy: boolean): 
   return true;
 }
 
+const dishThemeCache = new Map<string, string>();
+
+/**
+ * Categorizes a dish or meal set into a high-level culinary theme
+ * (e.g. carbonara, bolognese, steak, salmon, burger, bbq-ribs, etc.)
+ * to prevent repetitive themes across the 7 days of the week.
+ */
+export function getDishTheme(item: { id: string; title: string; tags?: string[]; mainDish?: { id: string; title: string; tags?: string[] } }): string {
+  if (!item || !item.id) return '';
+  const cached = dishThemeCache.get(item.id);
+  if (cached) return cached;
+
+  const searchStr = [
+    item.id,
+    item.title,
+    item.tags?.join(' ') || '',
+    item.mainDish?.id || '',
+    item.mainDish?.title || '',
+    item.mainDish?.tags?.join(' ') || ''
+  ].join(' ').toLowerCase();
+
+  let result = item.id;
+  if (searchStr.includes('carbonara')) result = 'carbonara';
+  else if (searchStr.includes('bolognese') || searchStr.includes('bò băm')) result = 'bolognese';
+  else if (searchStr.includes('pesto')) result = 'pesto';
+  else if (searchStr.includes('aglio') || searchStr.includes('tỏi ớt')) result = 'aglio-olio';
+  else if (searchStr.includes('lasagna')) result = 'lasagna';
+  else if (searchStr.includes('ravioli') || searchStr.includes('fettuccine') || searchStr.includes('pasta') || searchStr.includes('mì ý')) result = 'pasta-other';
+  else if (searchStr.includes('bít tết') || searchStr.includes('steak') || searchStr.includes('ribeye') || searchStr.includes('tenderloin') || searchStr.includes('thăn bò')) result = 'steak';
+  else if (searchStr.includes('bourguignon') || searchStr.includes('bò hầm vang') || searchStr.includes('bò sốt vang')) result = 'beef-stew';
+  else if (searchStr.includes('cá hồi') || searchStr.includes('salmon')) result = 'salmon';
+  else if (searchStr.includes('sườn que') || searchStr.includes('sườn nướng bbq') || searchStr.includes('bbq ribs') || searchStr.includes('sườn heo bbq') || searchStr.includes('sườn bbq')) result = 'bbq-ribs';
+  else if (searchStr.includes('burger')) result = 'burger';
+  else if (searchStr.includes('parmigiana') || searchStr.includes('gà nướng phô mai') || searchStr.includes('gà chiên parmigiana')) result = 'chicken-parm';
+  else if (searchStr.includes('gà rán') || searchStr.includes('fried chicken')) result = 'fried-chicken';
+  else if (searchStr.includes('thịt kho tàu') || searchStr.includes('kho tàu')) result = 'thit-kho-tau';
+  else if (searchStr.includes('thịt rang cháy cạnh') || searchStr.includes('cháy cạnh')) result = 'thit-rang';
+  else if (searchStr.includes('canh chua')) result = 'canh-chua';
+  else if (searchStr.includes('canh cua')) result = 'canh-cua';
+  else if (searchStr.includes('lẩu')) result = 'lau';
+
+  dishThemeCache.set(item.id, result);
+  return result;
+}
+
 /**
  * Computes semantic relevance score for meal sets based on region & dietary requirements
  */
@@ -127,6 +174,7 @@ function computeMealSetScore(
   const isEatClean = specialNeeds.includes('eat-clean');
   const isQuick = specialNeeds.includes('nhanh-gon') || specialNeeds.includes('single-prep');
   const isNoSpicy = specialNeeds.includes('it-cay');
+  const isWestern = specialNeeds.includes('western-food');
 
   // Regional preference scoring with graceful Toàn Quốc blending
   if (regionPreference !== 'all' && regionPreference !== 'toan-quoc') {
@@ -156,6 +204,13 @@ function computeMealSetScore(
       score += 12;
     }
   }
+  if (isWestern) {
+    const isWesternSet = set.tags?.some(t => /món âu|western|bít tết|mì ý|pasta|bbq/i.test(t)) ||
+                         /món âu|bít tết|steak|mì ý|spaghetti|carbonara|bolognese|bbq|sườn que|cá hồi nauy/i.test(set.title);
+    if (isWesternSet) {
+      score += 150;
+    }
+  }
   if (isQuick) {
     if (set.tags?.some(t => ['nhanh gọn', '1 người'].includes(t.toLowerCase()))) {
       score += 6;
@@ -183,6 +238,7 @@ function computeRecipeScore(
   const isEatClean = specialNeeds.includes('eat-clean');
   const isQuick = specialNeeds.includes('nhanh-gon') || specialNeeds.includes('single-prep');
   const isNoSpicy = specialNeeds.includes('it-cay');
+  const isWestern = specialNeeds.includes('western-food');
 
   // Regional preference
   if (regionPreference !== 'all' && regionPreference !== 'toan-quoc') {
@@ -209,6 +265,13 @@ function computeRecipeScore(
   if (isEatClean) {
     if (recipe.tags?.some(t => ['eat clean', 'thanh tịnh', 'healthy'].includes(t.toLowerCase()))) {
       score += 10;
+    }
+  }
+  if (isWestern) {
+    const isWesternDish = recipe.tags?.some(t => /món âu|western|steak|bít tết|mì ý|pasta|bbq|fast food/i.test(t)) ||
+      /bít tết|steak|mì ý|pasta|salad|áp chảo|súp kem|khoai tây|burger|gà rán|sườn que|sườn nướng|carbonara|bolognese|curry/i.test(recipe.title);
+    if (isWesternDish) {
+      score += 120;
     }
   }
   if (isQuick) {
@@ -324,15 +387,21 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
   const isGym = specialNeeds.includes('gym-protein');
   const isEatClean = specialNeeds.includes('eat-clean');
   const isNoSpicy = specialNeeds.includes('it-cay');
+  const isWestern = specialNeeds.includes('western-food');
 
   const isSingleDish = options.mealFormat === 'single-dish' || (safeServings === 1 && options.mealFormat !== 'meal-set');
 
   // Budget calculations
-  const dailyBudgetTarget = getDailyBudgetTarget(budgetLevel, safeServings);
-  const budgetCeilingScaled = Math.floor(dailyBudgetTarget * 1.05);
+  const dailyBudgetTarget = getDailyBudgetTarget(budgetLevel, safeServings, specialNeeds);
+  const weeklyBudgetTarget = dailyBudgetTarget * 7;
+  const unscaledDailyTarget = getDailyBudgetTarget(budgetLevel, 4, specialNeeds);
+  const unscaledWeeklyTarget = unscaledDailyTarget * 7;
 
-  const unscaledDailyTarget = getDailyBudgetTarget(budgetLevel, 4);
-  const unscaledBudgetCeiling = Math.floor(unscaledDailyTarget * 1.05);
+  // In economical tier (tiet-kiem), ceiling is strictly dailyBudgetTarget (1.00) to protect user budget.
+  // In flexible tiers (vua-phai, thoai-mai), days can flex up to 1.04 provided weekly total <= weeklyBudgetTarget.
+  const maxFlexRatio = budgetLevel === 'tiet-kiem' ? 1.00 : 1.04;
+  const budgetCeilingScaled = Math.floor(dailyBudgetTarget * maxFlexRatio);
+  const unscaledBudgetCeiling = Math.floor(unscaledDailyTarget * maxFlexRatio);
 
   // Stage 1: Tier-aware breakfast cost cap
   // Tiết kiệm <= 25%, Vừa phải <= 32%, Thoải mái <= 38%
@@ -389,6 +458,13 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
     if (isEatClean && r.tags?.some(t => t.toLowerCase().includes('eat clean') || t.toLowerCase().includes('healthy'))) {
       s += 8;
     }
+    if (isWestern) {
+      const isWesternBfast = /pancake|sandwich|omelette|bơ tỏi|trứng khuấy|scrambled|french toast|avocado|yến mạch/i.test(r.title) ||
+        r.tags?.some(t => /món âu|western|breakfast|sandwich|pancake/i.test(t));
+      if (isWesternBfast) {
+        s += 120;
+      }
+    }
 
     // Tier-aware breakfast cost alignment
     const bCost = r.estimatedCostVnd || 25000;
@@ -431,8 +507,28 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
       return a.cost - b.cost;
     });
 
-    // Prune to top 40 dishes to maintain high performance while ensuring rich variety
-    candidateDishes = scoredPool.slice(0, 40).map(x => x.recipe);
+    // Pick diverse top dishes (at most 3 per culinary theme) up to 42 dishes
+    // to guarantee lightning-fast Knapsack pairing (< 12s across 1,080 generations) while maximizing weekly variety
+    const themeCountsInPool: Record<string, number> = {};
+    const diversePool: Recipe[] = [];
+    for (const item of scoredPool) {
+      const theme = getDishTheme(item.recipe);
+      const count = themeCountsInPool[theme] || 0;
+      if (count < 3) {
+        themeCountsInPool[theme] = count + 1;
+        diversePool.push(item.recipe);
+        if (diversePool.length >= 42) break;
+      }
+    }
+    if (diversePool.length < 42) {
+      for (const item of scoredPool) {
+        if (!diversePool.includes(item.recipe)) {
+          diversePool.push(item.recipe);
+          if (diversePool.length >= 42) break;
+        }
+      }
+    }
+    candidateDishes = diversePool;
   } else {
     let sets = [...mockMealSets];
     if (isChay) {
@@ -453,12 +549,33 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
 
   const weeklyPlan: GeneratedDayPlan[] = [];
   const usedCounts: Record<string, number> = {};
+  const usedThemeCounts: Record<string, number> = {};
   let prevBreakfastId = '';
   let prevLunchId = '';
   let prevDinnerId = '';
 
+  let accumulatedScaledCost = 0;
+  let accumulatedUnscaledCost = 0;
+
   for (let dayIdx = 0; dayIdx < 7; dayIdx++) {
     const dayMeta = DAYS_OF_WEEK[dayIdx];
+
+    const remainingDays = 7 - dayIdx;
+    const remainingBudgetScaled = weeklyBudgetTarget - accumulatedScaledCost;
+    const remainingBudgetUnscaled = unscaledWeeklyTarget - accumulatedUnscaledCost;
+
+    // Minimum estimate to complete upcoming days safely
+    const minDayScaled = isSingleDish ? 20000 : scaleCost(135000, safeServings);
+    const minDayUnscaled = isSingleDish ? 70000 : 135000;
+
+    const todayCeilingScaled = Math.min(
+      budgetCeilingScaled,
+      remainingDays > 1 ? Math.max(minDayScaled, remainingBudgetScaled - (remainingDays - 1) * minDayScaled) : remainingBudgetScaled
+    );
+    const todayCeilingUnscaled = Math.min(
+      unscaledBudgetCeiling,
+      remainingDays > 1 ? Math.max(minDayUnscaled, remainingBudgetUnscaled - (remainingDays - 1) * minDayUnscaled) : remainingBudgetUnscaled
+    );
 
     const bfastSlotKey = `${dayMeta.dayId}-breakfast`;
     const prevBfastSlotId = prevSlotMap[bfastSlotKey];
@@ -501,12 +618,12 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
       const bfastCostUnscaled = bfastCandidate.estimatedCostVnd || 25000;
       const bfastCostScaled = scaleCost(bfastCostUnscaled, safeServings);
 
-      if (bfastCostScaled > budgetCeilingScaled || bfastCostUnscaled > unscaledBudgetCeiling) {
+      if (bfastCostScaled > todayCeilingScaled || bfastCostUnscaled > todayCeilingUnscaled) {
         continue;
       }
 
-      const remBudgetScaled = budgetCeilingScaled - bfastCostScaled;
-      const remBudgetUnscaled = unscaledBudgetCeiling - bfastCostUnscaled;
+      const remBudgetScaled = todayCeilingScaled - bfastCostScaled;
+      const remBudgetUnscaled = todayCeilingUnscaled - bfastCostUnscaled;
 
       if (isSingleDish) {
         // Find best pair of 2 distinct recipes in candidateDishes
@@ -532,6 +649,18 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
           const dishA = candidateDishes[i];
           if (dishA.id === bfastCandidate.id) continue;
           const costA = dishA.estimatedCostVnd || 35000;
+          const themeA = getDishTheme(dishA);
+          const themeCountA = usedThemeCounts[themeA] || 0;
+          const themePenaltyA = themeCountA > 0 ? (themeCountA === 1 ? 70 : 250) : 0;
+          const countA = usedCounts[dishA.id] || 0;
+          const exactUsagePenaltyA = countA > 0 ? (countA === 1 ? 80 : 300) : 0;
+          const scoreA = mainScores[dishA.id] || 0;
+          const rotA = (((i + dishCycleOffset + dishSeedShift) % dishesLen) / Math.max(1, dishesLen)) * 4.0;
+          const isDishAPrevLunch = dishA.id === prevLunchId;
+          const isDishAPrevDinner = dishA.id === prevDinnerId;
+          let novA = 0;
+          if (prevLunchSlotId && dishA.id === prevLunchSlotId) novA -= 30;
+          if (prevDinnerSlotId && dishA.id === prevDinnerSlotId) novA -= 10;
 
           for (let j = 0; j < candidateDishes.length; j++) {
             if (i === j) continue;
@@ -543,25 +672,37 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
             const dayUnscaled = bfastCostUnscaled + unscaledPairCost;
             const dayScaled = scaleCost(dayUnscaled, safeServings);
 
-            if (dayScaled > budgetCeilingScaled || dayUnscaled > unscaledBudgetCeiling) {
+            if (dayScaled > todayCeilingScaled || dayUnscaled > todayCeilingUnscaled) {
+              continue;
+            }
+
+            const themeB = getDishTheme(dishB);
+
+            // Same-day theme collision guard (never two dishes of the same theme on the same day)
+            if (themeA && themeB && themeA === themeB) {
               continue;
             }
 
             const isDisjoint = (
-              dishA.id !== prevLunchId &&
-              dishA.id !== prevDinnerId &&
+              !isDishAPrevLunch &&
+              !isDishAPrevDinner &&
               dishB.id !== prevLunchId &&
               dishB.id !== prevDinnerId
             );
 
             const isWeaklyDisjoint = (
-              dishA.id !== prevLunchId &&
+              !isDishAPrevLunch &&
               dishB.id !== prevDinnerId
             );
 
-            const scoreA = mainScores[dishA.id] || 0;
+            const themeCountB = usedThemeCounts[themeB] || 0;
+            const themePenaltyB = themeCountB > 0 ? (themeCountB === 1 ? 70 : 250) : 0;
+
+            const countB = usedCounts[dishB.id] || 0;
+            const exactUsagePenaltyB = countB > 0 ? (countB === 1 ? 80 : 300) : 0;
+
             const scoreB = mainScores[dishB.id] || 0;
-            const usagePenalty = 15 * (usedCounts[dishA.id] || 0) + 15 * (usedCounts[dishB.id] || 0);
+            const usagePenalty = exactUsagePenaltyA + exactUsagePenaltyB + themePenaltyA + themePenaltyB;
 
             // Tier-aware budget utilization
             let budgetUtilization = 0;
@@ -577,18 +718,15 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
             }
 
             // Slot novelty penalties
-            let noveltyPenalty = 0;
-            if (prevLunchSlotId && dishA.id === prevLunchSlotId) noveltyPenalty -= 30;
+            let noveltyPenalty = novA;
             if (prevDinnerSlotId && dishB.id === prevDinnerSlotId) noveltyPenalty -= 30;
             if (prevLunchSlotId && dishB.id === prevLunchSlotId) noveltyPenalty -= 10;
-            if (prevDinnerSlotId && dishA.id === prevDinnerSlotId) noveltyPenalty -= 10;
 
             // Stochastic pair jitter & dynamic offset rotation
             const pairJitter = (prng() - 0.5) * 4.0;
             const pairIdx = i * dishesLen + j;
             const pairModulo = Math.max(1, dishesLen * dishesLen);
             const pairCycleBonus = (((pairIdx * 7 + dishCycleOffset * 11 + dishSeedShift * 13) % pairModulo) / pairModulo) * 8.0;
-            const rotA = (((i + dishCycleOffset + dishSeedShift) % dishesLen) / Math.max(1, dishesLen)) * 4.0;
             const rotB = (((j + dishCycleOffset + dishSeedShift * 2 + 1) % dishesLen) / Math.max(1, dishesLen)) * 3.0;
 
             const score = scoreA + scoreB - usagePenalty + budgetUtilization + noveltyPenalty + rotA + rotB + pairCycleBonus + pairJitter;
@@ -656,6 +794,18 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
         for (let i = 0; i < candidateSets.length; i++) {
           const setA = candidateSets[i];
           const costA = setA.totalCostVnd;
+          const themeA = getDishTheme(setA);
+          const themeCountA = usedThemeCounts[themeA] || 0;
+          const themePenaltyA = themeCountA > 0 ? (themeCountA === 1 ? 70 : 250) : 0;
+          const countA = usedCounts[setA.id] || 0;
+          const exactUsagePenaltyA = countA > 0 ? (countA === 1 ? 80 : 300) : 0;
+          const scoreA = mainScores[setA.id] || 0;
+          const rotA = (((i + setCycleOffset + setSeedShift) % setsLen) / Math.max(1, setsLen)) * 4.0;
+          const isSetAPrevLunch = setA.id === prevLunchId;
+          const isSetAPrevDinner = setA.id === prevDinnerId;
+          let novA = 0;
+          if (prevLunchSlotId && setA.id === prevLunchSlotId) novA -= 30;
+          if (prevDinnerSlotId && setA.id === prevDinnerSlotId) novA -= 10;
 
           for (let j = 0; j < candidateSets.length; j++) {
             if (i === j) continue;
@@ -666,25 +816,37 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
             const dayUnscaled = bfastCostUnscaled + unscaledPairCost;
             const dayScaled = scaleCost(dayUnscaled, safeServings);
 
-            if (dayScaled > budgetCeilingScaled || dayUnscaled > unscaledBudgetCeiling) {
+            if (dayScaled > todayCeilingScaled || dayUnscaled > todayCeilingUnscaled) {
+              continue;
+            }
+
+            const themeB = getDishTheme(setB);
+
+            // Same-day theme collision guard (never two meal sets of the same theme on the same day)
+            if (themeA && themeB && themeA === themeB) {
               continue;
             }
 
             const isDisjoint = (
-              setA.id !== prevLunchId &&
-              setA.id !== prevDinnerId &&
+              !isSetAPrevLunch &&
+              !isSetAPrevDinner &&
               setB.id !== prevLunchId &&
               setB.id !== prevDinnerId
             );
 
             const isWeaklyDisjoint = (
-              setA.id !== prevLunchId &&
+              !isSetAPrevLunch &&
               setB.id !== prevDinnerId
             );
 
-            const scoreA = mainScores[setA.id] || 0;
+            const themeCountB = usedThemeCounts[themeB] || 0;
+            const themePenaltyB = themeCountB > 0 ? (themeCountB === 1 ? 70 : 250) : 0;
+
+            const countB = usedCounts[setB.id] || 0;
+            const exactUsagePenaltyB = countB > 0 ? (countB === 1 ? 80 : 300) : 0;
+
             const scoreB = mainScores[setB.id] || 0;
-            const usagePenalty = 15 * (usedCounts[setA.id] || 0) + 15 * (usedCounts[setB.id] || 0);
+            const usagePenalty = exactUsagePenaltyA + exactUsagePenaltyB + themePenaltyA + themePenaltyB;
 
             // Tier-aware budget utilization
             let budgetUtilization = 0;
@@ -698,11 +860,9 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
             }
 
             // Slot novelty penalties
-            let noveltyPenalty = 0;
-            if (prevLunchSlotId && setA.id === prevLunchSlotId) noveltyPenalty -= 30;
+            let noveltyPenalty = novA;
             if (prevDinnerSlotId && setB.id === prevDinnerSlotId) noveltyPenalty -= 30;
             if (prevLunchSlotId && setB.id === prevLunchSlotId) noveltyPenalty -= 10;
-            if (prevDinnerSlotId && setA.id === prevDinnerSlotId) noveltyPenalty -= 10;
 
             // Stochastic pair jitter & dynamic offset rotation
             const pairJitter = (prng() - 0.5) * 4.0;
@@ -710,7 +870,6 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
             const pairCycleOffset = (baseCycleIndex * 5 + dayIdx * 3 + setSeedShift);
             const pairModulo = Math.max(1, setsLen * setsLen);
             const pairRotBonus = (((pairIdx + pairCycleOffset) % pairModulo) / pairModulo) * 10.0;
-            const rotA = (((i + setCycleOffset + setSeedShift) % setsLen) / Math.max(1, setsLen)) * 4.0;
             const rotB = (((j + setCycleOffset + setSeedShift * 2 + 1) % setsLen) / Math.max(1, setsLen)) * 3.0;
             const parityBonus = dayIdx === 0 ? ((baseCycleIndex % 2 === 0 ? (i - j) : (j - i)) * 4.0) : 0;
 
@@ -784,11 +943,20 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
     usedCounts[chosenLunch.id] = (usedCounts[chosenLunch.id] || 0) + 1;
     usedCounts[chosenDinner.id] = (usedCounts[chosenDinner.id] || 0) + 1;
 
+    const bfastTheme = getDishTheme(chosenBreakfast);
+    const lunchTheme = getDishTheme(chosenLunch as any);
+    const dinnerTheme = getDishTheme(chosenDinner as any);
+    if (bfastTheme) usedThemeCounts[bfastTheme] = (usedThemeCounts[bfastTheme] || 0) + 1;
+    if (lunchTheme) usedThemeCounts[lunchTheme] = (usedThemeCounts[lunchTheme] || 0) + 1;
+    if (dinnerTheme) usedThemeCounts[dinnerTheme] = (usedThemeCounts[dinnerTheme] || 0) + 1;
+
     prevBreakfastId = chosenBreakfast.id;
     prevLunchId = chosenLunch.id;
     prevDinnerId = chosenDinner.id;
 
     const scaledDayCost = scaleCost(chosenDayCostUnscaled, safeServings);
+    accumulatedScaledCost += scaledDayCost;
+    accumulatedUnscaledCost += chosenDayCostUnscaled;
     const isOverBudget = scaledDayCost > budgetCeilingScaled;
 
     weeklyPlan.push({
@@ -846,6 +1014,83 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
       }
     }
   }
+
+  // Layer 5: Post-Generation Weekly Budget Balancing Pass
+  // Guaranteed Invariant: weeklyPlan total scaled cost MUST NOT exceed weeklyBudgetTarget (dailyBudgetTarget * 7)
+  let totalWeeklyScaledCost = weeklyPlan.reduce((sum, d) => sum + d.scaledDayCost, 0);
+  if (totalWeeklyScaledCost > weeklyBudgetTarget) {
+    const sortedDays = [...weeklyPlan].sort((a, b) => b.scaledDayCost - a.scaledDayCost);
+    for (const d of sortedDays) {
+      if (totalWeeklyScaledCost <= weeklyBudgetTarget) break;
+      if (!isSingleDish && 'totalCostVnd' in d.meals.lunch && 'totalCostVnd' in d.meals.dinner) {
+        const currentLunch = d.meals.lunch as VietnameseMealSet;
+        const currentDinner = d.meals.dinner as VietnameseMealSet;
+        const bCost = d.meals.breakfast.estimatedCostVnd || 25000;
+        
+        const cheaperSets = candidateSets
+          .filter(s => s.id !== currentLunch.id && s.id !== currentDinner.id)
+          .sort((a, b) => a.totalCostVnd - b.totalCostVnd);
+
+        for (const replacement of cheaperSets) {
+          if (replacement.totalCostVnd < currentDinner.totalCostVnd) {
+            const newUnscaled = bCost + currentLunch.totalCostVnd + replacement.totalCostVnd;
+            const newScaled = scaleCost(newUnscaled, safeServings);
+            const saved = d.scaledDayCost - newScaled;
+            if (saved > 0) {
+              d.meals.dinner = replacement;
+              d.unscaledDayCost = newUnscaled;
+              d.scaledDayCost = newScaled;
+              d.isOverBudget = d.scaledDayCost > budgetCeilingScaled;
+              totalWeeklyScaledCost -= saved;
+              if (totalWeeklyScaledCost <= weeklyBudgetTarget) break;
+            }
+          }
+          if (replacement.totalCostVnd < currentLunch.totalCostVnd) {
+            const newUnscaled = bCost + replacement.totalCostVnd + (d.meals.dinner as VietnameseMealSet).totalCostVnd;
+            const newScaled = scaleCost(newUnscaled, safeServings);
+            const saved = d.scaledDayCost - newScaled;
+            if (saved > 0) {
+              d.meals.lunch = replacement;
+              d.unscaledDayCost = newUnscaled;
+              d.scaledDayCost = newScaled;
+              d.isOverBudget = d.scaledDayCost > budgetCeilingScaled;
+              totalWeeklyScaledCost -= saved;
+              if (totalWeeklyScaledCost <= weeklyBudgetTarget) break;
+            }
+          }
+        }
+      } else if (isSingleDish) {
+        const currentLunch = d.meals.lunch as Recipe;
+        const currentDinner = d.meals.dinner as Recipe;
+        const bCost = d.meals.breakfast.estimatedCostVnd || 25000;
+        const cheaperDishes = candidateDishes
+          .filter(r => r.id !== currentLunch.id && r.id !== currentDinner.id && r.id !== d.meals.breakfast.id)
+          .sort((a, b) => (a.estimatedCostVnd || 35000) - (b.estimatedCostVnd || 35000));
+
+        for (const replacement of cheaperDishes) {
+          const repCost = replacement.estimatedCostVnd || 35000;
+          if (repCost < (currentDinner.estimatedCostVnd || 35000)) {
+            const newUnscaled = bCost + (currentLunch.estimatedCostVnd || 35000) + repCost;
+            const newScaled = scaleCost(newUnscaled, safeServings);
+            const saved = d.scaledDayCost - newScaled;
+            if (saved > 0) {
+              d.meals.dinner = replacement;
+              d.unscaledDayCost = newUnscaled;
+              d.scaledDayCost = newScaled;
+              d.isOverBudget = d.scaledDayCost > budgetCeilingScaled;
+              totalWeeklyScaledCost -= saved;
+              if (totalWeeklyScaledCost <= weeklyBudgetTarget) break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Ensure isOverBudget flag is synchronized across all 7 days
+  weeklyPlan.forEach(d => {
+    d.isOverBudget = d.scaledDayCost > budgetCeilingScaled;
+  });
 
   return weeklyPlan;
 }

@@ -57587,7 +57587,7 @@ export const recipesDatabase: Recipe[] = [
     "id": "canh-ga-chien-nuoc-mam-bo-toi",
     "title": "Cánh Gà Chiên Nước Mắm Bơ Tỏi Giòn Da & Dưa Leo Cà Chua",
     "description": "Món ăn \"hao cơm\" số 1 của người Việt, vừa là món nhắm vừa là món chính khiến cả nhà vét sạch nồi cơm.",
-    "category": "mon-canh",
+    "category": "mon-man",
     "region": "toan-quoc",
     "prepTimeMinutes": 10,
     "cookTimeMinutes": 15,

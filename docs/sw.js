@@ -1,5 +1,5 @@
 // MealWise Progressive Web App Service Worker (100% Offline Mode Support)
-const CACHE_NAME = 'mealwise-offline-v4';
+const CACHE_NAME = 'mealwise-offline-v6';
 
 const PRECACHE_URLS = [
   '/',
@@ -32,6 +32,9 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
+
+  // Never intercept API endpoints (SSE, Collab sync, etc.)
+  if (url.pathname.startsWith('/api/')) return;
 
   // Network-first for navigation & index.html (always get fresh HTML when online, fallback to cache offline)
   if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {
@@ -70,6 +73,10 @@ self.addEventListener('fetch', (event) => {
               });
             }
             return networkResponse;
+          })
+          .catch((err) => {
+            console.warn('[MealWise SW] Static asset fetch failed:', event.request.url, err);
+            return caches.match(event.request);
           });
       })
     );

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#10b981" />
+    <meta name="theme-color" content="#D97706" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -28,16 +28,58 @@
       })();
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js').then(function(reg) {
-            reg.update();
-          }).catch(function() {});
+          var isDev = location.port === '5173' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+          if (isDev) {
+            navigator.serviceWorker.getRegistrations().then(function(regs) {
+              for (var reg of regs) {
+                reg.unregister();
+              }
+            }).catch(function() {});
+            if ('caches' in window) {
+              caches.keys().then(function(keys) {
+                keys.forEach(function(k) { caches.delete(k); });
+              }).catch(function() {});
+            }
+          } else {
+            navigator.serviceWorker.register('/sw.js').then(function(reg) {
+              reg.update();
+            }).catch(function() {});
+          }
         });
       }
     </script>
-    <script type="module" crossorigin src="./assets/index-DpFxiHl7.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BFuay8lk.css">
+    <script type="module" crossorigin src="./assets/index-uYRMaYlz.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/vendor-react-Ds7D3P6J.js">
+    <link rel="modulepreload" crossorigin href="./assets/data-recipes-Du7dvNt-.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-icons-phQJD0dL.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-Bt1LXnqu.css">
   </head>
-  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
-    <div id="root"></div>
+  <body class="bg-ceramic-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100 font-sans antialiased selection:bg-amber-500 selection:text-stone-950 transition-colors duration-200">
+    <div id="root">
+      <div id="app-splash" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #FAF8F5; color: #1c1917; font-family: -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', sans-serif; padding: 20px; text-align: center;">
+        <div style="width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px -5px rgba(217, 119, 6, 0.4); margin-bottom: 16px; animation: mw-pulse 1.8s ease-in-out infinite;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+            <line x1="6" y1="1" x2="6" y2="4"></line>
+            <line x1="10" y1="1" x2="10" y2="4"></line>
+            <line x1="14" y1="1" x2="14" y2="4"></line>
+          </svg>
+        </div>
+        <h1 style="font-size: 19px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px 0; color: #1c1917;">MealWise • Mâm Cơm Việt</h1>
+        <p style="font-size: 13px; color: #78716c; margin: 0 0 20px 0; font-weight: 500;">Đang khởi động thực đơn & nguyên liệu thông minh...</p>
+        <div style="width: 140px; height: 4px; background: #e7e5e4; border-radius: 9999px; overflow: hidden; position: relative;">
+          <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 45%; background: #D97706; border-radius: 9999px; animation: mw-load 1.2s ease-in-out infinite alternate;"></div>
+        </div>
+      </div>
+      <style>
+        @keyframes mw-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+        @keyframes mw-load { 0% { transform: translateX(-40%); } 100% { transform: translateX(260%); } }
+        .dark #app-splash { background: #121110 !important; color: #fafaf9 !important; }
+        .dark #app-splash h1 { color: #fafaf9 !important; }
+        .dark #app-splash p { color: #a8a29e !important; }
+        .dark #app-splash div[style*="background: #e7e5e4"] { background: #292524 !important; }
+      </style>
+    </div>
   </body>
 </html>

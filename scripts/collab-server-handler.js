@@ -6,6 +6,45 @@ export const collabSubscribers = new Map();
 
 const DB_FILE = path.resolve(process.cwd(), 'node_modules', '.collab-rooms.json');
 
+export const ROOM_TTL_MS = 60 * 60 * 1000; // 1 hour maximum lifetime
+
+export function isRoomExpired(room) {
+  if (!room) return true;
+  const expiresAt = room.expiresAt || (room.createdAt + ROOM_TTL_MS);
+  return Date.now() > expiresAt;
+}
+
+export function purgeExpiredRooms() {
+  const now = Date.now();
+  let changed = false;
+  for (const [roomId, room] of collabRooms.entries()) {
+    const expiresAt = room.expiresAt || (room.createdAt + ROOM_TTL_MS);
+    if (now > expiresAt) {
+      collabRooms.delete(roomId);
+      const subs = collabSubscribers.get(roomId);
+      if (subs) {
+        const payload = `data: ${JSON.stringify({ type: 'room_expired', roomId, error: 'Phòng đi chợ đã hết hạn (tối đa 1 giờ)' })}\n\n`;
+        for (const res of subs) {
+          try {
+            res.write(payload);
+            res.end();
+          } catch {}
+        }
+        collabSubscribers.delete(roomId);
+      }
+      changed = true;
+    }
+  }
+  if (changed) {
+    saveRooms();
+  }
+}
+
+// Automatically clean up expired rooms every 60 seconds
+if (typeof setInterval !== 'undefined') {
+  setInterval(purgeExpiredRooms, 60 * 1000);
+}
+
 function loadRooms() {
   try {
     if (fs.existsSync(DB_FILE)) {
@@ -13,6 +52,7 @@ function loadRooms() {
       for (const [k, v] of Object.entries(data)) {
         collabRooms.set(k, v);
       }
+      purgeExpiredRooms();
     }
   } catch {}
 }
@@ -71,6 +111,7 @@ export async function handleCollabRequest(req, res) {
     return false;
   }
 
+
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -88,12 +129,20 @@ export async function handleCollabRequest(req, res) {
     const roomId = body.roomId || `MW-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
     const existing = collabRooms.get(roomId);
+    const now = Date.now();
+    // 1-hour TTL calculation: retain existing unexpired timestamp or establish new 1h TTL
+    const expiresAt = (existing?.expiresAt && existing.expiresAt > now) 
+      ? existing.expiresAt 
+      : (now + ROOM_TTL_MS);
+
     const room = {
       roomId,
       title: body.title || existing?.title || 'Giỏ Đi Chợ Tuần',
       hostName: body.hostName || existing?.hostName || 'Chủ phòng',
-      createdAt: existing?.createdAt || Date.now(),
-      updatedAt: Date.now(),
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+      expiresAt,
+      ttlMs: ROOM_TTL_MS,
       items: (body.items && body.items.length > 0) ? body.items : (existing?.items || []),
       checkedMap: {
         ...(existing?.checkedMap || {}),
@@ -176,6 +225,14 @@ export async function handleCollabRequest(req, res) {
     }
 
     let room = collabRooms.get(roomId);
+    if (room && isRoomExpired(room)) {
+      collabRooms.delete(roomId);
+      saveRooms();
+      res.writeHead(410, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Phòng đi chợ đã hết hạn (tối đa 1 giờ)', roomId, isExpired: true }));
+      return true;
+    }
+
     if (!room) {
       room = {
         roomId,
@@ -183,6 +240,8 @@ export async function handleCollabRequest(req, res) {
         hostName: 'Chủ phòng',
         createdAt: Date.now(),
         updatedAt: Date.now(),
+        expiresAt: Date.now() + ROOM_TTL_MS,
+        ttlMs: ROOM_TTL_MS,
         items: [],
         checkedMap: {},
         participants: {}
@@ -241,6 +300,14 @@ export async function handleCollabRequest(req, res) {
     }
 
     let room = collabRooms.get(roomId);
+    if (room && isRoomExpired(room)) {
+      collabRooms.delete(roomId);
+      saveRooms();
+      res.writeHead(410, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Phòng đi chợ đã hết hạn (tối đa 1 giờ)', roomId, isExpired: true }));
+      return true;
+    }
+
     if (!room) {
       room = {
         roomId,
@@ -248,6 +315,8 @@ export async function handleCollabRequest(req, res) {
         hostName: 'Chủ phòng',
         createdAt: Date.now(),
         updatedAt: Date.now(),
+        expiresAt: Date.now() + ROOM_TTL_MS,
+        ttlMs: ROOM_TTL_MS,
         items: [],
         checkedMap: {},
         participants: {}
@@ -286,6 +355,14 @@ export async function handleCollabRequest(req, res) {
     if (!room) {
       res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ error: 'Room not found', roomId }));
+      return true;
+    }
+
+    if (isRoomExpired(room)) {
+      collabRooms.delete(roomId);
+      saveRooms();
+      res.writeHead(410, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Phòng đi chợ đã hết hạn (tối đa 1 giờ)', roomId, isExpired: true }));
       return true;
     }
 

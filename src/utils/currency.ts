@@ -10,6 +10,12 @@ export const DAILY_BUDGET_RATES: Record<string, number> = {
   'thoai-mai': 140000
 };
 
+export const WESTERN_BUDGET_RATES: Record<string, number> = {
+  'tiet-kiem': 85000,
+  'vua-phai': 120000,
+  'thoai-mai': 180000
+};
+
 /**
  * Rounds a VND monetary value to the nearest clean integer multiple of 1,000 VND.
  * E.g., 18,750 -> 19,000; 18,250 -> 18,000.
@@ -42,13 +48,24 @@ export function scaleCost(unscaledCost: number, servings: number): number {
 
 /**
  * Computes the daily budget target for a household size based on budget level:
- * - 'tiet-kiem': 60,000 VND/person/day * servings
- * - 'vua-phai': 95,000 VND/person/day * servings
- * - 'thoai-mai': 140,000 VND/person/day * servings
+ * - Normal: 'tiet-kiem': 60k, 'vua-phai': 95k, 'thoai-mai': 140k
+ * - Western: 'tiet-kiem': 85k, 'vua-phai': 120k, 'thoai-mai': 180k
+ * Supports optional specialNeeds array or boolean flag for Western cuisine.
  * Returns a clean integer output.
  */
-export function getDailyBudgetTarget(budgetLevel: string, servings: number): number {
-  const rate = DAILY_BUDGET_RATES[budgetLevel] || DAILY_BUDGET_RATES['vua-phai'];
+export function getDailyBudgetTarget(
+  budgetLevel: string, 
+  servings: number, 
+  specialNeedsOrIsWestern?: string[] | boolean
+): number {
+  const isWestern = typeof specialNeedsOrIsWestern === 'boolean'
+    ? specialNeedsOrIsWestern
+    : Array.isArray(specialNeedsOrIsWestern)
+      ? specialNeedsOrIsWestern.includes('western-food')
+      : false;
+
+  const rates = isWestern ? WESTERN_BUDGET_RATES : DAILY_BUDGET_RATES;
+  const rate = rates[budgetLevel] || rates['vua-phai'];
   const safeServings = Number.isFinite(servings) && servings > 0 ? servings : 1;
   return roundToThousand(rate * safeServings);
 }

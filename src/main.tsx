@@ -23,8 +23,13 @@ if (typeof window !== 'undefined') {
   };
 }
 
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { MealWiseProvider } from './context/MealWiseContext';
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </React.StrictMode>
 );

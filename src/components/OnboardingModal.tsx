@@ -147,14 +147,14 @@ export const OnboardingModal: React.FC = () => {
                       onClick={() => setTempData({ ...tempData, regionPreference: opt.id as any })}
                       className={`p-3.5 sm:p-4 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[105px] relative ${
                         isSelected
-                          ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 ring-2 ring-emerald-500/30 shadow-md'
+                          ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
                           : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                       }`}
                     >
                       <div className="flex items-start justify-between">
                         <span className="text-base font-extrabold text-slate-900 dark:text-white">{opt.title}</span>
                         <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
-                          isSelected ? 'border-emerald-500 bg-emerald-500 text-slate-950' : 'border-slate-300 dark:border-slate-600'
+                          isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
                         }`}>
                           {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </div>
@@ -201,14 +201,14 @@ export const OnboardingModal: React.FC = () => {
                       })}
                       className={`p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[110px] ${
                         isSelected
-                          ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 ring-2 ring-emerald-500/30 shadow-md'
+                          ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
                           : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-extrabold text-slate-900 dark:text-white">{opt.label}</span>
                         <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                          isSelected ? 'border-emerald-500 bg-emerald-500 text-slate-950' : 'border-slate-300 dark:border-slate-600'
+                          isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
                         }`}>
                           {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </div>
@@ -256,7 +256,7 @@ export const OnboardingModal: React.FC = () => {
                           {(tempData.singleMealFormat || 'single-dish') === 'single-dish' && <Check className="w-3 h-3 stroke-[3]" />}
                         </div>
                       </div>
-                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
+                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300">
                         Khuyên dùng cho 1 người
                       </span>
                       <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
@@ -298,8 +298,67 @@ export const OnboardingModal: React.FC = () => {
             </div>
           )}
 
-          {/* STEP 3: MEAL BUDGET */}
+          {/* STEP 3: SPECIAL NEEDS & HEALTH GOALS (Placed before budget to adapt budget tiers) */}
           {step === 3 && (
+            <div className="space-y-4 animate-fade-in">
+              <div>
+                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                  <HeartHandshake className="w-5 h-5 text-emerald-700 dark:text-emerald-400 shrink-0" />
+                  Yêu Cầu Ăn Uống & Mục Tiêu Sức Khỏe
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
+                  Tùy chỉnh chế độ ăn phù hợp lối sống. <span className="inline-block mt-0.5 text-emerald-700 dark:text-emerald-400 font-extrabold">💡 Mẹo: Nếu bạn không có sở thích đặc biệt, hãy để trống (không chọn mục nào) để thực đơn được hệ thống tự do ngẫu nhiên đa dạng nhất!</span>
+                </p>
+              </div>
+
+              {tempData.familySize === 1 && (
+                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center gap-2 text-xs text-amber-900 dark:text-amber-200 font-bold">
+                  <span className="text-base">💡</span>
+                  <span>Gợi ý cho bạn sống một mình: Hãy bật thêm <strong>Tập Gym</strong>, <strong>Eat Clean</strong> hoặc <strong>Meal Prep 1 Người</strong> để tự động chia chuẩn 1 suất ăn!</span>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                {[
+                  { id: 'gym-protein', title: '🏋️ Tập Gym / Giàu Đạm (Protein)', desc: 'Tối ưu ức gà, bò, cá nạc, đạm cao tăng cơ & kiểm soát calo.' },
+                  { id: 'eat-clean', title: '🥗 Eat Clean / Ăn Healthy', desc: 'Ít dầu mỡ, nhiều rau củ luộc, thanh lọc cơ thể & giữ dáng.' },
+                  { id: 'western-food', title: '🥩 Món Âu / Đổi Vị Phương Tây', desc: 'Bít tết thăn bò, mì Ý, súp kem béo ngậy, salad kiểu Âu đổi gió.' },
+                  { id: 'single-prep', title: '🍱 Meal Prep Độc Thân', desc: 'Nấu 1 lần ăn 2 bữa, hộp cơm văn phòng, tiết kiệm nguyên liệu.' },
+                  { id: 'nhieu-rau', title: '🥦 Nhiều Rau Xanh', desc: 'Bổ sung canh rau thanh mát & salad tươi giòn.' },
+                  { id: 'it-cay', title: '🌿 Ít Cay / Không Dùng Ớt', desc: 'Phù hợp dạ dày nhạy cảm, vị thanh nhẹ dễ ăn.' },
+                  { id: 'chay', title: '🌱 Mâm Cơm Ăn Chay', desc: '100% nguyên liệu thuần thực vật thanh tịnh.' },
+                  { id: 'nhanh-gon', title: '⚡ Nấu Nhanh < 30 Phút', desc: 'Món ngon đơn giản, tối ưu thời gian cho ngày bận rộn.' }
+                ].map((opt) => {
+                  const isSelected = tempData.specialNeeds.includes(opt.id);
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => toggleSpecialNeed(opt.id)}
+                      className={`p-3.5 sm:p-4 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[100px] ${
+                        isSelected
+                          ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
+                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <span className="text-base font-extrabold text-slate-900 dark:text-white">{opt.title}</span>
+                        <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
+                          isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
+                        }`}>
+                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-700 dark:text-slate-300 mt-2">{opt.desc}</p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* STEP 4: MEAL BUDGET (Adapted to preferences chosen in Step 3) */}
+          {step === 4 && (
             <div className="space-y-4 animate-fade-in">
               <div>
                 <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
@@ -307,21 +366,63 @@ export const OnboardingModal: React.FC = () => {
                   Ngân Sách Cho Mỗi Mâm Cơm
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
-                  Ứng dụng sẽ tự động chọn các món mặn - canh - rau tối ưu với ví tiền của bạn.
+                  Ứng dụng sẽ tự động chọn các món ăn tối ưu phù hợp với định mức chi tiêu của bạn.
                 </p>
               </div>
+
+              {/* Dynamic notice if Western food is selected */}
+              {tempData.specialNeeds.includes('western-food') && (
+                <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200 animate-fade-in">
+                  <span className="text-base shrink-0 mt-0.5">🥩</span>
+                  <p className="leading-relaxed">
+                    <strong>Đã chọn Món Âu / Đổi Vị Phương Tây:</strong> Định mức ngân sách được tự động tính toán phù hợp với chi phí nguyên liệu đặc trưng (thăn bò, cá hồi, phô mai, bơ sữa, mì Ý).
+                  </p>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                 {(() => {
                   const size = tempData.familySize || 4;
                   const isSingle = size === 1;
+                  const isWestern = tempData.specialNeeds.includes('western-food');
 
-                  const budgetOptions = [
+                  const budgetOptions = isWestern ? [
+                    {
+                      id: 'tiet-kiem',
+                      title: 'Tiết Kiệm (Món Âu)',
+                      mealRate: isSingle ? '~40.000đ / bữa' : '~140.000đ / mâm',
+                      dailyRate: `~${getDailyBudgetTarget('tiet-kiem', size, true).toLocaleString('vi-VN')}đ / ngày`,
+                      perHead: '~85k/người/ngày',
+                      desc: isSingle
+                        ? 'Mì Ý sốt bò băm, gà nướng mật ong, súp bí đỏ.'
+                        : 'Mâm cơm Âu chuẩn vị: Mì Ý Bolognese, súp kem bí đỏ, bánh mì bơ tỏi.'
+                    },
+                    {
+                      id: 'vua-phai',
+                      title: 'Vừa Phải (Món Âu)',
+                      mealRate: isSingle ? '~55k – 60k / bữa' : '160k – 200k / mâm',
+                      dailyRate: `~${getDailyBudgetTarget('vua-phai', size, true).toLocaleString('vi-VN')}đ / ngày`,
+                      perHead: '~120k/người/ngày',
+                      desc: isSingle
+                        ? 'Burger bò cheddar, sườn que BBQ, mì Ý sốt pesto tôm mực.'
+                        : 'Sườn que BBQ, bít tết sốt tiêu, mì Ý hải sản, súp kem nấm.'
+                    },
+                    {
+                      id: 'thoai-mai',
+                      title: 'Thoải Mái (Món Âu)',
+                      mealRate: isSingle ? '~80k – 90k / bữa' : '> 260.000đ / mâm',
+                      dailyRate: `~${getDailyBudgetTarget('thoai-mai', size, true).toLocaleString('vi-VN')}đ / ngày`,
+                      perHead: '~180k/người/ngày',
+                      desc: isSingle
+                        ? 'Bít tết thăn lưng Ribeye, cá hồi áp chảo bơ chanh, bò hầm vang Pháp.'
+                        : 'Steakhouse cao cấp: Thăn bò ribeye, cá hồi Nauy, rượu vang, phô mai thượng hạng.'
+                    }
+                  ] : [
                     {
                       id: 'tiet-kiem',
                       title: 'Tiết Kiệm',
                       mealRate: isSingle ? '~25.000đ / bữa' : '~100.000đ / mâm',
-                      dailyRate: `~${getDailyBudgetTarget('tiet-kiem', size).toLocaleString('vi-VN')}đ / ngày`,
+                      dailyRate: `~${getDailyBudgetTarget('tiet-kiem', size, false).toLocaleString('vi-VN')}đ / ngày`,
                       perHead: '~60k/người/ngày',
                       desc: isSingle 
                         ? 'Cơm thịt rang, trứng chiên, canh rau thanh đạm.' 
@@ -331,7 +432,7 @@ export const OnboardingModal: React.FC = () => {
                       id: 'vua-phai',
                       title: 'Vừa Phải',
                       mealRate: isSingle ? '~35k – 40k / bữa' : '120k – 160k / mâm',
-                      dailyRate: `~${getDailyBudgetTarget('vua-phai', size).toLocaleString('vi-VN')}đ / ngày`,
+                      dailyRate: `~${getDailyBudgetTarget('vua-phai', size, false).toLocaleString('vi-VN')}đ / ngày`,
                       perHead: '~95k/người/ngày',
                       desc: isSingle
                         ? 'Phở bò, sườn ram, gà xào, cá kho tộ đậm đà.'
@@ -341,7 +442,7 @@ export const OnboardingModal: React.FC = () => {
                       id: 'thoai-mai',
                       title: 'Thoải Mái',
                       mealRate: isSingle ? '~55k – 60k / bữa' : '> 200.000đ / mâm',
-                      dailyRate: `~${getDailyBudgetTarget('thoai-mai', size).toLocaleString('vi-VN')}đ / ngày`,
+                      dailyRate: `~${getDailyBudgetTarget('thoai-mai', size, false).toLocaleString('vi-VN')}đ / ngày`,
                       perHead: '~140k/người/ngày',
                       desc: isSingle
                         ? 'Bít tết thăn bò, cá hồi áp chảo, mì Ý cao cấp.'
@@ -358,7 +459,7 @@ export const OnboardingModal: React.FC = () => {
                         onClick={() => setTempData({ ...tempData, budgetLevel: opt.id as any })}
                         className={`p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[140px] ${
                           isSelected
-                            ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 ring-2 ring-emerald-500/30 shadow-md'
+                            ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
                             : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                         }`}
                       >
@@ -366,7 +467,7 @@ export const OnboardingModal: React.FC = () => {
                           <div className="flex items-center justify-between">
                             <span className="text-base font-extrabold text-slate-900 dark:text-white">{opt.title}</span>
                             <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                              isSelected ? 'border-emerald-500 bg-emerald-500 text-slate-950' : 'border-slate-300 dark:border-slate-600'
+                              isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
                             }`}>
                               {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                             </div>
@@ -390,64 +491,6 @@ export const OnboardingModal: React.FC = () => {
                 <p className="leading-relaxed">
                   <strong>Cách tính ngân sách của MealWise:</strong> Giá trên mâm là chi phí cho 1 bữa ăn chính (trưa hoặc tối). Hạn mức tính cho cả ngày gồm <strong>trọn gói 3 bữa (1 bữa sáng & 2 mâm cơm trưa + tối)</strong> cho {tempData.familySize || 4} người ăn.
                 </p>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 4: SPECIAL NEEDS & HEALTH GOALS */}
-          {step === 4 && (
-            <div className="space-y-4 animate-fade-in">
-              <div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                  <HeartHandshake className="w-5 h-5 text-emerald-700 dark:text-emerald-400 shrink-0" />
-                  Yêu Cầu Ăn Uống & Mục Tiêu Sức Khỏe
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
-                  Tùy chỉnh chế độ ăn phù hợp lối sống: tập gym tăng cơ, eat clean giữ dáng, hoặc meal prep độc thân.
-                </p>
-              </div>
-
-              {tempData.familySize === 1 && (
-                <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center gap-2 text-xs text-emerald-800 dark:text-emerald-300 font-bold">
-                  <span className="text-base">💡</span>
-                  <span>Gợi ý cho bạn sống một mình: Hãy bật thêm <strong>Tập Gym</strong>, <strong>Eat Clean</strong> hoặc <strong>Meal Prep 1 Người</strong> để tự động chia chuẩn 1 suất ăn!</span>
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                {[
-                  { id: 'gym-protein', title: '🏋️ Tập Gym / Giàu Đạm (Protein)', desc: 'Tối ưu ức gà, bò, cá nạc, đạm cao tăng cơ & kiểm soát calo.' },
-                  { id: 'eat-clean', title: '🥗 Eat Clean / Ăn Healthy', desc: 'Ít dầu mỡ, nhiều rau củ luộc, thanh lọc cơ thể & giữ dáng.' },
-                  { id: 'single-prep', title: '🍱 Meal Prep Độc Thân', desc: 'Nấu 1 lần ăn 2 bữa, hộp cơm văn phòng, tiết kiệm nguyên liệu.' },
-                  { id: 'nhieu-rau', title: '🥦 Nhiều Rau Xanh', desc: 'Bổ sung canh rau thanh mát & salad tươi giòn.' },
-                  { id: 'it-cay', title: '🌿 Ít Cay / Không Dùng Ớt', desc: 'Phù hợp dạ dày nhạy cảm, vị thanh nhẹ dễ ăn.' },
-                  { id: 'chay', title: '🌱 Mâm Cơm Ăn Chay', desc: '100% nguyên liệu thuần thực vật thanh tịnh.' },
-                  { id: 'nhanh-gon', title: '⚡ Nấu Nhanh < 30 Phút', desc: 'Món ngon đơn giản, tối ưu thời gian cho ngày bận rộn.' }
-                ].map((opt) => {
-                  const isSelected = tempData.specialNeeds.includes(opt.id);
-                  return (
-                    <button
-                      key={opt.id}
-                      type="button"
-                      onClick={() => toggleSpecialNeed(opt.id)}
-                      className={`p-3.5 sm:p-4 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[100px] ${
-                        isSelected
-                          ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 ring-2 ring-emerald-500/30 shadow-md'
-                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <span className="text-base font-extrabold text-slate-900 dark:text-white">{opt.title}</span>
-                        <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
-                          isSelected ? 'border-emerald-500 bg-emerald-500 text-slate-950' : 'border-slate-300 dark:border-slate-600'
-                        }`}>
-                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-700 dark:text-slate-300 mt-2">{opt.desc}</p>
-                    </button>
-                  );
-                })}
               </div>
             </div>
           )}

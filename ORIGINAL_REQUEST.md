@@ -449,6 +449,41 @@ Expand `tests/` with programmatic dimension layout assertions:
 - Assert zero horizontal scrollbar overflow (`overflow-x` invariant).
 - Verify 100% test suite pass rate (241+ tests).
 
+## 2026-09-22T02:42:16Z
+
+Deploy full responsive design & QA team to audit and optimize all screen dimensions (320px to 4K desktop).
+
+Optimize MealWise layout, typography, navigation, cards, and modals for flawless responsive design across all device dimensions (narrow mobile 320px–375px, standard mobile 390px–428px, tablet 768px–1024px, and desktop). Eliminate all overlapping buttons, awkward multi-line word breaks, title collisions, and truncated header badges.
+
+Working directory: `d:\New folder\Remotion`
+Integrity mode: development
+
+## Requirements
+
+### R1. Fridge & Leftover View (Tủ Lạnh) Responsive Ergonomics
+Eliminate element collision and awkward line breaks shown in `FridgeView.tsx`:
+- Header action row: cleanly stack or refactor the "🧊 Tủ Lạnh", "🛒 Đối Chiếu Đi Chợ", and "🗑️ Dọn sạch" buttons so they never collide or overlap with the title below on 320px–375px viewports.
+- Title & counter badge: streamline "Tủ Lạnh & Đồ Ăn Thừa Thông Minh" with responsive text scaling (`text-base sm:text-lg md:text-xl`) to prevent orphan word wrapping ("Thông" / "Minh").
+- Metric cards & recipe suggestion grids: ensure 2x2 metric cards and recipe carousels fit comfortably without horizontal overflow on narrow viewports.
+
+### R2. Global Navbar & Header Badge Adaptation
+- Fix the active screen badge pill in `Navbar.tsx` (e.g. `Tủ Lạnh & Đồ T...`) so titles fit gracefully without harsh truncation on 320px–375px screens (use responsive font sizing, concise mobile labels, or auto-fit pills).
+- Ensure brand title ("MealWise • Mâm Cơm Việt"), active badge, and action toggles maintain balanced horizontal spacing across all viewports.
+
+### R3. Comprehensive Multi-Device Dimension Audit Across All Tabs & Modals
+Audit and optimize all core application views across the full device spectrum:
+- **WeeklyBoard (Thực Đơn Tuần)**: Day selector tabs, macro nutrition cards, meal slot cards, and 1-click action buttons must fit smoothly without clipping on 320px–375px.
+- **MealSetExplorer (Mâm 3 Món)**: Filter chips, search bar, meal set cards, dish preview pills, and slot assignment drawer.
+- **GroceryList (Đi Chợ Tự Động)**: Store channel filters, collaboration header, participant roster, shopping items, and sticky footer.
+- **CateringPartyPlanner (Tiệc & Catering)**: Guest stepper, budget breakdown, course selection tabs, and quotation export bar.
+- **Modals (Minigame Hub, Drinking Roulette, Apex Case, Recipe Detail, Onboarding)**: Ensure max-height, scrolling bounds, and safe-area insets (`pb-[env(safe-area-inset-bottom)]`) prevent off-screen cutoff on both short and tall phones.
+
+### R4. Automated Multi-Dimension Visual & Layout Test Suite
+Expand `tests/` with programmatic dimension layout assertions:
+- Test container bounds, width calculations, and flex wrapping behavior across standard device widths: `320px` (iPhone SE 1st gen), `360px` (Galaxy S/A), `375px` (iPhone SE/mini), `390px` (iPhone 13/14/15/16), `414px/428px` (Plus/Max), `768px` (iPad/Tablet), and `1280px+` (Desktop).
+- Assert zero horizontal scrollbar overflow (`overflow-x` invariant).
+- Verify 100% test suite pass rate (241+ tests).
+
 ## Acceptance Criteria
 
 ### Layout & Spacing Integrity
@@ -465,4 +500,115 @@ Expand `tests/` with programmatic dimension layout assertions:
 - [ ] `cmd /c npx tsc --noEmit` exits with 0 errors.
 - [ ] `cmd /c npm test` passes 100% of test suites with multi-dimension test coverage.
 - [ ] Production build synced to showcase and verified on live ngrok tunnel.
+
+## 2026-09-23T07:11:12Z
+
+Fix the Fridge Leftover & Whole-Fridge matching engine in `src/utils/fridgeMatcher.ts` and `src/components/FridgeView.tsx` where ingredient suggestions do not match (e.g., selecting egg / trứng recommends dishes that don't even use egg in the recipe), eliminate all false-positive recommendations, and execute exhaustive matrix testing across all possible ingredient types.
+
+Working directory: `d:\New folder\Remotion`
+Integrity mode: development
+
+## Requirements
+
+### R1. Strict Semantic Ingredient Validation (Zero False-Positive Recommendations)
+Upgrade `matchRecipeWithPantryItem`, `findLeftoverRecipeSuggestions`, and `findWholeFridgeRecipeSuggestions` in `src/utils/fridgeMatcher.ts`:
+- **Strict Ingredient Containment Invariant**: A recipe may ONLY be recommended for an ingredient if that recipe genuinely contains the ingredient in its `ingredients` array OR in its canonical title (e.g., matching "trứng" must verify that `trứng` appears in `recipe.ingredients` or the recipe title explicitly features egg).
+- **Eliminate Overly Permissive Heuristics**:
+  - Remove coarse rules where "trứng" matches any "cơm chiên" or "cơm rang" even if the dish has no egg.
+  - Remove coarse rules where "thịt kho" matches standalone "dưa chua" or dishes without pork.
+  - Remove substring collisions (e.g. "cá" matching "cà chua", "cơm" matching "nước mắm cá cơm").
+- **Condiment & Sauce False-Positive Exclusion**: Ensure base condiments (nước mắm, nước tương đậu nành, dầu mè, hạt tiêu) never falsely trigger matches for staple ingredients (cá, đậu, mè, tiêu).
+- **Multi-Ingredient Whole-Fridge Synergy**: In `findWholeFridgeRecipeSuggestions`, only increment `matchedCount` for pantry items that are genuinely utilized by the recipe.
+
+### R2. Exhaustive Matrix Testing Across Every Fridge Case
+Create comprehensive automated test suite `tests/unit/fridgeMatcherExhaustive.test.ts`:
+- Test every single pantry item category and key ingredient in Vietnamese cooking:
+  1. **Trứng** (Trứng gà, Trứng vịt, Trứng cút, Trứng ốp la thừa)
+  2. **Thịt gia súc & gia cầm** (Thịt ba chỉ, Thịt bò, Thịt gà, Thịt heo luộc, Sườn heo, Vịt)
+  3. **Thủy hải sản** (Cá nục, Cá lóc, Cá hồi, Tôm sú, Mực, Cua đồng, Nghêu)
+  4. **Đậu & Nấm** (Đậu phụ sống, Đậu hũ chiên, Nấm rơm, Nấm đùi gà, Nấm hương)
+  5. **Rau củ quả** (Cà chua, Bắp cải, Rau muống, Mồng tơi, Cải ngọt, Bí đỏ, Cà rốt, Mướp)
+  6. **Tinh bột & Đồ ăn thừa** (Cơm nguội, Xôi, Bún tươi, Bánh mì)
+  7. **Món ăn thừa phức hợp** (Thịt kho tàu thừa, Thịt gà luộc thừa, Canh rau thừa)
+- For every single ingredient tested, assert:
+  - **100% of returned suggestions** strictly contain the queried ingredient in their recipe ingredients or title (0% hallucination rate).
+  - Dishes that do not use the ingredient (e.g. egg -> beef fried rice without egg, or pork -> vegetarian soup) are strictly excluded (0 false positives).
+  - Sorting orders recipes by relevance, urgency (`daysLeft <= 2`), and synergy with other items in the fridge.
+
+### R3. Long-Running Stress & Mutation Testing
+- Execute an exhaustive simulation over all recipes in `mockRecipes` and `recipesDatabase` testing single-item suggestions and multi-item whole-fridge combinations.
+- Verify offset pagination and reload rotation (`findLeftoverRecipeSuggestions` and `findWholeFridgeRecipeSuggestions`) never break the containment invariant across repeated page cycles.
+
+### R4. Production Build, APK & Showcase Synchronization
+- `cmd /c npx tsc --noEmit` exits with 0 errors.
+- Pass 100% of automated test suites (all 306+ unit and E2E tests).
+- Rebuild production showcase bundle and sync to `MealWise-Portable-Showcase` via `cmd /c node scripts/sync-showcase.js`.
+- Verify live HTTP 200 serving of showcase.
+
+## Acceptance Criteria
+
+### Suggestion Accuracy & Strict Ingredient Containment
+- [ ] 0 false-positive recommendations for "trứng" (egg): every recommended recipe contains egg in ingredients or title.
+- [ ] 0 false-positive recommendations for all meat, poultry, seafood, tofu, vegetable, and leftover items.
+- [ ] No substring collisions (e.g. "cá" matching "cà chua", "cơm" matching "nước mắm cá cơm").
+
+### Exhaustive Test Matrix Coverage
+- [ ] Automated test suite `tests/unit/fridgeMatcherExhaustive.test.ts` passes 100% across all 7 ingredient categories.
+- [ ] Whole-fridge synthesis correctly ranks recipes with the highest number of genuine in-fridge ingredients first.
+
+### Verification & Quality
+- [ ] `cmd /c npx tsc --noEmit` exits with 0 errors.
+- [ ] `cmd /c npx tsx tests/run-all-tests.ts` passes 100% of test suites.
+- [ ] Production showcase synchronization succeeds and verified with HTTP 200.
+
+## 2026-09-23T18:20:16Z
+
+Deploy a full multi-agent teamwork team to execute an exhaustive 1000+ scenario audit across every single screen and feature of the MealWise application (`d:\New folder\Remotion`), identify edge bugs, UX friction points, state desyncs, and layout boundaries, fix all discovered issues, optimize UX and performance, and verify 100% test pass rate across unit, boundary, stress, and integration suites.
+
+Working directory: `d:\New folder\Remotion`
+Integrity mode: development
+
+## Requirements
+
+### R1. Comprehensive 1000+ Scenario Audit Matrix Across All Screens & Features
+Generate and execute automated test suites covering >1000 distinct concrete scenarios across all application domains:
+- **Screen 1: WeeklyBoard (Thực Đơn Tuần)**: 1-click generation with stochastic Knapsack, budget ceiling (60k/95k/140k/Western), meal swapping, dish replacement in 3-dish sets, slot selection, servings stepper (1-20+), macro calculation, zero over-budget days, local storage round-trip across reload.
+- **Screen 2: MealSetExplorer (Mâm Cơm 3 Món)**: Regional filtering (Bắc, Trung, Nam, Toàn quốc, Tây Âu/Western), taste tags, budget levels, pagination, instant slot assignment to any of the 21 slots, dish preview drawer.
+- **Screen 3: RecipeCatalog & RecipeDetailModal (Sổ Tay Công Thức)**: Diacritic-insensitive Vietnamese search, ingredient scaling, cooking step accordion, single-dish vs set conversion, add-to-grocery with unit merging.
+- **Screen 4: GroceryList & ShareCollabCartModal (Đi Chợ Tự Động & Real-time Collab)**: Channel filtering (Chợ dân sinh, Bách Hóa Xanh, Co.opmart, WinMart), item aggregation, unit normalizations (kg, g, lạng, bó, quả, muỗng), check-off persistence, collaborative cart code sync, export to text/Zalo.
+- **Screen 5: FridgeView & FridgeLeftoverModal (Tủ Lạnh & Đồ Thừa)**: Expiry warning thresholds, 7-category inventory matrix (thịt, cá, rau, trứng, gia vị...), multi-ingredient recipe matching, negative brand-trap filtering, quick add/remove.
+- **Screen 6: CateringPartyPlanner (Tiệc & Đặt Mâm)**: Guest count stepper (1 to 200+ guests), table division, preset banquet configurations, profit margin/cost calculation, quotation generation, export to Zalo.
+- **Screen 7: Minigames & Arcades (DrinkRoulette, FastMealApexModal, RouletteWheel)**: Probability distributions, pointer wheel angle synchronization, "Cả Bàn!" rule, "Uống Hộ" sub-wheel delegation, loot box rarity rolls, zero negative balances.
+- **Screen 8: OnboardingModal & AccountView (Khảo Sát & Tài Khoản)**: Flow ordering (Preferences -> Budget), Western food integration, family size multiplier, dietary restrictions (Gym, Eat Clean, Chay, Ít cay), JSON backup/restore.
+- **Screen 9: Global Shell, Navigation & System Dialogs (Navbar, Sidebar, ConfirmModal, Toast, SafeImage)**: Mobile drawer responsiveness, dark/light theme toggle, broken image fallback, safe area insets on mobile viewports.
+
+### R2. Bug Remediation & UX Optimization
+For any edge case, layout overflow, arithmetic discrepancy, or UX flaw uncovered during the 1000+ scenario run:
+- Fix the underlying code cleanly without breaking existing logic or violating user data structures.
+- Optimize layout spacing, typography, button sizes, and tap targets on mobile viewports (320px, 375px, 390px, 428px, 768px, desktop).
+- Ensure zero console errors, zero uncaught promise rejections, zero state de-synchronization across tabs.
+
+### R3. Test Suite Expansion to >1000 Programmatic Scenarios
+Expand the test suite in `tests/` so that total executed test scenarios exceed 1,000 assertions, cleanly structured and reproducible via `npm test`.
+
+### R4. Build, Production Bundle & Showcase Verification
+- TypeScript compiler (`cmd /c npx tsc --noEmit`) passes with 0 errors.
+- Test runner (`cmd /c npm test`) completes with 100% pass rate across all suites including the 1000+ scenario matrix.
+- Build script (`cmd /c npm run build`) executes cleanly.
+- Verify live HTTP 200 serving on port 5173.
+
+## Acceptance Criteria
+
+### Comprehensive Scenario Execution
+- [ ] At least 1000 distinct programmatic test scenarios executed and passing 100% with zero failures.
+- [ ] All 9 core screens and modal flows audited under extreme inputs, edge boundary conditions, empty states, and rapid state changes.
+
+### Quality & Performance
+- [ ] All uncovered bugs, arithmetic errors, or UX clipping issues fixed and verified.
+- [ ] Zero TypeScript compiler errors (`cmd /c npx tsc --noEmit`).
+- [ ] 100% test pass rate (`cmd /c npm test`).
+- [ ] Production build succeeds without errors (`cmd /c npm run build`).
+- [ ] Dev server live on `http://localhost:5173/` responding HTTP 200.
+
+
 

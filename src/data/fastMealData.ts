@@ -347,7 +347,7 @@ const PURPLE_SIDES: FastSideItem[] = [
   },
   {
     id: 'purple-salad-dau-giam',
-    title: 'Salad Xà Lách Trộn Sốt Dầu Giấm Trứng Cút',
+    title: 'Salad Trộn Sốt Dầu Giấm Trứng Cút',
     estimatedCostVnd: 8000,
     calories: 70,
     imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80'

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealWise • 4-in-1 Master Blend All-Screens Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Outfit', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            cream: {
+              50: '#FDFBF9',
+              100: '#FAF7F2',
+              200: '#F3ECE1',
+            },
+            sage: {
+              DEFAULT: '#1E6B47',
+              light: '#E8F5EE',
+              dark: '#14462E',
+            },
+            terracotta: {
+              DEFAULT: '#E05A36',
+              light: '#FDEEE9',
+              dark: '#B83F20',
+            }
+          },
+          boxShadow: {
+            'dribbble': '0 20px 40px -15px rgba(0, 0, 0, 0.06)',
+            'float': '0 12px 28px -8px rgba(30, 107, 71, 0.14)',
+            'soft': '0 8px 24px -4px rgba(0, 0, 0, 0.04)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .squircle { border-radius: 28px; }
+  </style>
+</head>
+<body class="bg-[#F2ECE4] dark:bg-[#07090A] text-slate-800 dark:text-slate-100 min-h-screen py-8 px-4 sm:px-6 transition-colors duration-200">
+
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Top Showcase Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-[#121518] p-5 sm:p-6 rounded-3xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[#1E6B47] dark:text-emerald-400 text-xs font-black tracking-wide">
+          <span>✨ 4-IN-1 MASTER BLEND DESIGN SYSTEM</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black font-display tracking-tight text-slate-900 dark:text-white mt-1.5">
+          MealWise • Toàn Bộ Các Màn Hình Ứng Dụng
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+          Hòa quyện: <strong>Fresh Organic Market</strong> + <strong>Clean Consumer</strong> + <strong>Neo-Bento</strong> + <strong>Pastel Smart Signals</strong>.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <button onclick="toggleDarkMode()" class="px-4 py-2 rounded-2xl text-xs font-bold border border-[#ECE7E0] dark:border-slate-700 bg-[#FAF7F2] dark:bg-slate-900 text-slate-700 dark:text-slate-200 shadow-sm hover:scale-105 transition-all">
+          🌓 Đổi Sáng / Tối
+        </button>
+        <a href="http://localhost:5173/" target="_blank" class="px-4 py-2 rounded-2xl text-xs font-black bg-[#1E6B47] text-white shadow-md shadow-emerald-800/20 hover:scale-105 transition-all">
+          🚀 Mở App Chính ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- Screen Navigator Pills -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <button onclick="selectScreen('meal-sets')" id="pill-meal-sets" class="screen-pill px-4 py-2.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all bg-[#1E6B47] text-white shadow-md shadow-emerald-800/25">
+        🍲 1. Mâm Cơm 3 Món
+      </button>
+      <button onclick="selectScreen('weekly')" id="pill-weekly" class="screen-pill px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all bg-white dark:bg-[#121518] text-slate-600 dark:text-slate-300 border border-[#ECE7E0] dark:border-slate-800 hover:border-slate-300">
+        📅 2. Thực Đơn Tuần
+      </button>
+      <button onclick="selectScreen('pantry')" id="pill-pantry" class="screen-pill px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all bg-white dark:bg-[#121518] text-slate-600 dark:text-slate-300 border border-[#ECE7E0] dark:border-slate-800 hover:border-slate-300">
+        🧊 3. Tủ Lạnh Vét Món
+      </button>
+      <button onclick="selectScreen('grocery')" id="pill-grocery" class="screen-pill px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all bg-white dark:bg-[#121518] text-slate-600 dark:text-slate-300 border border-[#ECE7E0] dark:border-slate-800 hover:border-slate-300">
+        🛒 4. Đi Chợ Tự Động
+      </button>
+      <button onclick="selectScreen('recipes')" id="pill-recipes" class="screen-pill px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all bg-white dark:bg-[#121518] text-slate-600 dark:text-slate-300 border border-[#ECE7E0] dark:border-slate-800 hover:border-slate-300">
+        📖 5. Sổ Tay Công Thức
+      </button>
+      <button onclick="selectScreen('party')" id="pill-party" class="screen-pill px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all bg-white dark:bg-[#121518] text-slate-600 dark:text-slate-300 border border-[#ECE7E0] dark:border-slate-800 hover:border-slate-300">
+        🎉 6. Tiệc & Đặt Mâm
+      </button>
+      <button onclick="selectScreen('account')" id="pill-account" class="screen-pill px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all bg-white dark:bg-[#121518] text-slate-600 dark:text-slate-300 border border-[#ECE7E0] dark:border-slate-800 hover:border-slate-300">
+        👤 7. Tài Khoản & Sao Lưu
+      </button>
+    </div>
+
+    <!-- Phone Simulator Preview Frame -->
+    <div class="flex justify-center">
+      <div class="w-full max-w-[400px] rounded-[52px] p-3.5 bg-slate-900 shadow-2xl shadow-slate-900/40 border-4 border-slate-800">
+        <div class="rounded-[44px] overflow-hidden bg-[#FAF7F2] dark:bg-[#111417] min-h-[760px] relative flex flex-col justify-between" id="screen-container">
+          
+          <!-- Content dynamically rendered via JavaScript -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating & Feedback Box -->
+    <div class="bg-white dark:bg-[#121518] p-6 rounded-3xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft max-w-xl mx-auto space-y-3 text-center">
+      <h3 class="font-extrabold text-sm text-slate-900 dark:text-white">
+        Đánh Giá Trải Nghiệm Màn Hình Này
+      </h3>
+      <div class="flex items-center justify-center gap-3 text-2xl cursor-pointer">
+        <span onclick="setRating(1)" id="star-1" class="hover:scale-125 transition-transform text-amber-400">★</span>
+        <span onclick="setRating(2)" id="star-2" class="hover:scale-125 transition-transform text-amber-400">★</span>
+        <span onclick="setRating(3)" id="star-3" class="hover:scale-125 transition-transform text-amber-400">★</span>
+        <span onclick="setRating(4)" id="star-4" class="hover:scale-125 transition-transform text-amber-400">★</span>
+        <span onclick="setRating(5)" id="star-5" class="hover:scale-125 transition-transform text-amber-400">★</span>
+      </div>
+      <p class="text-xs text-slate-400" id="rating-text">
+        Chạm vào các ngôi sao để chấm điểm thẩm mỹ và công thái học của màn hình!
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    const SCREENS = {
+      'meal-sets': `
+        <!-- SCREEN 1: MÂM CƠM 3 MÓN -->
+        <div class="px-5 pt-3 pb-2 flex items-center justify-between text-xs font-bold text-slate-400 border-b border-[#ECE7E0] dark:border-slate-800">
+          <div class="flex items-center gap-1.5">
+            <div class="w-6 h-6 rounded-lg bg-[#1E6B47] text-white flex items-center justify-center font-black text-xs shadow-sm">M</div>
+            <span class="font-black text-slate-800 dark:text-white text-sm">MealWise</span>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full bg-emerald-100/80 dark:bg-emerald-950 text-[#1E6B47] dark:text-emerald-400 text-[10px] font-black">4 người ăn</span>
+        </div>
+
+        <div class="px-4 py-3 space-y-3.5 pb-24 overflow-y-auto">
+          <!-- Regional Filter Chips -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-[11px] font-bold">
+            <span class="px-3 py-1.5 rounded-full bg-[#1E6B47] text-white shadow-sm shrink-0">Tất Cả</span>
+            <span class="px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-[#ECE7E0] dark:border-slate-800 text-slate-600 dark:text-slate-300 shrink-0">Miền Bắc</span>
+            <span class="px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-[#ECE7E0] dark:border-slate-800 text-slate-600 dark:text-slate-300 shrink-0">Miền Trung</span>
+            <span class="px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-[#ECE7E0] dark:border-slate-800 text-slate-600 dark:text-slate-300 shrink-0">Miền Nam</span>
+            <span class="px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-[#ECE7E0] dark:border-slate-800 text-slate-600 dark:text-slate-300 shrink-0">Món Âu</span>
+          </div>
+
+          <!-- Hero Bento Set Card -->
+          <div class="bg-white dark:bg-[#171B1E] rounded-3xl p-3.5 shadow-dribbble border border-[#ECE7E0] dark:border-slate-800 space-y-3">
+            <div class="relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100 dark:bg-slate-900 shadow-sm">
+              <img src="/mockups/warm_earthy_gourmet_1790158550082.jpg" class="w-full h-full object-cover">
+              <span class="absolute top-2.5 left-2.5 px-3 py-1 rounded-xl bg-black/60 backdrop-blur-md text-white text-[10.5px] font-black">
+                MÂM CƠM ĐỒNG QUÊ
+              </span>
+              <button class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-white/95 text-slate-800 text-[10px] font-black shadow-md flex items-center gap-1 active:scale-95">
+                <span>🔄</span><span>Đổi mâm</span>
+              </button>
+            </div>
+
+            <!-- Bento 3 Dishes Breakdown -->
+            <div class="space-y-1.5">
+              <div class="p-2.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-100 dark:border-rose-900/40 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-md bg-rose-500 text-white text-[9.5px] font-black">MẶN</span>
+                  <span class="text-xs font-bold text-slate-900 dark:text-white">Cá Bống Kho Tiêu Niêu Đất</span>
+                </div>
+                <span class="text-[10px] font-extrabold text-[#E05A36]">65k</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="p-2 rounded-2xl bg-sky-50/70 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-900/40 space-y-1">
+                  <div class="flex items-center justify-between text-[9px] font-black text-sky-600">
+                    <span>CANH</span><span>🔄</span>
+                  </div>
+                  <p class="text-[11px] font-bold text-slate-800 dark:text-slate-200 line-clamp-1">Canh Chua Cá Lóc</p>
+                </div>
+                <div class="p-2 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 space-y-1">
+                  <div class="flex items-center justify-between text-[9px] font-black text-emerald-600">
+                    <span>RAU</span><span>🔄</span>
+                  </div>
+                  <p class="text-[11px] font-bold text-slate-800 dark:text-slate-200 line-clamp-1">Rau Muống Xào Tỏi</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Total Calories & Action Bar -->
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-slate-400 font-bold block">TỔNG MÂM CƠM</span>
+                <span class="text-sm font-black text-slate-900 dark:text-white font-display">1.840 kcal • 135.000 đ</span>
+              </div>
+              <button class="px-4 py-2 rounded-xl bg-[#1E6B47] text-white text-xs font-black shadow-md shadow-emerald-800/20 active:scale-95 transition-all">
+                Gán Vào Tuần
+              </button>
+            </div>
+          </div>
+        </div>
+      `,
+
+      'weekly': `
+        <!-- SCREEN 2: THỰC ĐƠN TUẦN -->
+        <div class="px-5 pt-3 pb-2 flex items-center justify-between text-xs font-bold text-slate-400 border-b border-[#ECE7E0] dark:border-slate-800">
+          <span class="font-black text-slate-800 dark:text-white text-sm">Thực Đơn Tuần</span>
+          <span class="text-xs font-black text-[#1E6B47]">665k / 665k đ</span>
+        </div>
+
+        <div class="px-4 py-3 space-y-3.5 pb-24 overflow-y-auto">
+          <!-- 1-Click Fast Generation Action -->
+          <button class="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-[#1E6B47] to-[#14462E] text-white text-xs font-black shadow-float flex items-center justify-center gap-2 active:scale-98 transition-all">
+            <span>⚡</span>
+            <span>Gợi Ý 1-Click Cả Tuần (Không Trùng Món)</span>
+          </button>
+
+          <!-- Horizontal 7-Day Matrix Strip -->
+          <div class="grid grid-cols-7 gap-1 bg-white dark:bg-[#171B1E] p-1.5 rounded-2xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft">
+            <div class="py-2 text-center rounded-xl bg-[#1E6B47] text-white shadow-sm">
+              <span class="text-[10px] block font-black">T2</span>
+              <span class="text-xs font-black">3/3</span>
+            </div>
+            <div class="py-2 text-center rounded-xl text-slate-500">
+              <span class="text-[10px] block font-bold">T3</span>
+              <span class="text-xs font-bold">3/3</span>
+            </div>
+            <div class="py-2 text-center rounded-xl text-slate-500">
+              <span class="text-[10px] block font-bold">T4</span>
+              <span class="text-xs font-bold">3/3</span>
+            </div>
+            <div class="py-2 text-center rounded-xl text-slate-500">
+              <span class="text-[10px] block font-bold">T5</span>
+              <span class="text-xs font-bold">3/3</span>
+            </div>
+            <div class="py-2 text-center rounded-xl text-slate-500">
+              <span class="text-[10px] block font-bold">T6</span>
+              <span class="text-xs font-bold">3/3</span>
+            </div>
+            <div class="py-2 text-center rounded-xl text-slate-500">
+              <span class="text-[10px] block font-bold">T7</span>
+              <span class="text-xs font-bold">3/3</span>
+            </div>
+            <div class="py-2 text-center rounded-xl text-slate-500">
+              <span class="text-[10px] block font-bold">CN</span>
+              <span class="text-xs font-bold">3/3</span>
+            </div>
+          </div>
+
+          <!-- Triple Nutrition Pills (Lifesum Style) -->
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-white dark:bg-[#171B1E] p-2.5 rounded-2xl border border-[#ECE7E0] dark:border-slate-800 text-center">
+              <span class="text-[9px] font-bold text-slate-400">ĐẠM (PROTEIN)</span>
+              <p class="text-xs font-black text-rose-500">110g</p>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full mt-1 overflow-hidden">
+                <div class="bg-rose-500 h-full w-[85%]"></div>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-[#171B1E] p-2.5 rounded-2xl border border-[#ECE7E0] dark:border-slate-800 text-center">
+              <span class="text-[9px] font-bold text-slate-400">TINH BỘT (CARBS)</span>
+              <p class="text-xs font-black text-amber-500">180g</p>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full mt-1 overflow-hidden">
+                <div class="bg-amber-500 h-full w-[70%]"></div>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-[#171B1E] p-2.5 rounded-2xl border border-[#ECE7E0] dark:border-slate-800 text-center">
+              <span class="text-[9px] font-bold text-slate-400">CHẤT XƠ (FIBER)</span>
+              <p class="text-xs font-black text-emerald-500">45g</p>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full mt-1 overflow-hidden">
+                <div class="bg-emerald-500 h-full w-[90%]"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Day Slots (Bữa Sáng, Trưa, Tối) -->
+          <div class="space-y-2">
+            <!-- Lunch Slot -->
+            <div class="bg-white dark:bg-[#171B1E] p-3 rounded-2xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[10px] font-black">BỮA TRƯA</span>
+                <span class="text-xs font-black text-[#1E6B47]">45.000 đ</span>
+              </div>
+              <p class="text-xs font-extrabold text-slate-900 dark:text-white">Mâm Thịt Kho Tàu & Canh Cải</p>
+              <p class="text-[10px] text-slate-400">Thịt kho + Canh cải ngọt + Dưa góp</p>
+            </div>
+
+            <!-- Dinner Slot -->
+            <div class="bg-white dark:bg-[#171B1E] p-3 rounded-2xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 text-[10px] font-black">BỮA TỐI</span>
+                <span class="text-xs font-black text-[#1E6B47]">50.000 đ</span>
+              </div>
+              <p class="text-xs font-extrabold text-slate-900 dark:text-white">Mâm Bò Xào Cần Tây & Canh Bí</p>
+              <p class="text-[10px] text-slate-400">Bò xào + Canh bí đao tôm + Rau muống luộc</p>
+            </div>
+          </div>
+        </div>
+      `,
+
+      'pantry': `
+        <!-- SCREEN 3: TỦ LẠNH VÉT MÓN -->
+        <div class="px-5 pt-3 pb-2 flex items-center justify-between text-xs font-bold text-slate-400 border-b border-[#ECE7E0] dark:border-slate-800">
+          <span class="font-black text-slate-800 dark:text-white text-sm">Tủ Lạnh Thông Minh</span>
+          <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-black">2 món ăn ngay</span>
+        </div>
+
+        <div class="px-4 py-3 space-y-3 pb-24 overflow-y-auto">
+          <!-- Magic Leftover Suggestion Pill -->
+          <div class="p-3.5 rounded-3xl bg-gradient-to-r from-[#1E6B47] to-[#14462E] text-white shadow-float space-y-1">
+            <div class="flex items-center gap-1.5 text-xs font-black">
+              <span>🪄</span>
+              <span>GỢI Ý VÉT TỦ TIẾT KIỆM 45.000 Đ</span>
+            </div>
+            <p class="text-[11px] opacity-90 leading-tight">
+              Tận dụng cơm nguội & thịt gà luộc: Nấu ngay Cơm Rang Dưa Bò hoặc Gỏi Gà Xé Phay!
+            </p>
+          </div>
+
+          <!-- Traffic-Light Urgency List -->
+          <div class="space-y-2">
+            <div class="p-3 rounded-2xl bg-rose-50/80 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/50 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="text-lg">🍚</span>
+                <div>
+                  <h4 class="text-xs font-black text-rose-900 dark:text-rose-200">1 tô Cơm nguội bữa trước</h4>
+                  <p class="text-[10px] text-rose-600 font-semibold">Cần dùng trong 24 giờ</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-rose-200/70 text-rose-800 text-[10px] font-black">Ăn Ngay</span>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="text-lg">🥬</span>
+                <div>
+                  <h4 class="text-xs font-black text-amber-900 dark:text-amber-200">300g Cải ngọt Đà Lạt</h4>
+                  <p class="text-[10px] text-amber-600 font-semibold">Dùng trong 2 - 3 ngày tới</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-amber-200/70 text-amber-800 text-[10px] font-black">Nấu Sớm</span>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/50 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="text-lg">🥚</span>
+                <div>
+                  <h4 class="text-xs font-black text-emerald-900 dark:text-emerald-200">6 quả Trứng gà Ba Huân</h4>
+                  <p class="text-[10px] text-emerald-600 font-semibold">Tươi mới (còn 6 ngày)</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-emerald-200/70 text-emerald-800 text-[10px] font-black">Tươi Ngon</span>
+            </div>
+          </div>
+        </div>
+      `,
+
+      'grocery': `
+        <!-- SCREEN 4: ĐI CHỢ TỰ ĐỘNG -->
+        <div class="px-5 pt-3 pb-2 flex items-center justify-between text-xs font-bold text-slate-400 border-b border-[#ECE7E0] dark:border-slate-800">
+          <span class="font-black text-slate-800 dark:text-white text-sm">Đi Chợ Tự Động</span>
+          <span class="text-xs font-black text-slate-700 dark:text-slate-300">Đã mua 6/14 món</span>
+        </div>
+
+        <div class="px-4 py-3 space-y-3 pb-24 overflow-y-auto">
+          <!-- Retail Channels Pills -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-[11px] font-bold">
+            <span class="px-3 py-1.5 rounded-full bg-[#1E6B47] text-white shadow-sm shrink-0">Chợ Dân Sinh (0.9x)</span>
+            <span class="px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-[#ECE7E0] dark:border-slate-800 text-slate-600 dark:text-slate-300 shrink-0">Bách Hóa Xanh</span>
+            <span class="px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-[#ECE7E0] dark:border-slate-800 text-slate-600 dark:text-slate-300 shrink-0">WinMart</span>
+          </div>
+
+          <!-- Checklist Group 1: Sạp Rau Củ Quả -->
+          <div class="bg-white dark:bg-[#171B1E] p-3.5 rounded-3xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft space-y-2">
+            <div class="flex items-center justify-between text-[11px] font-black text-[#1E6B47]">
+              <span>🥬 SẠP RAU CỦ QUẢ (3 MÓN)</span>
+              <span class="text-slate-400 text-[10px]">Ước tính: ~35.000 đ</span>
+            </div>
+            <div class="space-y-1.5">
+              <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="w-4 h-4 rounded-md border border-[#1E6B47] bg-[#1E6B47] text-white flex items-center justify-center text-[10px]">✓</span>
+                  <span class="line-through text-slate-400">1 bó Rau muống nước</span>
+                </div>
+                <span class="text-slate-400 text-[10px]">10.000 đ</span>
+              </div>
+              <div class="p-2 rounded-xl bg-white dark:bg-slate-900 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="w-4 h-4 rounded-md border border-slate-300 dark:border-slate-700"></span>
+                  <span class="font-bold text-slate-800 dark:text-slate-200">500g Cà chua chín</span>
+                </div>
+                <span class="font-bold text-slate-700 dark:text-slate-300 text-[10px]">15.000 đ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Checklist Group 2: Hàng Thịt & Thủy Hải Sản -->
+          <div class="bg-white dark:bg-[#171B1E] p-3.5 rounded-3xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft space-y-2">
+            <div class="flex items-center justify-between text-[11px] font-black text-[#E05A36]">
+              <span>🥩 HÀNG THỊT & CÁ (2 MÓN)</span>
+              <span class="text-slate-400 text-[10px]">Ước tính: ~110.000 đ</span>
+            </div>
+            <div class="p-2 rounded-xl bg-white dark:bg-slate-900 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-4 h-4 rounded-md border border-slate-300 dark:border-slate-700"></span>
+                <span class="font-bold text-slate-800 dark:text-slate-200">400g Thịt ba chỉ quế</span>
+              </div>
+              <span class="font-bold text-slate-700 dark:text-slate-300 text-[10px]">65.000 đ</span>
+            </div>
+          </div>
+        </div>
+      `,
+
+      'recipes': `
+        <!-- SCREEN 5: SỔ TAY CÔNG THỨC -->
+        <div class="px-5 pt-3 pb-2 flex items-center justify-between text-xs font-bold text-slate-400 border-b border-[#ECE7E0] dark:border-slate-800">
+          <span class="font-black text-slate-800 dark:text-white text-sm">Sổ Tay Công Thức</span>
+          <span class="text-xs font-bold">120 món Việt</span>
+        </div>
+
+        <div class="px-4 py-3 space-y-3 pb-24 overflow-y-auto">
+          <!-- Hero Recipe Detail -->
+          <div class="bg-white dark:bg-[#171B1E] rounded-3xl p-3.5 shadow-dribbble border border-[#ECE7E0] dark:border-slate-800 space-y-3">
+            <div class="rounded-2xl overflow-hidden aspect-[16/9] bg-slate-100">
+              <img src="/mockups/warm_earthy_gourmet_1790158550082.jpg" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <h3 class="text-base font-black text-slate-900 dark:text-white">Cá Kho Tộ Miền Nam</h3>
+              <p class="text-xs text-slate-500">Đậm đà, thơm tiêu xay, nước hàng dừa béo ngậy</p>
+            </div>
+
+            <!-- Servings Stepper & 1-Click Push -->
+            <div class="flex items-center justify-between p-2 rounded-2xl bg-[#FAF7F2] dark:bg-slate-900 border border-[#ECE7E0] dark:border-slate-800">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold">Khẩu phần:</span>
+                <span class="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-800 text-xs font-black">4 người</span>
+              </div>
+              <button class="px-3 py-1.5 rounded-xl bg-[#1E6B47] text-white text-[11px] font-black shadow-sm">
+                + Thêm Vào Giỏ Đi Chợ
+              </button>
+            </div>
+          </div>
+        </div>
+      `,
+
+      'party': `
+        <!-- SCREEN 6: TIỆC & ĐẶT MÂM -->
+        <div class="px-5 pt-3 pb-2 flex items-center justify-between text-xs font-bold text-slate-400 border-b border-[#ECE7E0] dark:border-slate-800">
+          <span class="font-black text-slate-800 dark:text-white text-sm">Dự Toán Tiệc & Đặt Mâm</span>
+          <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[10px] font-black">5 bàn • 50 khách</span>
+        </div>
+
+        <div class="px-4 py-3 space-y-3 pb-24 overflow-y-auto">
+          <!-- Headcount Stepper Card -->
+          <div class="bg-white dark:bg-[#171B1E] p-4 rounded-3xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft space-y-2 text-center">
+            <span class="text-xs font-bold text-slate-400">SỐ LƯỢNG KHÁCH DỰ TIỆC</span>
+            <div class="flex items-center justify-center gap-4">
+              <button class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-base font-black">-</button>
+              <span class="text-2xl font-black text-slate-900 dark:text-white font-display">50 khách</span>
+              <button class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-base font-black">+</button>
+            </div>
+            <p class="text-[11px] text-emerald-600 font-bold">Tương đương 5 bàn tròn (10 người/bàn)</p>
+          </div>
+
+          <!-- Quotation Card -->
+          <div class="p-4 rounded-3xl bg-gradient-to-r from-purple-900 to-indigo-900 text-white shadow-float space-y-2">
+            <span class="text-xs opacity-80 block font-bold">DỰ TOÁN NGÂN SÁCH TRỌN GÓI</span>
+            <p class="text-2xl font-black font-display">12.500.000 đ</p>
+            <p class="text-[11px] opacity-90">2.500.000 đ / bàn • 6 món chính + 1 tráng miệng</p>
+          </div>
+        </div>
+      `,
+
+      'account': `
+        <!-- SCREEN 7: TÀI KHOẢN & SAO LƯU -->
+        <div class="px-5 pt-3 pb-2 flex items-center justify-between text-xs font-bold text-slate-400 border-b border-[#ECE7E0] dark:border-slate-800">
+          <span class="font-black text-slate-800 dark:text-white text-sm">Tài Khoản & Thiết Lập</span>
+          <span class="text-xs font-bold text-emerald-600">Đã đồng bộ</span>
+        </div>
+
+        <div class="px-4 py-3 space-y-3 pb-24 overflow-y-auto">
+          <!-- Profile Card -->
+          <div class="bg-white dark:bg-[#171B1E] p-4 rounded-3xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1E6B47] to-[#14462E] text-white flex items-center justify-center font-black text-lg shadow-md">
+              M
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">Gia Đình Việt (4 người)</h3>
+              <p class="text-xs text-slate-400">Gói Tiết kiệm: 95.000 đ/ngày • Chuộng món Nam</p>
+            </div>
+          </div>
+
+          <!-- 1-Click JSON Backup & Restore -->
+          <div class="bg-white dark:bg-[#171B1E] p-4 rounded-3xl border border-[#ECE7E0] dark:border-slate-800 shadow-soft space-y-2.5">
+            <h4 class="text-xs font-black text-slate-900 dark:text-white">Sao Lưu & Khôi Phục Dữ Liệu</h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="py-2.5 px-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-black">
+                📤 Xuất File JSON
+              </button>
+              <button class="py-2.5 px-3 rounded-2xl bg-[#1E6B47] text-white text-xs font-black shadow-sm">
+                📥 Nhập File JSON
+              </button>
+            </div>
+          </div>
+        </div>
+      `
+    };
+
+    function selectScreen(key) {
+      document.getElementById('screen-container').innerHTML = SCREENS[key] + `
+        <!-- Floating Bottom Nav Bar -->
+        <div class="absolute bottom-3 left-3 right-3 bg-white/95 dark:bg-[#171B1E]/95 backdrop-blur-xl rounded-2xl p-2 border border-[#ECE7E0] dark:border-slate-800 shadow-float flex items-center justify-around">
+          <div class="flex flex-col items-center gap-0.5 ${key === 'meal-sets' ? 'text-[#1E6B47] font-black' : 'text-slate-400 font-bold'} text-[10px]">
+            <span class="text-base">🍲</span>
+            <span>Mâm Cơm</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 ${key === 'weekly' ? 'text-[#1E6B47] font-black' : 'text-slate-400 font-bold'} text-[10px]">
+            <span class="text-base">📅</span>
+            <span>Thực Đơn</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 ${key === 'grocery' ? 'text-[#1E6B47] font-black' : 'text-slate-400 font-bold'} text-[10px]">
+            <span class="text-base">🛒</span>
+            <span>Đi Chợ</span>
+          </div>
+          <div class="flex flex-col items-center gap-0.5 ${key === 'pantry' ? 'text-[#1E6B47] font-black' : 'text-slate-400 font-bold'} text-[10px]">
+            <span class="text-base">🧊</span>
+            <span>Tủ Lạnh</span>
+          </div>
+        </div>
+      `;
+
+      // Update pills
+      const allKeys = ['meal-sets', 'weekly', 'pantry', 'grocery', 'recipes', 'party', 'account'];
+      allKeys.forEach(k => {
+        const btn = document.getElementById('pill-' + k);
+        if (k === key) {
+          btn.className = "screen-pill px-4 py-2.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all bg-[#1E6B47] text-white shadow-md shadow-emerald-800/25";
+        } else {
+          btn.className = "screen-pill px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all bg-white dark:bg-[#121518] text-slate-600 dark:text-slate-300 border border-[#ECE7E0] dark:border-slate-800 hover:border-slate-300";
+        }
+      });
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    function setRating(val) {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById('star-' + i).className = i <= val 
+          ? "hover:scale-125 transition-transform text-amber-400" 
+          : "hover:scale-125 transition-transform text-slate-300 dark:text-slate-700";
+      }
+      document.getElementById('rating-text').innerText = `Bạn đã chấm: ${val}/5 sao cho phương án thiết kế này!`;
+    }
+
+    // Init with meal-sets
+    selectScreen('meal-sets');
+  </script>
+</body>
+</html>
