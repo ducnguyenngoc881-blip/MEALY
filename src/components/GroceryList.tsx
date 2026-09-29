@@ -753,7 +753,7 @@ export const GroceryList: React.FC = () => {
 
       {/* Online Price Simulation Card (Expandable) */}
       {showPriceSimulation && (
-        <div className="p-4 rounded-3xl bg-white dark:bg-slate-900/95 border-2 border-amber-500/40 shadow-xl space-y-3.5 text-slate-900 dark:text-white animate-fadeIn">
+        <div className="p-4 rounded-3xl bg-white dark:bg-[#1A1918] border-2 border-amber-500/40 shadow-xl space-y-3.5 text-stone-900 dark:text-white animate-fadeIn">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
@@ -763,14 +763,14 @@ export const GroceryList: React.FC = () => {
                 <h3 className="text-xs font-black text-amber-800 dark:text-amber-300 uppercase tracking-wider">
                   Mô Phỏng Giá Đi Chợ Online 4 Kênh
                 </h3>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300">
+                <p className="text-[11px] text-stone-600 dark:text-stone-300">
                   Dự toán giỏ hàng tuần ({totalCount} món) khi đặt giao tận nhà
                 </p>
               </div>
             </div>
             <button
               onClick={() => setShowPriceSimulation(false)}
-              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white text-xs font-bold px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800"
+              className="text-stone-600 hover:text-stone-900 dark:text-stone-300 dark:hover:text-white text-xs font-bold px-2 py-1 rounded-lg bg-stone-100 dark:bg-[#252220]"
             >
               Đóng
             </button>
@@ -778,7 +778,7 @@ export const GroceryList: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {/* Chợ Dân Sinh */}
-            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-emerald-500/30 space-y-1.5">
+            <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-emerald-500/30 space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
                   <span>🏪</span> Chợ Dân Sinh
@@ -788,12 +788,12 @@ export const GroceryList: React.FC = () => {
                 </span>
               </div>
               <div className="flex items-baseline justify-between pt-1">
-                <span className="text-[11px] text-slate-600 dark:text-slate-300">Tổng giỏ hàng:</span>
-                <span className="text-sm font-black text-slate-900 dark:text-white">
+                <span className="text-[11px] text-stone-600 dark:text-stone-300">Tổng giỏ hàng:</span>
+                <span className="text-sm font-black text-stone-900 dark:text-white">
                   {totalCostEstimate.toLocaleString('vi-VN')} đ
                 </span>
               </div>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+              <p className="text-[10px] text-stone-500 dark:text-stone-400 leading-tight">
                 Phí ship: 0 đ • Tự tay chọn thịt cá tươi ngon nhất.
               </p>
             </div>
@@ -807,7 +807,7 @@ export const GroceryList: React.FC = () => {
               const diff = finalPrice - totalCostEstimate;
 
               return (
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-rose-500/30 space-y-1.5">
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-rose-500/30 space-y-1.5">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
                       <span>🔴</span> WinMart Online
@@ -817,17 +817,17 @@ export const GroceryList: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between pt-1">
-                    <span className="text-[11px] text-slate-600 dark:text-slate-300">Tổng giỏ online:</span>
+                    <span className="text-[11px] text-stone-600 dark:text-stone-300">Tổng giỏ online:</span>
                     <div className="text-right">
                       <span className="text-sm font-black text-rose-600 dark:text-rose-300">
                         {finalPrice.toLocaleString('vi-VN')} đ
                       </span>
-                      <span className="block text-[10px] text-slate-500 dark:text-slate-400">
+                      <span className="block text-[10px] text-stone-500 dark:text-stone-400">
                         ({diff >= 0 ? `+${diff.toLocaleString('vi-VN')} đ` : `-${Math.abs(diff).toLocaleString('vi-VN')} đ`})
                       </span>
                     </div>
                   </div>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                  <p className="text-[10px] text-stone-500 dark:text-stone-400 leading-tight">
                     Thịt mát MEATDeli chuẩn sạch • {ship === 0 ? 'Freeship đơn > 300k' : `Ship ${ship.toLocaleString('vi-VN')} đ`}.
                   </p>
                 </div>
@@ -843,7 +843,7 @@ export const GroceryList: React.FC = () => {
               const diff = finalPrice - totalCostEstimate;
 
               return (
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-amber-500/30 space-y-1.5">
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-amber-500/30 space-y-1.5">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
                       <span>🟢</span> Bách Hóa Xanh
@@ -853,17 +853,17 @@ export const GroceryList: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between pt-1">
-                    <span className="text-[11px] text-slate-600 dark:text-slate-300">Tổng giỏ online:</span>
+                    <span className="text-[11px] text-stone-600 dark:text-stone-300">Tổng giỏ online:</span>
                     <div className="text-right">
-                      <span className="text-sm font-black text-amber-700 dark:text-amber-300">
+                      <span className="text-sm font-black text-amber-700 dark:text-amber-400">
                         {finalPrice.toLocaleString('vi-VN')} đ
                       </span>
-                      <span className="block text-[10px] text-slate-500 dark:text-slate-400">
+                      <span className="block text-[10px] text-stone-500 dark:text-stone-400">
                         ({diff >= 0 ? `+${diff.toLocaleString('vi-VN')} đ` : `-${Math.abs(diff).toLocaleString('vi-VN')} đ`})
                       </span>
                     </div>
                   </div>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                  <p className="text-[10px] text-stone-500 dark:text-stone-400 leading-tight">
                     Gia vị đồ khô giá sỉ • {ship === 0 ? 'Freeship đơn > 250k' : `Ship ${ship.toLocaleString('vi-VN')} đ`}.
                   </p>
                 </div>
@@ -878,7 +878,7 @@ export const GroceryList: React.FC = () => {
               const diff = finalPrice - totalCostEstimate;
 
               return (
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-purple-500/30 space-y-1.5">
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-purple-500/30 space-y-1.5">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black text-purple-700 dark:text-purple-400 flex items-center gap-1.5">
                       <span>🏮</span> Sạp Đối Tác
@@ -888,17 +888,17 @@ export const GroceryList: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between pt-1">
-                    <span className="text-[11px] text-slate-600 dark:text-slate-300">Tổng giỏ hàng:</span>
+                    <span className="text-[11px] text-stone-600 dark:text-stone-300">Tổng giỏ hàng:</span>
                     <div className="text-right">
                       <span className="text-sm font-black text-purple-700 dark:text-purple-300">
                         {finalPrice.toLocaleString('vi-VN')} đ
                       </span>
-                      <span className="block text-[10px] text-slate-500 dark:text-slate-400">
+                      <span className="block text-[10px] text-stone-500 dark:text-stone-400">
                         (+{diff.toLocaleString('vi-VN')} đ)
                       </span>
                     </div>
                   </div>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                  <p className="text-[10px] text-stone-500 dark:text-stone-400 leading-tight">
                     Mắm tôm Bắc, sấu tươi, tương bần truyền thống không phụ gia.
                   </p>
                 </div>
@@ -1130,13 +1130,13 @@ export const GroceryList: React.FC = () => {
 
           {/* Collaborative breakdown stats */}
           <div className="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
-            <div className="p-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
-              <span className="block text-slate-500 dark:text-slate-400 font-semibold text-[10px]">Chưa ai mua</span>
-              <strong className="text-slate-900 dark:text-slate-100 text-sm font-black">{unclaimedCount} món</strong>
+            <div className="p-2 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-xs">
+              <span className="block text-stone-500 dark:text-stone-400 font-semibold text-[10px]">Chưa ai mua</span>
+              <strong className="text-stone-900 dark:text-stone-100 text-sm font-black">{unclaimedCount} món</strong>
             </div>
             
             <div 
-              className="p-2 rounded-2xl bg-white dark:bg-slate-800 border shadow-xs transition-all"
+              className="p-2 rounded-2xl bg-white dark:bg-[#1A1918] border shadow-xs transition-all"
               style={{
                 borderColor: `${collabUser.color || '#10b981'}50`
               }}
@@ -1149,7 +1149,7 @@ export const GroceryList: React.FC = () => {
               </strong>
             </div>
 
-            <div className="p-2 rounded-2xl bg-white dark:bg-slate-800 border border-violet-200 dark:border-violet-800/60 shadow-xs">
+            <div className="p-2 rounded-2xl bg-white dark:bg-[#1A1918] border border-violet-200 dark:border-violet-800/60 shadow-xs">
               <span className="block text-violet-700 dark:text-violet-400 font-semibold text-[10px]">
                 Người khác nhặt
               </span>
@@ -1159,7 +1159,7 @@ export const GroceryList: React.FC = () => {
 
           {/* Collaborative filter tabs */}
           <div className="flex items-center gap-1.5 pt-1 overflow-x-auto scrollbar-none text-[11px]">
-            <span className="text-slate-500 dark:text-slate-400 font-bold shrink-0 text-[10px]">Lọc theo người mua:</span>
+            <span className="text-stone-500 dark:text-stone-400 font-bold shrink-0 text-[10px]">Lọc theo người mua:</span>
             {[
               { id: 'all', label: `Tất cả (${totalCount})` },
               { id: 'unclaimed', label: `Chưa mua (${unclaimedCount})` },
@@ -1173,7 +1173,7 @@ export const GroceryList: React.FC = () => {
                 className={`px-2.5 py-1 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
                   collabFilter === tab.id
                     ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
-                    : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                    : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-[#252220] border border-[#E8E2D8] dark:border-[#252220]'
                 }`}
               >
                 {tab.label}
@@ -1740,29 +1740,29 @@ export const GroceryList: React.FC = () => {
       {/* Shopper Profile Customization Modal */}
       {isProfileModalOpen && (
         <div 
-          className="fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-4 bg-stone-950/75 backdrop-blur-sm animate-fade-in"
           onClick={() => setIsProfileModalOpen(false)}
           role="dialog"
           aria-modal="true"
         >
           <div 
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4 animate-scale-up text-slate-900 dark:text-white"
+            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4 animate-scale-up text-stone-900 dark:text-white"
             onClick={e => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E8E2D8] dark:border-[#252220]">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                   <Palette className="w-4 h-4" />
                 </div>
                 <div>
                   <h4 className="text-sm font-black">Hồ Sơ Người Đi Chợ</h4>
-                  <p className="text-[10.5px] text-slate-500 dark:text-slate-400">Phân biệt rõ ràng giữa bạn và người mua cùng</p>
+                  <p className="text-[10.5px] text-stone-500 dark:text-stone-400">Phân biệt rõ ràng giữa bạn và người mua cùng</p>
                 </div>
               </div>
               <button 
                 type="button" 
                 onClick={() => setIsProfileModalOpen(false)}
-                className="p-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="p-1 rounded-xl text-stone-400 hover:text-stone-600 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-[#252220]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1770,7 +1770,7 @@ export const GroceryList: React.FC = () => {
 
             {/* Name input */}
             <div className="space-y-1.5">
-              <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block">
+              <label className="text-[11px] font-bold text-stone-600 dark:text-stone-300 block">
                 Tên hiển thị của bạn:
               </label>
               <input
@@ -1778,7 +1778,7 @@ export const GroceryList: React.FC = () => {
                 value={customShopperName}
                 onChange={e => setCustomShopperName(e.target.value)}
                 placeholder="VD: Tuấn, Lan, Mẹ, Bố..."
-                className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full px-3 py-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs font-bold text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 maxLength={25}
               />
               {/* Quick role preset chips */}
@@ -1795,7 +1795,7 @@ export const GroceryList: React.FC = () => {
                     key={chip.name}
                     type="button"
                     onClick={() => setCustomShopperName(chip.name)}
-                    className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-[10px] font-bold text-slate-700 dark:text-slate-300 transition-colors cursor-pointer"
+                    className="px-2 py-0.5 rounded-lg bg-stone-100 dark:bg-[#252220] hover:bg-stone-200 dark:hover:bg-stone-700 text-[10px] font-bold text-stone-700 dark:text-stone-300 transition-colors cursor-pointer"
                   >
                     {chip.label}
                   </button>
@@ -1805,7 +1805,7 @@ export const GroceryList: React.FC = () => {
 
             {/* Color selection */}
             <div className="space-y-1.5 pt-1">
-              <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block">
+              <label className="text-[11px] font-bold text-stone-600 dark:text-stone-300 block">
                 Màu sắc đại diện cho các món bạn nhặt:
               </label>
               <div className="grid grid-cols-6 gap-2">
@@ -1815,7 +1815,7 @@ export const GroceryList: React.FC = () => {
                     type="button"
                     onClick={() => setSelectedColor(p.hex)}
                     className={`h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
-                      selectedColor.toLowerCase() === p.hex.toLowerCase() ? 'ring-2 ring-offset-2 ring-slate-900 dark:ring-white scale-105' : 'hover:scale-105'
+                      selectedColor.toLowerCase() === p.hex.toLowerCase() ? 'ring-2 ring-offset-2 ring-stone-900 dark:ring-white scale-105' : 'hover:scale-105'
                     }`}
                     style={{ backgroundColor: p.hex }}
                     title={p.label}
@@ -1832,7 +1832,7 @@ export const GroceryList: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsProfileModalOpen(false)}
-                className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl text-xs font-bold text-stone-500 hover:bg-stone-100 dark:hover:bg-[#252220] cursor-pointer"
               >
                 Hủy
               </button>

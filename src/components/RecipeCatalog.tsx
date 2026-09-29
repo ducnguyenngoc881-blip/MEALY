@@ -140,12 +140,12 @@ export const RecipeCatalog: React.FC = () => {
 
       {/* Empty State */}
       {filteredRecipes.length === 0 ? (
-        <div className="p-8 text-center rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
-          <Utensils className="w-10 h-10 text-slate-400 dark:text-slate-500 mx-auto" />
-          <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">
+        <div className="p-8 text-center rounded-3xl bg-[#FAF8F5] dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] space-y-3">
+          <Utensils className="w-10 h-10 text-stone-400 dark:text-stone-500 mx-auto" />
+          <h3 className="text-sm font-extrabold text-stone-900 dark:text-white">
             Không tìm thấy món ăn phù hợp
           </h3>
-          <p className="text-xs text-slate-600 dark:text-slate-400 max-w-sm mx-auto">
+          <p className="text-xs text-stone-600 dark:text-stone-400 max-w-sm mx-auto">
             Thử tìm kiếm không dấu (ví dụ: &quot;thit rang&quot;, &quot;canh rau&quot;) hoặc đặt lại tiêu chí lọc vùng miền/thể loại.
           </p>
           <button

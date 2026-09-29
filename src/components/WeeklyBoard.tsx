@@ -1324,7 +1324,7 @@ export const WeeklyBoard: React.FC = () => {
 
         return (
           <div 
-            className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+            className="fixed inset-0 z-50 flex items-end justify-center bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
             onClick={() => setActiveSlotPicker(null)}
           >
             <div 
@@ -1333,7 +1333,7 @@ export const WeeklyBoard: React.FC = () => {
                 transform: pickerDragY > 0 ? `translateY(${pickerDragY}px)` : undefined,
                 transition: pickerDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
               }}
-              className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col animate-slide-up border-t border-slate-200 dark:border-slate-800"
+              className="w-full max-w-lg bg-white dark:bg-[#1A1918] rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col animate-slide-up border-t border-[#E8E2D8] dark:border-[#252220]"
             >
               {/* Swipe Handle Bar & Drag Zone */}
               <div 
@@ -1350,23 +1350,23 @@ export const WeeklyBoard: React.FC = () => {
                 }}
                 className="w-full py-3 cursor-grab active:cursor-grabbing shrink-0 flex items-center justify-center touch-none select-none"
               >
-                <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                <div className="w-12 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full" />
               </div>
 
               {/* Header with Title & Close Button */}
-              <div className="px-4 pb-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 shrink-0 select-none gap-2">
+              <div className="px-4 pb-3 flex items-center justify-between border-b border-[#E8E2D8] dark:border-[#252220] shrink-0 select-none gap-2">
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
+                  <h3 className="text-sm font-black text-stone-900 dark:text-white flex items-center gap-1.5 truncate">
                     <Utensils className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                     <span className="truncate">Chọn Món Cho {activeDayForPicker.dayName} ({slotTitle})</span>
                   </h3>
-                  <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate block">
+                  <span className="text-[11px] text-stone-600 dark:text-stone-400 font-medium truncate block">
                     Chỉ hiển thị các món phù hợp với {slotTitle}
                   </span>
                 </div>
                 <button 
                   onClick={() => setActiveSlotPicker(null)}
-                  className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors shrink-0"
+                  className="w-8 h-8 rounded-full bg-stone-100 dark:bg-[#252220] flex items-center justify-center text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors shrink-0"
                   aria-label="Đóng"
                 >
                   <X className="w-4 h-4" />
