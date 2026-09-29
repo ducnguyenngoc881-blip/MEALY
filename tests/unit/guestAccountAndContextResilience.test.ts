@@ -99,4 +99,30 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     expect(content.includes('logoutUser')).toBe(true);
     expect(content.includes('Đăng Nhập / Đăng Ký')).toBe(true);
   });
+
+  it('GUEST-08: AuthModal distinguishes registration vs login and passes isNewRegistration to loginUser', () => {
+    const authFilePath = path.join(srcDir, 'components', 'AuthModal.tsx');
+    const content = fs.readFileSync(authFilePath, 'utf-8');
+    expect(content.includes("authModalMode === 'register'")).toBe(true);
+    expect(content.includes("loginUser({\n      name: displayName,\n      email: email.trim()\n    }, authModalMode === 'register')") ||
+           content.includes("authModalMode === 'register'")).toBe(true);
+  });
+
+  it('GUEST-09: MealWiseContext tracks user-specific onboarding completion and triggers modal on new registration', () => {
+    const contextFilePath = path.join(srcDir, 'context', 'MealWiseContext.tsx');
+    const content = fs.readFileSync(contextFilePath, 'utf-8');
+    expect(content.includes('mealwise_onboarding_completed_')).toBe(true);
+    expect(content.includes('onboardingCompleted')).toBe(true);
+    expect(content.includes('needsOnboarding')).toBe(true);
+    expect(content.includes('setShowOnboarding(true)')).toBe(true);
+  });
+
+  it('GUEST-10: OnboardingModal detects existing custom meal plans and allows retaining previous meals', () => {
+    const onboardingFilePath = path.join(srcDir, 'components', 'OnboardingModal.tsx');
+    const content = fs.readFileSync(onboardingFilePath, 'utf-8');
+    expect(content.includes('hasExistingMeals')).toBe(true);
+    expect(content.includes('regeneratePlan')).toBe(true);
+    expect(content.includes('completeOnboarding(tempData, { regeneratePlan })')).toBe(true);
+    expect(content.includes('Giữ nguyên các món ăn')).toBe(true);
+  });
 });

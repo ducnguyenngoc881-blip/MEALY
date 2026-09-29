@@ -281,6 +281,7 @@ export interface RegisteredUser {
   isRegistered: boolean;
   registeredAt?: string;
   role?: 'user' | 'admin';
+  onboardingCompleted?: boolean;
 }
 
 

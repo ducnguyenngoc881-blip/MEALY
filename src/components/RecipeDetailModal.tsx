@@ -462,7 +462,7 @@ export const RecipeDetailModal: React.FC = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
       onClick={() => {
         setSelectedRecipe(null);
         setIsHandsFreeMode(false);
@@ -475,7 +475,7 @@ export const RecipeDetailModal: React.FC = () => {
           transform: dragY > 0 ? `translateY(${dragY}px)` : undefined,
           transition: dragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
         }}
-        className="w-full max-w-lg sm:max-w-xl bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col animate-slide-up border border-slate-200 dark:border-slate-800 relative overflow-hidden"
+        className="w-full max-w-lg sm:max-w-xl bg-white dark:bg-[#1A1918] rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col animate-slide-up border border-[#E8E2D8] dark:border-[#252220] relative overflow-hidden"
       >
         {/* Swipe Handle Bar (Mobile Drag Zone) */}
         <div 
@@ -484,7 +484,7 @@ export const RecipeDetailModal: React.FC = () => {
           onTouchEnd={handleTouchEnd}
           className="w-full py-2.5 cursor-grab active:cursor-grabbing shrink-0 flex sm:hidden items-center justify-center touch-none select-none"
         >
-          <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
+          <div className="w-12 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full" />
         </div>
 
         {/* Top Header Bar */}
@@ -492,14 +492,14 @@ export const RecipeDetailModal: React.FC = () => {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          className="px-4 pt-2 sm:pt-4 pb-2 flex items-center justify-between shrink-0 select-none border-b border-slate-100 dark:border-slate-800/80 gap-2"
+          className="px-4 pt-2 sm:pt-4 pb-2 flex items-center justify-between shrink-0 select-none border-b border-stone-100 dark:border-stone-800/80 gap-2"
         >
           <div className="flex items-center gap-2 min-w-0 flex-1">
             {isHandsFreeMode ? (
               <button
                 type="button"
                 onClick={() => setIsHandsFreeMode(false)}
-                className="flex items-center gap-1.5 text-xs font-black text-amber-800 dark:text-amber-400 hover:text-amber-700 transition-colors truncate min-h-[36px]"
+                className="flex items-center gap-1.5 text-xs font-black text-stone-900 dark:text-white hover:text-stone-700 transition-colors truncate min-h-[36px]"
               >
                 <ChevronLeft className="w-4 h-4 shrink-0" />
                 <span className="truncate">Thoát chế độ nấu từng bước</span>
@@ -508,7 +508,7 @@ export const RecipeDetailModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedRecipe(null)}
-                className="flex items-center gap-1.5 text-xs font-black text-amber-800 dark:text-amber-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors truncate group min-h-[36px]"
+                className="flex items-center gap-1.5 text-xs font-black text-stone-900 dark:text-white hover:text-stone-700 dark:hover:text-stone-300 transition-colors truncate group min-h-[36px]"
                 title={`Trở lại mâm ${selectedMealSet.title}`}
               >
                 <ChevronLeft className="w-4 h-4 shrink-0 transition-transform group-hover:-translate-x-0.5" />
@@ -516,15 +516,15 @@ export const RecipeDetailModal: React.FC = () => {
               </button>
             ) : (
               <>
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-amber-400 truncate">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500 dark:text-stone-400 truncate">
                   {selectedRecipe.category === 'mon-man' && 'Món Mặn Gia Đình'}
                   {selectedRecipe.category === 'mon-canh' && 'Món Canh Thanh Mát'}
                   {selectedRecipe.category === 'mon-rau' && 'Món Rau Xào / Luộc'}
                   {selectedRecipe.category === 'mon-chay' && 'Món Chay Thanh Đạm'}
                   {selectedRecipe.category === 'an-sang' && 'Bữa Sáng Năng Lượng'}
                 </span>
-                <span className="text-slate-300 dark:text-slate-700 shrink-0">•</span>
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-400 shrink-0">
+                <span className="text-stone-300 dark:text-stone-700 shrink-0">•</span>
+                <span className="text-xs font-bold text-stone-600 dark:text-stone-400 shrink-0">
                   {selectedRecipe.region === 'bac' ? 'Miền Bắc' : selectedRecipe.region === 'nam' ? 'Miền Nam' : selectedRecipe.region === 'trung' ? 'Miền Trung' : 'Toàn Quốc'}
                 </span>
               </>
@@ -538,13 +538,13 @@ export const RecipeDetailModal: React.FC = () => {
               onClick={() => setIsTimerOpen(prev => !prev)}
               className={`px-2.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border transition-all cursor-pointer min-h-[36px] ${
                 timerSecondsLeft > 0
-                  ? 'bg-amber-500 text-stone-950 border-amber-400 animate-pulse font-extrabold shadow-sm'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:text-amber-800 dark:hover:text-amber-400'
+                  ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 border-stone-800 dark:border-white animate-pulse font-black shadow-xs'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-700 hover:text-stone-900 dark:hover:text-white'
               }`}
               title="Bộ đếm giờ nấu ăn"
               aria-label="Bộ đếm giờ nấu ăn"
             >
-              <Timer className="w-3.5 h-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+              <Timer className="w-3.5 h-3.5 shrink-0 text-stone-700 dark:text-stone-300" />
               <span className="text-[11px]">
                 {timerSecondsLeft > 0 ? formatTimerDisplay(timerSecondsLeft) : 'Hẹn giờ'}
               </span>
@@ -557,7 +557,7 @@ export const RecipeDetailModal: React.FC = () => {
                 setIsHandsFreeMode(false);
                 setIsTimerOpen(false);
               }}
-              className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700 cursor-pointer min-h-[36px] min-w-[36px]"
+              className="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 hover:text-stone-900 dark:text-stone-300 dark:hover:text-white transition-colors flex items-center justify-center shrink-0 border border-stone-200 dark:border-stone-700 cursor-pointer min-h-[36px] min-w-[36px]"
               aria-label="Đóng"
             >
               <X className="w-4 h-4" />
@@ -567,16 +567,16 @@ export const RecipeDetailModal: React.FC = () => {
 
         {/* Actionable Cooking Timer Drawer / Banner (Expandable) */}
         {isTimerOpen && (
-          <div className="p-3.5 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 dark:from-slate-900 dark:via-amber-950/40 dark:to-slate-900 border-b border-amber-500/30 shrink-0 space-y-3 animate-fade-in select-none">
+          <div className="p-3.5 bg-[#FAF8F5] dark:bg-[#1A1918] border-b border-[#E8E2D8] dark:border-[#252220] shrink-0 space-y-3 animate-fade-in select-none">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs font-black text-amber-800 dark:text-amber-400 uppercase tracking-wide">
-                <Timer className="w-4 h-4 text-amber-500" />
+              <div className="flex items-center gap-1.5 text-xs font-black text-stone-900 dark:text-stone-200 uppercase tracking-wide">
+                <Timer className="w-4 h-4 text-stone-800 dark:text-stone-300" />
                 <span>Bộ Đếm Giờ Nấu Ăn (Cooking Timer)</span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsTimerOpen(false)}
-                className="text-[11px] font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white p-1"
+                className="text-[11px] font-bold text-stone-500 hover:text-stone-800 dark:hover:text-white p-1 cursor-pointer"
                 aria-label="Thu nhỏ hẹn giờ"
               >
                 Thu nhỏ
@@ -584,12 +584,12 @@ export const RecipeDetailModal: React.FC = () => {
             </div>
 
             {/* Digital Display & Timer Controls */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-950/70 p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-[#121110] p-3 rounded-2xl border border-[#E8E2D8] dark:border-[#252220]">
               <div className="text-center sm:text-left min-w-0">
-                <div className="text-3xl font-black font-mono tracking-wider text-amber-800 dark:text-amber-400">
+                <div className="text-3xl font-black font-mono tracking-wider text-stone-950 dark:text-white">
                   {formatTimerDisplay(timerSecondsLeft)}
                 </div>
-                <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 truncate max-w-[200px]">
+                <div className="text-[11px] font-semibold text-stone-500 dark:text-stone-400 truncate max-w-[200px]">
                   {timerLabel}
                 </div>
               </div>
@@ -602,8 +602,8 @@ export const RecipeDetailModal: React.FC = () => {
                   disabled={timerSecondsLeft === 0 && timerTotalDuration === 0}
                   className={`px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-sm cursor-pointer min-h-[44px] ${
                     timerIsRunning
-                      ? 'bg-amber-500 text-stone-950 hover:bg-amber-400'
-                      : 'bg-emerald-500 text-stone-950 hover:bg-emerald-400'
+                      ? 'bg-stone-900 text-white hover:bg-stone-800 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-100'
+                      : 'bg-emerald-600 text-white hover:bg-emerald-500'
                   } disabled:opacity-40 disabled:cursor-not-allowed`}
                 >
                   {timerIsRunning ? (
@@ -623,7 +623,7 @@ export const RecipeDetailModal: React.FC = () => {
                   type="button"
                   onClick={resetTimer}
                   disabled={timerTotalDuration === 0}
-                  className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors disabled:opacity-40 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  className="p-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white border border-[#E8E2D8] dark:border-[#252220] transition-colors disabled:opacity-40 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
                   title="Đặt lại bộ đếm"
                   aria-label="Đặt lại bộ đếm"
                 >
@@ -633,7 +633,7 @@ export const RecipeDetailModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={clearTimer}
-                  className="px-2.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-rose-500 transition-colors cursor-pointer min-h-[44px]"
+                  className="px-2.5 py-2 rounded-xl text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-rose-500 transition-colors cursor-pointer min-h-[44px]"
                 >
                   Xóa
                 </button>
@@ -642,7 +642,7 @@ export const RecipeDetailModal: React.FC = () => {
 
             {/* Quick Timer Presets */}
             <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-              <span className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase mr-1">
+              <span className="text-[10px] font-extrabold text-stone-500 dark:text-stone-400 uppercase mr-1">
                 Phím nhanh:
               </span>
               {[
@@ -655,7 +655,7 @@ export const RecipeDetailModal: React.FC = () => {
                   key={p.sec}
                   type="button"
                   onClick={() => startTimerWithDuration(p.sec, `Hẹn giờ ${p.label}`)}
-                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-500 hover:text-amber-800 dark:hover:text-amber-400 text-xs font-bold transition-all shadow-xs min-h-[36px]"
+                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-stone-800 border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-300 hover:border-stone-900 dark:hover:border-stone-400 hover:text-stone-950 dark:hover:text-white text-xs font-bold transition-all shadow-xs min-h-[36px] cursor-pointer"
                 >
                   +{p.label}
                 </button>
@@ -664,7 +664,7 @@ export const RecipeDetailModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => startTimerWithDuration(selectedRecipe.cookTimeMinutes * 60, `Nấu ${selectedRecipe.title}`)}
-                  className="px-2.5 py-1.5 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-amber-300 hover:bg-amber-500/25 text-xs font-black transition-all shadow-xs min-h-[36px]"
+                  className="px-2.5 py-1.5 rounded-lg bg-stone-200/70 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-200 hover:bg-stone-300 dark:hover:bg-stone-700 text-xs font-black transition-all shadow-xs min-h-[36px] cursor-pointer"
                 >
                   +{selectedRecipe.cookTimeMinutes}p (Tổng nấu)
                 </button>
@@ -677,10 +677,10 @@ export const RecipeDetailModal: React.FC = () => {
         {!isTimerOpen && timerSecondsLeft > 0 && (
           <div 
             onClick={() => setIsTimerOpen(true)}
-            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-black text-xs flex items-center justify-between cursor-pointer shadow-md select-none shrink-0"
+            className="px-4 py-2 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-950 font-black text-xs flex items-center justify-between cursor-pointer shadow-md select-none shrink-0"
           >
             <div className="flex items-center gap-2 min-w-0">
-              <Timer className="w-4 h-4 animate-spin shrink-0" />
+              <Timer className="w-4 h-4 animate-spin shrink-0 text-amber-400 dark:text-amber-600" />
               <span className="truncate">Đang hẹn giờ: {timerLabel}</span>
             </div>
             <div className="flex items-center gap-2 shrink-0">
@@ -699,23 +699,23 @@ export const RecipeDetailModal: React.FC = () => {
           {isHandsFreeMode ? (
             <div className="space-y-4 animate-fade-in">
               {/* Step Mode Header & Switcher */}
-              <div className="p-4 rounded-3xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-slate-900 dark:via-amber-950/40 dark:to-slate-900 border border-amber-500/30 space-y-3">
+              <div className="p-4 rounded-3xl bg-[#FAF8F5] dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] space-y-3">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="p-2 rounded-xl bg-amber-500 text-stone-950">
+                    <span className="p-2 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-950">
                       <ChefHat className="w-4 h-4" />
                     </span>
                     <div>
-                      <h3 className="text-xs font-black uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                      <h3 className="text-xs font-black uppercase tracking-wider text-stone-900 dark:text-stone-200">
                         Chế Độ Nấu Từng Bước (Hands-Free)
                       </h3>
-                      <p className="text-[11px] text-slate-600 dark:text-slate-400">
+                      <p className="text-[11px] text-stone-600 dark:text-stone-400">
                         Theo dõi công đoạn nấu dễ dàng trong gian bếp
                       </p>
                     </div>
                   </div>
 
-                  <span className="px-3 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-black text-slate-800 dark:text-slate-200 shadow-xs">
+                  <span className="px-3 py-1 rounded-full bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs font-black text-stone-800 dark:text-stone-200 shadow-xs">
                     Bước {activeStepIndex + 1} / {totalSteps}
                   </span>
                 </div>
@@ -732,10 +732,10 @@ export const RecipeDetailModal: React.FC = () => {
                         onClick={() => setActiveStepIndex(idx)}
                         className={`h-2.5 rounded-full transition-all cursor-pointer flex-1 min-h-[24px] ${
                           isStepActive 
-                            ? 'bg-amber-500 ring-2 ring-amber-400/50 shadow-sm' 
+                            ? 'bg-stone-900 dark:bg-white ring-2 ring-stone-400/50 shadow-sm' 
                             : isStepDone 
-                            ? 'bg-emerald-500/80 hover:bg-emerald-500' 
-                            : 'bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600'
+                            ? 'bg-emerald-600/80 hover:bg-emerald-600' 
+                            : 'bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600'
                         }`}
                         title={`Bước ${inst.step}: ${inst.title}`}
                         aria-label={`Chuyển tới bước ${inst.step}`}
@@ -747,16 +747,16 @@ export const RecipeDetailModal: React.FC = () => {
 
               {/* Active Step Card with Large Typography */}
               {currentInstruction && (
-                <div className="p-5 rounded-3xl bg-white dark:bg-slate-800/90 border-2 border-amber-500/40 dark:border-amber-500/30 shadow-lg space-y-4">
+                <div className="p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-4">
                   {/* Step Title & Flame / Timer Meta Badges */}
                   <div className="space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase tracking-wider bg-amber-500 text-stone-950">
+                      <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase tracking-wider bg-stone-900 dark:bg-white text-white dark:text-stone-950">
                         Bước {currentInstruction.step}
                       </span>
                       {currentInstruction.heatLevel && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-orange-100 dark:bg-orange-950/60 text-orange-800 dark:text-orange-300 border border-orange-200 dark:border-orange-800/60">
-                          <Flame className="w-3.5 h-3.5 text-orange-500" />
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                          <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                           Canh lửa: {currentInstruction.heatLevel}
                         </span>
                       )}
@@ -764,7 +764,7 @@ export const RecipeDetailModal: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => startTimerWithDuration(currentInstruction.durationMinutes! * 60, `Bước ${currentInstruction.step}: ${currentInstruction.title}`)}
-                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-colors cursor-pointer min-h-[32px]"
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors cursor-pointer min-h-[32px]"
                         >
                           <Timer className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                           Hẹn giờ: {currentInstruction.durationMinutes} phút
@@ -772,22 +772,22 @@ export const RecipeDetailModal: React.FC = () => {
                       )}
                     </div>
 
-                    <h4 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-snug">
+                    <h4 className="text-lg sm:text-xl font-black text-stone-900 dark:text-white leading-snug">
                       {currentInstruction.title}
                     </h4>
                   </div>
 
                   {/* Large Pedagogical Instruction Body */}
-                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 text-base leading-relaxed font-normal">
+                  <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-800 dark:text-stone-100 text-base leading-relaxed font-normal">
                     <p>{currentInstruction.content}</p>
                   </div>
 
                   {/* Step Micro-Tip (if present) */}
                   {currentInstruction.tip && (
-                    <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border border-amber-500/30 text-amber-950 dark:text-amber-200 text-xs sm:text-sm flex items-start gap-2 font-medium">
+                    <div className="p-3 rounded-2xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/40 text-stone-800 dark:text-amber-200 text-xs sm:text-sm flex items-start gap-2 font-medium">
                       <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-amber-800 dark:text-amber-400">Mẹo nhỏ:</strong> {currentInstruction.tip}
+                        <strong className="text-stone-900 dark:text-amber-300">Mẹo nhỏ:</strong> {currentInstruction.tip}
                       </div>
                     </div>
                   )}
@@ -798,11 +798,11 @@ export const RecipeDetailModal: React.FC = () => {
                     onClick={(e) => toggleStepCompleted(currentInstruction.step, e)}
                     className={`w-full py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 border transition-all cursor-pointer min-h-[48px] ${
                       isCurrentStepCompleted 
-                        ? 'bg-emerald-500 text-stone-950 border-emerald-500 shadow-md shadow-emerald-500/20' 
-                        : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-700 hover:border-amber-500'
+                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20' 
+                        : 'bg-white dark:bg-[#121110] text-stone-700 dark:text-stone-200 border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400'
                     }`}
                   >
-                    <Check className={`w-4 h-4 stroke-[3] ${isCurrentStepCompleted ? 'text-stone-950' : 'text-slate-400'}`} />
+                    <Check className={`w-4 h-4 stroke-[3] ${isCurrentStepCompleted ? 'text-white' : 'text-stone-400'}`} />
                     <span>{isCurrentStepCompleted ? 'Đã hoàn thành bước này ✓' : 'Đánh dấu đã hoàn thành bước này'}</span>
                   </button>
                 </div>
@@ -814,7 +814,7 @@ export const RecipeDetailModal: React.FC = () => {
                   type="button"
                   onClick={handlePrevStep}
                   disabled={activeStepIndex === 0}
-                  className="py-3 px-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition-all cursor-pointer min-h-[48px]"
+                  className="py-3 px-4 rounded-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-200 font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-800 transition-all cursor-pointer min-h-[48px]"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   <span>Bước trước</span>
@@ -823,7 +823,7 @@ export const RecipeDetailModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-stone-950 font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 active:scale-[0.98] transition-all cursor-pointer min-h-[48px]"
+                  className="py-3 px-4 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md shadow-stone-900/10 active:scale-[0.98] transition-all cursor-pointer min-h-[48px]"
                 >
                   <span>{activeStepIndex === totalSteps - 1 ? 'Hoàn tất nấu ăn 🎉' : 'Bước tiếp theo'}</span>
                   <ChevronRight className="w-4 h-4" />
@@ -831,25 +831,25 @@ export const RecipeDetailModal: React.FC = () => {
               </div>
 
               {/* Quick Peek Ingredients in Hands-Free Mode */}
-              <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+              <div className="pt-2 border-t border-[#E8E2D8] dark:border-[#252220]">
                 <button
                   type="button"
                   onClick={() => setShowHandsFreeIngredients(prev => !prev)}
-                  className="w-full py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-between transition-colors min-h-[44px]"
+                  className="w-full py-2.5 px-3 rounded-xl bg-stone-100 dark:bg-stone-800/60 text-stone-700 dark:text-stone-300 font-bold text-xs flex items-center justify-between transition-colors min-h-[44px] cursor-pointer"
                 >
                   <span className="flex items-center gap-1.5">
-                    <Utensils className="w-3.5 h-3.5 text-amber-500" />
+                    <Utensils className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
                     Xem nhanh định lượng nguyên liệu ({selectedRecipe.ingredients.length})
                   </span>
                   {showHandsFreeIngredients ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
 
                 {showHandsFreeIngredients && (
-                  <div className="mt-2 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5 max-h-56 overflow-y-auto animate-fade-in">
+                  <div className="mt-2 p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-1.5 max-h-56 overflow-y-auto animate-fade-in">
                     {selectedRecipe.ingredients.map((ing, idx) => (
-                      <div key={idx} className="flex items-center justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/60 last:border-none">
-                        <span className="font-medium text-slate-800 dark:text-slate-200">{ing.name}</span>
-                        <span className="font-extrabold text-amber-800 dark:text-amber-400">
+                      <div key={idx} className="flex items-center justify-between text-xs py-1 border-b border-stone-200/60 dark:border-stone-800/60 last:border-none">
+                        <span className="font-medium text-stone-800 dark:text-stone-200">{ing.name}</span>
+                        <span className="font-extrabold text-stone-900 dark:text-white">
                           {formatScaledAmount(ing.amount)} {ing.unit}
                         </span>
                       </div>
@@ -873,14 +873,14 @@ export const RecipeDetailModal: React.FC = () => {
                   className="w-full h-full object-cover"
                   loading="eager"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
                 <div className="absolute bottom-3 left-4 right-4">
                   <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-                    <span className="px-2.5 py-0.5 rounded-full bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[10px] font-extrabold inline-block backdrop-blur-sm">
+                    <span className="px-2.5 py-0.5 rounded-full bg-stone-900/80 text-white border border-stone-700/60 text-[10px] font-extrabold inline-block backdrop-blur-sm">
                       {selectedRecipe.region === 'bac' ? 'Vị Bắc' : selectedRecipe.region === 'nam' ? 'Vị Nam' : selectedRecipe.region === 'trung' ? 'Vị Trung' : 'Toàn Quốc'}
                     </span>
                     {selectedRecipe.tags && selectedRecipe.tags.map(tag => (
-                      <span key={tag} className="px-2 py-0.5 rounded-full bg-slate-900/70 text-slate-200 text-[10px] font-semibold backdrop-blur-sm border border-slate-700">
+                      <span key={tag} className="px-2 py-0.5 rounded-full bg-stone-900/70 text-stone-200 text-[10px] font-semibold backdrop-blur-sm border border-stone-700/60">
                         #{tag}
                       </span>
                     ))}
@@ -892,25 +892,25 @@ export const RecipeDetailModal: React.FC = () => {
               </div>
 
               {/* Metrics & Servings Stepper Grid (Preserving exact grid class for layout tests) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-center">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-center">
                 
                 {/* Metric 1: Time */}
                 <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 block uppercase">
+                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
                     THỜI GIAN
                   </span>
-                  <span className="text-xs font-black text-slate-900 dark:text-white flex items-center justify-center gap-1 mt-1">
-                    <Clock className="w-3.5 h-3.5 text-amber-500" />
+                  <span className="text-xs font-black text-stone-900 dark:text-white flex items-center justify-center gap-1 mt-1">
+                    <Clock className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
                     {selectedRecipe.cookTimeMinutes} phút
                   </span>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
                     Chuẩn bị: {selectedRecipe.prepTimeMinutes}p
                   </span>
                 </div>
 
                 {/* Metric 2: Interactive Servings Stepper */}
                 <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 block uppercase">
+                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
                     KHẨU PHẦN
                   </span>
                   <div className="flex items-center gap-1 mt-1 justify-center">
@@ -918,12 +918,12 @@ export const RecipeDetailModal: React.FC = () => {
                       type="button"
                       onClick={() => setServings(s => Math.max(1, s - 1))}
                       disabled={servings <= 1}
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
+                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
                       aria-label="Giảm khẩu phần"
                     >
                       -
                     </button>
-                    <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-1.5 py-0.5 shadow-xs">
+                    <div className="flex items-center bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-lg px-1.5 py-0.5 shadow-xs">
                       <input
                         type="number"
                         min={1}
@@ -937,10 +937,10 @@ export const RecipeDetailModal: React.FC = () => {
                             setServings(1);
                           }
                         }}
-                        className="w-7 text-center text-xs font-black text-slate-900 dark:text-white bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="w-7 text-center text-xs font-black text-stone-900 dark:text-white bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         aria-label="Số người ăn"
                       />
-                      <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 select-none">
+                      <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 select-none">
                         người
                       </span>
                     </div>
@@ -948,7 +948,7 @@ export const RecipeDetailModal: React.FC = () => {
                       type="button"
                       onClick={() => setServings(s => Math.min(20, s + 1))}
                       disabled={servings >= 20}
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
+                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
                       aria-label="Tăng khẩu phần"
                     >
                       +
@@ -958,45 +958,45 @@ export const RecipeDetailModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setServings(selectedRecipe.servings)}
-                      className="text-[10px] text-amber-800 dark:text-amber-400 font-bold hover:underline mt-0.5 truncate"
+                      className="text-[10px] text-stone-700 dark:text-stone-300 font-bold hover:underline mt-0.5 truncate cursor-pointer"
                     >
                       Gốc: {selectedRecipe.servings} người
                     </button>
                   ) : (
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">Chuẩn vị gốc</span>
+                    <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5 truncate">Chuẩn vị gốc</span>
                   )}
                 </div>
 
                 {/* Metric 3: Scaled Cost */}
                 <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 block uppercase">
+                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
                     CHI PHÍ DỰ KIẾN
                   </span>
-                  <span className="text-xs font-black text-amber-800 dark:text-amber-400 block mt-1">
+                  <span className="text-xs font-black text-stone-900 dark:text-white block mt-1">
                     {scaledCost.toLocaleString('vi-VN')} đ
                   </span>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
                     ~{Math.round(scaledCost / servings).toLocaleString('vi-VN')} đ/người
                   </span>
                 </div>
 
                 {/* Metric 4: Scaled Calories */}
                 <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 block uppercase">
+                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
                     CALO
                   </span>
-                  <span className="text-xs font-black text-amber-700 dark:text-amber-400 flex items-center justify-center gap-0.5 mt-1">
-                    <Flame className="w-3.5 h-3.5 text-amber-500" />
+                  <span className="text-xs font-black text-stone-900 dark:text-white flex items-center justify-center gap-0.5 mt-1">
+                    <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                     {scaledCalories} kcal
                   </span>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
                     ~{Math.round(scaledCalories / servings)} kcal/người
                   </span>
                 </div>
 
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
                 {selectedRecipe.description}
               </p>
 
@@ -1006,34 +1006,34 @@ export const RecipeDetailModal: React.FC = () => {
               <div className="space-y-3 pt-1">
                 {/* Header (Preserving exact flex string for layout tests) */}
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                    <Utensils className="w-3.5 h-3.5 text-amber-800 dark:text-amber-400" />
+                  <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Utensils className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
                     Nguyên Liệu Cần Chuẩn Bị
                   </h3>
                   {servings !== selectedRecipe.servings && (
-                    <span className="text-[10px] font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded-full border border-amber-500/20 shrink-0">
+                    <span className="text-[10px] font-bold text-stone-700 dark:text-stone-300 bg-stone-100 dark:bg-stone-800 px-2 py-0.5 rounded-full border border-[#E8E2D8] dark:border-[#252220] shrink-0">
                       Đã tự động nhân tỉ lệ ({servings}/{selectedRecipe.servings})
                     </span>
                   )}
                 </div>
 
                 {/* Interactive Ingredient Checklist Progress Bar & Actions */}
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2">
                   <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
-                    <span className="font-bold text-slate-700 dark:text-slate-300">
-                      Sơ chế sẵn sàng: <strong className="text-amber-800 dark:text-amber-400 font-extrabold">{checkedIngredientsCount}/{totalIngredients}</strong> nguyên liệu ({ingredientsPrepPercent}%)
+                    <span className="font-bold text-stone-700 dark:text-stone-300">
+                      Sơ chế sẵn sàng: <strong className="text-stone-950 dark:text-white font-extrabold">{checkedIngredientsCount}/{totalIngredients}</strong> nguyên liệu ({ingredientsPrepPercent}%)
                     </span>
                     <button
                       type="button"
                       onClick={isAllIngredientsChecked ? resetIngredientsChecklist : checkAllIngredients}
-                      className="text-[11px] font-extrabold text-amber-800 dark:text-amber-400 hover:underline min-h-[32px] flex items-center cursor-pointer"
+                      className="text-[11px] font-extrabold text-stone-900 dark:text-stone-100 hover:underline min-h-[32px] flex items-center cursor-pointer"
                     >
                       {isAllIngredientsChecked ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
                     </button>
                   </div>
-                  <div className="h-1.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                  <div className="h-1.5 rounded-full bg-stone-200 dark:bg-stone-800 overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-300 ease-out"
+                      className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all duration-300 ease-out"
                       style={{ width: `${ingredientsPrepPercent}%` }}
                     />
                   </div>
@@ -1047,7 +1047,7 @@ export const RecipeDetailModal: React.FC = () => {
                       <div className="flex items-center justify-between px-1">
                         <div className="flex items-center gap-1.5">
                           <span className={`w-2 h-2 rounded-full ${group.dotClass}`} />
-                          <h4 className="text-xs font-black text-slate-800 dark:text-slate-200">
+                          <h4 className="text-xs font-black text-stone-900 dark:text-white">
                             {group.title}
                           </h4>
                         </div>
@@ -1069,32 +1069,32 @@ export const RecipeDetailModal: React.FC = () => {
                               onClick={() => toggleIngredientChecked(key)}
                               className={`p-2.5 rounded-xl border flex items-center justify-between gap-2 text-xs min-h-[44px] cursor-pointer transition-all select-none ${
                                 isChecked 
-                                  ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-300/50 dark:border-emerald-800/40 text-slate-400 dark:text-slate-500' 
-                                  : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                                  ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-300/40 dark:border-emerald-800/40 text-stone-400 dark:text-stone-500' 
+                                  : 'bg-white dark:bg-[#1A1918] border-[#E8E2D8] dark:border-[#252220] hover:border-stone-300 dark:hover:border-stone-700'
                               }`}
                             >
                               <div className="flex items-center gap-2.5 min-w-0 flex-1">
                                 <button
                                   type="button"
                                   onClick={(e) => toggleIngredientChecked(key, e)}
-                                  className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-colors shrink-0 min-h-[24px] min-w-[24px] ${
+                                  className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-colors shrink-0 min-h-[24px] min-w-[24px] cursor-pointer ${
                                     isChecked 
-                                      ? 'bg-amber-500 border-amber-500 text-stone-950 shadow-xs' 
-                                      : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-transparent hover:border-amber-500'
+                                      ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs' 
+                                      : 'bg-white dark:bg-[#121110] border-stone-300 dark:border-stone-600 text-transparent hover:border-stone-500'
                                   }`}
                                   aria-label={`Đánh dấu nguyên liệu ${ing.name}`}
                                 >
                                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                                 </button>
                                 <span className={`font-semibold min-w-0 leading-relaxed transition-all ${
-                                  isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-800 dark:text-slate-200'
+                                  isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-stone-100'
                                 }`}>
                                   {ing.name}
                                 </span>
                               </div>
 
                               {/* Preserving exact shrink-0 whitespace-nowrap for test suite */}
-                              <span className="font-extrabold text-amber-800 dark:text-amber-400 bg-white dark:bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 text-[11px] shadow-xs shrink-0 whitespace-nowrap">
+                              <span className="font-extrabold text-stone-900 dark:text-stone-100 bg-[#FAF8F5] dark:bg-[#121110] px-2.5 py-1 rounded-lg border border-[#E8E2D8] dark:border-[#252220] text-[11px] shadow-xs shrink-0 whitespace-nowrap">
                                 {scaledAmountStr} {ing.unit}
                               </span>
                             </div>
@@ -1109,9 +1109,9 @@ export const RecipeDetailModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={handlePushToGrocery}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2 min-h-[44px]"
+                  className="w-full py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-md shadow-stone-900/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2 min-h-[44px]"
                 >
-                  <ShoppingCart className="w-4 h-4 text-slate-950 shrink-0" />
+                  <ShoppingCart className="w-4 h-4 text-white dark:text-stone-950 shrink-0" />
                   <span>🛒 Đi Chợ Món Này ({servings} người • {selectedRecipe.ingredients.length} nguyên liệu)</span>
                 </button>
               </div>
@@ -1119,12 +1119,12 @@ export const RecipeDetailModal: React.FC = () => {
               {/* ============================================================ */}
               {/* COOKING STEPS ACCORDION WITH PROGRESS TRACKING               */}
               {/* ============================================================ */}
-              <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="space-y-3 pt-3 border-t border-[#E8E2D8] dark:border-[#252220]">
                 
                 {/* Header with Title & Action Controls */}
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                    <ChefHat className="w-3.5 h-3.5 text-amber-800 dark:text-amber-400" />
+                  <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <ChefHat className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
                     Các Bước Chế Biến & Tiến Độ
                   </h3>
 
@@ -1132,7 +1132,7 @@ export const RecipeDetailModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => enterHandsFreeMode(0)}
-                      className="px-2.5 py-1 rounded-lg bg-amber-500 text-stone-950 font-black text-[11px] flex items-center gap-1 shadow-xs hover:bg-amber-400 transition-colors min-h-[32px] cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-black text-[11px] flex items-center gap-1 shadow-xs hover:bg-stone-800 dark:hover:bg-stone-100 transition-colors min-h-[32px] cursor-pointer"
                     >
                       <ChefHat className="w-3 h-3" />
                       <span>Chế Độ Nấu Từng Bước</span>
@@ -1140,25 +1140,25 @@ export const RecipeDetailModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={expandAllSteps}
-                      className="text-[10px] font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+                      className="text-[10px] font-bold text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white transition-colors cursor-pointer"
                     >
                       Mở tất cả
                     </button>
-                    <span className="text-slate-300 dark:text-slate-700">•</span>
+                    <span className="text-stone-300 dark:text-stone-700">•</span>
                     <button
                       type="button"
                       onClick={collapseAllSteps}
-                      className="text-[10px] font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+                      className="text-[10px] font-bold text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white transition-colors cursor-pointer"
                     >
                       Thu gọn
                     </button>
                     {completedCount > 0 && (
                       <>
-                        <span className="text-slate-300 dark:text-slate-700">•</span>
+                        <span className="text-stone-300 dark:text-stone-700">•</span>
                         <button
                           type="button"
                           onClick={resetCookingProgress}
-                          className="text-[10px] font-bold text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-0.5"
+                          className="text-[10px] font-bold text-stone-700 dark:text-stone-300 hover:underline flex items-center gap-0.5 cursor-pointer"
                         >
                           <RotateCcw className="w-2.5 h-2.5" />
                           Đặt lại
@@ -1169,18 +1169,18 @@ export const RecipeDetailModal: React.FC = () => {
                 </div>
 
                 {/* Progress Bar & Status */}
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-slate-700 dark:text-slate-300">
-                      Tiến độ nấu: <strong className="text-amber-800 dark:text-amber-400 font-extrabold">{completedCount}/{totalSteps}</strong> bước
+                    <span className="font-bold text-stone-700 dark:text-stone-300">
+                      Tiến độ nấu: <strong className="text-stone-950 dark:text-white font-extrabold">{completedCount}/{totalSteps}</strong> bước
                     </span>
-                    <span className="text-xs font-black text-amber-800 dark:text-amber-400">
+                    <span className="text-xs font-black text-stone-900 dark:text-white">
                       {progressPercent}%
                     </span>
                   </div>
-                  <div className="h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                  <div className="h-2 rounded-full bg-stone-200 dark:bg-stone-800 overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-300 ease-out"
+                      className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all duration-300 ease-out"
                       style={{ width: `${progressPercent}%` }}
                     />
                   </div>
@@ -1188,8 +1188,8 @@ export const RecipeDetailModal: React.FC = () => {
 
                 {/* Completion Banner */}
                 {isAllCompleted && (
-                  <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border border-amber-500/30 flex items-center gap-2.5 text-xs text-amber-900 dark:text-amber-200 font-bold animate-fade-in">
-                    <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800/60 flex items-center gap-2.5 text-xs text-emerald-900 dark:text-emerald-200 font-bold animate-fade-in">
+                    <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                     <span>Tuyệt vời! Bạn đã hoàn thành tất cả các bước chế biến món {selectedRecipe.title}! Chúc cả nhà ngon miệng!</span>
                   </div>
                 )}
@@ -1205,24 +1205,24 @@ export const RecipeDetailModal: React.FC = () => {
                         key={inst.step} 
                         className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                           isCompleted 
-                            ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-400/40 dark:border-emerald-800/40' 
-                            : 'bg-slate-50 dark:bg-slate-800/40 border-slate-200/80 dark:border-slate-800'
+                            ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-300/40 dark:border-emerald-800/40' 
+                            : 'bg-white dark:bg-[#1A1918] border-[#E8E2D8] dark:border-[#252220]'
                         }`}
                       >
                         {/* Step Accordion Header */}
                         <div 
                           onClick={() => toggleStepExpanded(inst.step)}
-                          className="p-3 flex items-center justify-between gap-2 cursor-pointer select-none hover:bg-slate-100/50 dark:hover:bg-slate-800/60 transition-colors min-h-[44px]"
+                          className="p-3 flex items-center justify-between gap-2 cursor-pointer select-none hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors min-h-[44px]"
                         >
                           <div className="flex items-center gap-2.5 min-w-0 flex-1">
                             {/* Checkbox button */}
                             <button
                               type="button"
                               onClick={(e) => toggleStepCompleted(inst.step, e)}
-                              className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-colors shrink-0 min-h-[24px] min-w-[24px] ${
+                              className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-colors shrink-0 min-h-[24px] min-w-[24px] cursor-pointer ${
                                 isCompleted 
-                                  ? 'bg-amber-500 border-amber-500 text-stone-950 shadow-xs' 
-                                  : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-transparent hover:border-amber-500'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs' 
+                                  : 'bg-white dark:bg-[#121110] border-stone-300 dark:border-stone-600 text-transparent hover:border-stone-500'
                               }`}
                               aria-label={`Đánh dấu hoàn thành bước ${inst.step}`}
                             >
@@ -1233,7 +1233,7 @@ export const RecipeDetailModal: React.FC = () => {
                               <h4 className={`text-xs sm:text-sm font-extrabold transition-colors truncate ${
                                 isCompleted 
                                   ? 'text-emerald-900 dark:text-emerald-300 line-through opacity-80' 
-                                  : 'text-slate-900 dark:text-white'
+                                  : 'text-stone-900 dark:text-white'
                               }`}>
                                 Bước {inst.step}: {inst.title}
                               </h4>
@@ -1247,23 +1247,23 @@ export const RecipeDetailModal: React.FC = () => {
                               </span>
                             )}
                             {isExpanded ? (
-                              <ChevronUp className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
+                              <ChevronUp className="w-4 h-4 text-stone-500 dark:text-stone-400 shrink-0" />
                             ) : (
-                              <ChevronDown className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
+                              <ChevronDown className="w-4 h-4 text-stone-500 dark:text-stone-400 shrink-0" />
                             )}
                           </div>
                         </div>
 
                         {/* Step Accordion Content */}
                         {isExpanded && (
-                          <div className="px-3.5 pb-3 pt-0 text-xs text-slate-700 dark:text-slate-300 pl-11 leading-relaxed border-t border-slate-100/60 dark:border-slate-800/40 mt-1 space-y-2">
+                          <div className="px-3.5 pb-3 pt-0 text-xs text-stone-600 dark:text-stone-300 pl-11 leading-relaxed border-t border-[#E8E2D8]/60 dark:border-[#252220]/60 mt-1 space-y-2">
                             <p>{inst.content}</p>
 
                             {/* Badges & Actions row */}
                             <div className="flex flex-wrap items-center gap-2 pt-1">
                               {inst.heatLevel && (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-orange-100 dark:bg-orange-950/60 text-orange-800 dark:text-orange-300 border border-orange-200 dark:border-orange-800/60">
-                                  <Flame className="w-3 h-3 text-orange-500" />
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                                  <Flame className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                                   Canh lửa: {inst.heatLevel}
                                 </span>
                               )}
@@ -1271,26 +1271,26 @@ export const RecipeDetailModal: React.FC = () => {
                                 <button
                                   type="button"
                                   onClick={() => startTimerWithDuration(inst.durationMinutes! * 60, `Bước ${inst.step}: ${inst.title}`)}
-                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-200 dark:hover:bg-amber-900 transition-colors cursor-pointer min-h-[28px]"
+                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer min-h-[28px]"
                                 >
-                                  <Timer className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                                  <Timer className="w-3 h-3 text-stone-700 dark:text-stone-300" />
                                   Hẹn giờ {inst.durationMinutes}p
                                 </button>
                               )}
                               <button
                                 type="button"
                                 onClick={() => enterHandsFreeMode(inst.step - 1)}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-amber-800 dark:hover:text-amber-300 transition-colors ml-auto cursor-pointer min-h-[28px]"
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors ml-auto cursor-pointer min-h-[28px]"
                               >
-                                <ChefHat className="w-3 h-3 text-amber-500" />
+                                <ChefHat className="w-3 h-3 text-stone-700 dark:text-stone-300" />
                                 Nấu bước này rảnh tay
                               </button>
                             </div>
 
                             {inst.tip && (
-                              <div className="mt-2 p-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-500/20 text-amber-900 dark:text-amber-200 text-[11px] flex items-start gap-1.5 font-medium">
+                              <div className="mt-2 p-2 rounded-xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/40 text-stone-800 dark:text-amber-200 text-[11px] flex items-start gap-1.5 font-medium">
                                 <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                                <span><strong>Mẹo nhỏ:</strong> {inst.tip}</span>
+                                <span><strong className="text-stone-900 dark:text-amber-300">Mẹo nhỏ:</strong> {inst.tip}</span>
                               </div>
                             )}
                           </div>
@@ -1300,19 +1300,19 @@ export const RecipeDetailModal: React.FC = () => {
                   })}
                 </div>
 
-                {/* Chef's Secret / Mẹo Bếp Vàng (Golden amber gradient highlight) */}
+                {/* Chef's Secret / Mẹo Bếp Vàng */}
                 {selectedRecipe.chefTip && (
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-amber-500/10 dark:from-amber-950/60 dark:via-orange-950/40 dark:to-slate-900 border-2 border-amber-400/60 dark:border-amber-500/50 text-xs sm:text-sm text-amber-950 dark:text-amber-100 space-y-1.5 mt-3 shadow-md">
+                  <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#1A1918] border border-amber-300/60 dark:border-amber-700/40 text-xs sm:text-sm text-stone-900 dark:text-stone-100 space-y-1.5 mt-3 shadow-sm">
                     <div className="flex items-center justify-between flex-wrap gap-2">
-                      <div className="flex items-center gap-1.5 font-black uppercase text-xs text-amber-800 dark:text-amber-400">
-                        <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
+                      <div className="flex items-center gap-1.5 font-black uppercase text-xs text-amber-900 dark:text-amber-300">
+                        <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                         <span>Bí Quyết Đầu Bếp (Chef's Secret)</span>
                       </div>
-                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
                         Chuẩn Vị Cơm Nhà
                       </span>
                     </div>
-                    <p className="leading-relaxed pl-5 font-medium text-slate-800 dark:text-slate-200">
+                    <p className="leading-relaxed pl-5 font-medium text-stone-700 dark:text-stone-300">
                       {selectedRecipe.chefTip}
                     </p>
                   </div>

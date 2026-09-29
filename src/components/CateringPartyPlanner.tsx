@@ -683,19 +683,19 @@ export const CateringPartyPlanner: React.FC = () => {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-left mb-6">
-            <div className="p-3 rounded-2xl bg-white/80 dark:bg-stone-850/80 border border-stone-200/80 dark:border-stone-800">
+            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
               <span className="text-lg block mb-1">🍗</span>
               <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">50+ Mâm Tiệc Chuẩn</h4>
               <p className="text-[11px] text-stone-500 dark:text-stone-400">Đầy đủ 5 món: Khai vị, Món chính, Lẩu ấm, Tinh bột & Tráng miệng.</p>
             </div>
 
-            <div className="p-3 rounded-2xl bg-white/80 dark:bg-stone-850/80 border border-stone-200/80 dark:border-stone-800">
+            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
               <span className="text-lg block mb-1">👥</span>
               <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Chia Bàn Tự Động</h4>
               <p className="text-[11px] text-stone-500 dark:text-stone-400">Tự chia bàn 6, 8, 10 người và nhân suất ăn chuẩn xác từng gram.</p>
             </div>
 
-            <div className="p-3 rounded-2xl bg-white/80 dark:bg-stone-850/80 border border-stone-200/80 dark:border-stone-800">
+            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
               <span className="text-lg block mb-1">📋</span>
               <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Báo Giá Zalo 1 Chạm</h4>
               <p className="text-[11px] text-stone-500 dark:text-stone-400">Xuất bảng báo giá chi tiết, danh mục trang thiết bị gửi đối tác.</p>
@@ -777,11 +777,11 @@ export const CateringPartyPlanner: React.FC = () => {
         <div className="space-y-4">
           
           {/* Section 1: Compact Event Setup & Headcount Stepper Header */}
-          <div className="p-4 sm:p-5 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-3.5">
+          <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-3.5">
             {/* Event Type Chips Row & Actions */}
             <div>
               <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
-                <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">
+                <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-300 uppercase tracking-wider block">
                   Hình Thức Tiệc / Sự Kiện
                 </span>
 
@@ -793,7 +793,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       setSavePlanDesc(partyPlan.staffNotes || '');
                       setShowSavePresetModal(true);
                     }}
-                    className="px-2.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-sm flex items-center gap-1 transition-all active:scale-95"
+                    className="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-sm flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
                     title="Lưu kế hoạch hiện tại thành mẫu tiệc riêng của bạn"
                   >
                     <Save className="w-3.5 h-3.5" />
@@ -821,7 +821,7 @@ export const CateringPartyPlanner: React.FC = () => {
                         }
                       });
                     }}
-                    className="px-2 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors"
+                    className="px-2 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
                     title="Bắt đầu tạo mâm tiệc mới từ đầu"
                   >
                     <Plus className="w-3 h-3" />
@@ -841,7 +841,7 @@ export const CateringPartyPlanner: React.FC = () => {
                         }
                       });
                     }}
-                    className="px-2 py-1.5 rounded-xl text-slate-500 hover:text-rose-500 dark:text-slate-400 dark:hover:text-rose-400 flex items-center gap-1 text-xs font-semibold transition-colors"
+                    className="px-2 py-1.5 rounded-xl text-stone-500 hover:text-rose-500 dark:text-stone-400 dark:hover:text-rose-400 flex items-center gap-1 text-xs font-semibold transition-colors cursor-pointer"
                     title="Đặt lại thực đơn tiệc mặc định"
                   >
                     <RotateCcw className="w-3 h-3" />
@@ -860,7 +860,7 @@ export const CateringPartyPlanner: React.FC = () => {
                     className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 active:scale-95 cursor-pointer ${
                       partyPlan.eventType === type.id
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-black shadow-xs'
-                        : 'bg-stone-100 dark:bg-stone-850 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white border border-stone-200 dark:border-stone-800'
+                        : 'bg-stone-100 dark:bg-[#121110] text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white border border-stone-200 dark:border-[#252220]'
                     }`}
                   >
                     <span>{type.icon}</span>
@@ -871,7 +871,7 @@ export const CateringPartyPlanner: React.FC = () => {
             </div>
 
             {/* Headcount Stepper & Table Calculation */}
-            <div className="p-3 rounded-2xl bg-stone-50 dark:bg-stone-850/60 border border-stone-200 dark:border-stone-800 space-y-2">
+            <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 min-w-0">
                   <Users className="w-4 h-4 text-stone-600 dark:text-stone-400 shrink-0" />
@@ -885,7 +885,7 @@ export const CateringPartyPlanner: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleStepGuestCount(-5)}
-                    className="w-8 h-8 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-900 dark:text-white font-black text-sm flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+                    className="w-8 h-8 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-900 dark:text-white font-black text-sm flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer border border-transparent dark:border-stone-700"
                     title="Giảm 5 khách"
                     aria-label="Giảm 5 khách"
                   >
@@ -899,13 +899,13 @@ export const CateringPartyPlanner: React.FC = () => {
                       value={guestInput}
                       onChange={handleGuestInputChange}
                       onBlur={handleGuestInputBlur}
-                      className="w-16 h-8 text-center font-black text-sm bg-white dark:bg-stone-900 text-stone-900 dark:text-white border border-stone-300 dark:border-stone-700 rounded-xl focus:outline-none focus:border-stone-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      className="w-16 h-8 text-center font-black text-sm bg-white dark:bg-[#1A1918] text-stone-900 dark:text-white border border-stone-300 dark:border-stone-700 rounded-xl focus:outline-none focus:border-stone-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={() => handleStepGuestCount(5)}
-                    className="w-8 h-8 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-900 dark:text-white font-black text-sm flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+                    className="w-8 h-8 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-900 dark:text-white font-black text-sm flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer border border-transparent dark:border-stone-700"
                     title="Tăng 5 khách"
                     aria-label="Tăng 5 khách"
                   >
@@ -915,7 +915,7 @@ export const CateringPartyPlanner: React.FC = () => {
               </div>
 
               {/* Quick count chips */}
-              <div className="grid grid-cols-5 gap-1 pt-1 border-t border-stone-200/80 dark:border-stone-800/80">
+              <div className="grid grid-cols-5 gap-1 pt-1 border-t border-[#E8E2D8] dark:border-[#252220]">
                 {[10, 20, 30, 50, 100].map(count => (
                   <button
                     key={count}
@@ -924,7 +924,7 @@ export const CateringPartyPlanner: React.FC = () => {
                     className={`py-1 px-0.5 rounded-lg text-[10px] sm:text-[11px] font-black whitespace-nowrap transition-all flex items-center justify-center min-h-[32px] cursor-pointer ${
                       guestCount === count
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-2xs'
-                        : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800'
+                        : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-white dark:bg-[#1A1918] border border-stone-200/80 dark:border-[#252220]'
                     }`}
                   >
                     {count} khách
@@ -933,7 +933,7 @@ export const CateringPartyPlanner: React.FC = () => {
               </div>
 
               {/* Table count & estimated quote */}
-              <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] pt-1 text-stone-600 dark:text-stone-300 font-semibold border-t border-stone-200/60 dark:border-stone-800/60">
+              <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] pt-1 text-stone-600 dark:text-stone-300 font-semibold border-t border-[#E8E2D8] dark:border-[#252220]">
                 <span className="text-emerald-700 dark:text-emerald-400 font-extrabold">
                   = {numTables} bàn {hasPartialTable ? `(${fullTables} bàn đủ + 1 bàn lẻ)` : `(${tableSize} khách/bàn)`}
                 </span>
@@ -944,19 +944,19 @@ export const CateringPartyPlanner: React.FC = () => {
             </div>
 
             {/* Dynamic Cooking Time & Food Cost Estimation Card */}
-            <div className="p-3 sm:p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-850/60 border border-stone-200 dark:border-stone-800 space-y-2.5">
+            <div className="p-3 sm:p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2.5">
               <div className="flex items-center justify-between gap-2 flex-wrap">
-                <span className="text-[11px] font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
-                  <Timer className="w-4 h-4 text-stone-600 dark:text-stone-400" />
+                <span className="text-[11px] font-black uppercase tracking-wider text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
+                  <Timer className="w-4 h-4 text-stone-700 dark:text-stone-300" />
                   <span>Ước Tính Chế Biến & Chi Phí Bữa Tiệc</span>
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-stone-200 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-stone-200 dark:bg-[#252220] text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700">
                   {guestCount} khách • {partyPlan.dishes.length} món
                 </span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left sm:text-center">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col justify-center shadow-2xs">
+                <div className="p-2.5 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-center shadow-2xs">
                   <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase">
                     ⏱️ Thời Gian Chế Biến
                   </span>
@@ -968,7 +968,7 @@ export const CateringPartyPlanner: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col justify-center shadow-2xs">
+                <div className="p-2.5 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-center shadow-2xs">
                   <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase">
                     💵 Chi Phí Nguyên Liệu (Food Cost)
                   </span>
@@ -986,7 +986,7 @@ export const CateringPartyPlanner: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
-              className="w-full py-2 px-3 rounded-xl bg-stone-50 hover:bg-stone-100 dark:bg-stone-850/60 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 text-xs font-bold flex items-center justify-between transition-colors cursor-pointer"
+              className="w-full py-2 px-3 rounded-xl bg-[#FAF8F5] hover:bg-stone-100 dark:bg-[#121110] dark:hover:bg-[#252220] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-300 text-xs font-bold flex items-center justify-between transition-colors cursor-pointer"
             >
               <span className="flex items-center gap-1.5">
                 <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -1442,13 +1442,13 @@ export const CateringPartyPlanner: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             
             {/* Drinks Card */}
-            <div className="p-5 sm:p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-4">
+              <div className="flex items-center justify-between border-b border-stone-100 dark:border-stone-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Wine className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white">Đồ Uống Kèm Tiệc</h3>
+                  <h3 className="text-base font-extrabold text-stone-900 dark:text-white">Đồ Uống Kèm Tiệc</h3>
                 </div>
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-300">
+                <span className="text-xs font-bold text-stone-600 dark:text-stone-300">
                   {(partyPlan.recommendedDrinks || []).length} loại
                 </span>
               </div>
@@ -1458,13 +1458,13 @@ export const CateringPartyPlanner: React.FC = () => {
                 {(partyPlan.recommendedDrinks || []).map((drink, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-200"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-[#121110] border border-stone-200 dark:border-[#252220] text-xs font-bold text-stone-800 dark:text-stone-200"
                   >
                     <span>{drink}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveDrink(drink)}
-                      className="text-slate-500 hover:text-rose-500 dark:text-slate-400 dark:hover:text-rose-400 transition-colors ml-0.5"
+                      className="text-stone-500 hover:text-rose-500 dark:text-stone-400 dark:hover:text-rose-400 transition-colors ml-0.5 cursor-pointer"
                       aria-label={`Bỏ đồ uống ${drink}`}
                     >
                       <X className="w-3 h-3" />
@@ -1475,7 +1475,7 @@ export const CateringPartyPlanner: React.FC = () => {
 
               {/* Quick suggestions */}
               <div className="pt-1">
-                <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block mb-1.5">
+                <span className="text-[10px] font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider block mb-1.5">
                   Gợi ý nhanh cho bàn tiệc:
                 </span>
                 <div className="flex flex-wrap gap-1">
@@ -1484,7 +1484,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       key={i}
                       type="button"
                       onClick={() => handleAddDrink(quickD)}
-                      className="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white text-[10px] font-semibold border border-slate-200 dark:border-slate-800 transition-colors"
+                      className="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 dark:bg-[#121110] dark:hover:bg-[#252220] text-stone-700 hover:text-stone-900 dark:text-stone-300 dark:hover:text-white text-[10px] font-semibold border border-stone-200 dark:border-[#252220] transition-colors cursor-pointer"
                     >
                       + {quickD}
                     </button>
@@ -1500,13 +1500,13 @@ export const CateringPartyPlanner: React.FC = () => {
                   onChange={(e) => setNewDrinkText(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleAddDrink(); }}
                   placeholder="Thêm đồ uống (Rượu vang, Bia, Nước ép...)"
-                  className="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-purple-400"
+                  className="flex-1 bg-stone-50 dark:bg-[#121110] border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-white focus:outline-none focus:border-purple-400"
                   aria-label="Tên đồ uống mới"
                 />
                 <button
                   type="button"
                   onClick={() => handleAddDrink()}
-                  className="px-3.5 py-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 text-purple-700 dark:text-purple-300 border border-purple-500/30 text-xs font-bold flex items-center gap-1 transition-colors"
+                  className="px-3.5 py-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 text-purple-700 dark:text-purple-300 border border-purple-500/30 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Thêm</span>
@@ -1515,7 +1515,7 @@ export const CateringPartyPlanner: React.FC = () => {
             </div>
 
             {/* Logistics & Equipment Checklist Card */}
-            <div className="p-5 sm:p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-4">
+            <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Truck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -1678,7 +1678,7 @@ export const CateringPartyPlanner: React.FC = () => {
               {CORPORATE_PARTY_PRESETS.map(preset => (
                 <div
                   key={preset.id}
-                  className="group rounded-3xl glass-card border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 overflow-hidden flex flex-col justify-between transition-all"
+                  className="group rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] hover:border-emerald-500/40 overflow-hidden flex flex-col justify-between transition-all shadow-sm"
                 >
                   <div>
                     {/* Preset Image & Tags */}
@@ -1794,7 +1794,7 @@ export const CateringPartyPlanner: React.FC = () => {
                     return (
                       <div
                         key={preset.id}
-                        className="rounded-3xl glass-card border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 p-5 flex flex-col justify-between space-y-4 transition-all shadow-sm"
+                        className="rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] hover:border-emerald-500/40 p-5 flex flex-col justify-between space-y-4 transition-all shadow-sm"
                       >
                         <div className="space-y-3">
                           {/* Top Tag & Delete */}
@@ -1912,9 +1912,9 @@ export const CateringPartyPlanner: React.FC = () => {
       )}
 
       {/* FIXED BOTTOM ACTION BAR FOR ZALO QUOTATION, SAVE PRESET & GROCERY SYNC */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-30 px-3 py-2.5 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t sm:border-x border-slate-200/90 dark:border-slate-800/90 shadow-lg flex items-center justify-between gap-2 pb-[calc(0.625rem+env(safe-area-inset-bottom,0px))]">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-30 px-3 py-2.5 bg-[#FAF8F5]/95 dark:bg-[#121110]/95 backdrop-blur-xl border-t sm:border-x border-[#E8E2D8] dark:border-[#252220] shadow-lg flex items-center justify-between gap-2 pb-[calc(0.625rem+env(safe-area-inset-bottom,0px))]">
         <div className="min-w-0 flex-1">
-          <span className="text-[10px] text-slate-600 dark:text-slate-300 font-bold block uppercase tracking-wider leading-tight truncate">
+          <span className="text-[10px] text-stone-600 dark:text-stone-400 font-bold block uppercase tracking-wider leading-tight truncate">
             <span className="hidden sm:inline">{guestCount} khách • {numTables} bàn • ⏱️ ~{kitchenWorkload.formattedTotalTime}</span>
             <span className="sm:hidden">{guestCount}k • {numTables} bàn • ~{kitchenWorkload.formattedTotalTime}</span>
           </span>
@@ -1931,7 +1931,7 @@ export const CateringPartyPlanner: React.FC = () => {
               setSavePlanDesc(partyPlan.staffNotes || '');
               setShowSavePresetModal(true);
             }}
-            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition-colors shrink-0"
+            className="p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] transition-colors shrink-0 cursor-pointer"
             title="Lưu thành mẫu tiệc riêng"
             aria-label="Lưu thành mẫu tiệc riêng"
           >
@@ -1941,7 +1941,7 @@ export const CateringPartyPlanner: React.FC = () => {
           <button
             type="button"
             onClick={handleCopyZaloQuote}
-            className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs shadow-md shadow-emerald-500/25 flex items-center gap-1.5 active:scale-95 transition-all"
+            className="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
           >
             {copiedQuote ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             <span>{copiedQuote ? 'Đã Chép' : 'Báo Giá'}</span>
@@ -1950,7 +1950,7 @@ export const CateringPartyPlanner: React.FC = () => {
           <button
             type="button"
             onClick={handleSyncToGrocery}
-            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition-colors shrink-0"
+            className="p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] transition-colors shrink-0 cursor-pointer"
             title="Chuyển nguyên liệu tiệc sang Đi Chợ"
             aria-label="Chuyển nguyên liệu tiệc sang Đi Chợ"
           >

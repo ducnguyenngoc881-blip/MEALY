@@ -131,27 +131,27 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-950/80 backdrop-blur-md animate-fadeIn">
       <div 
-        className="relative w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-4 py-3.5 sm:px-6 sm:py-4 border-b border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-850 flex items-center justify-between gap-3 shrink-0">
+        <div className="px-4 py-3.5 sm:px-6 sm:py-4 border-b border-[#E8E2D8] dark:border-[#252220] bg-[#FAF8F5] dark:bg-[#1A1918] flex items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center text-xl shadow-md shrink-0">
               🧊
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white truncate">
+                <h2 className="text-base sm:text-lg font-black text-stone-900 dark:text-stone-100 truncate">
                   Tủ Lạnh & Đồ Ăn Thừa
                 </h2>
                 <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-800 dark:text-cyan-300 font-extrabold text-[10px] border border-cyan-500/30 shrink-0">
                   {pantryItems.length} món
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
+              <p className="text-xs text-stone-500 dark:text-stone-400 font-medium truncate">
                 Nhập đồ thừa & thực phẩm sẵn có để trừ khỏi danh sách đi chợ
               </p>
             </div>
@@ -160,7 +160,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-slate-200/70 dark:bg-white/10 hover:bg-rose-500/20 text-slate-500 dark:text-slate-400 hover:text-rose-500 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+            className="w-8 h-8 rounded-xl bg-stone-200/70 dark:bg-[#252220] hover:bg-rose-500/20 text-stone-500 dark:text-stone-400 hover:text-rose-500 flex items-center justify-center transition-colors cursor-pointer shrink-0"
             aria-label="Đóng"
           >
             <X className="w-4 h-4" />
@@ -232,7 +232,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Name */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                       Tên món / Đồ thừa <span className="text-rose-500">*</span>
                     </label>
                     <input
@@ -241,13 +241,13 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                       value={name}
                       onChange={e => setName(e.target.value)}
                       placeholder="VD: Cơm nguội, Thịt luộc thừa, Nửa bắp cải..."
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     />
                   </div>
 
                   {/* Quantity */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                       Số lượng
                     </label>
                     <input
@@ -255,7 +255,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                       value={quantity}
                       onChange={e => setQuantity(e.target.value)}
                       placeholder="VD: 300g, 1 tô to, 2 quả, 1/2 củ..."
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     />
                   </div>
                 </div>
@@ -263,13 +263,13 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {/* Category */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                       Phân loại
                     </label>
                     <select
                       value={category}
                       onChange={e => setCategory(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     >
                       {CATEGORIES.map(c => (
                         <option key={c} value={c}>{c}</option>
@@ -279,13 +279,13 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
 
                   {/* Days left */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                       Hạn bảo quản còn lại
                     </label>
                     <select
                       value={daysLeft}
                       onChange={e => setDaysLeft(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     >
                       <option value={1}>⚠️ 1 ngày (Cần ăn ngay hôm nay!)</option>
                       <option value={2}>⏳ 2 ngày (Ăn trong 48 giờ)</option>
@@ -297,7 +297,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
 
                   {/* Value saved */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                       Ước tính tiết kiệm (đ)
                     </label>
                     <input
@@ -305,7 +305,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                       step={5000}
                       value={discountVnd}
                       onChange={e => setDiscountVnd(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     />
                   </div>
                 </div>
@@ -320,7 +320,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                       onChange={e => setIsLeftover(e.target.checked)}
                       className="w-4 h-4 rounded text-cyan-600 focus:ring-cyan-500 cursor-pointer"
                     />
-                    <label htmlFor="isLeftoverCheckbox" className="text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer">
+                    <label htmlFor="isLeftoverCheckbox" className="text-xs font-bold text-stone-800 dark:text-stone-200 cursor-pointer">
                       🍲 Đây là thức ăn thừa từ bữa trước (Cần ưu tiên tận dụng để tránh lãng phí)
                     </label>
                   </div>
@@ -330,7 +330,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
                     placeholder="Ghi chú: Để ngăn mát hộp thủy tinh, nên rang lại hoặc nấu canh..."
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                 </div>
 
@@ -339,7 +339,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                   <button
                     type="button"
                     onClick={() => setIsAddingOpen(false)}
-                    className="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-300 transition-colors"
+                    className="px-3 py-1.5 rounded-xl bg-stone-200 dark:bg-[#252220] text-stone-700 dark:text-stone-300 text-xs font-bold hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
                   >
                     Đóng lại
                   </button>
@@ -441,10 +441,10 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                     key={item.id}
                     className={`p-3 rounded-2xl border transition-all flex flex-col justify-between space-y-2 ${
                       item.isLeftover
-                        ? 'bg-amber-500/5 dark:bg-amber-500/10 border-amber-500/30'
+                        ? 'bg-amber-500/10 dark:bg-amber-500/15 border-amber-500/30'
                         : isUrgent
-                        ? 'bg-rose-500/5 dark:bg-rose-500/10 border-rose-500/30'
-                        : 'bg-white dark:bg-slate-850 border-slate-200 dark:border-white/10 shadow-xs'
+                        ? 'bg-rose-500/10 dark:bg-rose-500/15 border-rose-500/30'
+                        : 'bg-white dark:bg-[#1A1918] border-[#E8E2D8] dark:border-[#252220] shadow-xs'
                     }`}
                   >
                     <div className="space-y-1">
@@ -454,7 +454,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                             <span className="text-sm shrink-0">
                               {item.isLeftover ? '🍲' : item.category === 'Trứng & Đậu' ? '🥚' : item.category === 'Rau củ quả' ? '🥬' : '🥩'}
                             </span>
-                            <h4 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white truncate">
+                            <h4 className="text-xs sm:text-sm font-black text-stone-900 dark:text-stone-100 truncate">
                               {item.name}
                             </h4>
                           </div>
@@ -474,8 +474,8 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                       </div>
 
                       {/* Quantity & Category */}
-                      <div className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                        <span className="font-bold text-slate-800 dark:text-slate-200">
+                      <div className="flex items-center gap-2 text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+                        <span className="font-bold text-stone-800 dark:text-stone-200">
                           📦 Số lượng: {item.quantity}
                         </span>
                         <span>•</span>
@@ -483,14 +483,14 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                       </div>
 
                       {item.notes && (
-                        <p className="text-[11px] text-slate-600 dark:text-slate-400 italic bg-slate-100 dark:bg-white/5 p-1.5 rounded-lg">
+                        <p className="text-[11px] text-stone-600 dark:text-stone-300 italic bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] p-1.5 rounded-lg">
                           💡 {item.notes}
                         </p>
                       )}
                     </div>
 
                     {/* Actions Bar */}
-                    <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex items-center justify-between gap-2">
+                    <div className="pt-2 border-t border-[#E8E2D8] dark:border-[#252220] flex items-center justify-between gap-2">
                       <button
                         type="button"
                         onClick={() => setSelectedItemForRecipe(item)}
@@ -602,8 +602,8 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 sm:px-6 sm:py-3.5 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-850 flex items-center justify-between gap-3 shrink-0">
-          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+        <div className="px-4 py-3 sm:px-6 sm:py-3.5 border-t border-[#E8E2D8] dark:border-[#252220] bg-[#FAF8F5] dark:bg-[#1A1918] flex items-center justify-between gap-3 shrink-0">
+          <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
             💡 Thực phẩm trong tủ lạnh sẽ tự động hiển thị gợi ý trên giỏ đi chợ.
           </span>
           <button

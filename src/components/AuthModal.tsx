@@ -44,7 +44,7 @@ export const AuthModal: React.FC = () => {
     loginUser({
       name: displayName,
       email: email.trim()
-    });
+    }, authModalMode === 'register');
 
     // Reset inputs
     setName('');
@@ -58,7 +58,7 @@ export const AuthModal: React.FC = () => {
       onClick={closeAuthModal}
     >
       <div 
-        className="w-full max-w-md bg-[#FAF8F5] dark:bg-[#151413] rounded-3xl p-5 sm:p-6 shadow-2xl border border-stone-200 dark:border-stone-800 space-y-4 relative max-h-[92dvh] overflow-y-auto"
+        className="w-full max-w-md bg-white dark:bg-[#1A1918] rounded-3xl p-5 sm:p-6 shadow-2xl border border-[#E8E2D8] dark:border-[#252220] space-y-4 relative max-h-[92dvh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -73,11 +73,11 @@ export const AuthModal: React.FC = () => {
 
         {/* Header */}
         <div className="flex items-center gap-3 pr-8">
-          <div className="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 flex items-center justify-center shrink-0 shadow-xs">
             <UserCheck className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-extrabold text-stone-900 dark:text-white">
+            <h3 className="text-base sm:text-lg font-black text-stone-900 dark:text-white">
               {authModalMode === 'register' ? 'Đăng Ký Thành Viên' : 'Đăng Nhập Tài Khoản'}
             </h3>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
@@ -87,13 +87,13 @@ export const AuthModal: React.FC = () => {
         </div>
 
         {/* Features Unlocked Pill Banner */}
-        <div className="p-3 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 text-xs text-stone-700 dark:text-stone-300 space-y-1.5">
-          <span className="font-extrabold text-amber-800 dark:text-amber-300 flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" /> Quyền Lợi Khi Có Tài Khoản
+        <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs text-stone-700 dark:text-stone-300 space-y-1.5">
+          <span className="font-extrabold text-stone-900 dark:text-white flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" /> Quyền Lợi Khi Có Tài Khoản
           </span>
           <div className="grid grid-cols-2 gap-2 text-[11px] font-medium pt-0.5">
             <div className="flex items-center gap-1.5">
-              <PartyPopper className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+              <PartyPopper className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300 shrink-0" />
               <span>Lên Thực Đơn Tiệc</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -104,13 +104,13 @@ export const AuthModal: React.FC = () => {
         </div>
 
         {/* Mode switch tabs */}
-        <div className="flex rounded-2xl bg-stone-100 dark:bg-stone-850 p-1 border border-stone-200 dark:border-stone-800 shadow-inner">
+        <div className="flex rounded-2xl bg-stone-100 dark:bg-[#121110] p-1 border border-[#E8E2D8] dark:border-[#252220] shadow-inner">
           <button
             type="button"
             onClick={() => setAuthModalMode('register')}
-            className={`flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 text-xs font-black rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
               authModalMode === 'register'
-                ? 'bg-white dark:bg-stone-900 text-amber-700 dark:text-amber-400 shadow-sm'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm'
                 : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
@@ -120,9 +120,9 @@ export const AuthModal: React.FC = () => {
           <button
             type="button"
             onClick={() => setAuthModalMode('login')}
-            className={`flex-1 py-2 text-xs font-extrabold rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 text-xs font-black rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
               authModalMode === 'login'
-                ? 'bg-white dark:bg-stone-900 text-amber-700 dark:text-amber-400 shadow-sm'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm'
                 : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
@@ -147,7 +147,7 @@ export const AuthModal: React.FC = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ví dụ: Anh Tuấn, Gia đình Minh..."
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-2xl bg-white dark:bg-stone-850 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20"
                 />
               </div>
             </div>
@@ -167,7 +167,7 @@ export const AuthModal: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email@example.com hoặc 0912..."
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-2xl bg-white dark:bg-stone-850 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20"
               />
             </div>
           </div>
@@ -185,7 +185,7 @@ export const AuthModal: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Nhập mật khẩu của bạn"
-                className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white dark:bg-stone-850 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+                className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20"
               />
               <button
                 type="button"
@@ -199,7 +199,7 @@ export const AuthModal: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs sm:text-sm shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+            className="w-full py-3 px-4 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
           >
             {authModalMode === 'register' ? (
               <>

@@ -373,18 +373,18 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
       }}
     >
       <div 
-        className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-amber-500/30 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
+        className="relative w-full max-w-md bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER BAR */}
-        <div className="px-4 py-3 bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-purple-500/10 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2.5">
+        <div className="px-4 py-3 bg-[#FAF8F5] dark:bg-[#121110] border-b border-[#E8E2D8] dark:border-[#252220] flex items-center justify-between gap-2.5">
           {/* Left: Back to Minigame Hub & Title */}
           <div className="flex items-center gap-2.5 min-w-0 flex-1">
             <button
               type="button"
               onClick={handleBackToHub}
               disabled={isSpinning}
-              className="w-8 h-8 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
+              className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white flex items-center justify-center shrink-0 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
               title="Quay lại danh sách minigame"
               aria-label="Quay lại danh sách minigame"
             >
@@ -393,14 +393,14 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
-                <h2 className="text-sm sm:text-base font-black text-slate-800 dark:text-slate-100 truncate leading-snug">
+                <h2 className="text-sm sm:text-base font-black text-stone-900 dark:text-white truncate leading-snug">
                   Vòng Quay Bàn Nhậu
                 </h2>
                 <span className="text-[9px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded-full bg-rose-500 text-white shrink-0 shadow-xs">
                   HOT
                 </span>
               </div>
-              <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate">
+              <p className="text-[11px] font-medium text-stone-500 dark:text-stone-400 truncate">
                 {stage === 'SETUP' && 'Cài đặt người chơi & số shot phạt'}
                 {stage === 'WHEEL_PLAYER' && `Vòng ${roundNumber}: Quay chọn người uống 🎯`}
                 {stage === 'PLAYER_SELECTED' && `Đã chọn: ${selectedPlayer?.name}!`}
@@ -416,7 +416,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
             <button
               type="button"
               onClick={toggleSound}
-              className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 flex items-center justify-center transition-colors cursor-pointer"
               title={isSoundMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
               aria-label="Bật/Tắt âm thanh"
             >
@@ -426,7 +426,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
               type="button"
               onClick={onClose}
               disabled={isSpinning}
-              className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors disabled:opacity-50 cursor-pointer"
+              className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 flex items-center justify-center transition-colors disabled:opacity-50 cursor-pointer"
               title="Đóng game"
               aria-label="Đóng game"
             >

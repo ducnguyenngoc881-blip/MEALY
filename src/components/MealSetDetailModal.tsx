@@ -98,7 +98,7 @@ export const MealSetDetailModal: React.FC = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
       onClick={() => setSelectedMealSet(null)}
     >
       <div 
@@ -107,7 +107,7 @@ export const MealSetDetailModal: React.FC = () => {
           transform: dragY > 0 ? `translateY(${dragY}px)` : undefined,
           transition: dragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
         }}
-        className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl max-h-[90vh] flex flex-col animate-slide-up border-t border-slate-200 dark:border-slate-800 relative overflow-hidden"
+        className="w-full max-w-lg bg-white dark:bg-[#1A1918] rounded-t-3xl shadow-2xl max-h-[90vh] flex flex-col animate-slide-up border-t border-[#E8E2D8] dark:border-[#252220] relative overflow-hidden"
       >
         {/* Swipe Handle Bar & Drag Zone */}
         <div 
@@ -116,12 +116,12 @@ export const MealSetDetailModal: React.FC = () => {
           onTouchEnd={handleTouchEnd}
           className="w-full py-3 cursor-grab active:cursor-grabbing shrink-0 flex items-center justify-center touch-none select-none"
         >
-          <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
+          <div className="w-12 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full" />
         </div>
 
         {/* Top Header Bar with Close Button */}
         <div className="px-4 pb-2 flex items-center justify-between shrink-0 select-none gap-2">
-          <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400 truncate min-w-0 flex-1">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500 dark:text-stone-400 truncate min-w-0 flex-1">
             {selectedMealSet.region === 'bac' ? 'Mâm Cơm Miền Bắc'
               : selectedMealSet.region === 'nam' ? 'Mâm Cơm Miền Nam'
               : selectedMealSet.region === 'trung' ? 'Mâm Cơm Miền Trung'
@@ -130,7 +130,7 @@ export const MealSetDetailModal: React.FC = () => {
           </span>
           <button
             onClick={() => setSelectedMealSet(null)}
-            className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center justify-center shrink-0"
+            className="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors flex items-center justify-center shrink-0"
             aria-label="Đóng"
           >
             <X className="w-4 h-4" />
@@ -150,10 +150,10 @@ export const MealSetDetailModal: React.FC = () => {
               className="w-full h-full object-cover"
               loading="eager"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
             
             <div className="absolute bottom-3 left-4 right-4">
-              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[10px] font-extrabold mb-1 inline-block">
+              <span className="px-2.5 py-0.5 rounded-full bg-stone-950/70 backdrop-blur-md text-white border border-white/20 text-[10px] font-black mb-1 inline-block">
                 Mâm 3 Món Gia Đình
               </span>
               <h2 className="text-lg font-black text-white leading-tight">
@@ -163,22 +163,22 @@ export const MealSetDetailModal: React.FC = () => {
           </div>
 
           {/* Metrics summary */}
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-1.5 text-xs">
-            <span className="text-slate-700 dark:text-slate-300 font-bold">Tổng chi phí 3 món:</span>
-            <span className="text-amber-600 dark:text-amber-400 font-black text-sm whitespace-nowrap">
+          <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] flex flex-wrap items-center justify-between gap-1.5 text-xs">
+            <span className="text-stone-700 dark:text-stone-300 font-bold">Tổng chi phí 3 món:</span>
+            <span className="text-stone-900 dark:text-white font-black text-sm whitespace-nowrap">
               {selectedMealSet.totalCostVnd.toLocaleString('vi-VN')} đ • {selectedMealSet.totalCalories} kcal
             </span>
           </div>
 
-          <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+          <p className="text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
             {selectedMealSet.description}
           </p>
 
           {/* 3 Dishes List (Clickable to view detail) */}
           <div className="space-y-2">
-            <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center justify-between">
+            <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center justify-between">
               <span>Chi Tiết 3 Món Trong Mâm Cơm</span>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Chạm để xem công thức</span>
+              <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">Chạm để xem công thức</span>
             </h3>
 
             {/* Món Mặn */}
@@ -186,29 +186,29 @@ export const MealSetDetailModal: React.FC = () => {
               onClick={() => {
                 setSelectedRecipe(selectedMealSet.mainDish);
               }}
-              className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer transition-all space-y-2 group"
+              className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400 dark:hover:border-stone-600 cursor-pointer transition-all space-y-2 group"
             >
               <div className="flex items-start justify-between gap-2.5">
                 <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
                   <span className="w-[72px] py-1 rounded-md bg-rose-500/15 text-rose-700 dark:text-rose-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
                     MÓN MẶN
                   </span>
-                  <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white leading-snug break-words">
+                  <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
                     {cleanDishTitle(selectedMealSet.mainDish.title)}
                   </h4>
                 </div>
-                <span className="text-[12px] font-bold text-amber-600 dark:text-amber-400 whitespace-nowrap shrink-0 tabular-nums pt-0.5">
+                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums pt-0.5">
                   {selectedMealSet.mainDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                 </span>
               </div>
 
               {selectedMealSet.mainDish.description && (
-                <p className="text-[11.5px] text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
+                <p className="text-[11.5px] text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-2">
                   {selectedMealSet.mainDish.description}
                 </p>
               )}
 
-              <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-700/50">
+              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={(e) => handleSwapSpecificDish('mainDish', e)}
@@ -218,7 +218,7 @@ export const MealSetDetailModal: React.FC = () => {
                   <RefreshCw className="w-3 h-3 shrink-0" />
                   <span>Đổi món</span>
                 </button>
-                <div className="flex items-center gap-1 text-[11px] text-slate-400 group-hover:text-emerald-500 transition-colors">
+                <div className="flex items-center gap-1 text-[11px] text-stone-400 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
                   <span>Chạm xem công thức</span>
                   <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 </div>
@@ -230,29 +230,29 @@ export const MealSetDetailModal: React.FC = () => {
               onClick={() => {
                 setSelectedRecipe(selectedMealSet.soupDish);
               }}
-              className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer transition-all space-y-2 group"
+              className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400 dark:hover:border-stone-600 cursor-pointer transition-all space-y-2 group"
             >
               <div className="flex items-start justify-between gap-2.5">
                 <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
                   <span className="w-[72px] py-1 rounded-md bg-sky-500/15 text-sky-700 dark:text-sky-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
                     MÓN CANH
                   </span>
-                  <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white leading-snug break-words">
+                  <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
                     {cleanDishTitle(selectedMealSet.soupDish.title)}
                   </h4>
                 </div>
-                <span className="text-[12px] font-bold text-amber-600 dark:text-amber-400 whitespace-nowrap shrink-0 tabular-nums pt-0.5">
+                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums pt-0.5">
                   {selectedMealSet.soupDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                 </span>
               </div>
 
               {selectedMealSet.soupDish.description && (
-                <p className="text-[11.5px] text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
+                <p className="text-[11.5px] text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-2">
                   {selectedMealSet.soupDish.description}
                 </p>
               )}
 
-              <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-700/50">
+              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={(e) => handleSwapSpecificDish('soupDish', e)}
@@ -262,7 +262,7 @@ export const MealSetDetailModal: React.FC = () => {
                   <RefreshCw className="w-3 h-3 shrink-0" />
                   <span>Đổi món</span>
                 </button>
-                <div className="flex items-center gap-1 text-[11px] text-slate-400 group-hover:text-emerald-500 transition-colors">
+                <div className="flex items-center gap-1 text-[11px] text-stone-400 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
                   <span>Chạm xem công thức</span>
                   <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 </div>
@@ -274,39 +274,39 @@ export const MealSetDetailModal: React.FC = () => {
               onClick={() => {
                 setSelectedRecipe(selectedMealSet.sideDish);
               }}
-              className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer transition-all space-y-2 group"
+              className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400 dark:hover:border-stone-600 cursor-pointer transition-all space-y-2 group"
             >
               <div className="flex items-start justify-between gap-2.5">
                 <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
-                  <span className="w-[72px] py-1 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
+                  <span className="w-[72px] py-1 rounded-md bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
                     MÓN RAU
                   </span>
-                  <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white leading-snug break-words">
+                  <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
                     {cleanDishTitle(selectedMealSet.sideDish.title)}
                   </h4>
                 </div>
-                <span className="text-[12px] font-bold text-amber-600 dark:text-amber-400 whitespace-nowrap shrink-0 tabular-nums pt-0.5">
+                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums pt-0.5">
                   {selectedMealSet.sideDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                 </span>
               </div>
 
               {selectedMealSet.sideDish.description && (
-                <p className="text-[11.5px] text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
+                <p className="text-[11.5px] text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-2">
                   {selectedMealSet.sideDish.description}
                 </p>
               )}
 
-              <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-700/50">
+              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={(e) => handleSwapSpecificDish('sideDish', e)}
-                  className="px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 text-amber-800 dark:text-amber-300 text-[11px] font-bold flex items-center gap-1.5 border border-amber-500/25 transition-all shrink-0 select-none shadow-xs"
+                  className="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 active:scale-95 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold flex items-center gap-1.5 border border-emerald-500/25 transition-all shrink-0 select-none shadow-xs"
                   title="Đổi riêng món rau này"
                 >
                   <RefreshCw className="w-3 h-3 shrink-0" />
                   <span>Đổi món</span>
                 </button>
-                <div className="flex items-center gap-1 text-[11px] text-slate-400 group-hover:text-emerald-500 transition-colors">
+                <div className="flex items-center gap-1 text-[11px] text-stone-400 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
                   <span>Chạm xem công thức</span>
                   <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 </div>
@@ -315,21 +315,21 @@ export const MealSetDetailModal: React.FC = () => {
           </div>
 
           {/* Condiment Note */}
-          <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-900 dark:text-amber-200 text-xs space-y-0.5">
-            <span className="font-extrabold uppercase block text-[10px] tracking-wider text-amber-700 dark:text-amber-400">
+          <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-300 text-xs space-y-0.5">
+            <span className="font-extrabold uppercase block text-[10px] tracking-wider text-stone-500 dark:text-stone-400">
               ĐỒ KÈM CHUẨN VỊ:
             </span>
             <p className="font-semibold">{selectedMealSet.condimentNote}</p>
           </div>
 
           {/* Consolidated 3-Course Ingredient Checklist */}
-          <div className="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-800">
-            <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center justify-between">
+          <div className="space-y-2 pt-1 border-t border-stone-200 dark:border-stone-800">
+            <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Utensils className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <Utensils className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
                 Nguyên Liệu Cả Mâm (Gom 3 Món)
               </span>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 font-medium">
                 {(selectedMealSet.mainDish.ingredients.length + selectedMealSet.soupDish.ingredients.length + selectedMealSet.sideDish.ingredients.length)} món đi chợ
               </span>
             </h3>
@@ -342,17 +342,17 @@ export const MealSetDetailModal: React.FC = () => {
               ].map((ing, idx) => (
                 <div 
                   key={idx}
-                  className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800 flex items-center justify-between text-xs min-h-[36px]"
+                  className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] flex items-center justify-between text-xs min-h-[36px]"
                 >
                   <div className="flex items-center gap-1.5 min-w-0 flex-1 mr-2">
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold shrink-0">
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold shrink-0">
                       {ing.course}
                     </span>
-                    <span className="font-semibold text-slate-800 dark:text-slate-200 truncate" title={ing.name}>
+                    <span className="font-semibold text-stone-900 dark:text-stone-100 truncate" title={ing.name}>
                       {ing.name}
                     </span>
                   </div>
-                  <span className="font-bold text-amber-600 dark:text-amber-400 text-[11px] shrink-0 whitespace-nowrap">
+                  <span className="font-extrabold text-stone-900 dark:text-white text-[11px] shrink-0 whitespace-nowrap">
                     {ing.amount} {ing.unit}
                   </span>
                 </div>
@@ -362,14 +362,14 @@ export const MealSetDetailModal: React.FC = () => {
 
           {/* Slot Assignment Subpanel */}
           {showAssignPanel ? (
-            <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-amber-500/30 space-y-3 animate-fade-in">
+            <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-stone-300 dark:border-stone-700 space-y-3 animate-fade-in">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                <span className="text-xs font-extrabold text-stone-900 dark:text-white">
                   Chọn Ngày & Bữa Ăn:
                 </span>
                 <button
                   onClick={() => setShowAssignPanel(false)}
-                  className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white"
+                  className="text-xs text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-white font-medium"
                 >
                   Thu gọn
                 </button>
@@ -379,7 +379,7 @@ export const MealSetDetailModal: React.FC = () => {
               <select
                 value={assignDay}
                 onChange={e => setAssignDay(e.target.value)}
-                className="w-full p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white"
+                className="w-full p-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-xs font-bold text-stone-900 dark:text-white"
               >
                 {weeklyPlan.map(d => (
                   <option key={d.dayId} value={d.dayId}>{d.dayName}</option>
@@ -399,8 +399,8 @@ export const MealSetDetailModal: React.FC = () => {
                     onClick={() => setAssignSlot(slot.id as MealSlot)}
                     className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
                       assignSlot === slot.id
-                        ? 'bg-amber-500 text-stone-950 font-black shadow-sm'
-                        : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                        ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-black shadow-xs'
+                        : 'bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
                     }`}
                   >
                     {slot.label}
@@ -411,7 +411,7 @@ export const MealSetDetailModal: React.FC = () => {
               {/* Confirm button */}
               <button
                 onClick={handleConfirmAssign}
-                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                className="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Xác Nhận Xếp Vào {weeklyPlan.find(d => d.dayId === assignDay)?.dayName}</span>
@@ -422,7 +422,7 @@ export const MealSetDetailModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowAssignPanel(true)}
-                className="flex-1 py-3 px-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-slate-950 font-black text-[11.5px] sm:text-xs shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-1.5 active:scale-95 transition-all leading-tight"
+                className="flex-1 py-3 px-3 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-[11.5px] sm:text-xs shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all leading-tight"
               >
                 <PlusCircle className="w-4 h-4 shrink-0" />
                 <span className="whitespace-nowrap">Thêm Vào Thực Đơn</span>
@@ -433,9 +433,9 @@ export const MealSetDetailModal: React.FC = () => {
                   setSelectedMealSet(null);
                   setActiveTab('weekly');
                 }}
-                className="py-3 px-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-colors shrink-0 flex items-center justify-center gap-1 whitespace-nowrap"
+                className="py-3 px-3.5 rounded-2xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs transition-colors shrink-0 flex items-center justify-center gap-1 whitespace-nowrap"
               >
-                <Calendar className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                <Calendar className="w-4 h-4 text-stone-700 dark:text-stone-300 shrink-0" />
                 <span>Xem Tuần</span>
               </button>
             </div>

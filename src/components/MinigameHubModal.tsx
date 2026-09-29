@@ -72,31 +72,29 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-950/80 backdrop-blur-md animate-fadeIn select-none"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div 
-        className="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER BAR */}
-        <div className="px-5 py-4 bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-emerald-500/10 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="px-5 py-4 bg-[#FAF8F5] dark:bg-[#121110] border-b border-[#E8E2D8] dark:border-[#252220] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-rose-500 to-purple-600 p-0.5 shadow-md">
-              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-                <Gamepad2 className="w-5 h-5 text-amber-400 animate-pulse" />
-              </div>
+            <div className="w-10 h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 flex items-center justify-center shadow-xs">
+              <Gamepad2 className="w-5 h-5 text-white dark:text-stone-950" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-black text-stone-900 dark:text-white flex items-center gap-2">
                 Trung Tâm Minigame
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700">
                   Arcade
                 </span>
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-stone-500 dark:text-stone-400">
                 Chọn trò chơi để giải trí cùng bạn bè & đồng nghiệp
               </p>
             </div>
@@ -105,7 +103,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="p-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
             title="Đóng"
           >
             <X className="w-5 h-5" />
@@ -258,8 +256,8 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
         </div>
 
         {/* FOOTER NOTE */}
-        <div className="px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 text-center">
-          <p className="text-[11px] text-slate-400">
+        <div className="px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-[#FAF8F5] dark:bg-[#121110] border-t border-[#E8E2D8] dark:border-[#252220] text-center">
+          <p className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
             Chơi vui có chừng mực • Đã uống rượu bia thì không lái xe 🛵
           </p>
         </div>

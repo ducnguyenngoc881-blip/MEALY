@@ -64,14 +64,14 @@ export const Navbar: React.FC = () => {
           title="Trang chủ: Mâm Cơm Việt"
           aria-label="MealWise - Về trang Hôm Nay"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-500/20 dark:bg-amber-400/20 border border-amber-500/30 flex items-center justify-center text-amber-800 dark:text-amber-300 group-hover:scale-105 transition-transform shrink-0 shadow-xs">
+          <div className="w-8 h-8 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-stone-200 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs">
             <UtensilsCrossed className="w-4 h-4 stroke-[2.2px]" />
           </div>
           <div className="leading-tight">
             <span className="text-sm font-black text-stone-900 dark:text-white tracking-tight block whitespace-nowrap">
               MealWise
             </span>
-            <span className="text-[9px] text-amber-700 dark:text-amber-400 font-extrabold block -mt-0.5 whitespace-nowrap">
+            <span className="text-[9px] text-stone-500 dark:text-stone-400 font-extrabold block -mt-0.5 whitespace-nowrap tracking-wide uppercase">
               Mâm Cơm Việt
             </span>
           </div>
@@ -94,20 +94,20 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setActiveTab(activeTab === 'admin' ? 'meal-sets' : 'admin')}
-                className="px-2 py-1 rounded-xl bg-purple-500/15 text-purple-800 dark:text-purple-300 border border-purple-500/30 text-[10px] font-black flex items-center gap-1 hover:bg-purple-500/25 transition-all cursor-pointer shadow-xs"
+                className="px-2 py-1 rounded-xl bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 transition-all cursor-pointer shadow-xs"
                 title="Bảng Quản Trị"
               >
-                <Sparkles className="w-3 h-3 text-purple-600 dark:text-purple-400" />
+                <Sparkles className="w-3 h-3 text-stone-300 dark:text-stone-700" />
                 <span>{activeTab === 'admin' ? 'App Mobile' : 'Admin'}</span>
               </button>
             ) : (
               <button
                 type="button"
                 onClick={() => setActiveTab('account')}
-                className="px-2 py-1 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-black flex items-center gap-1 hover:bg-emerald-500/25 transition-all cursor-pointer"
+                className="px-2 py-1 rounded-xl bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 transition-all cursor-pointer shadow-xs"
                 title="Tài khoản thành viên (Đã đăng nhập)"
               >
-                <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                <Sparkles className="w-3 h-3 text-stone-300 dark:text-stone-700" />
                 <span className="hidden min-[360px]:inline">Thành Viên</span>
               </button>
             )
@@ -115,10 +115,10 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => openAuthModal('register')}
-              className="px-2 py-1 rounded-xl bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 text-[10px] font-black flex items-center gap-1 hover:bg-amber-500/25 transition-all cursor-pointer"
+              className="px-2 py-1 rounded-xl bg-stone-200/80 text-stone-800 dark:bg-stone-800/80 dark:text-stone-200 border border-stone-300/60 dark:border-stone-700/60 text-[10px] font-extrabold flex items-center gap-1 hover:bg-stone-300/80 dark:hover:bg-stone-700/80 transition-all cursor-pointer"
               title="Bạn đang ở chế độ khách. Bấm để đăng ký mở khóa toàn bộ tính năng."
             >
-              <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+              <Lock className="w-3 h-3 text-stone-600 dark:text-stone-400" />
               <span>Khách 🔒</span>
             </button>
           )}
@@ -127,14 +127,14 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="w-8 h-8 rounded-xl bg-stone-200/50 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800 border border-stone-300/40 dark:border-stone-700/40 text-stone-700 dark:text-amber-400 transition-all flex items-center justify-center active:scale-95 focus:outline-none"
+            className="w-8 h-8 rounded-xl bg-stone-200/50 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800 border border-stone-300/40 dark:border-stone-700/40 text-stone-700 dark:text-stone-200 transition-all flex items-center justify-center active:scale-95 focus:outline-none"
             title={theme === 'light' ? 'Chuyển sang Chế độ Tối' : 'Chuyển sang Chế độ Sáng'}
             aria-label="Chuyển đổi giao diện Sáng / Tối"
           >
             {theme === 'light' ? (
               <Moon className="w-4 h-4 text-stone-700" />
             ) : (
-              <Sun className="w-4 h-4 text-amber-400" />
+              <Sun className="w-4 h-4 text-stone-200" />
             )}
           </button>
 

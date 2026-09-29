@@ -40,7 +40,7 @@
   background: rgba(68, 64, 60, 0.8);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(217, 119, 6, 0.85);
+  background: rgba(120, 113, 108, 0.9);
 }
 
 @layer components {
@@ -89,8 +89,13 @@
   }
 
   .glass-card:hover {
-    border-color: rgba(217, 119, 6, 0.45);
-    box-shadow: 0 10px 25px -5px rgba(217, 119, 6, 0.12);
+    border-color: rgba(120, 113, 108, 0.45);
+    box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.08);
+  }
+
+  .dark .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: none;
   }
 }
 

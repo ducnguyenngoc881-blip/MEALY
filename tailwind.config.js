@@ -34,6 +34,14 @@ export default {
           800: '#292524', // Hearth Border
           700: '#44403C',
         },
+        stone: {
+          750: '#252220', // Dark Mode Hearth Elevated Sub-card / Border
+          850: '#1A1918', // Dark Mode Hearth Primary Card
+        },
+        slate: {
+          750: '#252220', // Fallback for legacy dark mode sub-cards
+          850: '#1A1918', // Fallback for legacy dark mode cards
+        },
         herbal: {
           50: '#F0FDF4',
           100: '#DCFCE7',

@@ -15,8 +15,15 @@ import { OnboardingData } from '../types';
 import { getDailyBudgetTarget } from '../utils/currency';
 
 export const OnboardingModal: React.FC = () => {
-  const { showOnboarding, completeOnboarding, setShowOnboarding, onboardingData } = useMealWise();
+  const { showOnboarding, completeOnboarding, setShowOnboarding, onboardingData, weeklyPlan } = useMealWise();
   const [step, setStep] = useState<number>(1);
+  const [regeneratePlan, setRegeneratePlan] = useState<boolean>(true);
+
+  const hasExistingMeals = Boolean(
+    weeklyPlan &&
+    Array.isArray(weeklyPlan) &&
+    weeklyPlan.some(day => day.meals?.breakfast || day.meals?.lunch || day.meals?.dinner)
+  );
 
   const [tempData, setTempData] = useState<OnboardingData>(() => {
     return onboardingData || {
@@ -43,7 +50,7 @@ export const OnboardingModal: React.FC = () => {
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      completeOnboarding(tempData);
+      completeOnboarding(tempData, { regeneratePlan });
     }
   };
 
@@ -64,28 +71,28 @@ export const OnboardingModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-slate-950/60 dark:bg-slate-950/85 backdrop-blur-xl animate-fade-in">
-      <div className="w-full max-w-lg h-[92vh] sm:h-auto sm:max-h-[85vh] flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-stone-950/60 dark:bg-stone-950/85 backdrop-blur-xl animate-fade-in">
+      <div className="w-full max-w-lg h-[92vh] sm:h-auto sm:max-h-[85vh] flex flex-col bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden relative">
         
         {/* Header progress bar (shrink-0) */}
-        <div className="h-1.5 bg-slate-100 dark:bg-slate-800 w-full shrink-0">
+        <div className="h-1.5 bg-stone-100 dark:bg-stone-800 w-full shrink-0">
           <div 
-            className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-300 ease-out"
+            className="h-full bg-stone-900 dark:bg-white transition-all duration-300 ease-out"
             style={{ width: `${(step / totalSteps) * 100}%` }}
           />
         </div>
 
         {/* Top Header Bar (shrink-0) */}
-        <div className="px-4 sm:px-6 pt-3.5 pb-2.5 flex items-center justify-between shrink-0 border-b border-slate-100 dark:border-slate-800/60">
+        <div className="px-4 sm:px-6 pt-3.5 pb-2.5 flex items-center justify-between shrink-0 border-b border-stone-100 dark:border-stone-800/60">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">
-              <UtensilsCrossed className="w-4 h-4 sm:w-5 sm:h-5 text-white font-bold" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 flex items-center justify-center shadow-xs shrink-0">
+              <UtensilsCrossed className="w-4 h-4 sm:w-5 sm:h-5 font-bold" />
             </div>
             <div>
-              <span className="text-[10px] sm:text-xs font-extrabold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">
+              <span className="text-[10px] sm:text-xs font-extrabold text-stone-500 dark:text-stone-400 uppercase tracking-wider block">
                 Cấu Hình Mâm Cơm Việt
               </span>
-              <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">
+              <h2 className="text-base sm:text-lg font-black text-stone-900 dark:text-white">
                 Bước {step} / {totalSteps}
               </h2>
             </div>
@@ -94,7 +101,7 @@ export const OnboardingModal: React.FC = () => {
           {/* High-contrast "Bỏ qua" button (WCAG AA >= 4.5:1) */}
           <button
             onClick={() => setShowOnboarding(false)}
-            className="text-xs font-bold text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700"
+            className="text-xs font-bold text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 transition-colors border border-stone-200 dark:border-stone-700"
           >
             Bỏ qua
           </button>
@@ -107,11 +114,11 @@ export const OnboardingModal: React.FC = () => {
           {step === 1 && (
             <div className="space-y-4 animate-fade-in">
               <div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-emerald-700 dark:text-emerald-400 shrink-0" />
+                <h3 className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-stone-700 dark:text-stone-300 shrink-0" />
                   Khẩu vị Vùng Miền Gia Đình
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
                   Chọn vị chuẩn gu của gia đình bạn để MealWise gợi ý mâm cơm tròn vị nhất.
                 </p>
               </div>
@@ -147,19 +154,19 @@ export const OnboardingModal: React.FC = () => {
                       onClick={() => setTempData({ ...tempData, regionPreference: opt.id as any })}
                       className={`p-3.5 sm:p-4 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[105px] relative ${
                         isSelected
-                          ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
-                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                          ? 'border-stone-900 bg-[#FAF8F5] dark:bg-[#121110] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-md'
+                          : 'border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#1A1918] hover:bg-stone-50 dark:hover:bg-[#252220] hover:border-stone-300 dark:hover:border-stone-700'
                       }`}
                     >
                       <div className="flex items-start justify-between">
-                        <span className="text-base font-extrabold text-slate-900 dark:text-white">{opt.title}</span>
+                        <span className="text-base font-extrabold text-stone-900 dark:text-white">{opt.title}</span>
                         <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
-                          isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
+                          isSelected ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black' : 'border-stone-300 dark:border-stone-600'
                         }`}>
                           {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </div>
                       </div>
-                      <p className="text-xs text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">
+                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">
                         {opt.subtitle}
                       </p>
                     </button>
@@ -173,11 +180,11 @@ export const OnboardingModal: React.FC = () => {
           {step === 2 && (
             <div className="space-y-4 animate-fade-in">
               <div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                  <Users className="w-5 h-5 text-emerald-700 dark:text-emerald-400 shrink-0" />
+                <h3 className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
+                  <Users className="w-5 h-5 text-stone-700 dark:text-stone-300 shrink-0" />
                   Số Lượng Thành Viên
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
                   MealWise sẽ tính toán định lượng nguyên liệu và khẩu phần đi chợ phù hợp.
                 </p>
               </div>
@@ -201,19 +208,19 @@ export const OnboardingModal: React.FC = () => {
                       })}
                       className={`p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[110px] ${
                         isSelected
-                          ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
-                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                          ? 'border-stone-900 bg-[#FAF8F5] dark:bg-[#121110] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-md'
+                          : 'border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#1A1918] hover:bg-stone-50 dark:hover:bg-[#252220] hover:border-stone-300 dark:hover:border-stone-700'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-lg font-extrabold text-slate-900 dark:text-white">{opt.label}</span>
+                        <span className="text-lg font-extrabold text-stone-900 dark:text-white">{opt.label}</span>
                         <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                          isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
+                          isSelected ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black' : 'border-stone-300 dark:border-stone-600'
                         }`}>
                           {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </div>
                       </div>
-                      <p className="text-xs text-slate-700 dark:text-slate-300 mt-2.5">{opt.desc}</p>
+                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-2.5">{opt.desc}</p>
                     </button>
                   );
                 })}
@@ -221,14 +228,14 @@ export const OnboardingModal: React.FC = () => {
 
               {/* Single Person Meal Format Choice (Single Dish vs 3-Dish Set) */}
               {tempData.familySize === 1 && (
-                <div className="mt-4 p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-850/80 space-y-3 animate-fade-in">
+                <div className="mt-4 p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-3 animate-fade-in">
                   <div className="flex items-center gap-2">
                     <span className="text-lg">🍳</span>
                     <div>
-                      <h4 className="text-xs sm:text-sm font-extrabold text-sky-950 dark:text-sky-100">
+                      <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white">
                         Hình thức nấu nướng cho 1 người ăn
                       </h4>
-                      <p className="text-[11px] text-sky-800 dark:text-sky-300 mt-0.5">
+                      <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-0.5">
                         Bạn muốn nấu món đơn gọn nhẹ hay nấu mâm cơm 3 món?
                       </p>
                     </div>
@@ -240,26 +247,26 @@ export const OnboardingModal: React.FC = () => {
                       onClick={() => setTempData({ ...tempData, singleMealFormat: 'single-dish' })}
                       className={`p-3.5 rounded-xl border text-left transition-all ${
                         (tempData.singleMealFormat || 'single-dish') === 'single-dish'
-                          ? 'border-sky-500 bg-white dark:bg-slate-900 ring-2 ring-sky-500/30 shadow-sm'
-                          : 'border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 hover:bg-white dark:hover:bg-slate-900'
+                          ? 'border-stone-900 bg-white dark:bg-[#1A1918] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-sm'
+                          : 'border-[#E8E2D8] dark:border-[#252220] bg-white/70 dark:bg-[#1A1918]/60 hover:bg-white dark:hover:bg-[#1A1918]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                        <span className="text-xs font-black text-stone-900 dark:text-white flex items-center gap-1.5">
                           🍲 Món Đơn Gọn Nhẹ
                         </span>
                         <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                           (tempData.singleMealFormat || 'single-dish') === 'single-dish'
-                            ? 'border-sky-500 bg-sky-500 text-white'
-                            : 'border-slate-300 dark:border-slate-700'
+                            ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black'
+                            : 'border-stone-300 dark:border-stone-700'
                         }`}>
                           {(tempData.singleMealFormat || 'single-dish') === 'single-dish' && <Check className="w-3 h-3 stroke-[3]" />}
                         </div>
                       </div>
-                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300">
+                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-800 text-stone-800 dark:text-stone-200">
                         Khuyên dùng cho 1 người
                       </span>
-                      <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                      <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
                         Nấu 1 món đĩa/tô đủ chất (mì, bún, phở, cơm đĩa, món xào/kho). Nhanh, tiện lợi, không phải nấu 3 món rườm rà.
                       </p>
                     </button>
@@ -269,26 +276,26 @@ export const OnboardingModal: React.FC = () => {
                       onClick={() => setTempData({ ...tempData, singleMealFormat: 'meal-set' })}
                       className={`p-3.5 rounded-xl border text-left transition-all ${
                         tempData.singleMealFormat === 'meal-set'
-                          ? 'border-sky-500 bg-white dark:bg-slate-900 ring-2 ring-sky-500/30 shadow-sm'
-                          : 'border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 hover:bg-white dark:hover:bg-slate-900'
+                          ? 'border-stone-900 bg-white dark:bg-[#1A1918] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-sm'
+                          : 'border-[#E8E2D8] dark:border-[#252220] bg-white/70 dark:bg-[#1A1918]/60 hover:bg-white dark:hover:bg-[#1A1918]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                        <span className="text-xs font-black text-stone-900 dark:text-white flex items-center gap-1.5">
                           🍱 Mâm Cơm 3 Món
                         </span>
                         <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                           tempData.singleMealFormat === 'meal-set'
-                            ? 'border-sky-500 bg-sky-500 text-white'
-                            : 'border-slate-300 dark:border-slate-700'
+                            ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black'
+                            : 'border-stone-300 dark:border-stone-700'
                         }`}>
                           {tempData.singleMealFormat === 'meal-set' && <Check className="w-3 h-3 stroke-[3]" />}
                         </div>
                       </div>
-                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
                         Truyền thống
                       </span>
-                      <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                      <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
                         Vẫn muốn nấu đủ 3 món (mặn + canh + rau) chuẩn mâm cơm nhưng thu nhỏ lượng cho 1 người ăn.
                       </p>
                     </button>
@@ -302,17 +309,17 @@ export const OnboardingModal: React.FC = () => {
           {step === 3 && (
             <div className="space-y-4 animate-fade-in">
               <div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                  <HeartHandshake className="w-5 h-5 text-emerald-700 dark:text-emerald-400 shrink-0" />
+                <h3 className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
+                  <HeartHandshake className="w-5 h-5 text-stone-700 dark:text-stone-300 shrink-0" />
                   Yêu Cầu Ăn Uống & Mục Tiêu Sức Khỏe
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
-                  Tùy chỉnh chế độ ăn phù hợp lối sống. <span className="inline-block mt-0.5 text-emerald-700 dark:text-emerald-400 font-extrabold">💡 Mẹo: Nếu bạn không có sở thích đặc biệt, hãy để trống (không chọn mục nào) để thực đơn được hệ thống tự do ngẫu nhiên đa dạng nhất!</span>
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
+                  Tùy chỉnh chế độ ăn phù hợp lối sống. <span className="inline-block mt-0.5 text-stone-900 dark:text-white font-extrabold">💡 Mẹo: Nếu bạn không có sở thích đặc biệt, hãy để trống (không chọn mục nào) để thực đơn được hệ thống tự do ngẫu nhiên đa dạng nhất!</span>
                 </p>
               </div>
 
               {tempData.familySize === 1 && (
-                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center gap-2 text-xs text-amber-900 dark:text-amber-200 font-bold">
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] flex items-center gap-2 text-xs text-stone-700 dark:text-stone-300 font-bold">
                   <span className="text-base">💡</span>
                   <span>Gợi ý cho bạn sống một mình: Hãy bật thêm <strong>Tập Gym</strong>, <strong>Eat Clean</strong> hoặc <strong>Meal Prep 1 Người</strong> để tự động chia chuẩn 1 suất ăn!</span>
                 </div>
@@ -337,19 +344,19 @@ export const OnboardingModal: React.FC = () => {
                       onClick={() => toggleSpecialNeed(opt.id)}
                       className={`p-3.5 sm:p-4 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[100px] ${
                         isSelected
-                          ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
-                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                          ? 'border-stone-900 bg-[#FAF8F5] dark:bg-[#121110] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-md'
+                          : 'border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#1A1918] hover:bg-stone-50 dark:hover:bg-[#252220] hover:border-stone-300 dark:hover:border-stone-700'
                       }`}
                     >
                       <div className="flex items-start justify-between">
-                        <span className="text-base font-extrabold text-slate-900 dark:text-white">{opt.title}</span>
+                        <span className="text-base font-extrabold text-stone-900 dark:text-white">{opt.title}</span>
                         <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
-                          isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
+                          isSelected ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black' : 'border-stone-300 dark:border-stone-600'
                         }`}>
                           {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </div>
                       </div>
-                      <p className="text-xs text-slate-700 dark:text-slate-300 mt-2">{opt.desc}</p>
+                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-2">{opt.desc}</p>
                     </button>
                   );
                 })}
@@ -361,18 +368,18 @@ export const OnboardingModal: React.FC = () => {
           {step === 4 && (
             <div className="space-y-4 animate-fade-in">
               <div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                  <Wallet className="w-5 h-5 text-emerald-700 dark:text-emerald-400 shrink-0" />
+                <h3 className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
+                  <Wallet className="w-5 h-5 text-stone-700 dark:text-stone-300 shrink-0" />
                   Ngân Sách Cho Mỗi Mâm Cơm
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
                   Ứng dụng sẽ tự động chọn các món ăn tối ưu phù hợp với định mức chi tiêu của bạn.
                 </p>
               </div>
 
               {/* Dynamic notice if Western food is selected */}
               {tempData.specialNeeds.includes('western-food') && (
-                <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200 animate-fade-in">
+                <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] flex items-start gap-2.5 text-xs text-stone-800 dark:text-stone-200 animate-fade-in">
                   <span className="text-base shrink-0 mt-0.5">🥩</span>
                   <p className="leading-relaxed">
                     <strong>Đã chọn Món Âu / Đổi Vị Phương Tây:</strong> Định mức ngân sách được tự động tính toán phù hợp với chi phí nguyên liệu đặc trưng (thăn bò, cá hồi, phô mai, bơ sữa, mì Ý).
@@ -459,51 +466,70 @@ export const OnboardingModal: React.FC = () => {
                         onClick={() => setTempData({ ...tempData, budgetLevel: opt.id as any })}
                         className={`p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[140px] ${
                           isSelected
-                            ? 'border-amber-500 bg-amber-50/70 dark:bg-amber-950/40 ring-2 ring-amber-500/30 shadow-md'
-                            : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                            ? 'border-stone-900 bg-[#FAF8F5] dark:bg-[#121110] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-md'
+                            : 'border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#1A1918] hover:bg-stone-50 dark:hover:bg-[#252220] hover:border-stone-300 dark:hover:border-stone-700'
                         }`}
                       >
                         <div>
                           <div className="flex items-center justify-between">
-                            <span className="text-base font-extrabold text-slate-900 dark:text-white">{opt.title}</span>
+                            <span className="text-base font-extrabold text-stone-900 dark:text-white">{opt.title}</span>
                             <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                              isSelected ? 'border-amber-500 bg-amber-500 text-stone-950 font-black' : 'border-slate-300 dark:border-slate-600'
+                              isSelected ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black' : 'border-stone-300 dark:border-stone-600'
                             }`}>
                               {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                             </div>
                           </div>
-                          <span className="text-xs font-black text-emerald-700 dark:text-emerald-400 mt-1 block">
+                          <span className="text-xs font-black text-stone-900 dark:text-white mt-1 block">
                             {opt.mealRate}
                           </span>
-                          <span className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 block mt-0.5 leading-snug">
+                          <span className="text-[10px] font-extrabold text-stone-500 dark:text-stone-400 block mt-0.5 leading-snug">
                             Cả ngày 3 bữa: <span className="whitespace-nowrap">{opt.dailyRate}</span>
                           </span>
                         </div>
-                        <p className="text-xs text-slate-700 dark:text-slate-300 mt-2.5 leading-relaxed">{opt.desc}</p>
+                        <p className="text-xs text-stone-600 dark:text-stone-400 mt-2.5 leading-relaxed">{opt.desc}</p>
                       </button>
                     );
                   });
                 })()}
               </div>
 
-              <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2.5">
+              <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs text-stone-700 dark:text-stone-300 flex items-start gap-2.5">
                 <span className="text-base shrink-0 mt-0.5">💡</span>
                 <p className="leading-relaxed">
                   <strong>Cách tính ngân sách của MealWise:</strong> Giá trên mâm là chi phí cho 1 bữa ăn chính (trưa hoặc tối). Hạn mức tính cho cả ngày gồm <strong>trọn gói 3 bữa (1 bữa sáng & 2 mâm cơm trưa + tối)</strong> cho {tempData.familySize || 4} người ăn.
                 </p>
               </div>
+
+              {hasExistingMeals && (
+                <div className="p-3 rounded-2xl bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/25 text-xs text-stone-800 dark:text-stone-200 space-y-1.5">
+                  <label className="flex items-center gap-2 cursor-pointer font-bold select-none">
+                    <input
+                      type="checkbox"
+                      checked={regeneratePlan}
+                      onChange={(e) => setRegeneratePlan(e.target.checked)}
+                      className="w-4 h-4 rounded text-stone-900 accent-stone-900 dark:accent-amber-500 cursor-pointer"
+                    />
+                    <span>Tạo mới thực đơn tuần theo mục tiêu vừa chọn (Khuyến nghị)</span>
+                  </label>
+                  {!regeneratePlan && (
+                    <p className="text-[11px] text-amber-700 dark:text-amber-300 pl-6 leading-tight">
+                      ✓ Giữ nguyên các món ăn và mâm cơm bạn đã lên trước đó trong tuần.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
         </div>
 
         {/* Dedicated Sticky Action Footer outside scrollable body */}
-        <div className="shrink-0 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 px-4 sm:px-6 py-3 sm:py-3.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] flex items-center justify-between backdrop-blur-md gap-2">
+        <div className="shrink-0 border-t border-[#E8E2D8] dark:border-[#252220] bg-white/95 dark:bg-[#1A1918]/95 px-4 sm:px-6 py-3 sm:py-3.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] flex items-center justify-between backdrop-blur-md gap-2">
           {step > 1 ? (
             <button
               type="button"
               onClick={handleBack}
-              className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors border border-slate-200 dark:border-slate-700 shrink-0"
+              className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs sm:text-sm transition-colors border border-stone-200 dark:border-stone-700 shrink-0"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>Quay Lại</span>
@@ -515,7 +541,7 @@ export const OnboardingModal: React.FC = () => {
           <button
             type="button"
             onClick={handleNext}
-            className="flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 active:scale-95 transition-all ml-auto shrink-0"
+            className="flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all ml-auto shrink-0"
           >
             <span>
               {step === totalSteps ? (

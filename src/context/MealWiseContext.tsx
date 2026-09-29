@@ -77,7 +77,7 @@ interface MealWiseContextType {
   setOnboardingData: React.Dispatch<React.SetStateAction<OnboardingData>>;
   showOnboarding: boolean;
   setShowOnboarding: (show: boolean) => void;
-  completeOnboarding: (data: Partial<OnboardingData>) => void;
+  completeOnboarding: (data: Partial<OnboardingData>, options?: { regeneratePlan?: boolean }) => void;
   resetOnboarding: () => void;
   
   // Selection modals
@@ -191,7 +191,7 @@ interface MealWiseContextType {
   // User Authentication & Membership State
   user: RegisteredUser | null;
   isRegistered: boolean;
-  loginUser: (profile: { name: string; email: string }) => void;
+  loginUser: (profile: { name: string; email: string }, isNewRegistration?: boolean) => void;
   logoutUser: () => void;
   isAuthModalOpen: boolean;
   setIsAuthModalOpen: (open: boolean) => void;
@@ -369,40 +369,57 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       const savedUser = localStorage.getItem('mealwise_registered_user');
       const hasUser = savedUser ? Boolean(JSON.parse(savedUser).isRegistered) : false;
-      if (!hasUser) {
+      if (!hasUser || !savedUser) {
         return false; // Guest account: NEVER show onboarding modal on launch!
+      }
+      const parsedUser = JSON.parse(savedUser);
+      if (parsedUser.role === 'admin') return false;
+      if (parsedUser.onboardingCompleted) return false;
+      if (parsedUser.email) {
+        const userOnboardingKey = `mealwise_onboarding_completed_${parsedUser.email.toLowerCase()}`;
+        if (localStorage.getItem(userOnboardingKey) === 'true') {
+          return false;
+        }
       }
       const saved = localStorage.getItem('mealwise_onboarding');
       if (saved) {
         const parsed = JSON.parse(saved);
         return !parsed.completed;
       }
-      return true; // First time registered user
+      return true; // First time registered user who has not completed onboarding
     } catch {
       return false;
     }
   });
 
-  const loginUser = useCallback((profile: { name: string; email: string }) => {
+  const loginUser = useCallback((profile: { name: string; email: string }, isNewRegistration?: boolean) => {
     const rawEmail = profile.email.trim();
     const emailLower = rawEmail.toLowerCase();
     const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
     const defaultDisplayName = isAdmin ? 'MealWise Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên MealWise');
     const displayName = profile.name.trim() || defaultDisplayName;
 
+    // Check if this specific email has ever completed onboarding
+    const userOnboardingKey = `mealwise_onboarding_completed_${emailLower}`;
+    const userHasCompletedOnboarding = typeof window !== 'undefined' && localStorage.getItem(userOnboardingKey) === 'true';
+
+    // If it's an explicit registration, or the user account has never completed onboarding, they need onboarding
+    const needsOnboarding = !isAdmin && (Boolean(isNewRegistration) || !userHasCompletedOnboarding);
+
     const newProfile: RegisteredUser = {
       name: displayName,
       email: rawEmail,
       isRegistered: true,
       role: isAdmin ? 'admin' : 'user',
-      registeredAt: new Date().toLocaleDateString('vi-VN')
+      registeredAt: new Date().toLocaleDateString('vi-VN'),
+      onboardingCompleted: !needsOnboarding
     };
     try {
       localStorage.setItem('mealwise_registered_user', JSON.stringify(newProfile));
     } catch {}
     recordUserInRegistry({ name: displayName, email: rawEmail, role: isAdmin ? 'admin' : 'user' });
     if (!isAdmin) {
-      recordTelemetryEvent('auth', 'Đăng nhập thành viên thành công', displayName);
+      recordTelemetryEvent('auth', isNewRegistration ? 'Đăng ký thành viên mới thành công' : 'Đăng nhập thành viên thành công', displayName);
     }
     setUser(newProfile);
     setIsAuthModalOpen(false);
@@ -413,16 +430,19 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return;
     }
 
-    // If user has not completed onboarding yet, trigger onboarding survey now!
-    try {
-      const savedOnboarding = localStorage.getItem('mealwise_onboarding');
-      const isCompleted = savedOnboarding ? Boolean(JSON.parse(savedOnboarding).completed) : false;
-      if (!isCompleted) {
-        setShowOnboarding(true);
-      }
-    } catch {}
+    // If user needs onboarding, reset stale flags and show modal immediately!
+    if (needsOnboarding) {
+      setOnboardingData(prev => ({ ...prev, completed: false }));
+      try {
+        const savedOnboarding = localStorage.getItem('mealwise_onboarding');
+        const parsed = savedOnboarding ? JSON.parse(savedOnboarding) : INITIAL_ONBOARDING;
+        parsed.completed = false;
+        localStorage.setItem('mealwise_onboarding', JSON.stringify(parsed));
+      } catch {}
+      setShowOnboarding(true);
+    }
 
-    setToastMessage(`🎉 Chào mừng ${displayName} gia nhập MealWise!`);
+    setToastMessage(isNewRegistration ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
   }, []);
 
   const logoutUser = useCallback(() => {
@@ -1543,7 +1563,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {}
   }, []);
 
-  const completeOnboarding = (data: Partial<OnboardingData>) => {
+  const completeOnboarding = (data: Partial<OnboardingData>, options?: { regeneratePlan?: boolean }) => {
     const updated: OnboardingData = { ...onboardingData, ...data, completed: true };
     setOnboardingData(updated);
     if (updated.familySize && updated.familySize > 0) {
@@ -1554,10 +1574,30 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch (e) {
       console.error('Failed to save onboardingData to localStorage', e);
     }
+
+    // Persist per-user onboarding completed flag
+    if (user?.email) {
+      const emailLower = user.email.toLowerCase();
+      try {
+        localStorage.setItem(`mealwise_onboarding_completed_${emailLower}`, 'true');
+      } catch {}
+      setUser(prev => prev ? { ...prev, onboardingCompleted: true } : prev);
+      try {
+        const savedUser = localStorage.getItem('mealwise_registered_user');
+        if (savedUser) {
+          const parsed = JSON.parse(savedUser);
+          parsed.onboardingCompleted = true;
+          localStorage.setItem('mealwise_registered_user', JSON.stringify(parsed));
+        }
+      } catch {}
+    }
+
     setShowOnboarding(false);
 
-    // Immediately generate the tailored suggested weekly meal plan fitting the user's goal
-    autoFillWeeklyMenu(updated, { seed: Date.now() });
+    // If regeneratePlan is not explicitly false, auto fill weekly menu with tailoring
+    if (options?.regeneratePlan !== false) {
+      autoFillWeeklyMenu(updated, { seed: Date.now() });
+    }
 
     // Switch to weekly tab so user immediately sees their tailored plan
     setActiveTab('weekly');
@@ -1566,6 +1606,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const resetOnboarding = () => {
     const resetData: OnboardingData = { ...onboardingData, completed: false };
     setOnboardingData(resetData);
+    if (user?.email) {
+      const emailLower = user.email.toLowerCase();
+      try {
+        localStorage.removeItem(`mealwise_onboarding_completed_${emailLower}`);
+      } catch {}
+      setUser(prev => prev ? { ...prev, onboardingCompleted: false } : prev);
+    }
     setShowOnboarding(true);
     showToast('🔄 Đang mở lại khảo sát khẩu vị & mục tiêu!');
   };

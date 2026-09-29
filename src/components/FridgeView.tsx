@@ -398,7 +398,7 @@ export const FridgeView: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="p-3 rounded-2xl bg-white/60 dark:bg-slate-800/60 text-center text-xs text-slate-500 dark:text-slate-400">
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-center text-xs text-stone-500 dark:text-stone-400">
                   Chưa tìm thấy công thức kết hợp trực tiếp. Hãy thử thêm nguyên liệu vào tủ lạnh!
                 </div>
               )}
@@ -438,7 +438,7 @@ export const FridgeView: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsAddingOpen(prev => !prev)}
-          className="w-full px-4 py-3 sm:py-3.5 flex items-center justify-between text-left font-black text-stone-900 dark:text-white text-xs sm:text-sm hover:bg-stone-50 dark:hover:bg-stone-850 transition-colors cursor-pointer"
+          className="w-full px-4 py-3 sm:py-3.5 flex items-center justify-between text-left font-black text-stone-900 dark:text-white text-xs sm:text-sm hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-xl bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold flex items-center justify-center shadow-xs">
@@ -458,7 +458,7 @@ export const FridgeView: React.FC = () => {
           <form onSubmit={handleSaveItem} className="p-4 pt-1 space-y-3.5 border-t border-amber-500/20 animate-fadeIn">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                   Tên món / Thực phẩm <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -467,12 +467,12 @@ export const FridgeView: React.FC = () => {
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="VD: Cơm nguội, Thịt luộc thừa, Nửa bắp cải..."
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                   Số lượng ước lượng
                 </label>
                 <input
@@ -480,20 +480,20 @@ export const FridgeView: React.FC = () => {
                   value={quantity}
                   onChange={e => setQuantity(e.target.value)}
                   placeholder="VD: 1 tô to, 300g, 2 quả, 1 đĩa..."
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="space-y-1">
-                <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                   Phân loại
                 </label>
                 <select
                   value={category}
                   onChange={e => setCategory(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
                 >
                   {CATEGORIES.map(c => (
                     <option key={c} value={c}>{c}</option>
@@ -502,7 +502,7 @@ export const FridgeView: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+                <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300 flex items-center justify-between">
                   <span>Hạn dùng còn lại:</span>
                   <span className={`font-black ${daysLeft <= 1 ? 'text-rose-500' : daysLeft <= 2 ? 'text-amber-500' : 'text-emerald-500'}`}>
                     {daysLeft} ngày
@@ -521,7 +521,7 @@ export const FridgeView: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
                   Ước tính tiết kiệm đi chợ (đ)
                 </label>
                 <input
@@ -530,20 +530,20 @@ export const FridgeView: React.FC = () => {
                   min={0}
                   value={discountVnd}
                   onChange={e => setDiscountVnd(parseInt(e.target.value, 10) || 0)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-              <label className="flex items-center gap-2.5 p-2 rounded-xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-white/10 cursor-pointer select-none">
+              <label className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={isLeftover}
                   onChange={e => setIsLeftover(e.target.checked)}
                   className="w-4 h-4 rounded text-amber-600 accent-amber-500 cursor-pointer"
                 />
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-bold text-stone-800 dark:text-stone-200">
                   🍲 Đây là thức ăn thừa bữa trước (cần ưu tiên nấu lại)
                 </span>
               </label>
@@ -553,7 +553,7 @@ export const FridgeView: React.FC = () => {
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
                 placeholder="Ghi chú bảo quản / gợi ý nấu..."
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
               />
             </div>
 
@@ -561,7 +561,7 @@ export const FridgeView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsAddingOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-200/70 dark:bg-white/10 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-300 transition-colors"
+                className="px-4 py-2 rounded-xl bg-stone-200/70 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-bold hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
               >
                 Hủy
               </button>
@@ -696,7 +696,7 @@ export const FridgeView: React.FC = () => {
                 return (
                   <div 
                     key={recipe.id}
-                    className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-indigo-500/20 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 hover:border-indigo-500/50 transition-all"
+                    className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-indigo-500/20 dark:border-[#252220] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 hover:border-indigo-500/50 transition-all"
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <SafeImage
@@ -707,10 +707,10 @@ export const FridgeView: React.FC = () => {
                         className="w-12 h-12 rounded-xl object-cover shrink-0"
                       />
                       <div className="min-w-0 flex-1">
-                        <h4 className="text-xs font-black text-slate-900 dark:text-white truncate">
+                        <h4 className="text-xs font-black text-stone-900 dark:text-stone-100 truncate">
                           {recipe.title}
                         </h4>
-                        <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                        <p className="text-[10px] text-stone-500 dark:text-stone-400 truncate">
                           {recipe.cookTimeMinutes} phút • {recipe.calories} kcal
                         </p>
                         <div className="mt-1 flex flex-wrap items-center gap-1">
@@ -733,7 +733,7 @@ export const FridgeView: React.FC = () => {
                             </span>
                           )}
                           {matchDetail.missingIngredients && matchDetail.missingIngredients.length > 0 && (
-                            <span className="inline-flex items-center gap-0.5 text-[9px] font-medium px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 truncate max-w-full">
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-medium px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-[#252220] text-stone-600 dark:text-stone-300 truncate max-w-full border border-stone-200 dark:border-[#252220]">
                               <span>🛒</span>
                               <span className="truncate">Thiếu: {matchDetail.missingIngredients.slice(0, 2).join(', ')}{matchDetail.missingIngredients.length > 2 ? '...' : ''}</span>
                             </span>
@@ -756,7 +756,7 @@ export const FridgeView: React.FC = () => {
               })}
             </div>
           ) : (
-            <div className="p-3 rounded-2xl bg-white/60 dark:bg-slate-800/60 text-center text-xs text-slate-500 dark:text-slate-400">
+            <div className="p-3 rounded-2xl bg-white/60 dark:bg-[#1A1918]/80 text-center text-xs text-stone-500 dark:text-stone-400 border border-[#E8E2D8] dark:border-[#252220]">
               Chưa có công thức trực tiếp tương thích. Bạn có thể dùng nguyên liệu này để chiên, xào, nấu canh hoặc làm món phụ!
             </div>
           )}
@@ -773,12 +773,12 @@ export const FridgeView: React.FC = () => {
             return (
               <div
                 key={item.id}
-                className={`p-3.5 sm:p-4 rounded-3xl bg-white dark:bg-slate-850 border shadow-xs transition-all hover:shadow-md space-y-3 ${
+                className={`p-3.5 sm:p-4 rounded-3xl border shadow-xs transition-all hover:shadow-md space-y-3 ${
                   isEmergency 
-                    ? 'border-rose-500/50 bg-rose-500/[0.03]' 
+                    ? 'border-rose-500/50 bg-rose-50/70 dark:bg-rose-950/30' 
                     : isUrgent 
-                    ? 'border-amber-500/40 bg-amber-500/[0.02]' 
-                    : 'border-slate-200/90 dark:border-white/10'
+                    ? 'border-amber-500/40 bg-amber-50/70 dark:bg-amber-950/25' 
+                    : 'bg-white dark:bg-[#1A1918] border-[#E8E2D8] dark:border-[#252220]'
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
@@ -795,7 +795,7 @@ export const FridgeView: React.FC = () => {
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <h3 className="text-sm font-black text-slate-900 dark:text-white truncate">
+                        <h3 className="text-sm font-black text-stone-900 dark:text-stone-100 truncate">
                           {item.name}
                         </h3>
                         {item.isLeftover && (
@@ -805,8 +805,8 @@ export const FridgeView: React.FC = () => {
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                        Số lượng: <strong className="text-slate-800 dark:text-slate-200">{item.quantity}</strong> • {item.category}
+                      <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                        Số lượng: <strong className="text-stone-800 dark:text-stone-200">{item.quantity}</strong> • {item.category}
                       </p>
                     </div>
                   </div>
@@ -826,13 +826,13 @@ export const FridgeView: React.FC = () => {
                 </div>
 
                 {item.notes && (
-                  <div className="p-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 text-[11px] text-slate-600 dark:text-slate-300 flex items-start gap-1.5">
+                  <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-[11px] text-stone-600 dark:text-stone-300 flex items-start gap-1.5">
                     <Info className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                     <span className="leading-snug">{item.notes}</span>
                   </div>
                 )}
 
-                <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex flex-wrap items-center justify-between gap-y-2 gap-x-1.5">
+                <div className="pt-2 border-t border-[#E8E2D8] dark:border-[#252220] flex flex-wrap items-center justify-between gap-y-2 gap-x-1.5">
                   <span className="text-[10px] sm:text-[11px] font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1 shrink-0">
                     <Sparkles className="w-3 h-3 shrink-0" />
                     <span>Tiết kiệm: ~{(item.discountOpportunityVnd || 15000).toLocaleString('vi-VN')} đ</span>
@@ -861,7 +861,7 @@ export const FridgeView: React.FC = () => {
                         }
                         showToast(`✓ Đã dùng hết món "${item.name}"!`);
                       }}
-                      className="p-1 sm:p-1.5 rounded-xl bg-slate-100 hover:bg-amber-100 dark:bg-white/10 dark:hover:bg-amber-500/20 text-slate-500 hover:text-amber-700 dark:text-slate-400 dark:hover:text-amber-300 transition-colors cursor-pointer shrink-0"
+                      className="p-1 sm:p-1.5 rounded-xl bg-stone-100 hover:bg-amber-100 dark:bg-[#252220] dark:hover:bg-amber-500/20 text-stone-500 hover:text-amber-700 dark:text-stone-400 dark:hover:text-amber-300 border border-[#E8E2D8] dark:border-[#252220] transition-colors cursor-pointer shrink-0"
                       title="Đã dùng hết (xóa khỏi tủ)"
                     >
                       <CheckCircle2 className="w-3.5 h-3.5" />
@@ -875,7 +875,7 @@ export const FridgeView: React.FC = () => {
                           setSelectedItemForRecipe(null);
                         }
                       }}
-                      className="p-1 sm:p-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer shrink-0"
+                      className="p-1 sm:p-1.5 rounded-xl bg-stone-100 hover:bg-rose-100 dark:bg-[#252220] dark:hover:bg-rose-500/20 text-stone-500 hover:text-rose-600 dark:text-stone-400 dark:hover:text-rose-400 border border-[#E8E2D8] dark:border-[#252220] transition-colors cursor-pointer shrink-0"
                       title="Xóa khỏi tủ"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

@@ -243,30 +243,28 @@ export const AccountView: React.FC = () => {
     <div className="space-y-6 max-w-3xl mx-auto">
       
       {/* Profile Header */}
-      <div className="p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-emerald-950/10 via-slate-50 to-slate-100 dark:from-slate-900 dark:via-emerald-950/30 dark:to-slate-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4 min-w-0 flex-1">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 p-1 shadow-lg shadow-emerald-500/20 shrink-0">
-            <div className="w-full h-full rounded-full bg-white dark:bg-slate-950 flex items-center justify-center">
-              <User className="w-8 h-8 text-amber-600 dark:text-amber-400" />
-            </div>
+          <div className="w-14 h-14 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center shadow-2xs shrink-0">
+            <User className="w-7 h-7 text-stone-700 dark:text-stone-300" />
           </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl font-extrabold text-slate-900 dark:text-white truncate">
+              <h1 className="text-xl font-black text-stone-900 dark:text-white truncate">
                 {user?.name || 'Tài Khoản Khách'}
               </h1>
               {isRegistered ? (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Đã Đăng Ký
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-900 dark:bg-stone-800 dark:text-stone-100 border border-stone-200 dark:border-stone-700 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Đã Đăng Ký
                 </span>
               ) : (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                  <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" /> Chế Độ Khách
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-400 border border-stone-200 dark:border-stone-700 flex items-center gap-1">
+                  <Lock className="w-3 h-3 text-stone-500" /> Chế Độ Khách
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
               {user?.email ? `Tài khoản: ${user.email}` : 'Tính năng Đi chợ chung & Tiệc đang bị khóa. Đăng ký để mở khóa!'}
             </p>
           </div>
@@ -285,7 +283,7 @@ export const AccountView: React.FC = () => {
                 onConfirm: logoutUser
               });
             }}
-            className="px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 font-extrabold text-xs border border-slate-300 dark:border-slate-700 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap self-stretch sm:self-auto"
+            className="px-4 py-2.5 rounded-2xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-rose-600 dark:text-rose-400 font-bold text-xs border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap self-stretch sm:self-auto"
           >
             <LogOut className="w-4 h-4 shrink-0" />
             <span>Đăng Xuất</span>
@@ -294,7 +292,7 @@ export const AccountView: React.FC = () => {
           <button
             type="button"
             onClick={() => openAuthModal('register')}
-            className="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold text-xs shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap self-stretch sm:self-auto"
+            className="px-4 py-2.5 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-bold text-xs shadow-xs flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap self-stretch sm:self-auto"
           >
             <UserPlus className="w-4 h-4 shrink-0" />
             <span>Đăng Nhập / Đăng Ký</span>
@@ -303,12 +301,12 @@ export const AccountView: React.FC = () => {
       </div>
 
       {/* Theme Mode Preference: Sleek Interactive Toggle Switch */}
-      <div className="p-5 sm:p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-4">
-        <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+      <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-4">
+        <div className="border-b border-stone-100 dark:border-stone-800 pb-3">
+          <h2 className="text-base font-black text-stone-900 dark:text-white">
             Giao Diện Hiển Thị
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
             Tùy chỉnh tông màu sáng hoặc tối phù hợp cho mắt
           </p>
         </div>
@@ -317,32 +315,32 @@ export const AccountView: React.FC = () => {
           onClick={toggleTheme}
           className={`p-4 sm:p-5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4 select-none ${
             isLight
-              ? 'bg-amber-50/70 dark:bg-amber-950/20 border-amber-500/40 shadow-sm hover:border-amber-500'
-              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 shadow-sm'
+              ? 'bg-[#FAF8F5] border-[#E8E2D8] hover:border-stone-400 shadow-2xs'
+              : 'bg-[#121110] border-[#252220] hover:border-stone-600 shadow-2xs'
           }`}
         >
           <div className="flex items-center gap-3.5 min-w-0 flex-1">
             <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
               isLight
-                ? 'bg-amber-100 text-amber-600 border border-amber-300 shadow-sm shadow-amber-500/15'
-                : 'bg-slate-800 text-amber-400 border border-slate-700 shadow-sm'
+                ? 'bg-stone-100 text-stone-900 border border-stone-200 shadow-2xs'
+                : 'bg-stone-800 text-stone-100 border border-stone-700 shadow-2xs'
             }`}>
               {isLight ? (
-                <Sun className="w-5 h-5 transition-transform hover:rotate-45 duration-300 fill-amber-400/20" />
+                <Sun className="w-5 h-5 transition-transform hover:rotate-45 duration-300" />
               ) : (
-                <Moon className="w-5 h-5 transition-transform hover:-rotate-12 duration-300 fill-amber-400/20" />
+                <Moon className="w-5 h-5 transition-transform hover:-rotate-12 duration-300" />
               )}
             </div>
             <div className="min-w-0 flex-1 pr-2">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <span className="text-sm sm:text-base font-extrabold text-stone-900 dark:text-white tracking-tight">
                   {isLight ? 'Chế Độ Sáng' : 'Chế Độ Tối'}
                 </span>
-                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
                   {isLight ? 'Light Mode' : 'Dark Mode'}
                 </span>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-relaxed">
                 {isLight 
                   ? 'Nền sáng thanh lịch, dễ nhìn ban ngày' 
                   : 'Tông đen sang trọng, dịu mắt ban đêm'}
@@ -360,19 +358,19 @@ export const AccountView: React.FC = () => {
               e.stopPropagation();
               toggleTheme();
             }}
-            className={`relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
-              isLight ? 'bg-amber-500 shadow-sm shadow-amber-500/40' : 'bg-slate-700 dark:bg-slate-800'
+            className={`relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-stone-400 ${
+              isLight ? 'bg-stone-900' : 'bg-stone-700'
             }`}
           >
             <span
               className={`pointer-events-none inline-flex h-7 w-7 transform items-center justify-center rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                isLight ? 'translate-x-6 text-amber-500' : 'translate-x-0 text-slate-600'
+                isLight ? 'translate-x-6 text-stone-900' : 'translate-x-0 text-stone-600'
               }`}
             >
               {isLight ? (
-                <Sun className="h-4 w-4 fill-amber-500 text-amber-500" />
+                <Sun className="h-4 w-4 text-stone-900" />
               ) : (
-                <Moon className="h-4 w-4 fill-slate-600 text-slate-600" />
+                <Moon className="h-4 w-4 text-stone-600" />
               )}
             </span>
           </button>
@@ -527,7 +525,7 @@ export const AccountView: React.FC = () => {
         {/* 2 Live Counters: Daily Ads Watched & Ad-Free Usage Time */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Counter 1: Ads Watched Today */}
-          <div className="p-3.5 rounded-2xl bg-white/80 dark:bg-stone-850/80 border border-amber-500/20 dark:border-white/10 shadow-xs flex items-center justify-between gap-3">
+          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-xs flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0">
                 <Tv className="w-5 h-5" />
@@ -565,7 +563,7 @@ export const AccountView: React.FC = () => {
           <div className={`p-3.5 rounded-2xl border shadow-xs flex items-center justify-between gap-3 transition-all ${
             adFreeRemainingMs > 0
               ? 'bg-amber-500/10 dark:bg-amber-950/20 border-amber-500/35'
-              : 'bg-white/80 dark:bg-stone-850/80 border-stone-200 dark:border-white/10'
+              : 'bg-white dark:bg-[#1A1918] border-[#E8E2D8] dark:border-[#252220]'
           }`}>
             <div className="flex items-center gap-3 min-w-0">
               <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
