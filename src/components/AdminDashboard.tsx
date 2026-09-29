@@ -568,38 +568,82 @@ export const AdminDashboard: React.FC = () => {
               strokeLinejoin="round" 
             />
 
-            {/* Data Points */}
-            {svgPoints.map((p, idx) => (
-              <g 
-                key={idx}
-                onMouseEnter={() => setHoveredPoint({ hour: p.data.hour, count: p.data.eventsCount, note: p.data.note })}
-                onMouseLeave={() => setHoveredPoint(null)}
-                className="cursor-pointer group"
-              >
-                <circle 
-                  cx={p.x} 
-                  cy={p.y} 
-                  r={p.data.isCurrent ? 6 : 4} 
-                  fill={p.data.isCurrent ? '#10b981' : '#f59e0b'}
-                  stroke="#1c1917"
-                  strokeWidth="2"
-                  className="transition-all duration-150 group-hover:scale-150 group-hover:fill-white"
-                />
-
-                {/* X-axis Labels */}
-                <text 
-                  x={p.x} 
-                  y={svgHeight - 2} 
-                  textAnchor="middle" 
-                  fill={p.data.isCurrent ? '#10b981' : '#78716c'} 
-                  fontSize="10" 
-                  fontWeight={p.data.isCurrent ? 'bold' : 'normal'}
-                  fontFamily="monospace"
+            {/* Data Points & Interactive Hover Columns */}
+            {svgPoints.map((p, idx) => {
+              const isHovered = hoveredPoint?.hour === p.data.hour;
+              return (
+                <g 
+                  key={idx}
+                  onMouseEnter={() => setHoveredPoint({ hour: p.data.hour, count: p.data.eventsCount, note: p.data.note })}
+                  onMouseLeave={() => setHoveredPoint(null)}
+                  className="cursor-pointer"
                 >
-                  {p.data.hour}
-                </text>
-              </g>
-            ))}
+                  {/* Generous hit box to prevent jitter/flickering */}
+                  <rect 
+                    x={p.x - 28} 
+                    y={0} 
+                    width={56} 
+                    height={svgHeight} 
+                    fill="transparent" 
+                  />
+
+                  {/* Vertical dashed indicator line when active */}
+                  {isHovered && (
+                    <line 
+                      x1={p.x} 
+                      y1={15} 
+                      x2={p.x} 
+                      y2={svgHeight - 20} 
+                      stroke="#f59e0b" 
+                      strokeDasharray="3 3" 
+                      strokeWidth="1.5" 
+                      opacity="0.5" 
+                      style={{ pointerEvents: 'none' }}
+                    />
+                  )}
+
+                  {/* Outer glow ring on hover */}
+                  {isHovered && (
+                    <circle 
+                      cx={p.x} 
+                      cy={p.y} 
+                      r={11} 
+                      fill="none" 
+                      stroke="#f59e0b" 
+                      strokeWidth="1.5" 
+                      opacity="0.4" 
+                      style={{ pointerEvents: 'none' }}
+                    />
+                  )}
+
+                  {/* Main data point circle - stable coordinates without CSS scale offset */}
+                  <circle 
+                    cx={p.x} 
+                    cy={p.y} 
+                    r={isHovered ? 6.5 : (p.data.isCurrent ? 5 : 3.5)} 
+                    fill={isHovered ? '#ffffff' : (p.data.isCurrent ? '#10b981' : '#f59e0b')}
+                    stroke={isHovered ? '#f59e0b' : '#1c1917'}
+                    strokeWidth={isHovered ? 2.5 : 2}
+                    className="transition-all duration-150"
+                    style={{ pointerEvents: 'none' }}
+                  />
+
+                  {/* X-axis Labels */}
+                  <text 
+                    x={p.x} 
+                    y={svgHeight - 2} 
+                    textAnchor="middle" 
+                    fill={isHovered ? '#f59e0b' : (p.data.isCurrent ? '#10b981' : '#78716c')} 
+                    fontSize="10" 
+                    fontWeight={isHovered || p.data.isCurrent ? 'bold' : 'normal'}
+                    fontFamily="monospace"
+                    style={{ pointerEvents: 'none' }}
+                  >
+                    {p.data.hour}
+                  </text>
+                </g>
+              );
+            })}
           </svg>
         </div>
 
