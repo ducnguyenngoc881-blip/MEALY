@@ -25,8 +25,12 @@ import {
   Zap,
   Trash2,
   UserCheck,
-  AlertTriangle,
-  Play
+  Play,
+  Tv,
+  Film,
+  Timer,
+  PlayCircle,
+  MonitorPlay
 } from 'lucide-react';
 import { 
   TelemetryEvent, 
@@ -43,6 +47,19 @@ import {
 } from '../utils/telemetryEngine';
 import { formatTtlRemaining, isRoomExpired, SHOPPER_PALETTE } from '../services/collabGroceryService';
 import { getDailyBudgetTarget, scaleCost } from '../utils/currency';
+import { 
+  getAdMetricsByTimeframe, 
+  recordAdImpression, 
+  recordVolunteerAdWatched, 
+  AdTimeframe,
+  formatAdFreeTime
+} from '../utils/adTrackingService';
+import { 
+  getScreenTimeStats, 
+  getCurrentSessionSeconds, 
+  formatDuration,
+  TimeframeFilter
+} from '../utils/screenTimeService';
 
 export const AdminDashboard: React.FC = () => {
   const { 
@@ -61,7 +78,11 @@ export const AdminDashboard: React.FC = () => {
   } = useMealWise();
 
   // Active view tab inside Admin Telemetry
-  const [adminTab, setAdminTab] = useState<'overview' | 'collab' | 'accounts' | 'events'>('overview');
+  const [adminTab, setAdminTab] = useState<'overview' | 'collab' | 'ads_screentime' | 'accounts' | 'events'>('overview');
+
+  // Ad & Screen Time Timeframe Filter: 'day' | 'month' | 'year' | 'lifetime'
+  const [adTimeframe, setAdTimeframe] = useState<AdTimeframe>('day');
+  const [sessionDurationSec, setSessionDurationSec] = useState<number>(() => getCurrentSessionSeconds());
 
   // Real data state
   const [sessions, setSessions] = useState<ActiveSession[]>([]);
@@ -86,17 +107,63 @@ export const AdminDashboard: React.FC = () => {
     const handleCustomEvent = () => {
       refreshTelemetry();
     };
+    const handleScreenTime = (e: Event) => {
+      const customEvent = e as CustomEvent<{ sessionSeconds: number }>;
+      if (customEvent.detail && typeof customEvent.detail.sessionSeconds === 'number') {
+        setSessionDurationSec(customEvent.detail.sessionSeconds);
+      }
+    };
+    const handleAdWatched = () => {
+      refreshTelemetry();
+    };
+
     window.addEventListener('mealwise:telemetry', handleCustomEvent);
+    window.addEventListener('mealwise:screentime', handleScreenTime);
+    window.addEventListener('mealwise:ad_watched', handleAdWatched);
+    const secTimer = setInterval(() => {
+      setSessionDurationSec(getCurrentSessionSeconds());
+    }, 1000);
 
     return () => {
       clearInterval(interval);
+      clearInterval(secTimer);
       window.removeEventListener('mealwise:telemetry', handleCustomEvent);
+      window.removeEventListener('mealwise:screentime', handleScreenTime);
+      window.removeEventListener('mealwise:ad_watched', handleAdWatched);
     };
   }, [refreshTelemetry]);
 
-  // Derived real metrics
-  const onlineCount = Math.max(1, sessions.length);
+  // Derived Ad Metrics & Screen Time Stats based on selected timeframe
+  const adMetrics = useMemo(() => getAdMetricsByTimeframe(adTimeframe), [adTimeframe, events]);
+  const screenTimeStats = useMemo(() => getScreenTimeStats(adTimeframe), [adTimeframe, sessionDurationSec]);
+
+  const handleWatchSimulatedAd = () => {
+    const record = recordAdImpression(
+      'rewarded_video',
+      'Video Thưởng WinMart Tươi Ngon (30s)',
+      30,
+      8,
+      'Thành viên thử nghiệm (Simulated User)'
+    );
+    recordTelemetryEvent('auth', 'Thành viên thử nghiệm xem 1 video quảng cáo đối tác WinMart (30s, +8h Premium)', 'Thành viên thử nghiệm');
+    setSimulationStatus(`📺 Đã ghi nhận 1 lượt xem quảng cáo thử nghiệm: "${record.adTitle}" (+8h Ad-Free)`);
+    refreshTelemetry();
+    setTimeout(() => setSimulationStatus(null), 4000);
+  };
+
+  const handleCompleteSequenceAds = () => {
+    recordVolunteerAdWatched(3);
+    recordTelemetryEvent('auth', 'Thành viên thử nghiệm hoàn thành chuỗi 3 video tự nguyện (Mở khóa Premium đến 24:00)', 'Thành viên thử nghiệm');
+    setSimulationStatus('👑 Đã ghi nhận chuỗi 3 video quảng cáo thử nghiệm! Mở khóa Premium không quảng cáo đến 12h đêm nay.');
+    refreshTelemetry();
+    setTimeout(() => setSimulationStatus(null), 4000);
+  };
+
+  // Derived real metrics (CRITICAL: Admin account does NOT count as a user)
+  const userSessions = useMemo(() => sessions.filter(s => s.role !== 'admin'), [sessions]);
+  const onlineCount = userSessions.length;
   const { peak24h, allTimePeak } = useMemo(() => getPeakStats(onlineCount), [onlineCount]);
+  const totalEndUsers = useMemo(() => registeredAccounts.filter(a => a.role !== 'admin').length, [registeredAccounts]);
 
   // Real Weekly Plan Metrics
   const weeklyMetrics = useMemo(() => {
@@ -414,7 +481,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
           <div className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
             <ArrowUpRight className="w-3.5 h-3.5" />
-            <span>{sessions.length > 1 ? `${sessions.length} tab / đồng đội đang mở` : '1 tab hoạt động hiện tại'}</span>
+            <span>{userSessions.length > 0 ? `${userSessions.length} người dùng đang mở app` : '0 người dùng (Admin không tính là user)'}</span>
           </div>
         </div>
 
@@ -430,7 +497,7 @@ export const AdminDashboard: React.FC = () => {
             {peak24h.toLocaleString('vi-VN')}
           </div>
           <div className="text-[11px] text-stone-400 font-medium">
-            Kỷ lục đồng thời: <strong className="text-amber-300 font-mono">{allTimePeak}</strong>
+            Kỷ lục đồng thời: <strong className="text-amber-300 font-mono">{allTimePeak}</strong> (Chỉ tính End-Users)
           </div>
         </div>
 
@@ -456,15 +523,15 @@ export const AdminDashboard: React.FC = () => {
         <div className="p-4 sm:p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-lg relative overflow-hidden group hover:border-purple-500/40 transition-all">
           <div className="flex items-center justify-between text-xs text-stone-400 mb-1.5">
             <span className="font-extrabold uppercase tracking-wider text-[10px] text-purple-400 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" /> Tài Khoản Hệ Thống
+              <ShieldCheck className="w-3.5 h-3.5" /> Tài Khoản Người Dùng
             </span>
             <Users className="w-4 h-4 text-purple-400" />
           </div>
           <div className="text-2xl sm:text-4xl font-black tracking-tight text-white mb-1 font-mono">
-            {registeredAccounts.length}
+            {totalEndUsers}
           </div>
           <div className="text-[11px] text-purple-300 font-medium">
-            {user?.isRegistered ? `Đăng nhập: ${user.name}` : 'Chế độ quản trị viên'}
+            {userSessions.length > 0 ? `${totalEndUsers} thành viên (Không tính Admin)` : 'Thành viên thực tế (Loại trừ Admin)'}
           </div>
         </div>
 
@@ -671,6 +738,17 @@ export const AdminDashboard: React.FC = () => {
         >
           <ShoppingCart className="w-3.5 h-3.5" />
           <span>Phòng Đi Chợ & Siêu Thị ({collabMetrics.isActive ? '1 Đang Mở' : '0'})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setAdminTab('ads_screentime')}
+          className={`px-3.5 py-2 rounded-xl font-bold transition-all cursor-pointer shrink-0 flex items-center gap-1.5 ${
+            adminTab === 'ads_screentime' ? 'bg-amber-500 text-stone-950 shadow-sm' : 'text-stone-400 hover:text-white'
+          }`}
+        >
+          <Tv className="w-3.5 h-3.5" />
+          <span>Quảng Cáo & Thời Gian Dùng ({adMetrics.totalAds} Ads)</span>
         </button>
 
         <button
@@ -938,6 +1016,358 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
+      {/* TAB: ADS WATCHED & USER SCREEN TIME */}
+      {adminTab === 'ads_screentime' && (
+        <div className="space-y-5 animate-in fade-in duration-200">
+          
+          {/* Header & Timeframe Filter Switcher */}
+          <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <Tv className="w-3 h-3 text-amber-400" />
+                  Ads & Engagement Analytics
+                </span>
+                <span className="text-xs text-stone-400 font-mono">
+                  Bộ lọc: {adMetrics.label}
+                </span>
+              </div>
+              <h2 className="text-lg font-black text-white flex items-center gap-2">
+                Thời Gian Sử Dụng Ứng Dụng & Thống Kê Xem Quảng Cáo
+              </h2>
+              <p className="text-xs text-stone-400 mt-0.5">
+                Theo dõi chi tiết thời lượng người dùng tương tác và số lượng video quảng cáo đã xem với 4 chu kỳ lọc linh hoạt.
+              </p>
+            </div>
+
+            {/* 4 Timeframe Filter Chips */}
+            <div className="flex items-center rounded-2xl bg-stone-950 p-1 border border-stone-800 shrink-0 flex-wrap gap-1">
+              {(['day', 'month', 'year', 'lifetime'] as const).map(tf => {
+                const labelMap = {
+                  day: 'Hôm Nay (1 Ngày)',
+                  month: '1 Tháng (30 Ngày)',
+                  year: '1 Năm (365 Ngày)',
+                  lifetime: 'Toàn Thời Gian'
+                };
+                const isSelected = adTimeframe === tf;
+                return (
+                  <button
+                    key={tf}
+                    type="button"
+                    onClick={() => setAdTimeframe(tf)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-amber-500 text-stone-950 shadow-sm'
+                        : 'text-stone-400 hover:text-white'
+                    }`}
+                  >
+                    {labelMap[tf]}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 4 Hero Metric Cards for Ads & Screen Time */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            
+            {/* Card 1: User Active Screen Time */}
+            <div className="p-4 sm:p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-lg relative overflow-hidden group hover:border-emerald-500/40 transition-all">
+              <div className="flex items-center justify-between text-xs text-stone-400 mb-1.5">
+                <span className="font-extrabold uppercase tracking-wider text-[10px] text-emerald-400 flex items-center gap-1.5">
+                  <Timer className="w-3.5 h-3.5" /> Thời Gian Dùng App
+                </span>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+              </div>
+              <div className="text-xl sm:text-3xl font-black tracking-tight text-white mb-1 font-mono">
+                {screenTimeStats.formatted}
+              </div>
+              <div className="text-[11px] text-stone-400 font-medium">
+                TB: <strong className="text-emerald-400 font-mono">{screenTimeStats.dailyAverageMinutes} phút/ngày</strong> • {screenTimeStats.sessionCount} phiên
+              </div>
+              <div className="text-[10px] text-stone-500 mt-1 font-mono flex items-center gap-1">
+                <span>Phiên hiện tại:</span>
+                <span className="text-emerald-400 font-bold">{formatDuration(sessionDurationSec)}</span>
+              </div>
+            </div>
+
+            {/* Card 2: Ads Watched */}
+            <div className="p-4 sm:p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-lg relative overflow-hidden group hover:border-amber-500/40 transition-all">
+              <div className="flex items-center justify-between text-xs text-stone-400 mb-1.5">
+                <span className="font-extrabold uppercase tracking-wider text-[10px] text-amber-400 flex items-center gap-1.5">
+                  <Tv className="w-3.5 h-3.5" /> Quảng Cáo Đã Xem
+                </span>
+                <Film className="w-4 h-4 text-amber-400" />
+              </div>
+              <div className="text-2xl sm:text-4xl font-black tracking-tight text-white mb-1 font-mono">
+                {adMetrics.totalAds.toLocaleString('vi-VN')}
+              </div>
+              <div className="text-[11px] text-stone-400 font-medium">
+                Tỷ lệ xem trọn vẹn: <strong className="text-amber-400 font-mono">{adMetrics.completionRate}%</strong>
+              </div>
+              <div className="text-[10px] text-stone-500 mt-1 font-mono">
+                Chu kỳ: {adMetrics.label}
+              </div>
+            </div>
+
+            {/* Card 3: Ad-Free Hours Unlocked */}
+            <div className="p-4 sm:p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-lg relative overflow-hidden group hover:border-blue-500/40 transition-all">
+              <div className="flex items-center justify-between text-xs text-stone-400 mb-1.5">
+                <span className="font-extrabold uppercase tracking-wider text-[10px] text-blue-400 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5" /> Giờ Miễn Quảng Cáo
+                </span>
+                <Clock className="w-4 h-4 text-blue-400" />
+              </div>
+              <div className="text-2xl sm:text-4xl font-black tracking-tight text-white mb-1 font-mono">
+                {adMetrics.totalAdFreeHours.toLocaleString('vi-VN')}h
+              </div>
+              <div className="text-[11px] text-stone-400 font-medium">
+                Mở khóa Premium không gián đoạn
+              </div>
+              <div className="text-[10px] text-blue-300 mt-1 font-mono">
+                Thưởng: +8h mỗi video xem
+              </div>
+            </div>
+
+            {/* Card 4: Estimated Ad Revenue */}
+            <div className="p-4 sm:p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-lg relative overflow-hidden group hover:border-purple-500/40 transition-all">
+              <div className="flex items-center justify-between text-xs text-stone-400 mb-1.5">
+                <span className="font-extrabold uppercase tracking-wider text-[10px] text-purple-400 flex items-center gap-1.5">
+                  <DollarSign className="w-3.5 h-3.5" /> Doanh Thu Ước Tính
+                </span>
+                <Sparkles className="w-4 h-4 text-purple-400" />
+              </div>
+              <div className="text-xl sm:text-3xl font-black tracking-tight text-white mb-1 font-mono">
+                {adMetrics.estimatedRevenueVnd.toLocaleString('vi-VN')} đ
+              </div>
+              <div className="text-[11px] text-stone-400 font-medium">
+                eCPM đối tác: <strong className="text-purple-300 font-mono">~250 đ/video</strong>
+              </div>
+              <div className="text-[10px] text-stone-500 mt-1 font-mono">
+                Thời lượng xem: ~{adMetrics.totalDurationMinutes} phút
+              </div>
+            </div>
+
+          </div>
+
+          {/* Quick Simulation & Live Verification Toolbar */}
+          <div className="p-4 rounded-2xl bg-stone-900 border border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs text-stone-300">
+              <PlayCircle className="w-4 h-4 text-amber-400 shrink-0" />
+              <span className="font-extrabold text-[11px] uppercase tracking-wider text-amber-400">
+                Thử Nghiệm & Mô Phỏng Xem Quảng Cáo:
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={handleWatchSimulatedAd}
+                className="px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-amber-500/20 hover:text-amber-300 border border-stone-700 text-xs font-bold text-stone-200 transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                <Tv className="w-3.5 h-3.5 text-amber-400" />
+                <span>+ Xem Thử 1 Video Quảng Cáo (30s)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCompleteSequenceAds}
+                className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>👑 Hoàn Thành Chuỗi 3 Video (Kích Hoạt Premium)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Two-Column Breakdown */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            
+            {/* Column 1: Ad Formats Breakdown */}
+            <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl space-y-3.5">
+              <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+                <div>
+                  <h3 className="text-base font-black text-white flex items-center gap-2">
+                    <MonitorPlay className="w-5 h-5 text-amber-400" />
+                    Phân Loại Định Dạng Quảng Cáo ({adMetrics.label})
+                  </h3>
+                  <p className="text-xs text-stone-400 mt-0.5">
+                    Tỷ trọng các định dạng quảng cáo xuất hiện trong chu kỳ đã chọn.
+                  </p>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">
+                  {adMetrics.totalAds} Lượt Xem
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    name: 'Video Thưởng Tự Nguyện (Rewarded 30s)',
+                    count: adMetrics.rewardedVideoAds,
+                    percent: adMetrics.totalAds > 0 ? Math.round((adMetrics.rewardedVideoAds / adMetrics.totalAds) * 100) : 100,
+                    color: 'from-amber-500 to-orange-400',
+                    reward: '+8 giờ không quảng cáo / video'
+                  },
+                  {
+                    name: 'Quảng Cáo Chuyển Trang (Interstitial)',
+                    count: adMetrics.interstitialAds,
+                    percent: adMetrics.totalAds > 0 ? Math.round((adMetrics.interstitialAds / adMetrics.totalAds) * 100) : 0,
+                    color: 'from-blue-500 to-indigo-400',
+                    reward: 'Tự động đóng sau 5 giây'
+                  },
+                  {
+                    name: 'Biểu Ngữ Tiêu Chuẩn (Banner Impressions)',
+                    count: adMetrics.bannerImpressions,
+                    percent: adMetrics.totalAds > 0 ? Math.max(0, 100 - (Math.round((adMetrics.rewardedVideoAds / adMetrics.totalAds) * 100) + Math.round((adMetrics.interstitialAds / adMetrics.totalAds) * 100))) : 0,
+                    color: 'from-emerald-500 to-teal-400',
+                    reward: 'Hiển thị cố định chân màn hình'
+                  }
+                ].map((item, i) => (
+                  <div key={i} className="p-3 rounded-2xl bg-stone-950/70 border border-stone-800 space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-extrabold text-white">{item.name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-stone-400 text-[11px] font-mono">{item.count} lượt</span>
+                        <span className="font-mono font-black text-amber-400">{item.percent}%</span>
+                      </div>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-stone-800 overflow-hidden">
+                      <div 
+                        className={`h-full bg-gradient-to-r ${item.color} rounded-full transition-all duration-300`}
+                        style={{ width: `${item.percent}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-stone-500 block">{item.reward}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Column 2: Screen Time & Engagement Insights */}
+            <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl space-y-3.5">
+              <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+                <div>
+                  <h3 className="text-base font-black text-white flex items-center gap-2">
+                    <Timer className="w-5 h-5 text-emerald-400" />
+                    Thói Quen Sử Dụng & Mức Độ Tương Tác
+                  </h3>
+                  <p className="text-xs text-stone-400 mt-0.5">
+                    Chỉ số đo lường mức độ gắn bó của người dùng qua các phiên hoạt động.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="p-3 rounded-2xl bg-stone-950/70 border border-stone-800 space-y-1">
+                  <span className="text-stone-400 text-[11px] block">Thời gian tích lũy:</span>
+                  <span className="text-base font-black text-white font-mono">{screenTimeStats.formatted}</span>
+                  <span className="text-[10px] text-stone-500 block">Chu kỳ: {screenTimeStats.periodLabel}</span>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/70 border border-stone-800 space-y-1">
+                  <span className="text-stone-400 text-[11px] block">Trung bình hàng ngày:</span>
+                  <span className="text-base font-black text-emerald-400 font-mono">~{screenTimeStats.dailyAverageMinutes} phút/ngày</span>
+                  <span className="text-[10px] text-emerald-500 block">Tiêu chuẩn app tiện ích gia đình</span>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/70 border border-stone-800 space-y-1">
+                  <span className="text-stone-400 text-[11px] block">Tổng số phiên mở app:</span>
+                  <span className="text-base font-black text-amber-300 font-mono">{screenTimeStats.sessionCount} phiên</span>
+                  <span className="text-[10px] text-stone-500 block">Tần suất: ~3.2 lần/ngày</span>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/70 border border-stone-800 space-y-1">
+                  <span className="text-stone-400 text-[11px] block">Phiên hiện tại:</span>
+                  <span className="text-base font-black text-emerald-300 font-mono">{formatDuration(sessionDurationSec)}</span>
+                  <span className="text-[10px] text-emerald-400 block">● Đang hoạt động trực tiếp</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-stone-950/70 border border-stone-800 space-y-1.5 text-xs text-stone-300">
+                <span className="font-bold text-amber-400 text-[11px] block">
+                  💡 Cơ Chế Đếm Thời Lượng Thông Minh:
+                </span>
+                <p className="text-[11px] text-stone-400 leading-relaxed">
+                  Ứng dụng tự động tạm ngưng tích lũy thời gian khi người dùng chuyển sang tab khác hoặc thu nhỏ trình duyệt, đảm bảo thời lượng ghi nhận là 100% thời gian thực tế tương tác.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Ad Watch Impressions Log Table */}
+          <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl space-y-3.5">
+            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <Film className="w-5 h-5 text-amber-400" />
+                  Nhật Ký Các Lượt Xem Quảng Cáo Gần Nhất ({adMetrics.records.length} Lượt)
+                </h3>
+                <p className="text-xs text-stone-400 mt-0.5">
+                  Lịch sử xem video quảng cáo đối tác trong chu kỳ {adMetrics.label}.
+                </p>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full bg-stone-800 text-stone-300 border border-stone-700 text-xs font-mono font-bold">
+                {adMetrics.totalAds} Tổng lượt
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-stone-800 text-stone-400 font-mono text-[11px]">
+                    <th className="py-2.5 px-3">Thời Điểm</th>
+                    <th className="py-2.5 px-3">Chiến Dịch Đối Tác</th>
+                    <th className="py-2.5 px-3">Định Dạng</th>
+                    <th className="py-2.5 px-3">Thời Lượng</th>
+                    <th className="py-2.5 px-3">Phần Thưởng</th>
+                    <th className="py-2.5 px-3 text-right">Tài Khoản</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-800/60">
+                  {adMetrics.records.map(record => (
+                    <tr key={record.id} className="hover:bg-stone-800/40 transition-colors">
+                      <td className="py-2.5 px-3 text-stone-400 font-mono text-[11px]">
+                        {new Date(record.timestamp).toLocaleDateString('vi-VN')} {new Date(record.timestamp).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                      </td>
+                      <td className="py-2.5 px-3 font-bold text-white">
+                        {record.adTitle}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                          {record.adType === 'rewarded_video' ? 'Video Thưởng' : 'Quảng Cáo'}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono text-stone-300">
+                        {record.durationSeconds}s
+                      </td>
+                      <td className="py-2.5 px-3 font-mono font-bold text-emerald-400">
+                        +{record.rewardHours}h Premium
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-stone-400 font-mono">
+                        {record.userName || 'Thành viên'}
+                      </td>
+                    </tr>
+                  ))}
+                  {adMetrics.records.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="py-8 text-center text-stone-500 italic">
+                        Chưa có lượt xem quảng cáo nào trong chu kỳ này.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      )}
+
       {/* TAB 3: REGISTERED ACCOUNTS & SESSIONS */}
       {adminTab === 'accounts' && (
         <div className="space-y-5">
@@ -954,7 +1384,7 @@ export const AdminDashboard: React.FC = () => {
                 </p>
               </div>
               <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold">
-                {sessions.length} Phiên
+                {userSessions.length} Người Dùng ({sessions.filter(s => s.role === 'admin').length} Admin)
               </span>
             </div>
 
@@ -976,7 +1406,7 @@ export const AdminDashboard: React.FC = () => {
                     <span className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-bold ${
                       s.role === 'admin' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-stone-800 text-stone-300'
                     }`}>
-                      {s.role.toUpperCase()}
+                      {s.role === 'admin' ? 'ADMIN (KHÔNG TÍNH LÀ USER)' : s.role.toUpperCase()}
                     </span>
                     {s.isCurrentTab && (
                       <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">

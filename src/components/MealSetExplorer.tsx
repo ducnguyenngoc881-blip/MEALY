@@ -1,20 +1,17 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
-  Utensils, 
   Sparkles, 
-  Flame, 
-  Calendar, 
   ChevronRight, 
   PlusCircle, 
-  CheckCircle2, 
   Clock, 
-  DollarSign, 
-  Check,
+  Search, 
+  Tag, 
   X,
-  Search,
-  Tag,
-  Filter
+  Shuffle,
+  Gamepad2,
+  Calendar,
+  Utensils
 } from 'lucide-react';
 import { VietnameseMealSet, MealSlot } from '../types';
 import { matchesMealSetSearch } from '../utils/textUtils';
@@ -33,8 +30,7 @@ export const MealSetExplorer: React.FC = () => {
     addMealSetToSlot, 
     weeklyPlan, 
     setSelectedMealSet,
-    setActiveTab,
-    viewMode
+    openMinigameHub
   } = useMealWise();
 
   const [regionFilter, setRegionFilter] = useState<'all' | 'bac' | 'trung' | 'nam' | 'chay' | 'western'>('all');
@@ -43,6 +39,7 @@ export const MealSetExplorer: React.FC = () => {
   const [assigningMealSet, setAssigningMealSet] = useState<VietnameseMealSet | null>(null);
   const [targetDay, setTargetDay] = useState<string>('mon');
   const [targetSlot, setTargetSlot] = useState<MealSlot>('lunch');
+  const [featuredIndex, setFeaturedIndex] = useState<number>(0);
   const [assignDragY, setAssignDragY] = useState<number>(0);
   const assignTouchStartY = useRef<number | null>(null);
 
@@ -75,61 +72,162 @@ export const MealSetExplorer: React.FC = () => {
     });
   }, [mealSets, regionFilter, selectedTag, searchQuery]);
 
+  // Current featured hero meal set
+  const featuredSet = useMemo(() => {
+    if (filteredSets.length === 0) return null;
+    return filteredSets[featuredIndex % filteredSets.length];
+  }, [filteredSets, featuredIndex]);
+
+  const handleShuffleHero = () => {
+    if (filteredSets.length <= 1) return;
+    setFeaturedIndex(prev => (prev + 1) % filteredSets.length);
+  };
+
   const handleApplySet = () => {
     if (!assigningMealSet) return;
     addMealSetToSlot(targetDay, targetSlot, assigningMealSet);
     setAssigningMealSet(null);
   };
 
-  const isMobile = viewMode === 'mobile';
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 max-w-lg mx-auto">
       
-      {/* Top Banner */}
-      <div className="p-5 sm:p-7 rounded-3xl glass-card border border-[#EBE5DC] dark:border-[#252220] bg-gradient-to-r from-amber-950/10 via-stone-50 to-stone-100 dark:from-[#1C1A18] dark:via-amber-950/25 dark:to-[#1C1A18] relative overflow-hidden">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-xs font-bold mb-3">
-          <Utensils className="w-3.5 h-3.5" />
-          <span>Văn Hóa Ẩm Thực Việt</span>
+      {/* 1. HERO CARD: "HÔM NAY ĂN GÌ?" */}
+      {featuredSet && (
+        <div className="bg-white dark:bg-[#1A1918] rounded-3xl border border-[#E8E2D8] dark:border-[#252220] overflow-hidden shadow-xs hover:shadow-sm transition-all">
+          <div className="p-4 sm:p-5 pb-3">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider block">
+                  Gợi Ý Cho Bạn
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white tracking-tight">
+                  Hôm nay ăn gì?
+                </h2>
+              </div>
+
+              {/* Minigame roulette trigger button */}
+              <button
+                type="button"
+                onClick={openMinigameHub}
+                className="px-3 py-1.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/20 text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95"
+                title="Vòng quay ẩm thực giải trí"
+              >
+                <Gamepad2 className="w-3.5 h-3.5" />
+                <span>Quay ngẫu nhiên</span>
+              </button>
+            </div>
+
+            {/* Featured Image */}
+            <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden mt-3 group cursor-pointer" onClick={() => setSelectedMealSet(featuredSet)}>
+              <SafeImage 
+                src={featuredSet.imageUrl} 
+                alt={featuredSet.title} 
+                fallbackTitle={featuredSet.title}
+                category="Mâm Cơm"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-black/20" />
+
+              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-stone-950/70 backdrop-blur-md text-white text-[11px] font-bold border border-white/10">
+                {featuredSet.region === 'bac' && 'Miền Bắc'}
+                {featuredSet.region === 'nam' && 'Miền Nam'}
+                {featuredSet.region === 'trung' && 'Miền Trung'}
+                {featuredSet.region === 'chay' && 'Món Chay'}
+                {(featuredSet.region as string) === 'western' && 'Món Âu'}
+                {featuredSet.region === 'toan-quoc' && 'Truyền Thống'}
+              </div>
+
+              <div className="absolute bottom-3 left-3 right-3 text-white">
+                <h3 className="text-lg sm:text-xl font-black tracking-tight leading-tight">
+                  {featuredSet.title}
+                </h3>
+                <div className="flex items-center gap-2 text-xs font-semibold text-stone-200 mt-1">
+                  <span className="text-amber-300 font-extrabold">{featuredSet.totalCostVnd.toLocaleString('vi-VN')} đ</span>
+                  <span>•</span>
+                  <span>{featuredSet.totalCalories} kcal</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 3 Dishes Mini Bar */}
+            <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-stone-100 dark:border-stone-800">
+              <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] text-center">
+                <span className="text-[9px] font-extrabold text-rose-600 dark:text-rose-400 block uppercase">Món Mặn</span>
+                <span className="text-xs font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={featuredSet.mainDish.title}>
+                  {cleanDishTitle(featuredSet.mainDish.title)}
+                </span>
+              </div>
+              <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] text-center">
+                <span className="text-[9px] font-extrabold text-sky-600 dark:text-sky-400 block uppercase">Món Canh</span>
+                <span className="text-xs font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={featuredSet.soupDish.title}>
+                  {cleanDishTitle(featuredSet.soupDish.title)}
+                </span>
+              </div>
+              <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] text-center">
+                <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 block uppercase">Món Rau</span>
+                <span className="text-xs font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={featuredSet.sideDish.title}>
+                  {cleanDishTitle(featuredSet.sideDish.title)}
+                </span>
+              </div>
+            </div>
+
+            {/* Hero Action Buttons */}
+            <div className="flex items-center gap-2 mt-3">
+              <button
+                type="button"
+                onClick={handleShuffleHero}
+                className="py-2.5 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
+                title="Đổi sang mâm cơm khác"
+              >
+                <Shuffle className="w-3.5 h-3.5" />
+                <span>Đổi Mâm</span>
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => setAssigningMealSet(featuredSet)}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span>Chọn Mâm Này</span>
+              </button>
+            </div>
+          </div>
         </div>
+      )}
 
-        <h1 className="text-xl sm:text-3xl font-extrabold text-stone-900 dark:text-white tracking-tight">
-          Bộ Mâm Cơm Gia Đình Tròn Vị (3 Món)
-        </h1>
-        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 mt-1 max-w-2xl leading-relaxed">
-          Người Việt không chỉ ăn 1 món duy nhất. Mỗi mâm cơm gia đình là sự kết hợp hoàn hảo giữa <strong className="text-amber-700 dark:text-amber-400 font-extrabold">Món Mặn + Canh Thanh Mát + Rau Xào Giòn</strong> cùng nước chấm chuẩn vị.
-        </p>
-
-        {/* Diacritic-Insensitive Search Bar */}
-        <div className="relative mt-4 max-w-xl">
+      {/* 2. MINIMALIST SEARCH & FILTER BAR */}
+      <div className="space-y-3">
+        {/* Search Input */}
+        <div className="relative">
           <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Tìm theo tên mâm, món mặn, canh, rau..."
-            className="w-full pl-10 pr-9 py-2 rounded-2xl bg-white dark:bg-[#1C1A18] text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 text-xs font-medium border border-[#EBE5DC] dark:border-[#292524] focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all shadow-sm"
+            placeholder="Tìm mâm cơm, món mặn, canh, rau..."
+            className="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-white dark:bg-[#1A1918] text-stone-900 dark:text-white placeholder-stone-400 text-xs font-medium border border-[#E8E2D8] dark:border-[#252220] focus:outline-none focus:border-amber-500 transition-all shadow-xs"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-white/20 dark:hover:bg-white/30 text-stone-600 dark:text-white flex items-center justify-center transition-colors cursor-pointer"
-              aria-label="Xóa tìm kiếm"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 flex items-center justify-center"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-3 h-3" />
             </button>
           )}
         </div>
 
-        {/* Region Tabs */}
-        <div className="flex flex-wrap gap-2 mt-4">
+        {/* Region Tabs (flex flex-wrap gap-2) */}
+        <div className="flex flex-wrap gap-2">
           {[
-            { id: 'all', label: 'Tất Cả Mâm Cơm' },
+            { id: 'all', label: 'Tất Cả' },
             { id: 'bac', label: 'Miền Bắc' },
             { id: 'nam', label: 'Miền Nam' },
             { id: 'trung', label: 'Miền Trung' },
-            { id: 'chay', label: 'Mâm Cơm Chay' },
+            { id: 'chay', label: 'Món Chay' },
             { id: 'western', label: 'Món Âu' }
           ].map(tab => {
             const active = regionFilter === tab.id;
@@ -137,10 +235,10 @@ export const MealSetExplorer: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setRegionFilter(tab.id as any)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all shrink-0 whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 whitespace-nowrap ${
                   active
-                    ? 'bg-amber-500 text-stone-950 shadow-lg shadow-amber-500/25 font-black'
-                    : 'bg-white dark:bg-[#1C1A18] text-stone-700 dark:text-stone-200 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-[#252220] border border-[#EBE5DC] dark:border-[#292524] shadow-sm'
+                    ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-950 font-extrabold shadow-xs'
+                    : 'bg-white dark:bg-[#1A1918] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white border border-[#E8E2D8] dark:border-[#252220]'
                 }`}
               >
                 {tab.label}
@@ -150,10 +248,9 @@ export const MealSetExplorer: React.FC = () => {
         </div>
 
         {/* Tag Filter Chips */}
-        <div className="flex items-center gap-1.5 flex-wrap mt-3 pt-3 border-t border-slate-200/80 dark:border-white/10">
-          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 flex items-center gap-1 mr-1 shrink-0 whitespace-nowrap">
-            <Tag className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            Chủ đề:
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          <span className="text-[11px] font-bold text-stone-400 flex items-center gap-1 mr-1 shrink-0">
+            <Tag className="w-3 h-3" />
           </span>
           {POPULAR_TAGS.map(tag => {
             const active = selectedTag === tag;
@@ -161,10 +258,10 @@ export const MealSetExplorer: React.FC = () => {
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 whitespace-nowrap ${
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 whitespace-nowrap ${
                   active
-                    ? 'bg-emerald-500 text-slate-950 shadow-sm font-black'
-                    : 'bg-white dark:bg-slate-800/70 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700/70 shadow-sm'
+                    ? 'bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30 font-bold'
+                    : 'bg-stone-200/40 dark:bg-stone-800/40 text-stone-600 dark:text-stone-400 hover:bg-stone-200/60'
                 }`}
               >
                 {tag}
@@ -174,169 +271,103 @@ export const MealSetExplorer: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid of 3-Dish Meal Sets */}
-      <div className="grid grid-cols-1 gap-4">
-        {filteredSets.map(set => {
-          return (
-            <div 
-              key={set.id}
-              className="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-emerald-500/40 dark:hover:border-slate-700 transition-all flex flex-col justify-between group"
-            >
-              <div>
-                {/* Image Banner Header */}
-                <div className="relative h-48 sm:h-52 overflow-hidden">
-                  <SafeImage 
-                    src={set.imageUrl} 
-                    alt={set.title} 
-                    fallbackTitle={set.title}
-                    category="Mâm Cơm"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-                  
-                  {/* Region badge */}
-                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md border border-slate-700 text-emerald-400 text-xs font-bold">
-                    {set.region === 'bac' && 'Mâm Cơm Miền Bắc'}
-                    {set.region === 'nam' && 'Mâm Cơm Miền Nam'}
-                    {set.region === 'trung' && 'Mâm Cơm Miền Trung'}
-                    {set.region === 'chay' && 'Mâm Cơm Chay'}
-                  </div>
-
-                  {/* Title overlay */}
-                  <div className="absolute bottom-3 left-4 right-4">
-                    <h3 className="text-lg sm:text-xl font-extrabold text-white">
-                      {set.title}
-                    </h3>
-                    <div className="flex items-center gap-3 text-xs text-slate-300 mt-1 font-semibold">
-                      <span className="text-emerald-400 font-bold">{set.totalCostVnd.toLocaleString('vi-VN')} đ / mâm</span>
-                      <span>•</span>
-                      <span>{set.totalCalories} kcal</span>
-                    </div>
+      {/* 3. MINIMALIST MEAL SET CARDS LIST */}
+      <div className="space-y-4">
+        {filteredSets.map(set => (
+          <div 
+            key={set.id}
+            className="bg-white dark:bg-[#1A1918] rounded-2xl border border-[#E8E2D8] dark:border-[#252220] overflow-hidden shadow-xs hover:shadow-sm transition-all"
+          >
+            {/* Card Header with Image */}
+            <div className="relative h-40 sm:h-44 overflow-hidden cursor-pointer" onClick={() => setSelectedMealSet(set)}>
+              <SafeImage 
+                src={set.imageUrl} 
+                alt={set.title} 
+                fallbackTitle={set.title}
+                category="Mâm Cơm"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+              
+              <div className="absolute bottom-2.5 left-3 right-3 text-white flex items-end justify-between">
+                <div>
+                  <h4 className="text-base font-extrabold leading-tight">
+                    {set.title}
+                  </h4>
+                  <div className="flex items-center gap-2 text-xs text-stone-300 mt-0.5">
+                    <span className="text-amber-300 font-bold">{set.totalCostVnd.toLocaleString('vi-VN')} đ</span>
+                    <span>•</span>
+                    <span>{set.totalCalories} kcal</span>
                   </div>
                 </div>
 
-                  {/* Tags badge list */}
-                  {set.tags && set.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 px-4 sm:px-5 pt-3">
-                      {set.tags.map(tag => (
-                        <button
-                          key={tag}
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedTag(tag);
-                          }}
-                          className={`px-2 py-0.5 rounded-md text-[10px] font-extrabold transition-colors shrink-0 whitespace-nowrap ${
-                            selectedTag === tag
-                              ? 'bg-emerald-500 text-slate-950 shadow-sm'
-                              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-500 dark:hover:text-emerald-400'
-                          }`}
-                        >
-                          #{tag}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedMealSet(set);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-md text-white text-xs font-bold hover:bg-white/30"
+                >
+                  Xem Mâm
+                </button>
+              </div>
+            </div>
 
-                {/* 3-Dish Architecture List */}
-                <div className="p-4 sm:p-5 space-y-3 pt-2">
-                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {set.description}
-                  </p>
-
-                  <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
-                    <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">
-                      CẤU TRÚC 3 MÓN KẾT HỢP HÀI HÒA:
-                    </span>
-
-                    {/* Món Mặn */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2.5">
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <span className="w-[72px] py-1 rounded-md bg-rose-500/15 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
-                          MÓN MẶN
-                        </span>
-                        <span className="text-xs font-bold text-slate-900 dark:text-white break-words leading-tight" title={set.mainDish.title}>
-                          {cleanDishTitle(set.mainDish.title)}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap min-w-[64px] text-right tabular-nums">
-                        {set.mainDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
-                      </span>
-                    </div>
-
-                    {/* Món Canh */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2.5">
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <span className="w-[72px] py-1 rounded-md bg-sky-500/15 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
-                          MÓN CANH
-                        </span>
-                        <span className="text-xs font-bold text-slate-900 dark:text-white break-words leading-tight" title={set.soupDish.title}>
-                          {cleanDishTitle(set.soupDish.title)}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap min-w-[64px] text-right tabular-nums">
-                        {set.soupDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
-                      </span>
-                    </div>
-
-                    {/* Món Rau */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2.5">
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <span className="w-[72px] py-1 rounded-md bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-extrabold shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
-                          MÓN RAU
-                        </span>
-                        <span className="text-xs font-bold text-slate-900 dark:text-white break-words leading-tight" title={set.sideDish.title}>
-                          {cleanDishTitle(set.sideDish.title)}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium shrink-0 whitespace-nowrap min-w-[64px] text-right tabular-nums">
-                        {set.sideDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
-                      </span>
-                    </div>
-
-                    {/* Condiment note */}
-                    <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-2 text-amber-800 dark:text-amber-200 text-xs font-semibold">
-                      <Sparkles className="w-3.5 h-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
-                      <span><strong>Nước Chấm & Đồ Kèm:</strong> {set.condimentNote}</span>
-                    </div>
-                  </div>
+            {/* 3 Dish Breakdown */}
+            <div className="p-3 sm:p-4 space-y-2">
+              <div className="grid grid-cols-3 gap-2">
+                <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110]">
+                  <span className="text-[9px] font-extrabold text-rose-600 dark:text-rose-400 block uppercase">Mặn</span>
+                  <span className="text-[11px] font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={set.mainDish.title}>
+                    {cleanDishTitle(set.mainDish.title)}
+                  </span>
+                </div>
+                <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110]">
+                  <span className="text-[9px] font-extrabold text-sky-600 dark:text-sky-400 block uppercase">Canh</span>
+                  <span className="text-[11px] font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={set.soupDish.title}>
+                    {cleanDishTitle(set.soupDish.title)}
+                  </span>
+                </div>
+                <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110]">
+                  <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 block uppercase">Rau</span>
+                  <span className="text-[11px] font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={set.sideDish.title}>
+                    {cleanDishTitle(set.sideDish.title)}
+                  </span>
                 </div>
               </div>
 
-              {/* Bottom Card Actions */}
-              <div className="p-4 sm:p-5 pt-0 flex items-stretch gap-2">
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => setSelectedMealSet(set)}
-                  className="flex-1 py-2.5 px-2.5 sm:px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-[11px] sm:text-xs transition-colors text-center border border-slate-200 dark:border-transparent leading-tight flex items-center justify-center"
+                  className="flex-1 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs text-center transition-all"
                 >
-                  <span>Xem Chi Tiết Mâm</span>
+                  Xem Chi Tiết Mâm
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setAssigningMealSet(set)}
-                  className="flex-1 py-2.5 px-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-extrabold text-[11px] sm:text-xs shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-1.5 active:scale-95 leading-tight"
+                  className="flex-1 py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
                 >
-                  <PlusCircle className="w-4 h-4 shrink-0" />
-                  <span className="whitespace-nowrap">Chọn Mâm Này</span>
+                  <PlusCircle className="w-3.5 h-3.5" />
+                  <span>Chọn Mâm Này</span>
                 </button>
               </div>
-
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
-      {/* Empty State for Search or Tag Filters */}
+      {/* Empty State */}
       {filteredSets.length === 0 && (
-        <div className="p-8 text-center glass-card rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3">
-          <Utensils className="w-8 h-8 text-slate-400 mx-auto" />
-          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+        <div className="p-8 text-center bg-white dark:bg-[#1A1918] rounded-3xl border border-[#E8E2D8] dark:border-[#252220] space-y-3">
+          <h3 className="text-sm font-bold text-stone-800 dark:text-stone-200">
             Không tìm thấy mâm cơm phù hợp
           </h3>
-          <p className="text-xs text-slate-600 dark:text-slate-400 max-w-sm mx-auto">
-            Không có kết quả nào cho từ khóa &quot;{searchQuery}&quot; với bộ lọc đã chọn.
+          <p className="text-xs text-stone-500 dark:text-stone-400 max-w-sm mx-auto">
+            Không có kết quả nào cho &quot;{searchQuery}&quot; với bộ lọc hiện tại.
           </p>
           <button
             onClick={() => {
@@ -344,7 +375,7 @@ export const MealSetExplorer: React.FC = () => {
               setSelectedTag('Tất Cả');
               setRegionFilter('all');
             }}
-            className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs shadow-md shadow-emerald-500/20 hover:bg-emerald-400 transition-colors"
+            className="px-4 py-2 rounded-xl bg-amber-500 text-stone-950 font-bold text-xs"
           >
             Đặt lại bộ lọc
           </button>
@@ -354,7 +385,7 @@ export const MealSetExplorer: React.FC = () => {
       {/* NATIVE MOBILE BOTTOM SHEET TO ASSIGN MEAL SET TO WEEKLY SLOT */}
       {assigningMealSet && (
         <div 
-          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-stone-950/60 backdrop-blur-xs animate-fade-in"
           onClick={() => setAssigningMealSet(null)}
         >
           <div 
@@ -363,9 +394,9 @@ export const MealSetExplorer: React.FC = () => {
               transform: assignDragY > 0 ? `translateY(${assignDragY}px)` : undefined,
               transition: assignDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
             }}
-            className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-4 sm:p-5 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4 animate-slide-up border-t border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-lg bg-white dark:bg-[#1A1918] rounded-t-3xl shadow-2xl p-4 sm:p-5 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4 animate-slide-up border-t border-[#E8E2D8] dark:border-[#252220] max-h-[90vh] overflow-y-auto"
           >
-            {/* Swipe handle bar & Drag Zone */}
+            {/* Swipe handle bar */}
             <div 
               onTouchStart={(e) => { assignTouchStartY.current = e.touches[0].clientY; }}
               onTouchMove={(e) => {
@@ -378,36 +409,36 @@ export const MealSetExplorer: React.FC = () => {
                 setAssignDragY(0);
                 assignTouchStartY.current = null;
               }}
-              className="w-full py-2 cursor-grab active:cursor-grabbing shrink-0 flex items-center justify-center touch-none select-none -mt-2 mb-1"
+              className="w-full py-2 cursor-grab active:cursor-grabbing flex items-center justify-center -mt-2 mb-1"
             >
-              <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
+              <div className="w-10 h-1 bg-stone-300 dark:bg-stone-700 rounded-full" />
             </div>
 
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 select-none gap-2">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 min-w-0 flex-1 truncate">
-                <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <span className="truncate">Xếp Mâm Cơm Vào Thực Đơn</span>
+            <div className="flex items-center justify-between border-b border-stone-100 dark:border-stone-800 pb-2">
+              <h3 className="text-sm font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <span>Xếp Vào Thực Đơn Tuần</span>
               </h3>
               <button 
                 onClick={() => setAssigningMealSet(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors shrink-0"
+                className="w-7 h-7 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-500"
                 aria-label="Đóng"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-              Gán <strong className="text-emerald-600 dark:text-emerald-400">{assigningMealSet.title}</strong> vào ngày trong tuần để tự động gom nguyên liệu đi chợ.
+            <p className="text-xs text-stone-600 dark:text-stone-300">
+              Gán <strong className="text-amber-700 dark:text-amber-400">{assigningMealSet.title}</strong> vào thực đơn tuần để chuẩn bị nguyên liệu đi chợ.
             </p>
 
             {/* Day Selector */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Chọn Ngày Trong Tuần:</label>
+              <label className="text-xs font-bold text-stone-700 dark:text-stone-300">Chọn Ngày:</label>
               <select
                 value={targetDay}
                 onChange={e => setTargetDay(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-xs focus:outline-none focus:border-emerald-500"
+                className="w-full p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white font-bold text-xs focus:outline-none"
               >
                 {weeklyPlan.map(day => (
                   <option key={day.dayId} value={day.dayId}>
@@ -419,43 +450,43 @@ export const MealSetExplorer: React.FC = () => {
 
             {/* Meal Slot Selector: 3 Slots (Breakfast, Lunch, Dinner) */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Chọn Bữa Ăn:</label>
+              <label className="text-xs font-bold text-stone-700 dark:text-stone-300">Bữa Ăn:</label>
               <div className="grid grid-cols-3 gap-2">
                 <button
                   type="button"
                   onClick={() => setTargetSlot('breakfast')}
                   className={`p-2.5 rounded-xl border text-xs font-extrabold transition-all flex flex-col items-center justify-center gap-1 ${
                     targetSlot === 'breakfast'
-                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 shadow-sm'
-                      : 'border-[#EBE5DC] dark:border-[#292524] bg-stone-50 dark:bg-[#1C1A18] text-stone-700 dark:text-stone-300 hover:bg-stone-100'
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300'
+                      : 'border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300'
                   }`}
                 >
                   <span className="text-sm">☀️</span>
-                  <span>Bữa Sáng</span>
+                  <span>Sáng</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setTargetSlot('lunch')}
                   className={`p-2.5 rounded-xl border text-xs font-extrabold transition-all flex flex-col items-center justify-center gap-1 ${
                     targetSlot === 'lunch'
-                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 shadow-sm'
-                      : 'border-[#EBE5DC] dark:border-[#292524] bg-stone-50 dark:bg-[#1C1A18] text-stone-700 dark:text-stone-300 hover:bg-stone-100'
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300'
+                      : 'border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300'
                   }`}
                 >
                   <span className="text-sm">🌤️</span>
-                  <span>Bữa Trưa</span>
+                  <span>Trưa</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setTargetSlot('dinner')}
                   className={`p-2.5 rounded-xl border text-xs font-extrabold transition-all flex flex-col items-center justify-center gap-1 ${
                     targetSlot === 'dinner'
-                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 shadow-sm'
-                      : 'border-[#EBE5DC] dark:border-[#292524] bg-stone-50 dark:bg-[#1C1A18] text-stone-700 dark:text-stone-300 hover:bg-stone-100'
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300'
+                      : 'border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300'
                   }`}
                 >
                   <span className="text-sm">🌙</span>
-                  <span>Bữa Tối</span>
+                  <span>Tối</span>
                 </button>
               </div>
             </div>
@@ -464,13 +495,13 @@ export const MealSetExplorer: React.FC = () => {
             <div className="pt-2 flex gap-2">
               <button
                 onClick={() => setAssigningMealSet(null)}
-                className="flex-1 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#292524] dark:hover:bg-[#34302C] text-stone-700 dark:text-stone-300 font-bold text-xs transition-colors"
+                className="flex-1 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold text-xs"
               >
                 Hủy
               </button>
               <button
                 onClick={handleApplySet}
-                className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-extrabold text-xs shadow-md shadow-amber-500/20 active:scale-95 transition-all"
+                className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-xs shadow-sm"
               >
                 Xác Nhận Gán
               </button>

@@ -11,7 +11,9 @@ import {
   getPeakStats,
   compute24hHourlyDistribution,
   simulateTeammateAction,
-  getCurrentSessionId
+  getCurrentSessionId,
+  getActiveUserSessions,
+  getActiveUserCount
 } from '../../src/utils/telemetryEngine';
 
 describe('Unit: Real-Data Telemetry Engine & Multi-Teammate Concurrent Usage', () => {
@@ -170,6 +172,45 @@ describe('Unit: Real-Data Telemetry Engine & Multi-Teammate Concurrent Usage', (
       expect(e.badge).toBeTruthy();
       expect(Number.isFinite(e.timestamp)).toBe(true);
     });
+  });
+
+  it('TELEM-07: Admin account does NOT count as a user in active sessions & user metrics', () => {
+    // Clear storage for controlled assert
+    store['mealwise_active_sessions'] = JSON.stringify([
+      {
+        sessionId: 'sess_admin_1',
+        userName: 'MealWise Administrator',
+        role: 'admin',
+        activeTab: 'admin',
+        lastSeen: Date.now()
+      },
+      {
+        sessionId: 'sess_user_1',
+        userName: 'Thu Hà (Mẹ 2 con)',
+        role: 'user',
+        activeTab: 'meal-sets',
+        lastSeen: Date.now()
+      },
+      {
+        sessionId: 'sess_user_2',
+        userName: 'Khách Ghé Thăm',
+        role: 'guest',
+        activeTab: 'weekly',
+        lastSeen: Date.now()
+      }
+    ]);
+
+    const allSessions = getActiveSessions();
+    expect(allSessions.length).toBe(3);
+
+    // getActiveUserSessions strictly filters out admin
+    const userOnlySessions = getActiveUserSessions();
+    expect(userOnlySessions.length).toBe(2);
+    expect(userOnlySessions.some(s => s.role === 'admin')).toBe(false);
+
+    // getActiveUserCount strictly returns 2 (excluding admin)
+    const userCount = getActiveUserCount();
+    expect(userCount).toBe(2);
   });
 
 });

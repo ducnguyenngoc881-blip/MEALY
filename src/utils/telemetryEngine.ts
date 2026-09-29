@@ -206,8 +206,9 @@ export function heartbeatSession(userName = 'Khách', role: 'admin' | 'user' | '
 
     localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(sessions));
 
-    // Update peak 24h & all-time peak
-    const activeCount = sessions.length;
+    // Update peak 24h & all-time peak (Admin account does NOT count as a user)
+    const endUserSessions = sessions.filter(s => s.role !== 'admin');
+    const activeCount = endUserSessions.length;
     const current24hPeak = parseInt(localStorage.getItem(PEAK_24H_KEY) || '0', 10);
     if (activeCount > current24hPeak) {
       localStorage.setItem(PEAK_24H_KEY, activeCount.toString());
@@ -259,6 +260,20 @@ export function getActiveSessions(): ActiveSession[] {
   } catch {
     return [];
   }
+}
+
+/**
+ * Get active end-user sessions (Admin account does NOT count as a user)
+ */
+export function getActiveUserSessions(): ActiveSession[] {
+  return getActiveSessions().filter(s => s.role !== 'admin');
+}
+
+/**
+ * Get count of active end-users online (Admin account does NOT count as a user)
+ */
+export function getActiveUserCount(): number {
+  return getActiveUserSessions().length;
 }
 
 /**
@@ -394,11 +409,16 @@ export function compute24hHourlyDistribution(events: TelemetryEvent[]) {
     hoursMap[i] = 0;
   }
 
-  // Populate from real events
-  events.forEach(ev => {
-    const h = new Date(ev.timestamp).getHours();
-    hoursMap[h] = (hoursMap[h] || 0) + 1;
-  });
+  // Populate from real events (Admin account does NOT count as a user)
+  events
+    .filter(ev => {
+      const actorLower = (ev.actor || '').toLowerCase();
+      return !actorLower.includes('admin') && !actorLower.includes('quản trị viên');
+    })
+    .forEach(ev => {
+      const h = new Date(ev.timestamp).getHours();
+      hoursMap[h] = (hoursMap[h] || 0) + 1;
+    });
 
   const currentHour = new Date().getHours();
   // Ensure current hour has baseline activity

@@ -180,15 +180,15 @@ export const FridgeView: React.FC = () => {
   return (
     <div className="space-y-4 animate-fadeIn pb-12">
       {/* Top Banner & Header */}
-      <div className="p-3 sm:p-4 rounded-3xl glass-card border border-amber-500/20 dark:border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-ceramic-50 to-stone-100 dark:from-stone-900 dark:via-stone-900 dark:to-amber-950/30 space-y-2.5 sm:space-y-3 shadow-sm">
+      <div className="p-3 sm:p-4 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 space-y-2.5 sm:space-y-3 shadow-xs">
         {/* Responsive Header Action Row: flex-wrap with gap-y-2 guarantees zero collision and zero overflow */}
         <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-1.5 sm:gap-2">
           {/* Status Counter Badge */}
-          <div className="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-[10.5px] sm:text-[11px] font-bold shrink-0">
+          <div className="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 text-[10.5px] sm:text-[11px] font-bold shrink-0">
             <span className="text-xs sm:text-sm shrink-0">🧊</span>
             <span className="hidden sm:inline whitespace-nowrap">Tủ Lạnh & Đồ Thừa</span>
             <span className="sm:hidden whitespace-nowrap">Tủ Lạnh</span>
-            <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-amber-500/25 text-amber-900 dark:text-amber-200 text-[10px] font-black shrink-0">
+            <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] font-black shrink-0">
               {pantryItems.length}
             </span>
           </div>
@@ -198,7 +198,7 @@ export const FridgeView: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveTab('grocery')}
-              className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 rounded-full bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[10.5px] sm:text-[11px] font-black transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-[10.5px] sm:text-[11px] font-bold transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
               title="Chuyển sang danh sách đi chợ để đối chiếu nguyên liệu"
             >
               <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
@@ -224,7 +224,7 @@ export const FridgeView: React.FC = () => {
                     }
                   });
                 }}
-                className="p-1 sm:p-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-white/10 dark:hover:bg-rose-500/20 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer shrink-0"
+                className="p-1 sm:p-1.5 rounded-xl bg-stone-100 hover:bg-rose-100 dark:bg-stone-800 dark:hover:bg-rose-950/40 text-stone-500 hover:text-rose-600 dark:text-stone-400 dark:hover:text-rose-400 border border-stone-200 dark:border-stone-700 transition-colors cursor-pointer shrink-0"
                 title="Dọn sạch tủ lạnh"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -234,53 +234,53 @@ export const FridgeView: React.FC = () => {
         </div>
 
         <div className="pt-0.5">
-          <h1 className="text-base sm:text-lg md:text-xl font-black tracking-tight text-slate-900 dark:text-white leading-snug text-balance">
+          <h1 className="text-base sm:text-lg md:text-xl font-black tracking-tight text-stone-900 dark:text-white leading-snug text-balance">
             <span>Tủ Lạnh & Đồ Ăn Thừa </span>
             <span className="inline-block whitespace-nowrap text-amber-600 dark:text-amber-400">Thông Minh</span>
           </h1>
-          <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-0.5">
+          <p className="text-[11px] sm:text-xs text-stone-500 dark:text-stone-400 leading-relaxed mt-0.5">
             Quản lý thức ăn thừa bữa trước, theo dõi hạn dùng và tận dụng nguyên liệu sẵn có để trừ bớt tiền đi chợ.
           </p>
         </div>
 
         {/* 4 Summary Metric Cards: 2x2 on mobile, 4 cols on sm+ */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 pt-1">
-          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-white/10 shadow-xs min-w-0">
-            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1 min-w-0">
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/80 dark:border-stone-700/80 shadow-2xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-stone-500 dark:text-stone-400 flex items-center gap-1 min-w-0">
               <span className="shrink-0 text-[11px]">🧊</span>
               <span className="truncate">Trong Tủ Lạnh</span>
             </span>
-            <span className="text-sm sm:text-lg font-black text-amber-700 dark:text-amber-300 block mt-0.5 truncate">
+            <span className="text-sm sm:text-lg font-black text-stone-900 dark:text-white block mt-0.5 truncate">
               {pantryItems.length} món
             </span>
           </div>
 
-          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-amber-500/30 shadow-xs min-w-0">
-            <span className="text-[10px] sm:text-[11px] font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1 min-w-0">
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/80 dark:border-stone-700/80 shadow-2xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1 min-w-0">
               <Clock className="w-3 h-3 shrink-0" />
               <span className="truncate">Ăn Gấp ≤ 2 Ngày</span>
             </span>
-            <span className="text-sm sm:text-lg font-black text-amber-600 dark:text-amber-400 block mt-0.5 truncate">
+            <span className="text-sm sm:text-lg font-black text-rose-600 dark:text-rose-400 block mt-0.5 truncate">
               {urgentList.length} món
             </span>
           </div>
 
-          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-purple-500/30 shadow-xs min-w-0">
-            <span className="text-[10px] sm:text-[11px] font-bold text-purple-600 dark:text-purple-400 flex items-center gap-1 min-w-0">
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/80 dark:border-stone-700/80 shadow-2xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-stone-500 dark:text-stone-400 flex items-center gap-1 min-w-0">
               <span className="shrink-0 text-[11px]">🍲</span>
               <span className="truncate">Đồ Ăn Thừa</span>
             </span>
-            <span className="text-sm sm:text-lg font-black text-purple-600 dark:text-purple-300 block mt-0.5 truncate">
+            <span className="text-sm sm:text-lg font-black text-stone-900 dark:text-white block mt-0.5 truncate">
               {leftoversList.length} món
             </span>
           </div>
 
-          <div className="p-2 sm:p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-amber-500/30 shadow-xs min-w-0">
-            <span className="text-[10px] sm:text-[11px] font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1 min-w-0">
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/80 dark:border-stone-700/80 shadow-2xs min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1 min-w-0">
               <Sparkles className="w-3 h-3 shrink-0" />
               <span className="truncate">Tiết Kiệm Đi Chợ</span>
             </span>
-            <span className="text-sm sm:text-lg font-black text-amber-700 dark:text-amber-400 block mt-0.5 truncate">
+            <span className="text-sm sm:text-lg font-black text-emerald-700 dark:text-emerald-400 block mt-0.5 truncate">
               ~{(totalPotentialSavings / 1000).toFixed(0)}k đ
             </span>
           </div>
@@ -289,20 +289,20 @@ export const FridgeView: React.FC = () => {
 
       {/* Whole-Fridge Multi-Ingredient Suggestions Section */}
       {pantryItems.length > 0 && (
-        <div className="p-3 sm:p-4 rounded-3xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-orange-500/10 border-2 border-amber-500/30 dark:border-amber-500/30 shadow-md space-y-3 animate-fadeIn">
+        <div className="p-3 sm:p-4 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-3 animate-fadeIn">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0 flex-1">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-stone-950 flex items-center justify-center shadow-xs shrink-0 font-bold">
+              <div className="w-8 h-8 rounded-xl bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center shadow-xs shrink-0 font-bold">
                 <ChefHat className="w-4 h-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-xs sm:text-sm font-black text-stone-900 dark:text-stone-100 uppercase tracking-wide flex items-center gap-1.5 flex-wrap">
+                <h3 className="text-xs sm:text-sm font-black text-stone-900 dark:text-white uppercase tracking-wide flex items-center gap-1.5 flex-wrap">
                   <span className="truncate">Gợi Ý Nấu Từ Cả Tủ Lạnh</span>
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-900 dark:text-amber-200 border border-amber-500/30 shrink-0">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 shrink-0">
                     {wholeFridgeData.totalEligible} món có thể nấu
                   </span>
                 </h3>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300 truncate">
+                <p className="text-[11px] text-stone-500 dark:text-stone-400 truncate">
                   Đối chiếu toàn bộ {pantryItems.length} thực phẩm sẵn có trong tủ với hơn 700 công thức
                 </p>
               </div>
@@ -313,7 +313,7 @@ export const FridgeView: React.FC = () => {
                 type="button"
                 onClick={handleReloadWholeFridgeSuggestions}
                 disabled={wholeFridgeData.totalEligible <= 4}
-                className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-stone-950 shadow-xs active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 shadow-2xs active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 title={wholeFridgeData.totalEligible <= 4 ? 'Chỉ có 4 món hoặc ít hơn có thể nấu' : 'Đổi sang các món khác từ kho hơn 700 món'}
               >
                 <RotateCcw className={`w-3.5 h-3.5 ${isReloadingWholeFridge ? 'animate-spin' : ''}`} />
@@ -324,7 +324,7 @@ export const FridgeView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsWholeFridgeExpanded(prev => !prev)}
-                className="p-1.5 rounded-xl bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 cursor-pointer"
+                className="p-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-stone-900 cursor-pointer border border-stone-200 dark:border-stone-700"
                 title={isWholeFridgeExpanded ? 'Thu gọn' : 'Mở rộng'}
               >
                 {isWholeFridgeExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -339,7 +339,7 @@ export const FridgeView: React.FC = () => {
                   {wholeFridgeData.results.map((res, idx) => (
                     <div 
                       key={res.recipe.id + idx}
-                      className="p-3 rounded-2xl bg-white dark:bg-slate-800/90 border border-amber-500/20 shadow-xs flex flex-col justify-between gap-2.5 hover:border-amber-500/50 transition-all group"
+                      className="p-3 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 shadow-2xs flex flex-col justify-between gap-2.5 hover:border-stone-400 dark:hover:border-stone-600 transition-all group"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <SafeImage
@@ -350,29 +350,29 @@ export const FridgeView: React.FC = () => {
                           className="w-12 h-12 rounded-xl object-cover shrink-0"
                         />
                         <div className="min-w-0 flex-1">
-                          <h4 className="text-xs font-black text-slate-900 dark:text-white truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                          <h4 className="text-xs font-black text-stone-900 dark:text-white truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                             {res.recipe.title}
                           </h4>
-                          <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                          <p className="text-[10px] text-stone-500 dark:text-stone-400 truncate">
                             {res.recipe.cookTimeMinutes} phút • {res.recipe.calories} kcal
                           </p>
                           <div className="mt-1 flex flex-wrap items-center gap-1">
-                            <span className="inline-flex items-center gap-0.5 text-[9px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-900 dark:text-amber-200 border border-amber-500/30 shrink-0">
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-stone-200/70 dark:bg-stone-700/70 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-600 shrink-0">
                               {res.matchPercentage}% nguyên liệu
                             </span>
                             {res.urgentMatchedCount > 0 && (
-                              <span className="inline-flex items-center gap-0.5 text-[9px] font-extrabold px-1.5 py-0.5 rounded-md bg-rose-500/20 text-rose-800 dark:text-rose-300 border border-rose-500/40 shrink-0">
+                              <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 shrink-0">
                                 <span>⚠️ Ăn gấp</span>
                               </span>
                             )}
-                            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 truncate max-w-full">
+                            <span className="inline-flex items-center gap-1 text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-600 truncate max-w-full">
                               <span>✨</span>
                               <span className="truncate">
                                 Có sẵn {res.matchedCount} món: {res.matchedPantryItems.map(i => i.name).slice(0, 3).join(', ')}{res.matchedCount > 3 ? '...' : ''}
                               </span>
                             </span>
                             {res.missingIngredients && res.missingIngredients.length > 0 ? (
-                              <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10 truncate max-w-full">
+                              <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-700/60 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700 truncate max-w-full">
                                 <span>🛒</span>
                                 <span className="truncate">
                                   Thiếu: {res.missingIngredients.slice(0, 3).join(', ')}{res.missingIngredients.length > 3 ? '...' : ''}
@@ -390,7 +390,7 @@ export const FridgeView: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSelectedRecipe(res.recipe)}
-                        className="w-full py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 text-xs font-black shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer text-center"
+                        className="w-full py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:hover:bg-white dark:text-stone-950 text-xs font-bold shrink-0 shadow-2xs active:scale-95 transition-all cursor-pointer text-center"
                       >
                         Xem Công Thức
                       </button>
@@ -408,12 +408,12 @@ export const FridgeView: React.FC = () => {
       )}
 
       {/* Quick Suggestions Chips */}
-      <div className="p-3 sm:p-4 rounded-2xl bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 space-y-2">
+      <div className="p-3 sm:p-4 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1">
+          <span className="text-[11px] font-black text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-1">
             <span>💡</span> Gợi Ý Nhanh Món Thừa Phổ Biến (Bấm 1 chạm để điền):
           </span>
-          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+          <span className="text-[10px] text-stone-500 dark:text-stone-400 font-medium">
             Tiết kiệm thời gian gõ
           </span>
         </div>
@@ -423,35 +423,35 @@ export const FridgeView: React.FC = () => {
               key={idx}
               type="button"
               onClick={() => handleApplySuggestion(sug)}
-              className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-amber-500/15 text-slate-700 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-300 border border-slate-200 dark:border-white/10 text-xs font-semibold transition-all cursor-pointer flex items-center gap-1 active:scale-95 shadow-2xs"
+              className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-xs font-semibold transition-all cursor-pointer flex items-center gap-1 active:scale-95 shadow-2xs"
             >
               <span>{sug.isLeftover ? '🍲' : '🥬'}</span>
               <span>{sug.name}</span>
-              <span className="text-[10px] text-slate-400">({sug.qty})</span>
+              <span className="text-[10px] text-stone-400">({sug.qty})</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Add Item Form (Collapsible Card) */}
-      <div className="rounded-3xl border border-amber-500/30 bg-amber-50/40 dark:bg-amber-950/20 overflow-hidden shadow-sm">
+      <div className="rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 overflow-hidden shadow-2xs">
         <button
           type="button"
           onClick={() => setIsAddingOpen(prev => !prev)}
-          className="w-full px-4 py-3 sm:py-3.5 flex items-center justify-between text-left font-black text-amber-950 dark:text-amber-200 text-xs sm:text-sm hover:bg-amber-500/10 transition-colors cursor-pointer"
+          className="w-full px-4 py-3 sm:py-3.5 flex items-center justify-between text-left font-black text-stone-900 dark:text-white text-xs sm:text-sm hover:bg-stone-50 dark:hover:bg-stone-850 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-bold flex items-center justify-center shadow-xs">
+            <div className="w-7 h-7 rounded-xl bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold flex items-center justify-center shadow-xs">
               <Plus className="w-4 h-4 font-bold" />
             </div>
             <div>
               <span className="block font-black">Thêm Món Thừa / Nguyên Liệu Mới Vào Tủ Lạnh</span>
-              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">
+              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400 block">
                 Tự động đánh dấu "Có sẵn" trong danh sách đi chợ
               </span>
             </div>
           </div>
-          {isAddingOpen ? <ChevronUp className="w-4 h-4 text-amber-600" /> : <ChevronDown className="w-4 h-4 text-amber-600" />}
+          {isAddingOpen ? <ChevronUp className="w-4 h-4 text-stone-500" /> : <ChevronDown className="w-4 h-4 text-stone-500" />}
         </button>
 
         {isAddingOpen && (
@@ -579,14 +579,14 @@ export const FridgeView: React.FC = () => {
       {/* Filter Tabs & Search Bar */}
       <div className="space-y-2">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+          <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 scrollbar-none p-1 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800">
             <button
               type="button"
               onClick={() => setActiveFilter('all')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 activeFilter === 'all'
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                  ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white font-black shadow-xs border border-stone-200/80 dark:border-stone-700'
+                  : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
               }`}
             >
               Tất Cả ({pantryItems.length})
@@ -597,8 +597,8 @@ export const FridgeView: React.FC = () => {
               onClick={() => setActiveFilter('leftovers')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 activeFilter === 'leftovers'
-                  ? 'bg-purple-600 text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                  ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white font-black shadow-xs border border-stone-200/80 dark:border-stone-700'
+                  : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
               }`}
             >
               🍲 Đồ Ăn Thừa ({leftoversList.length})
@@ -609,8 +609,8 @@ export const FridgeView: React.FC = () => {
               onClick={() => setActiveFilter('warning')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 activeFilter === 'warning'
-                  ? 'bg-amber-500 text-slate-950 shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                  ? 'bg-white dark:bg-stone-800 text-rose-600 dark:text-rose-400 font-black shadow-xs border border-stone-200/80 dark:border-stone-700'
+                  : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
               }`}
             >
               ⏰ Ăn Gấp ≤ 2 Ngày ({urgentList.length})
@@ -621,8 +621,8 @@ export const FridgeView: React.FC = () => {
               onClick={() => setActiveFilter('fresh')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 activeFilter === 'fresh'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                  ? 'bg-white dark:bg-stone-800 text-emerald-700 dark:text-emerald-400 font-black shadow-xs border border-stone-200/80 dark:border-stone-700'
+                  : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
               }`}
             >
               🥬 Tươi Mới ({freshList.length})
@@ -630,13 +630,13 @@ export const FridgeView: React.FC = () => {
           </div>
 
           <div className="relative flex-1 sm:max-w-xs">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Tìm kiếm trong tủ..."
-              className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-850 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-stone-400"
             />
           </div>
         </div>

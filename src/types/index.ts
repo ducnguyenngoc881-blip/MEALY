@@ -15,6 +15,9 @@ export interface CookingInstruction {
   step: number;
   title: string;
   content: string;
+  tip?: string;
+  durationMinutes?: number;
+  heatLevel?: 'lửa lớn' | 'lửa vừa' | 'lửa nhỏ' | 'riu riu' | 'không dùng nhiệt';
 }
 
 export interface Recipe {
@@ -32,12 +35,14 @@ export interface Recipe {
   ingredients: Ingredient[];
   instructions: CookingInstruction[];
   tags: string[];
+  chefTip?: string;
+  difficulty?: 'Dễ' | 'Trung bình' | 'Cầu kỳ';
 }
 
 export interface VietnameseMealSet {
   id: string;
   title: string;
-  region: 'bac' | 'trung' | 'nam' | 'chay' | 'toan-quoc';
+  region: 'bac' | 'trung' | 'nam' | 'chay' | 'toan-quoc' | 'western';
   description: string;
   mainDish: Recipe;
   soupDish: Recipe;

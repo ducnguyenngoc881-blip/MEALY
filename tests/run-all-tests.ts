@@ -11,6 +11,7 @@ import './unit/cateringMath.test';
 import './unit/groceryMath.test';
 import './unit/nutritionMath.test';
 import './unit/recipeScaling.test';
+import './unit/recipeAuthenticityAndIntegrity.test';
 import './unit/apexFastMeal.test';
 import './unit/dishImageResolver.test';
 import './unit/budgetCompliance.test';
@@ -30,6 +31,7 @@ import './unit/westernCuisineIntegration.test';
 import './unit/statePersistence.test';
 import './unit/guestAccountAndContextResilience.test';
 import './unit/multiUserTelemetry.test';
+import './unit/screenTimeAndAdFilters.test';
 
 // 2. Comprehensive 1000+ Scenario Matrices (Screens 1 to 9)
 import './unit/scenarioMatrixScreens1to3.test';

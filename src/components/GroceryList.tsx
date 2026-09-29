@@ -59,9 +59,9 @@ export const STORE_CHANNELS: Record<Exclude<StoreChannel, 'all'>, StoreChannelCo
     name: 'Chợ Dân Sinh',
     shortName: 'Chợ Dân Sinh',
     icon: '🏪',
-    badgeBg: 'bg-emerald-100 dark:bg-emerald-950/70',
-    badgeText: 'text-emerald-900 dark:text-emerald-300',
-    badgeBorder: 'border-emerald-300 dark:border-emerald-800',
+    badgeBg: 'bg-emerald-50 dark:bg-emerald-950/40',
+    badgeText: 'text-emerald-700 dark:text-emerald-300',
+    badgeBorder: 'border-emerald-200/60 dark:border-emerald-800/50',
     multiplier: 1.0,
     shippingFee: 0,
     freeShippingThreshold: 0,
@@ -75,9 +75,9 @@ export const STORE_CHANNELS: Record<Exclude<StoreChannel, 'all'>, StoreChannelCo
     name: 'WinMart',
     shortName: 'WinMart',
     icon: '🔴',
-    badgeBg: 'bg-rose-100 dark:bg-rose-950/70',
-    badgeText: 'text-rose-900 dark:text-rose-300',
-    badgeBorder: 'border-rose-300 dark:border-rose-800',
+    badgeBg: 'bg-rose-50 dark:bg-rose-950/40',
+    badgeText: 'text-rose-700 dark:text-rose-300',
+    badgeBorder: 'border-rose-200/60 dark:border-rose-800/50',
     multiplier: 1.15,
     shippingFee: 25000,
     freeShippingThreshold: 300000,
@@ -91,9 +91,9 @@ export const STORE_CHANNELS: Record<Exclude<StoreChannel, 'all'>, StoreChannelCo
     name: 'Bách Hóa Xanh',
     shortName: 'BHX',
     icon: '🟢',
-    badgeBg: 'bg-amber-100 dark:bg-amber-950/70',
-    badgeText: 'text-amber-950 dark:text-amber-300',
-    badgeBorder: 'border-amber-300 dark:border-amber-800',
+    badgeBg: 'bg-amber-50 dark:bg-amber-950/40',
+    badgeText: 'text-amber-800 dark:text-amber-300',
+    badgeBorder: 'border-amber-200/60 dark:border-amber-800/50',
     multiplier: 1.05,
     shippingFee: 15000,
     freeShippingThreshold: 250000,
@@ -107,9 +107,9 @@ export const STORE_CHANNELS: Record<Exclude<StoreChannel, 'all'>, StoreChannelCo
     name: 'Sạp Đối Tác',
     shortName: 'Sạp Đối Tác',
     icon: '🏮',
-    badgeBg: 'bg-purple-100 dark:bg-purple-950/70',
-    badgeText: 'text-purple-900 dark:text-purple-300',
-    badgeBorder: 'border-purple-300 dark:border-purple-800',
+    badgeBg: 'bg-purple-50 dark:bg-purple-950/40',
+    badgeText: 'text-purple-700 dark:text-purple-300',
+    badgeBorder: 'border-purple-200/60 dark:border-purple-800/50',
     multiplier: 1.10,
     shippingFee: 20000,
     freeShippingThreshold: 350000,
@@ -698,10 +698,10 @@ export const GroceryList: React.FC = () => {
     <div className="space-y-4">
       
       {/* Header Banner */}
-      <div className="p-4 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-emerald-950/10 via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-900 dark:to-emerald-950/40 space-y-3">
+      <div className="p-4 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-[11px] font-bold shrink-0">
-            <ShoppingCart className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 text-[11px] font-bold shrink-0">
+            <ShoppingCart className="w-3.5 h-3.5 text-stone-900 dark:text-white" />
             <span>Tự Động Gom Nguyên Liệu</span>
           </div>
 
@@ -710,12 +710,12 @@ export const GroceryList: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveTab('pantry')}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/25 dark:from-cyan-500/20 dark:to-blue-500/20 text-cyan-800 dark:text-cyan-300 border border-cyan-500/30 text-[11px] font-black transition-all active:scale-95 cursor-pointer shrink-0 shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
               title="Xem tủ lạnh, kiểm tra đồ thừa và nguyên liệu sẵn có"
             >
               <span className="text-xs">🧊</span>
               <span>Tủ Lạnh & Đồ Thừa</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-cyan-800 dark:text-cyan-200 text-[10px] font-black">
+              <span className="px-1.5 py-0.2 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] font-black">
                 {pantryItems.length}
               </span>
             </button>
@@ -724,10 +724,10 @@ export const GroceryList: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowPriceSimulation(prev => !prev)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500/15 to-orange-500/15 hover:from-amber-500/25 hover:to-orange-500/25 dark:from-amber-500/20 dark:to-orange-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[11px] font-black transition-all active:scale-95 cursor-pointer shrink-0"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0"
               title="Mô phỏng và so sánh giỏ hàng online giữa các chuỗi siêu thị"
             >
-              <TrendingUp className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <TrendingUp className="w-3.5 h-3.5 text-stone-600 dark:text-stone-400" />
               <span>Mô Phỏng Giá Online</span>
               {showPriceSimulation ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
             </button>
@@ -735,17 +735,17 @@ export const GroceryList: React.FC = () => {
         </div>
 
         <div>
-          <h1 className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-lg font-black tracking-tight text-stone-900 dark:text-white">
             Danh Sách Đi Chợ Thông Minh
           </h1>
-          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-0.5">
+          <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed mt-0.5">
             Tự động gộp nguyên liệu trùng lặp, chuẩn hóa đơn vị và phân luồng theo 4 kênh mua sắm tối ưu.
           </p>
         </div>
 
-        <div className="pt-2 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 border-t border-slate-200/80 dark:border-white/10 font-medium">
+        <div className="pt-2 flex items-center justify-between text-xs text-stone-600 dark:text-stone-300 border-t border-stone-100 dark:border-stone-800 font-medium">
           <span>{totalCount} nguyên liệu ({overallCheckedCount} đã mua)</span>
-          <span className="font-extrabold text-amber-800 dark:text-amber-300">
+          <span className="font-extrabold text-stone-900 dark:text-white">
             Ước tính: {totalCostEstimate.toLocaleString('vi-VN')} đ
           </span>
         </div>
@@ -1213,18 +1213,20 @@ export const GroceryList: React.FC = () => {
         </div>
 
         {/* Horizontal scrollable channel tabs */}
-        <div className="flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-5 sm:gap-1 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-5 sm:gap-1 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xs">
           {/* Tất Cả */}
           <button
             onClick={() => setStoreFilter('all')}
-            className={`py-2 px-2 sm:px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] shrink-0 sm:shrink cursor-pointer ${
+            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
               storeFilter === 'all'
-                ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold'
+                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
+                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
           >
-            <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Tất Cả</span>
-            <span className={`text-[10px] ${storeFilter === 'all' ? 'text-slate-900 font-extrabold' : 'text-slate-500 dark:text-slate-400'}`}>
+            <div className="flex items-center gap-1">
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Tất Cả</span>
+            </div>
+            <span className={`text-[10px] ${storeFilter === 'all' ? 'text-stone-900 dark:text-white font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
               ({channelCounts['all']})
             </span>
           </button>
@@ -1232,17 +1234,20 @@ export const GroceryList: React.FC = () => {
           {/* Chợ Dân Sinh */}
           <button
             onClick={() => setStoreFilter('cho-dan-sinh')}
-            className={`py-2 px-2 sm:px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] shrink-0 sm:shrink cursor-pointer ${
+            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
               storeFilter === 'cho-dan-sinh'
-                ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold'
+                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
+                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
           >
-            <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-              <span className="sm:hidden">Chợ Tươi</span>
-              <span className="hidden sm:inline">Chợ Dân Sinh</span>
-            </span>
-            <span className={`text-[10px] ${storeFilter === 'cho-dan-sinh' ? 'text-emerald-100 font-extrabold' : 'text-slate-500 dark:text-slate-400'}`}>
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
+                <span className="sm:hidden">Chợ Tươi</span>
+                <span className="hidden sm:inline">Chợ Dân Sinh</span>
+              </span>
+            </div>
+            <span className={`text-[10px] ${storeFilter === 'cho-dan-sinh' ? 'text-emerald-700 dark:text-emerald-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
               ({channelCounts['cho-dan-sinh']})
             </span>
           </button>
@@ -1250,14 +1255,17 @@ export const GroceryList: React.FC = () => {
           {/* WinMart */}
           <button
             onClick={() => setStoreFilter('winmart')}
-            className={`py-2 px-2 sm:px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] shrink-0 sm:shrink cursor-pointer ${
+            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
               storeFilter === 'winmart'
-                ? 'bg-rose-600 text-white shadow-sm font-black'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold'
+                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
+                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
           >
-            <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">WinMart</span>
-            <span className={`text-[10px] ${storeFilter === 'winmart' ? 'text-rose-100 font-extrabold' : 'text-slate-500 dark:text-slate-400'}`}>
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">WinMart</span>
+            </div>
+            <span className={`text-[10px] ${storeFilter === 'winmart' ? 'text-rose-700 dark:text-rose-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
               ({channelCounts['winmart']})
             </span>
           </button>
@@ -1265,17 +1273,20 @@ export const GroceryList: React.FC = () => {
           {/* Bách Hóa Xanh */}
           <button
             onClick={() => setStoreFilter('bach-hoa-xanh')}
-            className={`py-2 px-2 sm:px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] shrink-0 sm:shrink cursor-pointer ${
+            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
               storeFilter === 'bach-hoa-xanh'
-                ? 'bg-amber-600 text-white shadow-sm font-black'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold'
+                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
+                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
           >
-            <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-              <span className="sm:hidden">BHX</span>
-              <span className="hidden sm:inline">Bách Hóa Xanh</span>
-            </span>
-            <span className={`text-[10px] ${storeFilter === 'bach-hoa-xanh' ? 'text-amber-100 font-extrabold' : 'text-slate-500 dark:text-slate-400'}`}>
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
+                <span className="sm:hidden">BHX</span>
+                <span className="hidden sm:inline">Bách Hóa Xanh</span>
+              </span>
+            </div>
+            <span className={`text-[10px] ${storeFilter === 'bach-hoa-xanh' ? 'text-amber-700 dark:text-amber-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
               ({channelCounts['bach-hoa-xanh']})
             </span>
           </button>
@@ -1283,17 +1294,20 @@ export const GroceryList: React.FC = () => {
           {/* Sạp Đối Tác */}
           <button
             onClick={() => setStoreFilter('sap-doi-tac')}
-            className={`py-2 px-2 sm:px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] shrink-0 sm:shrink cursor-pointer ${
+            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
               storeFilter === 'sap-doi-tac'
-                ? 'bg-purple-600 text-white shadow-sm font-black'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold'
+                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
+                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
           >
-            <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-              <span className="sm:hidden">Sạp ĐT</span>
-              <span className="hidden sm:inline">Sạp Đối Tác</span>
-            </span>
-            <span className={`text-[10px] ${storeFilter === 'sap-doi-tac' ? 'text-purple-100 font-extrabold' : 'text-slate-500 dark:text-slate-400'}`}>
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
+                <span className="sm:hidden">Sạp ĐT</span>
+                <span className="hidden sm:inline">Sạp Đối Tác</span>
+              </span>
+            </div>
+            <span className={`text-[10px] ${storeFilter === 'sap-doi-tac' ? 'text-purple-700 dark:text-purple-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
               ({channelCounts['sap-doi-tac']})
             </span>
           </button>
@@ -1332,26 +1346,26 @@ export const GroceryList: React.FC = () => {
                     onClick={() => handleToggle(item)}
                     className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 min-h-[52px] active:scale-[0.99] select-none ${
                       isChecked
-                        ? 'bg-slate-100/70 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800/60 opacity-60'
-                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-amber-500/40 shadow-sm'
+                        ? 'bg-stone-50 dark:bg-stone-900/40 border-stone-200 dark:border-stone-800/60 opacity-60'
+                        : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs'
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0 flex-1">
                       <div className="shrink-0">
                         {isChecked ? (
                           <div 
-                            className="w-5 h-5 rounded-lg flex items-center justify-center shadow-sm text-white transition-colors"
+                            className="w-5 h-5 rounded-lg flex items-center justify-center shadow-xs text-white transition-colors"
                             style={{ backgroundColor: checkInfo.checkedByColor || (checkInfo.isMine ? (collabUser.color || '#10b981') : '#8b5cf6') }}
                           >
                             <Check className="w-3.5 h-3.5 stroke-[3]" />
                           </div>
                         ) : (
-                          <div className="w-5 h-5 rounded-lg border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-950" />
+                          <div className="w-5 h-5 rounded-lg border-2 border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-950" />
                         )}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
+                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-white'}`}>
                             {item.name}
                           </span>
                           {isChecked && (
@@ -1372,7 +1386,7 @@ export const GroceryList: React.FC = () => {
                           )}
                         </div>
                         <div className="flex items-center gap-2 flex-wrap mt-0.5">
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">
+                          <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
                             ~{(item.cost || 0).toLocaleString('vi-VN')} đ
                           </span>
                           {inFridge && (
@@ -1381,7 +1395,7 @@ export const GroceryList: React.FC = () => {
                                 e.stopPropagation();
                                 setIsFridgeModalOpen(true);
                               }}
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-cyan-700 dark:text-cyan-300 bg-cyan-500/15 hover:bg-cyan-500/25 px-1.5 py-0.2 rounded-md border border-cyan-500/30 transition-colors shrink-0"
+                              className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 hover:bg-sky-100 px-1.5 py-0.2 rounded-md border border-sky-200 dark:border-sky-800 transition-colors shrink-0"
                               title="Bấm để xem chi tiết trong tủ lạnh"
                             >
                               <span>🧊 Có sẵn: {inFridge.quantity}</span>
@@ -1399,7 +1413,7 @@ export const GroceryList: React.FC = () => {
                       </span>
 
                       {/* Normalized Quantity badge */}
-                      <span className="text-[11px] font-black text-emerald-800 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-950/60 px-2 sm:px-2.5 py-1 rounded-xl border border-emerald-300 dark:border-emerald-800 whitespace-nowrap">
+                      <span className="text-[11px] font-bold text-stone-700 dark:text-stone-300 bg-stone-100 dark:bg-stone-800 px-2 sm:px-2.5 py-1 rounded-xl border border-stone-200 dark:border-stone-700 whitespace-nowrap">
                         {item.displayAmount}
                       </span>
 
@@ -1480,26 +1494,26 @@ export const GroceryList: React.FC = () => {
                     onClick={() => handleToggle(item)}
                     className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 min-h-[52px] active:scale-[0.99] select-none ${
                       isChecked
-                        ? 'bg-slate-100/70 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800/60 opacity-60'
-                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-amber-500/40 shadow-sm'
+                        ? 'bg-stone-50 dark:bg-stone-900/40 border-stone-200 dark:border-stone-800/60 opacity-60'
+                        : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs'
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0 flex-1">
                       <div className="shrink-0">
                         {isChecked ? (
                           <div 
-                            className="w-5 h-5 rounded-lg flex items-center justify-center shadow-sm text-white transition-colors"
+                            className="w-5 h-5 rounded-lg flex items-center justify-center shadow-xs text-white transition-colors"
                             style={{ backgroundColor: checkInfo.checkedByColor || (checkInfo.isMine ? (collabUser.color || '#10b981') : '#8b5cf6') }}
                           >
                             <Check className="w-3.5 h-3.5 stroke-[3]" />
                           </div>
                         ) : (
-                          <div className="w-5 h-5 rounded-lg border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-950" />
+                          <div className="w-5 h-5 rounded-lg border-2 border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-950" />
                         )}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
+                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-white'}`}>
                             {item.name}
                           </span>
                           {isChecked && (
@@ -1520,7 +1534,7 @@ export const GroceryList: React.FC = () => {
                           )}
                         </div>
                         <div className="flex items-center gap-2 flex-wrap mt-0.5">
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">
+                          <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
                             ~{(item.cost || 0).toLocaleString('vi-VN')} đ
                           </span>
                           {inFridge && (
@@ -1529,7 +1543,7 @@ export const GroceryList: React.FC = () => {
                                 e.stopPropagation();
                                 setIsFridgeModalOpen(true);
                               }}
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-cyan-700 dark:text-cyan-300 bg-cyan-500/15 hover:bg-cyan-500/25 px-1.5 py-0.2 rounded-md border border-cyan-500/30 transition-colors shrink-0"
+                              className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 hover:bg-sky-100 px-1.5 py-0.2 rounded-md border border-sky-200 dark:border-sky-800 transition-colors shrink-0"
                               title="Bấm để xem chi tiết trong tủ lạnh"
                             >
                               <span>🧊 Có sẵn: {inFridge.quantity}</span>
@@ -1547,7 +1561,7 @@ export const GroceryList: React.FC = () => {
                       </span>
 
                       {/* Normalized Quantity badge */}
-                      <span className="text-[11px] font-black text-amber-900 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-2 sm:px-2.5 py-1 rounded-xl border border-amber-300 dark:border-amber-800 whitespace-nowrap">
+                      <span className="text-[11px] font-bold text-stone-700 dark:text-stone-300 bg-stone-100 dark:bg-stone-800 px-2 sm:px-2.5 py-1 rounded-xl border border-stone-200 dark:border-stone-700 whitespace-nowrap">
                         {item.displayAmount}
                       </span>
 
@@ -1611,28 +1625,28 @@ export const GroceryList: React.FC = () => {
       </div>
 
       {/* STICKY BOTTOM PROGRESS BAR (STICKY ABOVE BOTTOM TAB BAR AT bottom-16) */}
-      <div className="sticky bottom-16 z-30 -mx-3 sm:-mx-4 -mb-3 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-2xl space-y-2">
+      <div className="sticky bottom-16 z-30 -mx-3 sm:-mx-4 -mb-3 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-t border-stone-200 dark:border-stone-800 shadow-2xl space-y-2">
         
         {/* Progress status & percentage */}
         <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1.5 font-black text-slate-900 dark:text-white">
+          <div className="flex items-center gap-1.5 font-bold text-stone-900 dark:text-white">
             {progressPercent === 100 ? (
-              <span className="text-amber-600 dark:text-amber-400 flex items-center gap-1">
+              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="w-4 h-4" /> Đã gom đủ {totalCount} món!
               </span>
             ) : (
               <span>Đã mua: {overallCheckedCount} / {totalCount} món ({progressPercent}%)</span>
             )}
           </div>
-          <span className="text-xs font-black text-amber-800 dark:text-amber-300">
+          <span className="text-xs font-black text-stone-900 dark:text-white">
             {totalCostEstimate.toLocaleString('vi-VN')} đ
           </span>
         </div>
 
         {/* Visual Progress Bar */}
-        <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+        <div className="h-2 w-full bg-stone-100 dark:bg-stone-800 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-300 rounded-full"
+            className="h-full bg-stone-900 dark:bg-stone-100 transition-all duration-300 rounded-full"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -1669,15 +1683,15 @@ export const GroceryList: React.FC = () => {
                 }, 50);
               }
             }}
-            className={`py-2.5 px-2 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer ${
+            className={`py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer ${
               !isRegistered
-                ? 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 border border-amber-500/40 shadow-xs'
-                : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-md shadow-emerald-500/25'
+                ? 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 shadow-2xs'
+                : 'bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100 text-white dark:text-stone-950 shadow-md font-black'
             }`}
             title={!isRegistered ? 'Tính năng dành cho thành viên' : (collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng mua chung')}
           >
             {!isRegistered ? (
-              <Lock className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+              <Lock className="w-4 h-4 shrink-0 text-stone-500 dark:text-stone-400" />
             ) : (
               <Users className="w-4 h-4 shrink-0" />
             )}
@@ -1690,8 +1704,8 @@ export const GroceryList: React.FC = () => {
             </span>
             {isRegistered && (
               <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-950 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-950"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
               </span>
             )}
           </button>
@@ -1700,10 +1714,10 @@ export const GroceryList: React.FC = () => {
           <button
             type="button"
             onClick={handleCopy}
-            className="py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer"
+            className="py-2.5 px-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer"
             title="Sao chép toàn bộ danh sách dạng văn bản gửi Zalo"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-slate-500" />}
+            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-stone-500" />}
             <span className="truncate">
               {copied ? 'Đã Chép Zalo' : (
                 <>

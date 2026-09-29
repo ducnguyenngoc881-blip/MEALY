@@ -262,10 +262,10 @@ export const WeeklyBoard: React.FC = () => {
     <div className="space-y-4">
       
       {/* Top Banner & Quick Controls */}
-      <div className="p-4 rounded-3xl glass-card border border-[#EBE5DC] dark:border-[#252220] bg-gradient-to-br from-amber-950/10 via-stone-50 to-stone-100 dark:from-[#1C1A18] dark:via-[#1C1A18] dark:to-amber-950/30 space-y-3">
+      <div className="p-4 rounded-3xl glass-card border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1C1A18] space-y-3">
         <div className="flex items-center justify-between">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-[11px] font-bold">
-            <Calendar className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 text-[11px] font-bold">
+            <Calendar className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
             <span>Thực Đơn 7 Ngày Mâm Cơm Việt</span>
           </div>
 
@@ -306,7 +306,7 @@ export const WeeklyBoard: React.FC = () => {
               <span className="text-sm shrink-0 leading-none mt-0.5 sm:mt-0">🎯</span>
               <div className="min-w-0 flex-1 leading-snug">
                 <span className="font-extrabold text-stone-900 dark:text-white shrink-0">Mục tiêu: </span>
-                <span className="text-amber-800 dark:text-amber-400 font-bold break-words">
+                <span className="text-stone-700 dark:text-stone-300 font-semibold break-words">
                   {(() => {
                     const needsMap: Record<string, string> = {
                       'gym-protein': 'Tập Gym',
@@ -340,7 +340,7 @@ export const WeeklyBoard: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowOnboarding(true)}
-              className="text-[11px] font-black text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 hover:underline px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 shrink-0 transition-colors self-start sm:self-center whitespace-nowrap"
+              className="text-[11px] font-black text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 shrink-0 transition-colors self-start sm:self-center whitespace-nowrap"
             >
               Đổi mục tiêu
             </button>
@@ -353,15 +353,15 @@ export const WeeklyBoard: React.FC = () => {
             type="button"
             onClick={handleAutoFillWeekly}
             disabled={isGenerating}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-stone-950 font-extrabold text-xs rounded-xl shadow-md shadow-amber-500/25 active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:hover:bg-white dark:text-stone-950 font-extrabold text-xs rounded-xl shadow-xs active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
           >
-            <Sparkles className={`w-3.5 h-3.5 text-stone-950 fill-stone-950 shrink-0 ${isGenerating ? 'animate-spin' : ''}`} />
+            <Sparkles className={`w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0 ${isGenerating ? 'animate-spin' : ''}`} />
             <span>{isGenerating ? 'Đang Tạo Thực Đơn...' : 'Gợi Ý 1-Click Cả Tuần'}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('grocery')}
-            className="flex items-center gap-1 py-2 px-3 bg-stone-100 hover:bg-stone-200 dark:bg-white/10 dark:hover:bg-white/20 text-stone-800 dark:text-white border border-[#EBE5DC] dark:border-white/15 text-xs font-bold rounded-xl transition-all active:scale-95 shrink-0"
+            className="flex items-center gap-1 py-2 px-3 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-xs font-bold rounded-xl transition-all active:scale-95 shrink-0 cursor-pointer"
           >
             <span>Đi Chợ</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -369,7 +369,7 @@ export const WeeklyBoard: React.FC = () => {
         </div>
 
         {/* Weekly Stats Micro Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-2 pt-2 border-t border-[#EBE5DC] dark:border-white/10 text-[11px] text-stone-600 dark:text-stone-300 font-medium">
+        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-2 pt-2 border-t border-stone-200 dark:border-stone-800 text-[11px] text-stone-600 dark:text-stone-300 font-medium">
           <span className="shrink-0">{totalWeeklyMeals} / 21 bữa đã xếp</span>
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <span className={`font-extrabold whitespace-nowrap ${
@@ -383,7 +383,7 @@ export const WeeklyBoard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => recalibrateWeeklyMenu()}
-                className="px-2 py-0.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-700 dark:text-rose-300 border border-rose-500/30 text-[10px] font-black flex items-center gap-1 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+                className="px-2 py-0.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 text-[10px] font-black flex items-center gap-1 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
                 title="Tự động cân chỉnh cả tuần về ngân sách"
               >
                 <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -411,22 +411,22 @@ export const WeeklyBoard: React.FC = () => {
                 onClick={() => setSelectedDayIndex(index)}
                 className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center transition-all min-h-[54px] relative ${
                   active
-                    ? 'bg-amber-500 text-stone-950 font-black shadow-md shadow-amber-500/25 scale-[1.02]'
-                    : 'text-stone-600 dark:text-stone-400 hover:bg-[#F3EFEA] dark:hover:bg-[#252220]'
+                    ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-black shadow-xs scale-[1.02]'
+                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60'
                 }`}
               >
                 <span className="text-xs font-black tracking-tight leading-none">
                   {dayMeta.short}
                 </span>
                 
-                <span className={`text-[10px] mt-1 font-bold leading-none ${active ? 'text-stone-950' : 'text-stone-500 dark:text-stone-400'}`}>
+                <span className={`text-[10px] mt-1 font-bold leading-none ${active ? 'text-stone-300 dark:text-stone-600' : 'text-stone-400 dark:text-stone-500'}`}>
                   {mealsCount}/3
                 </span>
 
                 {thisDayOverBudget && !active ? (
                   <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1 right-1 ring-2 ring-white dark:ring-stone-900" title="Vượt ngân sách ngày" />
                 ) : isFull && !active ? (
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 absolute top-1 right-1" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 absolute top-1 right-1" />
                 ) : null}
               </button>
             );
@@ -439,17 +439,17 @@ export const WeeklyBoard: React.FC = () => {
         key={`${activeDay.dayId}-${generationCount}`}
         onTouchStart={handleDayTouchStart}
         onTouchEnd={handleDayTouchEnd}
-        className="p-4 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-4 transition-all duration-200 animate-fade-in"
+        className="p-4 rounded-3xl glass-card border border-stone-200 dark:border-stone-800 space-y-4 transition-all duration-200 animate-fade-in"
       >
         
         {/* Day Header & Servings Stepper */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 dark:border-stone-800 pb-3">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-black text-slate-900 dark:text-white">
+              <h2 className="text-base font-black text-stone-900 dark:text-stone-100">
                 {activeDay.dayName}
               </h2>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-extrabold border border-stone-200 dark:border-stone-700">
                 {Object.values(activeDay.meals).filter(Boolean).length} / 3 bữa
               </span>
             </div>
@@ -459,9 +459,9 @@ export const WeeklyBoard: React.FC = () => {
           </div>
 
           {/* Servings Stepper: [ - ] [ input ] [ + ] bounded [1..20] */}
-          <div className="flex items-center justify-between sm:justify-end gap-2 bg-slate-100 dark:bg-slate-900/90 px-3 py-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shrink-0">
-            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1 whitespace-nowrap">
-              <Users className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+          <div className="flex items-center justify-between sm:justify-end gap-2 bg-stone-100 dark:bg-stone-900 px-3 py-1.5 rounded-2xl border border-stone-200 dark:border-stone-800 shrink-0">
+            <span className="text-[11px] font-bold text-stone-700 dark:text-stone-300 flex items-center gap-1 whitespace-nowrap">
+              <Users className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400 shrink-0" />
               Khẩu phần:
             </span>
             <div className="flex items-center gap-1.5 shrink-0">
@@ -469,7 +469,7 @@ export const WeeklyBoard: React.FC = () => {
                 type="button"
                 onClick={() => handleServingsChange(safeServings - 1)}
                 disabled={safeServings <= 1}
-                className="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs font-black text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0 shadow-xs"
+                className="w-8 h-8 rounded-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center text-xs font-black text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0 shadow-xs"
                 aria-label="Giảm khẩu phần"
               >
                 -
@@ -488,16 +488,16 @@ export const WeeklyBoard: React.FC = () => {
                       handleServingsChange(1);
                     }
                   }}
-                  className="w-9 sm:w-10 text-center text-xs font-black text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1 focus:outline-none focus:ring-1 focus:ring-amber-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-9 sm:w-10 text-center text-xs font-black text-stone-900 dark:text-white bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg py-1 focus:outline-none focus:ring-1 focus:ring-stone-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   aria-label="Số người ăn"
                 />
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">người</span>
+                <span className="text-xs font-bold text-stone-700 dark:text-stone-300 whitespace-nowrap">người</span>
               </div>
               <button
                 type="button"
                 onClick={() => handleServingsChange(safeServings + 1)}
                 disabled={safeServings >= 20}
-                className="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs font-black text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0 shadow-xs"
+                className="w-8 h-8 rounded-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center text-xs font-black text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0 shadow-xs"
                 aria-label="Tăng khẩu phần"
               >
                 +
@@ -510,38 +510,38 @@ export const WeeklyBoard: React.FC = () => {
         <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
           <div className={`p-2 sm:p-2.5 rounded-2xl border text-center transition-all min-w-0 ${
             isOverBudget
-              ? 'bg-rose-500/10 border-rose-500/30'
-              : 'bg-amber-500/10 border-amber-500/20'
+              ? 'bg-rose-50/80 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800/50'
+              : 'bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800'
           }`}>
             <span className={`text-[9px] font-extrabold uppercase tracking-wider block truncate ${
-              isOverBudget ? 'text-rose-700 dark:text-rose-300' : 'text-amber-800 dark:text-amber-300'
+              isOverBudget ? 'text-rose-700 dark:text-rose-400' : 'text-stone-500 dark:text-stone-400'
             }`}>
               CHI PHÍ NGÀY
             </span>
             <p className={`text-xs font-black mt-0.5 truncate ${
-              isOverBudget ? 'text-rose-800 dark:text-rose-300' : 'text-amber-800 dark:text-amber-300'
+              isOverBudget ? 'text-rose-900 dark:text-rose-200' : 'text-stone-900 dark:text-stone-100'
             }`}>
               {scaledDayCost.toLocaleString('vi-VN')} đ
             </p>
-            <span className="text-[8.5px] sm:text-[9px] text-slate-500 dark:text-slate-400 block mt-0.5 font-semibold truncate" title={`Hạn mức: ${dailyBudgetTarget.toLocaleString('vi-VN')} đ`}>
+            <span className="text-[8.5px] sm:text-[9px] text-stone-400 dark:text-stone-500 block mt-0.5 font-semibold truncate" title={`Hạn mức: ${dailyBudgetTarget.toLocaleString('vi-VN')} đ`}>
               Mức: {dailyBudgetTarget.toLocaleString('vi-VN')} đ
             </span>
           </div>
 
-          <div className="p-2 sm:p-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-center min-w-0">
-            <span className="text-[9px] font-extrabold text-amber-700 dark:text-amber-300 uppercase tracking-wider block flex items-center justify-center gap-0.5 truncate">
-              <Flame className="w-2.5 h-2.5 shrink-0" /> CALO
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-center min-w-0">
+            <span className="text-[9px] font-extrabold text-stone-500 dark:text-stone-400 uppercase tracking-wider block flex items-center justify-center gap-0.5 truncate">
+              <Flame className="w-2.5 h-2.5 shrink-0 text-amber-500" /> CALO
             </span>
-            <p className="text-xs font-black text-amber-800 dark:text-amber-300 mt-0.5 truncate">
+            <p className="text-xs font-black text-stone-900 dark:text-stone-100 mt-0.5 truncate">
               {scaledDayCalories} kcal
             </p>
           </div>
 
-          <div className="p-2 sm:p-2.5 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-center min-w-0">
-            <span className="text-[9px] font-extrabold text-blue-700 dark:text-blue-300 uppercase tracking-wider block flex items-center justify-center gap-0.5 truncate">
-              <Dumbbell className="w-2.5 h-2.5 shrink-0" /> <span>ĐẠM</span><span className="hidden sm:inline"> (PROTEIN)</span>
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-center min-w-0">
+            <span className="text-[9px] font-extrabold text-stone-500 dark:text-stone-400 uppercase tracking-wider block flex items-center justify-center gap-0.5 truncate">
+              <Dumbbell className="w-2.5 h-2.5 shrink-0 text-indigo-500" /> <span>ĐẠM</span><span className="hidden sm:inline"> (PROTEIN)</span>
             </span>
-            <p className="text-xs font-black text-blue-800 dark:text-blue-300 mt-0.5 truncate">
+            <p className="text-xs font-black text-stone-900 dark:text-stone-100 mt-0.5 truncate">
               ~{scaledDayProtein}g
             </p>
           </div>
@@ -550,19 +550,19 @@ export const WeeklyBoard: React.FC = () => {
         {/* Single-day Budget Warning Indicator against onboardingData.budgetLevel */}
         <div className={`p-3 rounded-2xl border text-xs transition-all ${
           isOverBudget
-            ? 'bg-rose-500/15 border-rose-500/40 text-rose-700 dark:text-rose-300 shadow-sm shadow-rose-500/10'
+            ? 'bg-rose-50/80 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800/60 text-rose-900 dark:text-rose-200 shadow-xs'
             : scaledDayCost > 0
-            ? 'bg-emerald-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
-            : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
+            ? 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/60 text-emerald-950 dark:text-emerald-100'
+            : 'bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400'
         }`}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
             <div className="flex items-center gap-1.5 min-w-0">
               {isOverBudget ? (
                 <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
               ) : scaledDayCost > 0 ? (
-                <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               ) : (
-                <Utensils className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <Utensils className="w-3.5 h-3.5 text-stone-400 shrink-0" />
               )}
               <span className="font-black truncate">
                 {isOverBudget
@@ -579,12 +579,12 @@ export const WeeklyBoard: React.FC = () => {
 
           {/* Subtext clarifying 3-meal budget calculation */}
           {scaledDayCost > 0 && (
-            <div className="mt-2 pt-2 border-t border-current/10 text-[10.5px] font-medium opacity-90 flex flex-wrap items-center justify-between gap-1">
-              <span>
+            <div className="mt-2 pt-2 border-t border-emerald-200/60 dark:border-emerald-800/40 text-[10.5px] font-medium opacity-90 flex flex-wrap items-center justify-between gap-1">
+              <span className="text-emerald-900/80 dark:text-emerald-200/80">
                 Gồm 3 bữa ăn (sáng + trưa + tối) cho {safeServings} người • Hạn mức cả ngày: {dailyBudgetTarget.toLocaleString('vi-VN')} đ
               </span>
               {dailyBudgetTarget >= scaledDayCost && (
-                <span className="font-bold text-emerald-700 dark:text-emerald-400">
+                <span className="font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded-md">
                   Dư: {(dailyBudgetTarget - scaledDayCost).toLocaleString('vi-VN')} đ
                 </span>
               )}
@@ -593,11 +593,11 @@ export const WeeklyBoard: React.FC = () => {
 
           {/* Recalibrate Call-To-Action buttons when over budget */}
           {isOverBudget && (
-            <div className="mt-2.5 pt-2.5 border-t border-rose-500/20 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <div className="mt-2.5 pt-2.5 border-t border-rose-200 dark:border-rose-800/40 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <button
                 type="button"
                 onClick={() => recalibrateDayMenu(activeDay.dayId)}
-                className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-black text-xs shadow-sm shadow-rose-500/20 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="flex-1 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>⚡ Cân Chỉnh Lại Ngày Này (Dưới {dailyBudgetTarget.toLocaleString('vi-VN')} đ)</span>
@@ -606,7 +606,7 @@ export const WeeklyBoard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => recalibrateWeeklyMenu()}
-                className="py-2 px-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-800 dark:text-rose-200 border border-rose-500/30 font-bold text-[11px] active:scale-95 transition-all flex items-center justify-center gap-1 shrink-0 cursor-pointer"
+                className="py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 dark:bg-stone-800 dark:hover:bg-stone-700 dark:text-stone-200 border border-stone-300 dark:border-stone-700 font-bold text-[11px] active:scale-95 transition-all flex items-center justify-center gap-1 shrink-0 cursor-pointer"
                 title="Cân chỉnh toàn bộ các ngày trong tuần về đúng ngân sách"
               >
                 <Sparkles className="w-3 h-3 text-amber-500" />
@@ -618,7 +618,7 @@ export const WeeklyBoard: React.FC = () => {
 
         {/* Single-Person / Gym / Eat Clean Contextual Lifestyle Indicators */}
         {safeServings === 1 && (
-          <div className="px-3 py-2 rounded-2xl bg-sky-500/10 border border-sky-500/25 flex items-center justify-between text-xs font-bold text-sky-800 dark:text-sky-300">
+          <div className="px-3 py-2 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs font-medium text-stone-700 dark:text-stone-300">
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="text-sm">👤</span>
               <span className="truncate">
@@ -627,30 +627,30 @@ export const WeeklyBoard: React.FC = () => {
                   : 'Khẩu phần 1 người (Mâm 3 món): Định lượng & chi phí thu nhỏ chuẩn mâm cơm truyền thống.'}
               </span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-700 dark:text-sky-200 shrink-0 ml-2 font-extrabold">
+            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 shrink-0 ml-2 font-extrabold">
               {isSingleDishMode ? 'Món Đơn' : 'Mâm 3 Món'}
             </span>
           </div>
         )}
 
         {onboardingData?.specialNeeds?.includes('gym-protein') && (
-          <div className="px-3 py-2.5 rounded-2xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-emerald-500/10 border border-blue-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <div className="px-3 py-2.5 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
             <div className="flex items-center gap-2">
               <span className="text-base">🏋️</span>
               <div>
-                <p className="font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                <p className="font-black text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
                   <span>Mục Tiêu Tập Gym:</span>
-                  <span className="text-blue-700 dark:text-blue-400">~{scaledDayProtein}g / {safeServings * 70}g Đạm</span>
+                  <span className="text-indigo-600 dark:text-indigo-400">~{scaledDayProtein}g / {safeServings * 70}g Đạm</span>
                 </p>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                <p className="text-[11px] text-stone-500 dark:text-stone-400">
                   Tăng cơ giảm mỡ, ưu tiên món thịt nạc, ức gà, trứng và đậu hũ.
                 </p>
               </div>
             </div>
-            <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shrink-0 self-start sm:self-center ${
+            <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shrink-0 self-start sm:self-center border ${
               scaledDayProtein >= safeServings * 65
-                ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30'
-                : 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30'
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-700'
             }`}>
               {scaledDayProtein >= safeServings * 65 ? '✓ Đạt Chuẩn Gym' : `Cần Thêm ~${Math.max(0, safeServings * 70 - scaledDayProtein)}g Đạm`}
             </span>
@@ -658,36 +658,36 @@ export const WeeklyBoard: React.FC = () => {
         )}
 
         {onboardingData?.specialNeeds?.includes('eat-clean') && (
-          <div className="px-3 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
+          <div className="px-3 py-2 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs text-stone-700 dark:text-stone-300">
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="text-sm">🥗</span>
               <span className="truncate">Lối sống Eat Clean: Kiểm soát calo ({scaledDayCalories} kcal) & ưu tiên món luộc, hấp thanh nhẹ.</span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-200 shrink-0 ml-2 font-extrabold">
+            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shrink-0 ml-2 font-extrabold">
               Eat Clean
             </span>
           </div>
         )}
 
         {onboardingData?.specialNeeds?.includes('single-prep') && (
-          <div className="px-3 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
+          <div className="px-3 py-2 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs text-stone-700 dark:text-stone-300">
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="text-sm">🍱</span>
               <span className="truncate">Meal Prep Độc Thân: Nấu 1 lần cho hộp cơm mang đi làm hoặc bảo quản ngăn mát.</span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-200 shrink-0 ml-2 font-extrabold">
+            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 shrink-0 ml-2 font-extrabold">
               Meal Prep
             </span>
           </div>
         )}
 
         {onboardingData?.specialNeeds?.includes('western-food') && (
-          <div className="px-3 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
+          <div className="px-3 py-2 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs text-stone-700 dark:text-stone-300">
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="text-sm">🥩</span>
               <span className="truncate">Phong Vị Món Âu: Ưu tiên các món bít tết, mì Ý, súp kem & salad đổi vị bữa ăn.</span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-200 shrink-0 ml-2 font-extrabold">
+            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 shrink-0 ml-2 font-extrabold">
               Món Âu
             </span>
           </div>
@@ -697,11 +697,11 @@ export const WeeklyBoard: React.FC = () => {
         <div className="space-y-3 pt-1">
           
           {/* SLOT 1: BỮA SÁNG */}
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 space-y-2">
+          <div className="p-3 rounded-2xl bg-stone-50 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Coffee className="w-4 h-4 text-amber-500" />
-                <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-extrabold text-stone-900 dark:text-stone-100">
                   Bữa Sáng Năng Lượng
                 </span>
               </div>
@@ -710,7 +710,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleRandomSwap(activeDay.dayId, 'breakfast')}
-                    className="px-2 py-0.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-200/70 hover:bg-stone-200 text-[11px] text-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:text-stone-300 font-bold flex items-center gap-1 transition-colors shrink-0"
                     title="Đổi món sáng ngẫu nhiên"
                   >
                     <RefreshCw className="w-3 h-3 shrink-0" />
@@ -719,7 +719,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => removeMealFromSlot(activeDay.dayId, 'breakfast')}
-                    className="px-2 py-0.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-[11px] text-rose-600 dark:text-rose-400 font-bold transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-rose-50 text-[11px] text-stone-500 hover:text-rose-600 dark:bg-stone-800/80 dark:hover:bg-rose-950/40 dark:text-stone-400 dark:hover:text-rose-400 font-bold transition-colors shrink-0"
                   >
                     Xóa
                   </button>
@@ -732,23 +732,23 @@ export const WeeklyBoard: React.FC = () => {
                 /* Rich 3-Dish Set Card for Breakfast */
                 <div 
                   onClick={() => setSelectedMealSet(activeDay.meals.breakfast as VietnameseMealSet)}
-                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-amber-500/30 hover:border-amber-500 cursor-pointer space-y-2 shadow-sm transition-all"
+                  className="p-3 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer space-y-2 shadow-xs transition-all"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-amber-800 dark:text-amber-300 truncate min-w-0 flex-1">
+                    <span className="text-xs font-black text-stone-900 dark:text-stone-100 truncate min-w-0 flex-1 hover:text-amber-600 transition-colors">
                       {(activeDay.meals.breakfast as VietnameseMealSet).title}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold shrink-0 whitespace-nowrap">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold shrink-0 whitespace-nowrap border border-stone-200/80 dark:border-stone-700/80">
                       Mâm 3 Món
                     </span>
                   </div>
 
                   {/* 3 Dishes Details */}
-                  <div className="space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+                  <div className="space-y-1.5 text-[11px] text-stone-700 dark:text-stone-300">
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-rose-600 dark:text-rose-400">🔴 Mặn:</span>
-                        <span className="truncate">{(activeDay.meals.breakfast as VietnameseMealSet).mainDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).mainDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -756,7 +756,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'mainDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-rose-500/15 active:scale-95 text-slate-600 hover:text-rose-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-rose-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món mặn này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -765,8 +765,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-sky-600 dark:text-sky-400">🔵 Canh:</span>
-                        <span className="truncate">{(activeDay.meals.breakfast as VietnameseMealSet).soupDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).soupDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -774,7 +774,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'soupDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-sky-500/15 active:scale-95 text-slate-600 hover:text-sky-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-sky-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món canh này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -783,8 +783,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-emerald-600 dark:text-emerald-400">🟢 Rau:</span>
-                        <span className="truncate">{(activeDay.meals.breakfast as VietnameseMealSet).sideDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).sideDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -792,7 +792,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'sideDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-amber-500/15 active:scale-95 text-slate-600 hover:text-amber-800 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-emerald-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món rau này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -801,8 +801,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-between text-[10px] text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800">
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                  <div className="pt-2 flex items-center justify-between text-[10px] text-stone-500 dark:text-stone-400 border-t border-stone-100 dark:border-stone-800">
+                    <span className="font-bold text-stone-900 dark:text-stone-100">
                       {scaleCost((activeDay.meals.breakfast as VietnameseMealSet).totalCostVnd, safeServings).toLocaleString('vi-VN')} đ
                     </span>
                     <span>{Math.round((activeDay.meals.breakfast as VietnameseMealSet).totalCalories * scale)} kcal</span>
@@ -812,7 +812,7 @@ export const WeeklyBoard: React.FC = () => {
                 /* Single Dish for Breakfast */
                 <div 
                   onClick={() => setSelectedRecipe(activeDay.meals.breakfast as Recipe)}
-                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                  className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <SafeImage 
@@ -823,21 +823,21 @@ export const WeeklyBoard: React.FC = () => {
                       className="w-11 h-11 rounded-lg object-cover shrink-0"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-extrabold text-slate-900 dark:text-white leading-tight truncate">
+                      <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                         {(activeDay.meals.breakfast as Recipe).title}
                       </p>
-                      <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                      <p className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
                         {scaleCost((activeDay.meals.breakfast as Recipe).estimatedCostVnd || 30000, safeServings).toLocaleString('vi-VN')} đ • {Math.round(((activeDay.meals.breakfast as Recipe).calories || 400) * scale)} kcal
                       </p>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-stone-400 shrink-0" />
                 </div>
               )
             ) : (
               <button
                 onClick={() => handleOpenSlotPicker(activeDay.dayId, 'breakfast')}
-                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-amber-500 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-stone-300 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-600 text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>Thêm món ăn sáng (Phở, Bún chả, Xôi...)</span>
@@ -846,11 +846,11 @@ export const WeeklyBoard: React.FC = () => {
           </div>
 
           {/* SLOT 2: BỮA TRƯA */}
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 space-y-2">
+          <div className="p-3 rounded-2xl bg-stone-50 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Sun className="w-4 h-4 text-amber-500" />
-                <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-extrabold text-stone-900 dark:text-stone-100">
                   {isSingleDishMode ? 'Bữa Trưa Gọn Nhẹ (Món Đơn)' : 'Bữa Trưa Tròn Vị (3 Món)'}
                 </span>
               </div>
@@ -859,7 +859,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleRandomSwap(activeDay.dayId, 'lunch')}
-                    className="px-2 py-0.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-200/70 hover:bg-stone-200 text-[11px] text-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:text-stone-300 font-bold flex items-center gap-1 transition-colors shrink-0"
                     title={isSingleDishMode ? 'Đổi món trưa ngẫu nhiên' : 'Đổi mâm cơm trưa ngẫu nhiên'}
                   >
                     <RefreshCw className="w-3 h-3 shrink-0" />
@@ -868,7 +868,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => removeMealFromSlot(activeDay.dayId, 'lunch')}
-                    className="px-2 py-0.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-[11px] text-rose-600 dark:text-rose-400 font-bold transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-rose-50 text-[11px] text-stone-500 hover:text-rose-600 dark:bg-stone-800/80 dark:hover:bg-rose-950/40 dark:text-stone-400 dark:hover:text-rose-400 font-bold transition-colors shrink-0"
                   >
                     Xóa
                   </button>
@@ -881,23 +881,23 @@ export const WeeklyBoard: React.FC = () => {
                 /* Rich 3-Dish Set Card */
                 <div 
                   onClick={() => setSelectedMealSet(activeDay.meals.lunch as VietnameseMealSet)}
-                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-amber-500/30 hover:border-amber-500 cursor-pointer space-y-2 shadow-sm transition-all"
+                  className="p-3 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer space-y-2 shadow-xs transition-all"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-amber-800 dark:text-amber-300 truncate min-w-0 flex-1">
+                    <span className="text-xs font-black text-stone-900 dark:text-stone-100 truncate min-w-0 flex-1 hover:text-amber-600 transition-colors">
                       {activeDay.meals.lunch.title}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold shrink-0 whitespace-nowrap">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold shrink-0 whitespace-nowrap border border-stone-200/80 dark:border-stone-700/80">
                       Mâm 3 Món
                     </span>
                   </div>
 
                   {/* 3 Dishes Details */}
-                  <div className="space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+                  <div className="space-y-1.5 text-[11px] text-stone-700 dark:text-stone-300">
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-rose-600 dark:text-rose-400">🔴 Mặn:</span>
-                        <span className="truncate">{activeDay.meals.lunch.mainDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.mainDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -905,7 +905,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'lunch', 'mainDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-rose-500/15 active:scale-95 text-slate-600 hover:text-rose-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-rose-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món mặn này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -914,8 +914,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-sky-600 dark:text-sky-400">🔵 Canh:</span>
-                        <span className="truncate">{activeDay.meals.lunch.soupDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.soupDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -923,7 +923,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'lunch', 'soupDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-sky-500/15 active:scale-95 text-slate-600 hover:text-sky-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-sky-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món canh này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -932,8 +932,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-emerald-600 dark:text-emerald-400">🟢 Rau:</span>
-                        <span className="truncate">{activeDay.meals.lunch.sideDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.sideDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -941,7 +941,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'lunch', 'sideDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-amber-500/15 active:scale-95 text-slate-600 hover:text-amber-800 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-emerald-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món rau này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -950,8 +950,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800">
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                  <div className="pt-2 flex items-center justify-between text-[10px] text-stone-500 dark:text-stone-400 border-t border-stone-100 dark:border-stone-800">
+                    <span className="font-bold text-stone-900 dark:text-stone-100">
                       {scaleCost(activeDay.meals.lunch.totalCostVnd, safeServings).toLocaleString('vi-VN')} đ
                     </span>
                     <span>{Math.round(activeDay.meals.lunch.totalCalories * scale)} kcal</span>
@@ -961,7 +961,7 @@ export const WeeklyBoard: React.FC = () => {
                 /* Single Dish */
                 <div 
                   onClick={() => setSelectedRecipe(activeDay.meals.lunch as Recipe)}
-                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                  className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <SafeImage 
@@ -972,21 +972,21 @@ export const WeeklyBoard: React.FC = () => {
                       className="w-11 h-11 rounded-lg object-cover shrink-0"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-extrabold text-slate-900 dark:text-white leading-tight truncate">
+                      <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                         {(activeDay.meals.lunch as Recipe).title}
                       </p>
-                      <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                      <p className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
                         {scaleCost((activeDay.meals.lunch as Recipe).estimatedCostVnd || 35000, safeServings).toLocaleString('vi-VN')} đ • {Math.round(((activeDay.meals.lunch as Recipe).calories || 400) * scale)} kcal
                       </p>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-stone-400 shrink-0" />
                 </div>
               )
             ) : (
               <button
                 onClick={() => handleOpenSlotPicker(activeDay.dayId, 'lunch')}
-                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-amber-500 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-stone-300 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-600 text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>{isSingleDishMode ? 'Thêm Món Ăn Trưa Gọn Nhẹ' : 'Thêm Mâm Cơm 3 Món Trưa'}</span>
@@ -995,11 +995,11 @@ export const WeeklyBoard: React.FC = () => {
           </div>
 
           {/* SLOT 3: BỮA TỐI */}
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 space-y-2">
+          <div className="p-3 rounded-2xl bg-stone-50 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Moon className="w-4 h-4 text-indigo-500" />
-                <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-extrabold text-stone-900 dark:text-stone-100">
                   {isSingleDishMode ? 'Bữa Tối Gọn Nhẹ (Món Đơn)' : 'Bữa Tối Sum Họp (3 Món)'}
                 </span>
               </div>
@@ -1008,7 +1008,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleRandomSwap(activeDay.dayId, 'dinner')}
-                    className="px-2 py-0.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-200/70 hover:bg-stone-200 text-[11px] text-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:text-stone-300 font-bold flex items-center gap-1 transition-colors shrink-0"
                     title={isSingleDishMode ? 'Đổi món tối ngẫu nhiên' : 'Đổi mâm cơm tối ngẫu nhiên'}
                   >
                     <RefreshCw className="w-3 h-3 shrink-0" />
@@ -1017,7 +1017,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => removeMealFromSlot(activeDay.dayId, 'dinner')}
-                    className="px-2 py-0.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-[11px] text-rose-600 dark:text-rose-400 font-bold transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-rose-50 text-[11px] text-stone-500 hover:text-rose-600 dark:bg-stone-800/80 dark:hover:bg-rose-950/40 dark:text-stone-400 dark:hover:text-rose-400 font-bold transition-colors shrink-0"
                   >
                     Xóa
                   </button>
@@ -1030,23 +1030,23 @@ export const WeeklyBoard: React.FC = () => {
                 /* Rich 3-Dish Set Card */
                 <div 
                   onClick={() => setSelectedMealSet(activeDay.meals.dinner as VietnameseMealSet)}
-                  className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-amber-500/30 hover:border-amber-500 cursor-pointer space-y-2 shadow-sm transition-all"
+                  className="p-3 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer space-y-2 shadow-xs transition-all"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-amber-800 dark:text-amber-300 truncate min-w-0 flex-1">
+                    <span className="text-xs font-black text-stone-900 dark:text-stone-100 truncate min-w-0 flex-1 hover:text-amber-600 transition-colors">
                       {activeDay.meals.dinner.title}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 font-extrabold shrink-0 whitespace-nowrap">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold shrink-0 whitespace-nowrap border border-stone-200/80 dark:border-stone-700/80">
                       Mâm 3 Món
                     </span>
                   </div>
 
                   {/* 3 Dishes Details */}
-                  <div className="space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+                  <div className="space-y-1.5 text-[11px] text-stone-700 dark:text-stone-300">
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-rose-600 dark:text-rose-400">🔴 Mặn:</span>
-                        <span className="truncate">{activeDay.meals.dinner.mainDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.mainDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -1054,7 +1054,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'dinner', 'mainDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-rose-500/15 active:scale-95 text-slate-600 hover:text-rose-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-rose-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món mặn này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -1063,8 +1063,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-sky-600 dark:text-sky-400">🔵 Canh:</span>
-                        <span className="truncate">{activeDay.meals.dinner.soupDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.soupDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -1072,7 +1072,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'dinner', 'soupDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-sky-500/15 active:scale-95 text-slate-600 hover:text-sky-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-sky-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món canh này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -1081,8 +1081,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-bold text-emerald-600 dark:text-emerald-400">🟢 Rau:</span>
-                        <span className="truncate">{activeDay.meals.dinner.sideDish.title}</span>
+                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
+                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.sideDish.title}</span>
                       </div>
                       <button
                         type="button"
@@ -1090,7 +1090,7 @@ export const WeeklyBoard: React.FC = () => {
                           e.stopPropagation();
                           swapDishInWeeklySlot(activeDay.dayId, 'dinner', 'sideDish');
                         }}
-                        className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-amber-500/15 active:scale-95 text-slate-600 hover:text-amber-800 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:text-emerald-300 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-slate-200/60 dark:border-slate-700/60 transition-colors"
+                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
                         title="Đổi riêng món rau này"
                       >
                         <RefreshCw className="w-2.5 h-2.5 shrink-0" />
@@ -1099,8 +1099,8 @@ export const WeeklyBoard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800">
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                  <div className="pt-2 flex items-center justify-between text-[10px] text-stone-500 dark:text-stone-400 border-t border-stone-100 dark:border-stone-800">
+                    <span className="font-bold text-stone-900 dark:text-stone-100">
                       {scaleCost(activeDay.meals.dinner.totalCostVnd, safeServings).toLocaleString('vi-VN')} đ
                     </span>
                     <span>{Math.round(activeDay.meals.dinner.totalCalories * scale)} kcal</span>
@@ -1110,7 +1110,7 @@ export const WeeklyBoard: React.FC = () => {
                 /* Single Dish */
                 <div 
                   onClick={() => setSelectedRecipe(activeDay.meals.dinner as Recipe)}
-                  className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                  className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <SafeImage 
@@ -1121,21 +1121,21 @@ export const WeeklyBoard: React.FC = () => {
                       className="w-11 h-11 rounded-lg object-cover shrink-0"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-extrabold text-slate-900 dark:text-white leading-tight truncate">
+                      <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                         {(activeDay.meals.dinner as Recipe).title}
                       </p>
-                      <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                      <p className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
                         {scaleCost((activeDay.meals.dinner as Recipe).estimatedCostVnd || 35000, safeServings).toLocaleString('vi-VN')} đ • {Math.round(((activeDay.meals.dinner as Recipe).calories || 400) * scale)} kcal
                       </p>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-stone-400 shrink-0" />
                 </div>
               )
             ) : (
               <button
                 onClick={() => handleOpenSlotPicker(activeDay.dayId, 'dinner')}
-                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hover:border-amber-500 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-stone-300 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-600 text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>{isSingleDishMode ? 'Thêm Món Ăn Tối Gọn Nhẹ' : 'Thêm Mâm Cơm 3 Món Tối'}</span>
@@ -1145,11 +1145,11 @@ export const WeeklyBoard: React.FC = () => {
 
           {/* SLOT 4: BỮA PHỤ / XẾ / TRÁNG MIỆNG */}
           {activeDay.meals.snack ? (
-            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 space-y-2">
+            <div className="p-3 rounded-2xl bg-stone-50 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <Apple className="w-4 h-4 text-amber-500" />
-                  <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                  <span className="text-xs font-extrabold text-stone-900 dark:text-stone-100">
                     Xế / Tráng Miệng ({safeServings} người)
                   </span>
                 </div>
@@ -1157,7 +1157,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleRandomSwap(activeDay.dayId, 'snack')}
-                    className="px-2 py-0.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-200/70 hover:bg-stone-200 text-[11px] text-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:text-stone-300 font-bold flex items-center gap-1 transition-colors shrink-0"
                     title="Đổi món xế ngẫu nhiên"
                   >
                     <RefreshCw className="w-3 h-3 shrink-0" />
@@ -1166,7 +1166,7 @@ export const WeeklyBoard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => removeMealFromSlot(activeDay.dayId, 'snack')}
-                    className="px-2 py-0.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-[11px] text-rose-600 dark:text-rose-400 font-bold transition-colors shrink-0"
+                    className="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-rose-50 text-[11px] text-stone-500 hover:text-rose-600 dark:bg-stone-800/80 dark:hover:bg-rose-950/40 dark:text-stone-400 dark:hover:text-rose-400 font-bold transition-colors shrink-0"
                   >
                     Xóa
                   </button>
@@ -1176,7 +1176,7 @@ export const WeeklyBoard: React.FC = () => {
               {/* Single dish presentation for snack */}
               <div 
                 onClick={() => setSelectedRecipe(activeDay.meals.snack as Recipe)}
-                className="p-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 cursor-pointer flex items-center justify-between gap-3 shadow-sm transition-all"
+                className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
               >
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
                   <SafeImage 
@@ -1187,29 +1187,29 @@ export const WeeklyBoard: React.FC = () => {
                     className="w-11 h-11 rounded-lg object-cover shrink-0"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-extrabold text-slate-900 dark:text-white leading-tight truncate">
+                    <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                       {(activeDay.meals.snack as Recipe).title}
                     </p>
-                    <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                    <p className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
                       {scaleCost((activeDay.meals.snack as Recipe).estimatedCostVnd || 25000, safeServings).toLocaleString('vi-VN')} đ • {Math.round(((activeDay.meals.snack as Recipe).calories || 200) * scale)} kcal
                     </p>
                   </div>
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                <ChevronRight className="w-4 h-4 text-stone-400 shrink-0" />
               </div>
             </div>
           ) : (
-            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-500/5 via-slate-50/70 to-emerald-500/5 dark:from-amber-950/20 dark:via-slate-900/60 dark:to-emerald-950/20 border border-amber-500/20 dark:border-amber-500/20 space-y-2">
+            <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0 flex-1">
-                  <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 shrink-0">
+                  <div className="p-1.5 rounded-lg bg-stone-200/70 text-stone-700 dark:bg-stone-800 dark:text-stone-300 shrink-0">
                     <Apple className="w-3.5 h-3.5" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block truncate">
+                    <span className="text-xs font-bold text-stone-900 dark:text-stone-100 block truncate">
                       Xế / Tráng Miệng Gợi Ý
                     </span>
-                    <span className="text-[10.5px] text-slate-600 dark:text-slate-300 truncate block">
+                    <span className="text-[10.5px] text-stone-500 dark:text-stone-400 truncate block">
                       {dayRemainingBudget > 0
                         ? `Ví còn dư ${dayRemainingBudget.toLocaleString('vi-VN')} đ • Gợi ý món xế vừa vặn ví:`
                         : 'Món tráng miệng thanh mát chuẩn vị:'}
@@ -1219,7 +1219,7 @@ export const WeeklyBoard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleOpenSlotPicker(activeDay.dayId, 'snack')}
-                  className="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 text-[11px] font-extrabold transition-all shrink-0 cursor-pointer"
+                  className="px-2.5 py-1 rounded-xl bg-stone-200/80 hover:bg-stone-200 text-stone-800 dark:bg-stone-800 dark:hover:bg-stone-700 dark:text-stone-200 text-[11px] font-extrabold transition-all shrink-0 cursor-pointer"
                 >
                   Chọn món
                 </button>
@@ -1234,12 +1234,12 @@ export const WeeklyBoard: React.FC = () => {
                       key={item.id}
                       type="button"
                       onClick={() => addRecipeToSlot(activeDay.dayId, 'snack', item.id)}
-                      className="group px-2 py-1 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-amber-500 hover:text-stone-950 border border-slate-200 dark:border-slate-700 hover:border-amber-500 text-[10px] font-bold text-slate-700 dark:text-slate-200 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer"
+                      className="group px-2 py-1 rounded-xl bg-white dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700 text-[10px] font-bold text-stone-700 dark:text-stone-200 transition-all flex items-center gap-1 shadow-2xs active:scale-95 cursor-pointer"
                       title={`Thêm ${item.title} (${itemCost.toLocaleString('vi-VN')} đ)`}
                     >
-                      <span className="text-amber-600 dark:text-amber-400 group-hover:text-stone-950 font-black">+</span>
+                      <span className="text-amber-600 dark:text-amber-400 font-black">+</span>
                       <span className="truncate max-w-[120px]">{item.title}</span>
-                      <span className="text-[9px] text-slate-500 dark:text-slate-400 group-hover:text-slate-950/80 font-normal">
+                      <span className="text-[9px] text-stone-400 dark:text-stone-500 font-normal">
                         {itemCost.toLocaleString('vi-VN')} đ
                       </span>
                     </button>
@@ -1380,8 +1380,8 @@ export const WeeklyBoard: React.FC = () => {
                     onClick={() => setPickerTab('meal-sets')}
                     className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
                       pickerTab === 'meal-sets'
-                        ? 'bg-amber-500 text-stone-950 font-black shadow-md shadow-amber-500/20'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-black shadow-xs'
+                        : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                     }`}
                   >
                     Bộ Mâm 3 Món ({mealSetsToDisplay.length})
@@ -1390,22 +1390,22 @@ export const WeeklyBoard: React.FC = () => {
                     onClick={() => setPickerTab('single-recipes')}
                     className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${
                       pickerTab === 'single-recipes'
-                        ? 'bg-amber-500 text-stone-950 font-black shadow-md shadow-amber-500/20'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-black shadow-xs'
+                        : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                     }`}
                   >
                     {activeSlotPicker.slot === 'breakfast' ? 'Món Ăn Sáng' : 'Món Lẻ Trưa/Tối'} ({recipesToDisplay.length})
                   </button>
                 </div>
               ) : (
-                <div className="px-4 pt-2.5 pb-1 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 shrink-0">
-                  <span className="text-amber-800 dark:text-amber-400 font-extrabold flex items-center gap-1.5">
+                <div className="px-4 pt-2.5 pb-1 flex items-center justify-between text-xs font-bold text-stone-700 dark:text-stone-300 shrink-0">
+                  <span className="text-stone-900 dark:text-stone-100 font-extrabold flex items-center gap-1.5">
                     <span>Danh mục:</span>
-                    <span className="px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 text-[11px]">
+                    <span className="px-2 py-0.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-[11px] border border-stone-200 dark:border-stone-700">
                       {activeSlotPicker.slot === 'breakfast' ? 'Món Ăn Sáng' : 'Món Xế & Tráng Miệng'}
                     </span>
                   </span>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <span className="text-[11px] text-stone-500 dark:text-stone-400">
                     ({recipesToDisplay.length} món phù hợp)
                   </span>
                 </div>
@@ -1413,10 +1413,10 @@ export const WeeklyBoard: React.FC = () => {
 
               {/* Budget Room Suggestion Bar */}
               {availableBudgetRoom > 0 && (
-                <div className="mx-3 my-1 px-3 py-1.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 flex items-center justify-between gap-2 shrink-0">
-                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-amber-900 dark:text-amber-200 min-w-0">
+                <div className="mx-3 my-1 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-between gap-2 shrink-0">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-900 dark:text-emerald-200 min-w-0">
                     <span>💰 Hạn mức còn dư:</span>
-                    <span className="font-extrabold text-amber-600 dark:text-amber-400">
+                    <span className="font-extrabold text-emerald-700 dark:text-emerald-300">
                       ≤ {availableBudgetRoom.toLocaleString('vi-VN')} đ
                     </span>
                   </div>
@@ -1425,8 +1425,8 @@ export const WeeklyBoard: React.FC = () => {
                     onClick={() => setOnlyWithinBudget(!onlyWithinBudget)}
                     className={`px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold transition-all shrink-0 cursor-pointer ${
                       onlyWithinBudget
-                        ? 'bg-amber-500 text-stone-950 font-black shadow-sm'
-                        : 'bg-amber-500/20 text-amber-900 dark:text-amber-200 hover:bg-amber-500/30'
+                        ? 'bg-emerald-600 text-white font-black shadow-xs'
+                        : 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 hover:bg-emerald-200'
                     }`}
                   >
                     {onlyWithinBudget ? '✓ Đang lọc vừa ví' : 'Xem tất cả giá'}
@@ -1436,7 +1436,7 @@ export const WeeklyBoard: React.FC = () => {
 
               {/* Fallback explanation when budget is tight */}
               {onlyWithinBudget && availableBudgetRoom > 0 && ((pickerTab === 'single-recipes' && isRecipesFallback) || (pickerTab === 'meal-sets' && isMealSetsFallback)) && (
-                <div className="mx-3 mb-1 px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-800 dark:text-amber-300 font-medium shrink-0">
+                <div className="mx-3 mb-1 px-2.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-[10px] text-stone-600 dark:text-stone-300 font-medium shrink-0">
                   💡 Hạn mức ({availableBudgetRoom.toLocaleString('vi-VN')} đ) khá tiết kiệm. Hệ thống gợi ý tất cả các món tiết kiệm nhất gần với ngân sách:
                 </div>
               )}
@@ -1444,18 +1444,18 @@ export const WeeklyBoard: React.FC = () => {
               {/* Search filter in bottom sheet with diacritic tolerance */}
               <div className="px-3 py-1 shrink-0">
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={pickerSearch}
                     onChange={e => setPickerSearch(e.target.value)}
                     placeholder="Tìm kiếm mâm cơm hoặc món ăn..."
-                    className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full pl-8 pr-8 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-400"
                   />
                   {pickerSearch && (
                     <button
                       onClick={() => setPickerSearch('')}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 dark:hover:text-white"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -1467,7 +1467,7 @@ export const WeeklyBoard: React.FC = () => {
               <div className="overflow-y-auto p-3 space-y-2 flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
                 {showMealSetsTab && pickerTab === 'meal-sets' ? (
                   filteredMealSets.length === 0 ? (
-                    <div className="p-6 text-center text-xs text-slate-600 dark:text-slate-400">
+                    <div className="p-6 text-center text-xs text-stone-500 dark:text-stone-400">
                       Không tìm thấy mâm cơm phù hợp với &quot;{pickerSearch}&quot;.
                     </div>
                   ) : (
@@ -1478,26 +1478,26 @@ export const WeeklyBoard: React.FC = () => {
                           addMealSetToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, set.id);
                           setActiveSlotPicker(null);
                         }}
-                        className="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-amber-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
+                        className="p-3 rounded-2xl bg-stone-50 hover:bg-stone-100/80 dark:bg-stone-800/60 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-700/60 hover:border-stone-300 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
                       >
                         <div className="min-w-0">
-                          <span className="text-xs font-extrabold text-slate-900 dark:text-white block truncate">
+                          <span className="text-xs font-extrabold text-stone-900 dark:text-white block truncate">
                             {set.title}
                           </span>
-                          <p className="text-[10px] text-slate-600 dark:text-slate-400 truncate mt-0.5">
+                          <p className="text-[10px] text-stone-500 dark:text-stone-400 truncate mt-0.5">
                             {set.mainDish.title} + {set.soupDish.title} + {set.sideDish.title}
                           </p>
-                          <span className="text-[10px] text-amber-700 dark:text-amber-300 font-bold block mt-1">
+                          <span className="text-[10px] text-stone-900 dark:text-stone-200 font-bold block mt-1">
                             {scaleCost(set.totalCostVnd, safeServings).toLocaleString('vi-VN')} đ • {Math.round(set.totalCalories * scale)} kcal
                           </span>
                         </div>
-                        <PlusCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                        <PlusCircle className="w-5 h-5 text-stone-600 dark:text-stone-400 shrink-0" />
                       </div>
                     ))
                   )
                 ) : (
                   filteredRecipes.length === 0 ? (
-                    <div className="p-6 text-center text-xs text-slate-600 dark:text-slate-400">
+                    <div className="p-6 text-center text-xs text-stone-500 dark:text-stone-400">
                       Không tìm thấy món ăn phù hợp với &quot;{pickerSearch}&quot;.
                     </div>
                   ) : (
@@ -1508,17 +1508,17 @@ export const WeeklyBoard: React.FC = () => {
                           addRecipeToSlot(activeSlotPicker.dayId, activeSlotPicker.slot, recipe.id);
                           setActiveSlotPicker(null);
                         }}
-                        className="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50/50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 hover:border-amber-500 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
+                        className="p-3 rounded-2xl bg-stone-50 hover:bg-stone-100/80 dark:bg-stone-800/60 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-700/60 hover:border-stone-300 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[52px]"
                       >
                         <div className="min-w-0">
-                          <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
+                          <span className="text-xs font-bold text-stone-900 dark:text-white block truncate">
                             {recipe.title}
                           </span>
-                          <p className="text-[10px] text-amber-700 dark:text-amber-300 font-bold mt-0.5">
+                          <p className="text-[10px] text-stone-800 dark:text-stone-200 font-bold mt-0.5">
                             {scaleCost(recipe.estimatedCostVnd || 30000, safeServings).toLocaleString('vi-VN')} đ • {Math.round((recipe.calories || 300) * scale)} kcal
                           </p>
                         </div>
-                        <PlusCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                        <PlusCircle className="w-5 h-5 text-stone-600 dark:text-stone-400 shrink-0" />
                       </div>
                     ))
                   )

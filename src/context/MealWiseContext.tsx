@@ -51,6 +51,7 @@ import {
   removeCurrentSession, 
   recordUserInRegistry 
 } from '../utils/telemetryEngine';
+import { initScreenTimeTracker } from '../utils/screenTimeService';
 
 export interface ExtraGroceryItem {
   name: string;
@@ -400,7 +401,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       localStorage.setItem('mealwise_registered_user', JSON.stringify(newProfile));
     } catch {}
     recordUserInRegistry({ name: displayName, email: rawEmail, role: isAdmin ? 'admin' : 'user' });
-    recordTelemetryEvent('auth', isAdmin ? 'Đăng nhập Quản Trị Viên (Admin)' : 'Đăng nhập thành viên thành công', displayName);
+    if (!isAdmin) {
+      recordTelemetryEvent('auth', 'Đăng nhập thành viên thành công', displayName);
+    }
     setUser(newProfile);
     setIsAuthModalOpen(false);
 
@@ -1103,6 +1106,12 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       window.removeEventListener('beforeunload', handleUnload);
     };
   }, [user, collabUserName, activeTab]);
+
+  // User active screen time tracking engine
+  useEffect(() => {
+    const cleanup = initScreenTimeTracker();
+    return cleanup;
+  }, []);
 
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
 

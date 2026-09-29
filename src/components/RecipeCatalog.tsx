@@ -32,33 +32,33 @@ export const RecipeCatalog: React.FC = () => {
     <div className="space-y-6">
       
       {/* Banner */}
-      <div className="p-5 sm:p-7 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-amber-500/10 via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-900 dark:to-amber-950/30">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 dark:border-amber-500/30 text-xs font-bold mb-2">
-          <BookOpen className="w-3.5 h-3.5" />
+      <div className="p-4 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 text-xs font-bold mb-2">
+          <BookOpen className="w-3.5 h-3.5 text-stone-900 dark:text-white" />
           <span>Sổ Tay Công Thức Món Việt</span>
         </div>
-        <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white tracking-tight">
           Khám Phá Món Ăn Truyền Thống
         </h1>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
+        <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
           Tuyển tập công thức chuẩn vị 3 miền từ thịt rang cháy cạnh, canh cua đồng tới thịt kho tàu.
         </p>
 
         {/* Search bar */}
         <div className="mt-4 relative max-w-lg">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Tìm theo tên món, nguyên liệu, tag (thịt rang, cua đồng, cay...)..."
-            className="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-amber-500 shadow-sm transition-colors"
+            className="w-full pl-10 pr-9 py-2.5 sm:py-3 min-h-[44px] rounded-2xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 text-xs sm:text-sm focus:outline-none focus:border-stone-400 shadow-2xs transition-colors"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/20 dark:hover:bg-white/30 text-slate-600 dark:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-600 dark:text-white flex items-center justify-center transition-colors cursor-pointer min-h-[32px] min-w-[32px]"
               aria-label="Xóa tìm kiếm"
             >
               <X className="w-3.5 h-3.5" />
@@ -68,10 +68,10 @@ export const RecipeCatalog: React.FC = () => {
       </div>
 
       {/* Filter Controls Container */}
-      <div className="space-y-3.5">
+      <div className="space-y-3">
         
         {/* Category Filter Tabs */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {[
             { id: 'all', label: 'Tất Cả Món' },
             { id: 'mon-man', label: 'Món Mặn' },
@@ -83,10 +83,10 @@ export const RecipeCatalog: React.FC = () => {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 selectedCategory === cat.id
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-md shadow-amber-500/20'
-                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-xs font-black'
+                  : 'bg-white dark:bg-stone-900 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-800 hover:text-stone-900 dark:hover:text-white font-semibold'
               }`}
             >
               {cat.label}
@@ -95,9 +95,9 @@ export const RecipeCatalog: React.FC = () => {
         </div>
 
         {/* Region Filter Tabs */}
-        <div className="flex items-center flex-wrap gap-2 pt-1 border-t border-slate-100 dark:border-slate-800/80">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 mr-1 shrink-0">
-            <MapPin className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+        <div className="flex items-center flex-wrap gap-1.5 pt-1 border-t border-stone-100 dark:border-stone-800">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-stone-700 dark:text-stone-300 mr-1 shrink-0">
+            <MapPin className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
             <span>Vùng Miền:</span>
           </div>
           {[
@@ -110,10 +110,10 @@ export const RecipeCatalog: React.FC = () => {
             <button
               key={reg.id}
               onClick={() => setSelectedRegion(reg.id)}
-              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
+              className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 selectedRegion === reg.id
-                  ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
-                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-2xs font-black'
+                  : 'bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 border border-stone-200 dark:border-stone-800 hover:text-stone-900 dark:hover:text-white'
               }`}
             >
               {reg.label}
@@ -124,14 +124,14 @@ export const RecipeCatalog: React.FC = () => {
       </div>
 
       {/* Result Count and Reset Action */}
-      <div className="flex items-center justify-between flex-wrap gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400 px-1">
+      <div className="flex items-center justify-between flex-wrap gap-2 text-xs font-semibold text-stone-500 dark:text-stone-400 px-1">
         <span>
-          Tìm thấy <strong className="text-amber-800 dark:text-amber-400 font-black">{filteredRecipes.length}</strong> món ngon phù hợp
+          Tìm thấy <strong className="text-stone-900 dark:text-white font-black">{filteredRecipes.length}</strong> món ngon phù hợp
         </span>
         {hasActiveFilters && (
           <button
             onClick={resetAllFilters}
-            className="text-xs text-amber-800 dark:text-amber-400 hover:underline font-bold shrink-0"
+            className="text-xs text-stone-900 dark:text-white hover:underline font-bold shrink-0 cursor-pointer"
           >
             Đặt lại bộ lọc
           </button>
@@ -150,7 +150,7 @@ export const RecipeCatalog: React.FC = () => {
           </p>
           <button
             onClick={resetAllFilters}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs transition-colors"
+            className="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-bold text-xs transition-colors cursor-pointer"
           >
             Xem tất cả công thức
           </button>
@@ -162,7 +162,7 @@ export const RecipeCatalog: React.FC = () => {
             <div
               key={recipe.id}
               onClick={() => setSelectedRecipe(recipe)}
-              className="glass-card rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-amber-500/40 dark:hover:border-slate-700 cursor-pointer transition-all flex flex-col justify-between group shadow-sm hover:shadow-md"
+              className="rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 overflow-hidden hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer transition-all flex flex-col justify-between group shadow-2xs hover:shadow-xs"
             >
               <div>
                 <div className="relative h-44 overflow-hidden">
@@ -173,14 +173,14 @@ export const RecipeCatalog: React.FC = () => {
                     category={recipe.category}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
                   
-                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-slate-950/85 text-amber-300 text-[10px] font-extrabold border border-slate-800">
+                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-stone-900/90 text-white text-[10px] font-bold border border-stone-700">
                     {recipe.region === 'bac' ? 'Miền Bắc' : recipe.region === 'nam' ? 'Miền Nam' : recipe.region === 'trung' ? 'Miền Trung' : 'Toàn Quốc'}
                   </span>
 
                   {recipe.calories && (
-                    <span className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-slate-950/85 text-amber-300 text-[10px] font-bold border border-slate-800 flex items-center gap-0.5">
+                    <span className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-stone-900/90 text-stone-200 text-[10px] font-bold border border-stone-700 flex items-center gap-0.5">
                       <Flame className="w-3 h-3 text-amber-400" />
                       {recipe.calories} kcal
                     </span>
@@ -188,10 +188,10 @@ export const RecipeCatalog: React.FC = () => {
                 </div>
 
                 <div className="p-4 space-y-2">
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                  <h3 className="text-base font-extrabold text-stone-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                     {recipe.title}
                   </h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
                     {recipe.description}
                   </p>
 
@@ -201,7 +201,7 @@ export const RecipeCatalog: React.FC = () => {
                       {recipe.tags.slice(0, 3).map(tag => (
                         <span 
                           key={tag} 
-                          className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-semibold"
+                          className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 text-[10px] font-semibold"
                         >
                           #{tag}
                         </span>
@@ -211,10 +211,10 @@ export const RecipeCatalog: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-4 pt-0 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 mt-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
-                <span className="text-amber-800 dark:text-amber-400 font-extrabold">{recipe.estimatedCostVnd.toLocaleString('vi-VN')} đ</span>
+              <div className="p-4 pt-0 flex items-center justify-between border-t border-stone-100 dark:border-stone-800 mt-2 text-xs font-semibold text-stone-500 dark:text-stone-400">
+                <span className="text-stone-900 dark:text-white font-extrabold">{recipe.estimatedCostVnd.toLocaleString('vi-VN')} đ</span>
                 <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                  <Clock className="w-3.5 h-3.5 text-stone-400" />
                   {recipe.cookTimeMinutes} phút
                 </span>
               </div>

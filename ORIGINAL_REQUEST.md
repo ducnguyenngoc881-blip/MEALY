@@ -610,5 +610,55 @@ Expand the test suite in `tests/` so that total executed test scenarios exceed 1
 - [ ] Production build succeeds without errors (`cmd /c npm run build`).
 - [ ] Dev server live on `http://localhost:5173/` responding HTTP 200.
 
+## 2026-09-29T07:13:22Z
+
+Overhaul and audit every recipe in the MealWise database to provide authentic, true-to-life culinary instructions, exact ingredient breakdowns with natural kitchen measurements, and practical cooking techniques (prep, marination, heat control, seasoning, and chef tips) to teach users how to cook genuine meals for themselves and transform their eating habits.
+
+Working directory: `d:\New folder\Remotion`
+Integrity mode: development
+
+## Requirements
+
+### R1. Authentic Culinary Ingredients & Natural Kitchen Units
+Eliminate all unnatural retail packaging units (e.g., "0.04 chai 1L", "0.6 vỉ 10 quả") across all recipes in `mockRecipes.ts` and `recipesDatabase.ts`:
+- Replace with intuitive culinary kitchen units used by home cooks: grams (g), kilograms (kg), quả/trứng, tép tỏi, củ hành tím, muỗng canh (tbsp), muỗng cà phê (tsp), nhánh hành lá, bát/chén nước dùng.
+- Ensure all essential aromatic aromatics, seasonings, and marinades are genuinely included (tiêu, tỏi, ớt, gừng, sả, hành khô, nước mắm ngon, dầu hào, tiêu xay, mè rang...).
+
+### R2. Authentic, Step-by-Step Cooking Technique Instructions
+Transform every dish from superficial summaries into practical, pedagogical culinary guides:
+- **Bước 1: Sơ chế & Khử tanh / Làm sạch**: Hướng dẫn chi tiết cách rửa, ngâm muối/rượu/gừng, khử mùi tanh của thịt cá, cắt thái đúng thớ và kích thước.
+- **Bước 2: Ướp gia vị chuẩn vị**: Định lượng và thời gian ướp tối thiểu để ngấm sâu vào nguyên liệu trước khi nấu.
+- **Bước 3: Kỹ thuật chế biến & Canh lửa**: Quy định rõ nhiệt độ lửa (lửa lớn, lửa vừa, lửa riu riu om), thứ tự xào/phi thơm, thời gian nấu từng công đoạn để không bị dai, nát hay khô.
+- **Bước 4: Nêm nếm & Hoàn thiện**: Kỹ thuật cân bằng vị (mặn - ngọt - chua - cay), tạo độ sánh bóng cho sốt, thời điểm cho rau thơm/hành hoa để giữ màu xanh tươi.
+- **Bí quyết đầu bếp (Chef's Secret / Mẹo nấu ngon)**: Các mẹo nhỏ tạo nên sự khác biệt giữa món ăn vụng về và món ăn chuẩn cơm mẹ nấu.
+
+### R3. Interactive Cooking Assistant UI Enhancements
+Upgrade `RecipeDetailModal.tsx` and recipe views:
+- Interactive checklist for ingredients with visual category tags (Nguyên liệu chính, Rau củ, Gia vị & Ướp).
+- Step-by-step cooking mode with timer support, clear subheadings, and actionable instructions.
+- Visual highlight for "Bí quyết đầu bếp / Mẹo nấu".
+
+### R4. Comprehensive Test Suite & Zero Regressions
+- Verify scaling math across servings (1 to 20 portions) preserves ingredient ratios and natural units.
+- Audit recipe database integrity: zero null/empty ingredient lists, zero empty instructions, all steps have non-empty actionable content.
+- Ensure 100% test pass rate across all 1,183+ automated tests.
+- Rebuild production bundle, sync showcase, and verify dev server on `http://localhost:5173/`.
+
+## Acceptance Criteria
+
+### Recipe Culinary Authenticity
+- [ ] 100% of audited recipes feature authentic home-cooking ingredients with natural kitchen units (g, kg, quả, muỗng canh, muỗng cà phê, tép, củ), zero packaging fraction units.
+- [ ] Every recipe includes complete 4-step pedagogical cooking instructions (Sơ chế & khử tanh -> Ướp vị -> Chế biến & canh lửa -> Nêm nếm & hoàn thiện) plus Chef Tips.
+
+### UI & Cooking Experience
+- [ ] `RecipeDetailModal` presents clean ingredient groupings, step accordion with step completion checkboxes, and clear tip callouts.
+- [ ] Servings stepper cleanly scales ingredient quantities without breaking unit labels.
+
+### Quality & Verification
+- [ ] TypeScript check (`cmd /c npx tsc --noEmit`) passes with 0 errors.
+- [ ] Full test runner (`cmd /c npm test`) passes 100% of test suites with expanded recipe instruction assertions.
+- [ ] Dev server running and responsive with HTTP 200 on `http://localhost:5173/`.
+
+
 
 

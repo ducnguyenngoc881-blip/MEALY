@@ -1148,21 +1148,23 @@ export function matchRecipeWithPantryItem(
     rawName.includes('tôm thẻ');
 
   if (isShrimpItem && !rawName.includes('mắm tôm') && !rawName.includes('mì tôm')) {
+    const isOnlyTep = (hasExactSyllable(rawName, 'tép') || hasExactSyllable(rawName, 'tep')) && !rawName.includes('tôm');
     const shrimpIng = recipe.ingredients.find(i => {
       const n = i.name.toLowerCase();
       if (n.includes('mắm tôm') || n.includes('mì tôm')) return false;
       return (
         hasExactSyllable(n, 'tôm') ||
-        hasExactSyllable(n, 'tép') ||
         n.includes('tôm sú') ||
         n.includes('tôm thẻ') ||
-        n.includes('tôm khô')
+        n.includes('tôm khô') ||
+        (isOnlyTep && hasExactSyllable(n, 'tép'))
       );
     });
     const hasInTitle =
-      (hasExactSyllable(titleLower, 'tôm') || hasExactSyllable(titleLower, 'tép')) &&
+      hasExactSyllable(titleLower, 'tôm') &&
       !titleLower.includes('mắm tôm') &&
-      !titleLower.includes('mì tôm');
+      !titleLower.includes('mì tôm') ||
+      (isOnlyTep && hasExactSyllable(titleLower, 'tép'));
 
     if (shrimpIng || hasInTitle) {
       const matchedName = shrimpIng ? shrimpIng.name : 'Món tôm';
