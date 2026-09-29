@@ -29,6 +29,7 @@ import './unit/dishSwapInMealSet.test';
 import './unit/westernCuisineIntegration.test';
 import './unit/statePersistence.test';
 import './unit/guestAccountAndContextResilience.test';
+import './unit/multiUserTelemetry.test';
 
 // 2. Comprehensive 1000+ Scenario Matrices (Screens 1 to 9)
 import './unit/scenarioMatrixScreens1to3.test';

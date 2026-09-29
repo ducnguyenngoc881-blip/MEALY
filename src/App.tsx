@@ -21,6 +21,7 @@ const AccountView = lazy(() => import('./components/AccountView').then(m => ({ d
 const FastMealApexModal = lazy(() => import('./components/FastMealApexModal').then(m => ({ default: m.FastMealApexModal })));
 const MinigameHubModal = lazy(() => import('./components/MinigameHubModal').then(m => ({ default: m.MinigameHubModal })));
 const DrinkRouletteModal = lazy(() => import('./components/DrinkRouletteModal').then(m => ({ default: m.DrinkRouletteModal })));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 
 const TabSuspenseFallback: React.FC = () => (
   <div className="py-16 flex flex-col items-center justify-center text-center">
@@ -30,7 +31,7 @@ const TabSuspenseFallback: React.FC = () => (
 );
 
 const MainContent: React.FC = () => {
-  const { activeTab } = useMealWise();
+  const { activeTab, user } = useMealWise();
 
   return (
     <div className="w-full">
@@ -42,6 +43,7 @@ const MainContent: React.FC = () => {
         {activeTab === 'recipes' && <RecipeCatalog />}
         {activeTab === 'pantry' && <FridgeView />}
         {activeTab === 'account' && <AccountView />}
+        {activeTab === 'admin' && (user?.role === 'admin' ? <AdminDashboard /> : <MealSetExplorer />)}
       </Suspense>
     </div>
   );
@@ -74,22 +76,31 @@ const GlobalModals: React.FC = () => {
   );
 };
 
+const AppShell: React.FC = () => {
+  const { activeTab } = useMealWise();
+  const isAdminView = activeTab === 'admin';
+
+  return (
+    <div className="min-h-screen bg-[#F3EFE9] dark:bg-[#0D0C0B] text-stone-900 dark:text-[#F5F2EB] font-sans selection:bg-amber-500 selection:text-stone-950 transition-colors duration-200">
+      {/* Mobile-first natural container: 100% on real phone, centered max-w-lg on desktop (expands to max-w-7xl for SteamDB Admin telemetry) */}
+      <div className={`w-full sm:max-w-md md:max-w-lg mx-auto min-h-[100dvh] bg-[#FAF8F5] dark:bg-[#121110] shadow-2xl relative flex flex-col sm:border-x sm:border-[#E8E2D8] sm:dark:border-[#252220] transition-all duration-300 ${isAdminView ? '!max-w-7xl px-3 sm:px-6' : ''}`}>
+        <Navbar />
+        <main className={`flex-1 ${isAdminView ? 'px-1 sm:px-2 py-4' : 'px-3 sm:px-4 py-3'} pb-24`}>
+          <MainContent />
+        </main>
+        {!isAdminView && <Sidebar />}
+      </div>
+      
+      {/* Mobile Bottom Sheets & Floating Modals */}
+      <GlobalModals />
+    </div>
+  );
+};
+
 export function App() {
   return (
     <MealWiseProvider>
-      <div className="min-h-screen bg-[#F3EFE9] dark:bg-[#0D0C0B] text-stone-900 dark:text-[#F5F2EB] font-sans selection:bg-amber-500 selection:text-stone-950 transition-colors duration-200">
-        {/* Mobile-first natural container: 100% on real phone, centered max-w-lg on desktop */}
-        <div className="w-full sm:max-w-md md:max-w-lg mx-auto min-h-[100dvh] bg-[#FAF8F5] dark:bg-[#121110] shadow-2xl relative flex flex-col sm:border-x sm:border-[#E8E2D8] sm:dark:border-[#252220]">
-          <Navbar />
-          <main className="flex-1 px-3 sm:px-4 py-3 pb-24">
-            <MainContent />
-          </main>
-          <Sidebar />
-        </div>
-        
-        {/* Mobile Bottom Sheets & Floating Modals */}
-        <GlobalModals />
-      </div>
+      <AppShell />
     </MealWiseProvider>
   );
 }

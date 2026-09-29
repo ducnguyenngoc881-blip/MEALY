@@ -18,6 +18,7 @@ export const Navbar: React.FC = () => {
     theme,
     toggleTheme,
     isRegistered,
+    user,
     openAuthModal
   } = useMealWise();
 
@@ -42,6 +43,8 @@ export const Navbar: React.FC = () => {
         return { short: 'Tủ Lạnh', full: 'Tủ Lạnh & Đồ Thừa' };
       case 'account':
         return { short: 'Tài Khoản', full: 'Tài Khoản' };
+      case 'admin':
+        return { short: 'Telemetry', full: 'SteamDB Telemetry Hub' };
       default:
         return { short: 'MealWise', full: 'MealWise' };
     }
@@ -51,7 +54,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/95 dark:bg-[#121110]/95 backdrop-blur-xl border-b border-[#EBE5DC] dark:border-[#252220] shadow-sm transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
-      <div className="h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
+      <div className={`h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto ${activeTab === 'admin' ? '!max-w-7xl' : ''}`}>
         
         {/* Left: Brand Logo & Title */}
         <button
@@ -87,15 +90,27 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center gap-1.5 shrink-0">
           {/* Guest / Member Account Status Badge */}
           {isRegistered ? (
-            <button
-              type="button"
-              onClick={() => setActiveTab('account')}
-              className="px-2 py-1 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-black flex items-center gap-1 hover:bg-emerald-500/25 transition-all cursor-pointer"
-              title="Tài khoản thành viên (Đã đăng nhập)"
-            >
-              <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-              <span className="hidden min-[360px]:inline">Thành Viên</span>
-            </button>
+            user?.role === 'admin' ? (
+              <button
+                type="button"
+                onClick={() => setActiveTab(activeTab === 'admin' ? 'meal-sets' : 'admin')}
+                className="px-2 py-1 rounded-xl bg-purple-500/20 text-purple-800 dark:text-purple-300 border border-purple-500/40 text-[10px] font-black flex items-center gap-1 hover:bg-purple-500/30 transition-all cursor-pointer shadow-xs"
+                title="Bảng Quản Trị SteamDB Telemetry (Chỉ hiển thị cho tài khoản Quản trị viên)"
+              >
+                <Sparkles className="w-3 h-3 text-purple-600 dark:text-purple-400" />
+                <span>{activeTab === 'admin' ? 'App Mobile' : 'Admin ⚡'}</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setActiveTab('account')}
+                className="px-2 py-1 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-black flex items-center gap-1 hover:bg-emerald-500/25 transition-all cursor-pointer"
+                title="Tài khoản thành viên (Đã đăng nhập)"
+              >
+                <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                <span className="hidden min-[360px]:inline">Thành Viên</span>
+              </button>
+            )
           ) : (
             <button
               type="button"

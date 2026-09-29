@@ -84,7 +84,7 @@ export interface OnboardingData {
   completed: boolean;
 }
 
-export type ActiveTab = 'meal-sets' | 'weekly' | 'party' | 'fast-meal' | 'grocery' | 'recipes' | 'pantry' | 'account';
+export type ActiveTab = 'meal-sets' | 'weekly' | 'party' | 'fast-meal' | 'grocery' | 'recipes' | 'pantry' | 'account' | 'admin';
 
 export type ApexCaseTier = 'blue' | 'purple' | 'gold';
 
@@ -275,6 +275,7 @@ export interface RegisteredUser {
   email: string;
   isRegistered: boolean;
   registeredAt?: string;
+  role?: 'user' | 'admin';
 }
 
 

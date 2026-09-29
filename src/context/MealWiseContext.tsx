@@ -45,6 +45,12 @@ import { calculatePartyKitchenTime } from '../utils/cateringTimeMath';
 import { generateBudgetCompliantWeeklyPlan } from '../utils/mealPlanGenerator';
 import { roundToThousand, scaleCost, getDailyBudgetTarget, DAILY_BUDGET_RATES } from '../utils/currency';
 import { isHotpotOrFeast } from '../utils/textUtils';
+import { 
+  recordTelemetryEvent, 
+  heartbeatSession, 
+  removeCurrentSession, 
+  recordUserInRegistry 
+} from '../utils/telemetryEngine';
 
 export interface ExtraGroceryItem {
   name: string;
@@ -377,18 +383,32 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const loginUser = useCallback((profile: { name: string; email: string }) => {
-    const displayName = profile.name.trim() || profile.email.split('@')[0] || 'Thành Viên MealWise';
+    const rawEmail = profile.email.trim();
+    const emailLower = rawEmail.toLowerCase();
+    const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
+    const defaultDisplayName = isAdmin ? 'MealWise Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên MealWise');
+    const displayName = profile.name.trim() || defaultDisplayName;
+
     const newProfile: RegisteredUser = {
       name: displayName,
-      email: profile.email.trim(),
+      email: rawEmail,
       isRegistered: true,
+      role: isAdmin ? 'admin' : 'user',
       registeredAt: new Date().toLocaleDateString('vi-VN')
     };
     try {
       localStorage.setItem('mealwise_registered_user', JSON.stringify(newProfile));
     } catch {}
+    recordUserInRegistry({ name: displayName, email: rawEmail, role: isAdmin ? 'admin' : 'user' });
+    recordTelemetryEvent('auth', isAdmin ? 'Đăng nhập Quản Trị Viên (Admin)' : 'Đăng nhập thành viên thành công', displayName);
     setUser(newProfile);
     setIsAuthModalOpen(false);
+
+    if (isAdmin) {
+      setActiveTab('admin');
+      setToastMessage('🔐 Xin chào Quản Trị Viên! Đã kích hoạt Trung Tâm Dữ Liệu SteamDB Telemetry.');
+      return;
+    }
 
     // If user has not completed onboarding yet, trigger onboarding survey now!
     try {
@@ -403,16 +423,19 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   const logoutUser = useCallback(() => {
+    const actorName = user?.name || 'Người dùng';
     try {
       localStorage.removeItem('mealwise_registered_user');
       localStorage.removeItem('mealwise_collab_room');
       localStorage.removeItem('mealwise_collab_checked');
     } catch {}
+    recordTelemetryEvent('auth', 'Đăng xuất tài khoản', actorName);
     setUser(null);
     setCollabRoom(null);
     setCollabCheckedMap({});
+    setActiveTab('meal-sets');
     setToastMessage('Đã đăng xuất tài khoản. Thiết bị chuyển về chế độ khách.');
-  }, []);
+  }, [user]);
 
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [selectedMealSet, setSelectedMealSet] = useState<VietnameseMealSet | null>(null);
@@ -441,7 +464,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const handleUrlSync = () => {
       try {
         const hash = window.location.hash.replace('#', '');
-        const validTabs: ActiveTab[] = ['meal-sets', 'weekly', 'party', 'grocery', 'recipes', 'pantry', 'account'];
+        const validTabs: ActiveTab[] = ['meal-sets', 'weekly', 'party', 'grocery', 'recipes', 'pantry', 'account', 'admin'];
         if (validTabs.includes(hash as ActiveTab)) {
           setActiveTab(hash as ActiveTab);
         }
@@ -578,8 +601,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       id: `pantry-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`
     };
     setPantryItems(prev => [newItem, ...prev]);
+    recordTelemetryEvent('fridge', `Lưu "${newItem.name}" vào tủ lạnh (Hạn ${newItem.daysLeft} ngày)`, user?.name || 'Người dùng');
     showToast(`Đã lưu "${newItem.name}" vào tủ lạnh!`);
-  }, [showToast]);
+  }, [user, showToast]);
 
   const removePantryItem = useCallback((id: string) => {
     setPantryItems(prev => prev.filter(item => item.id !== id));
@@ -1062,6 +1086,24 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     updateCollabUserProfile(name);
   }, [updateCollabUserProfile]);
 
+  // Session Heartbeat for real concurrent active users telemetry
+  useEffect(() => {
+    const role = user?.role === 'admin' ? 'admin' : (user?.isRegistered ? 'user' : 'guest');
+    const name = user?.name || collabUserName || 'Khách';
+    heartbeatSession(name, role, activeTab);
+    const interval = setInterval(() => {
+      heartbeatSession(name, role, activeTab);
+    }, 3500);
+    const handleUnload = () => {
+      removeCurrentSession();
+    };
+    window.addEventListener('beforeunload', handleUnload);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, [user, collabUserName, activeTab]);
+
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
 
   // Register participant with server whenever room is active or user profile changes
@@ -1219,6 +1261,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCollabCheckedMap(synced.checkedMap || initialChecked);
     setCollabParticipants(synced.participants || initialParticipants);
     setIsShareModalOpen(true);
+    recordTelemetryEvent('collab', `Tạo phòng mua chung #${roomId} (${items.length} món)`, hostProfile.name);
     showToast(`🎉 Đã tạo phòng mua chung #${roomId}!`);
     return roomId;
   }, [collabUser, groceryCheckedItems, showToast]);
@@ -1276,6 +1319,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setGroceryCheckedItems(prev => ({ ...prev, ...localChecks }));
       }
       registerParticipantOnServer(roomId, currentShopper);
+      recordTelemetryEvent('collab', `Tham gia phòng mua chung #${roomId}`, currentShopper.name);
       return true;
     }
     return false;
@@ -1283,6 +1327,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Leave collaborative room
   const leaveCollabRoom = useCallback(() => {
+    const actorName = collabUser.name || 'Người dùng';
     setCollabRoom(null);
     setCollabCheckedMap({});
     setCollabParticipants({});
@@ -1290,8 +1335,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       localStorage.removeItem('mealwise_collab_room');
       localStorage.removeItem('mealwise_collab_checked');
     } catch {}
+    recordTelemetryEvent('collab', 'Rời phòng mua chung', actorName);
     showToast('👋 Đã rời phòng mua chung.');
-  }, [showToast]);
+  }, [collabUser, showToast]);
 
   // Toggle item check in collaborative room
   const toggleCollabChecked = useCallback((itemId: string) => {
@@ -1332,6 +1378,14 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       itemId,
       state: newState
     });
+
+    const targetItem = collabRoom.items.find(i => i.id === itemId);
+    const itemLabel = targetItem ? targetItem.name : itemId;
+    recordTelemetryEvent(
+      'collab', 
+      `${nextChecked ? 'Đã nhặt' : 'Bỏ chọn'}: "${itemLabel}" (#${collabRoom.roomId})`, 
+      collabUser.name
+    );
 
     toggleCollabItemOnServer(
       collabRoom.roomId, 
@@ -1631,9 +1685,10 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const slotLabel = slot === 'breakfast' ? 'Bữa Sáng' : slot === 'lunch' ? 'Bữa Trưa' : slot === 'dinner' ? 'Bữa Tối' : 'Xế';
     const dishLabel = dishType === 'mainDish' ? 'món mặn' : dishType === 'soupDish' ? 'món canh' : 'món rau';
     if (newChosenTitle) {
+      recordTelemetryEvent('weekly', `Đổi ${dishLabel} sang "${newChosenTitle}" (${slotLabel})`, user?.name || 'Người dùng');
       showToast(`🔄 Đã đổi ${dishLabel} sang "${newChosenTitle}" (${slotLabel})!`);
     }
-  }, [swapDishInMealSet, selectedMealSet, showToast]);
+  }, [user, swapDishInMealSet, selectedMealSet, showToast]);
 
   const addMealSetToSlot = (dayId: string, slot: MealSlot, mealSetIdOrObj: string | VietnameseMealSet) => {
     let targetSet: VietnameseMealSet | undefined;
@@ -2147,6 +2202,11 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {}
 
     const dailyBudgetTarget = getDailyBudgetTarget(budgetLevel, safeServings, onboardingData?.specialNeeds);
+    recordTelemetryEvent(
+      'weekly',
+      `Tạo thực đơn 7 ngày vị ${regionPreference.toUpperCase()} (~${dailyBudgetTarget.toLocaleString('vi-VN')} đ/ngày, ${safeServings} người)`,
+      user?.name || 'Người dùng'
+    );
     if (isSingleDish) {
       showToast(`⚡ Đã cân chỉnh toàn bộ 7 ngày thành 14 món ăn đầy đặn, đủ chất không trùng lặp (~${dailyBudgetTarget.toLocaleString('vi-VN')} đ/ngày)!`);
     } else {
