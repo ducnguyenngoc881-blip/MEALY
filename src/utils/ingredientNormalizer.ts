@@ -95,47 +95,102 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (!rawName || typeof rawName !== 'string') return 'Nguyên liệu khác';
   
   let s = rawName.trim();
-  
-  // 1. Remove parenthetical notes e.g., (hoặc ...), (40 độ đạm), (Thơm), (Dọc mùng)
-  // But preserve recognizable disambiguations like (ngò om) or (thơm) if helpful
   const lower = s.toLowerCase();
 
-  // Negative guards to prevent false-positives on compound foods
+  // 1. Specific negative guards & disambiguation exceptions
   if (lower.includes('chuối tiêu') || lower.includes('chuối')) return 'Chuối chín';
   if (lower.includes('cà pháo muối') || lower.includes('cà pháo')) return 'Cà pháo muối';
   if (lower.includes('dưa cải') || lower.includes('dưa muối') || lower.includes('dưa chua')) return 'Dưa cải muối chua';
-  if (lower.includes('sữa tươi') || lower.includes('sữa đặc')) return 'Sữa tươi';
-  if (lower.includes('gạo')) return 'Gạo';
   if (lower.includes('pate')) return 'Pate';
   if (lower.includes('rau thơm')) return 'Rau thơm';
-  if (lower.includes('cá trứng')) return 'Cá trứng';
-  if (lower.includes('mì trứng')) return 'Mì trứng';
   if (lower.includes('mướp đắng') || lower.includes('khổ qua')) return 'Mướp đắng (khổ qua)';
   if (lower.includes('tương ớt')) return 'Tương ớt';
   if (lower.includes('tương cà')) return 'Tương cà';
   if (lower.includes('hạt nêm')) return 'Hạt nêm';
   if (lower.includes('bột ngọt') || lower.includes('mì chính')) return 'Bột ngọt';
 
-  // Explicit High-Priority Culinary Mapping Dictionary
-  if (lower.includes('cà chua')) return 'Cà chua';
-  if (lower.includes('ba chỉ') || lower.includes('ba rọi')) return 'Thịt ba chỉ';
-  if (lower.includes('nạc vai')) return 'Thịt nạc vai';
-  if (lower.includes('nạc dăm')) return 'Thịt nạc dăm';
-  if (lower.includes('thăn heo') || lower.includes('thăn lợn')) return 'Thịt thăn heo';
-  if (lower.includes('heo xay') || lower.includes('lợn xay') || lower.includes('thịt băm')) return 'Thịt heo xay';
-  if (lower.includes('sườn non') || lower.includes('sườn heo')) return 'Sườn non heo';
-  if (lower.includes('chân giò') || lower.includes('móng giò')) return 'Chân giò heo';
+  // 2. Pasta / Spaghetti / Noodles (e.g., Mì Ý sợi dài Spaghetti, Spaghetti lúa mì cứng -> unified)
+  if (lower.includes('spaghetti') || lower.includes('mì ý')) return 'Mì Ý (Spaghetti)';
+  if (lower.includes('penne') || lower.includes('nui') || lower.includes('pasta') || lower.includes('fusilli')) return 'Nui (Pasta)';
+  if (lower.includes('mì trứng')) return 'Mì trứng';
+  if (lower.includes('bún tươi') || lower === 'bún') return 'Bún tươi';
+  if (lower.includes('bánh phở') || lower === 'phở') return 'Bánh phở tươi';
+  if (lower.includes('miến dong') || (/\bmiến\b/i.test(lower) && !lower.includes('miếng'))) return 'Miến dong';
+  if (lower.includes('bánh đa')) return 'Bánh đa đỏ';
 
-  if (lower.includes('thăn bò') || (lower.includes('thịt bò') && !lower.includes('bắp') && !lower.includes('nạm'))) return 'Thịt bò';
+  // 3. Dairy / Butter / Cheese / Cream
+  if (lower.includes('bơ sáp') || lower.includes('bơ 034') || lower.includes('bơ đắk lắk')) return 'Trái bơ sáp (Avocado)';
+  if (lower.includes('mozzarella')) return 'Phô mai Mozzarella';
+  if (lower.includes('parmesan')) return 'Phô mai Parmesan';
+  if (lower.includes('cheddar')) return 'Phô mai Cheddar';
+  if (lower.includes('whipping') || lower.includes('cooking cream') || lower.includes('kem béo') || lower.includes('kem tươi')) return 'Kem tươi (Whipping cream)';
+  if (lower.includes('bơ lạt') || lower.includes('bơ anchor') || (lower.includes('bơ') && !lower.includes('bánh mì') && !lower.includes('bơ tỏi') && !lower.includes('sốt bơ'))) return 'Bơ lạt';
+  if (lower.includes('sữa đặc')) return 'Sữa đặc';
+  if (lower.includes('sữa tươi')) return 'Sữa tươi';
+
+  // 4. Bánh mì
+  if (lower.includes('bánh mì sandwich') || lower.includes('sandwich')) return 'Bánh mì sandwich';
+  if (lower.includes('bánh mì bơ tỏi') || lower.includes('crouton')) return 'Bánh mì bơ tỏi';
+  if (lower.includes('bánh mì burger') || lower.includes('burger')) return 'Vỏ bánh mì burger';
+  if (lower.includes('tortilla')) return 'Vỏ bánh Tortilla';
+
+  // 5. Western Herbs
+  if (lower.includes('oregano')) return 'Lá Oregano khô';
+  if (lower.includes('rosemary') || lower.includes('hương thảo')) return 'Lá hương thảo (Rosemary)';
+  if (lower.includes('thyme') || lower.includes('xạ hương')) return 'Lá xạ hương (Thyme)';
+  if (lower.includes('basil') || lower.includes('húng tây') || lower.includes('húng quế ý')) return 'Húng tây (Basil)';
+
+  // 6. Beef
   if (lower.includes('bắp bò')) return 'Bắp bò';
+  if (lower.includes('dẻ sườn bò') || lower.includes('sườn bò')) return 'Dẻ sườn bò';
+  if (lower.includes('gầu bò')) return 'Gầu bò';
+  if (lower.includes('nạc vai bò')) return 'Nạc vai bò';
+  if (lower.includes('ba chỉ bò')) return 'Ba chỉ bò';
   if (lower.includes('nạm bò')) return 'Nạm bò';
+  if (lower.includes('thăn lưng') || lower.includes('ribeye') || lower.includes('striploin') || lower.includes('thăn bò') || (lower.includes('thịt bò') && !lower.includes('xương'))) return 'Thịt bò thăn';
+  if (lower.includes('xương ống bò') || lower.includes('xương bò')) return 'Xương ống bò';
 
-  // Eggs must be evaluated strictly BEFORE poultry to prevent "Trứng gà ta" from matching "gà ta"
+  // 7. Pork
+  if (lower.includes('sườn non') || lower.includes('sườn cây') || lower.includes('sườn que') || lower.includes('sườn heo')) return 'Sườn non heo';
+  if (lower.includes('sườn sụn')) return 'Sườn sụn heo';
+  if (lower.includes('thịt ba chỉ') || lower.includes('ba chỉ heo') || lower.includes('ba rọi')) return 'Thịt ba chỉ';
+  if (lower.includes('nạc dăm')) return 'Thịt nạc dăm';
+  if (lower.includes('nạc vai')) return 'Thịt nạc vai';
+  if (lower.includes('thăn cốt lết') || lower.includes('cốt lết') || lower.includes('thăn heo') || lower.includes('thăn lợn')) return 'Thịt thăn heo';
+  if (lower.includes('chân giò') || lower.includes('móng giò')) return 'Chân giò heo';
+  if (lower.includes('giò sống') || lower.includes('mọc')) return 'Giò sống';
+  if (lower.includes('chả lụa') || lower.includes('giò lụa')) return 'Chả lụa';
+  if (lower.includes('heo xay') || lower.includes('lợn xay') || lower.includes('thịt băm') || (lower.includes('thịt heo') && lower.includes('xay'))) return 'Thịt heo xay';
+
+  // 8. Poultry (Eggs evaluated strictly before birds)
   if (lower.includes('trứng cút')) return 'Trứng cút';
   if (lower.includes('trứng vịt')) return 'Trứng vịt';
   if (lower.includes('trứng gà') || lower.includes('trứng tươi') || lower.includes('trứng ta') || lower === 'trứng') return 'Trứng gà';
+  if (lower.includes('đùi tỏi') || lower.includes('đùi gà')) return 'Đùi gà';
+  if (lower.includes('cánh gà')) return 'Cánh gà';
+  if (lower.includes('ức gà')) return 'Ức gà';
+  if (lower.includes('thịt gà') || lower.includes('gà ta') || lower.includes('gà thả vườn') || lower.includes('gà nửa con')) return 'Thịt gà';
+  if (lower.includes('thịt vịt') || lower.includes('vịt')) return 'Thịt vịt';
 
-  // Mushrooms must be evaluated strictly BEFORE poultry to prevent "Nấm đùi gà" from matching "đùi gà"
+  // 9. Seafood
+  if (lower.includes('cá hồi')) return 'Cá hồi';
+  if (lower.includes('cá basa') || lower.includes('cá ba sa') || lower.includes('cá tuyết')) return 'Cá basa';
+  if (lower.includes('cá nục')) return 'Cá nục';
+  if (lower.includes('cá lóc') || lower.includes('cá quả') || lower.includes('cá chuối') || lower.includes('cá hú')) return 'Cá lóc';
+  if (lower.includes('cá rô đồng') || lower.includes('cá rô')) return 'Cá rô đồng';
+  if (lower.includes('cá thu')) return 'Cá thu';
+  if (lower.includes('cá chim')) return 'Cá chim trắng';
+  if (lower.includes('cá kèo')) return 'Cá kèo';
+  if (lower.includes('cá diêu hồng') || lower.includes('cá điêu hồng')) return 'Cá diêu hồng';
+  if (lower.includes('cá vược') || lower.includes('cá chẽm')) return 'Cá chẽm (vược)';
+  if (lower.includes('cá trứng')) return 'Cá trứng';
+  if (lower.includes('chả cá')) return 'Chả cá';
+  if (lower.includes('tôm nõn') || lower.includes('tôm sú') || lower.includes('tôm thẻ') || lower.includes('tôm tươi') || lower === 'tôm') return 'Tôm tươi';
+  if (lower.includes('mực ống') || lower.includes('mực tươi') || lower.includes('mực lá') || lower === 'mực') return 'Mực tươi';
+  if (lower.includes('nghêu') || lower.includes('ngao')) return 'Nghêu (Ngao)';
+  if (lower.includes('cua đồng')) return 'Cua đồng xay';
+
+  // 10. Mushrooms (Must evaluate before chicken to avoid "Nấm đùi gà" -> "Đùi gà")
   if (lower.includes('nấm rơm')) return 'Nấm rơm';
   if (lower.includes('nấm đùi gà')) return 'Nấm đùi gà';
   if (lower.includes('nấm kim châm')) return 'Nấm kim châm';
@@ -146,22 +201,32 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('mộc nhĩ') || lower.includes('nấm mèo')) return 'Mộc nhĩ';
   if (lower.includes('nấm')) return 'Nấm tươi';
 
-  if (lower.includes('đùi gà')) return 'Đùi gà';
-  if (lower.includes('ức gà')) return 'Ức gà';
-  if (lower.includes('cánh gà')) return 'Cánh gà';
-  if (lower.includes('thịt gà') || lower.includes('gà ta') || lower.includes('gà thả vườn')) return 'Thịt gà';
-  if (lower.includes('thịt vịt') || lower.includes('vịt')) return 'Thịt vịt';
+  // 11. Produce / Veggies
+  if (lower.includes('cà chua')) return 'Cà chua';
+  if (lower.includes('măng tây')) return 'Măng tây';
+  if (lower.includes('cần tây')) return 'Cần tây';
+  if (lower.includes('súp lơ') || lower.includes('bông cải')) return 'Súp lơ xanh';
+  if (lower.includes('bắp cải')) return 'Bắp cải';
+  if (lower.includes('khoai tây')) return 'Khoai tây';
+  if (lower.includes('khoai lang')) return 'Khoai lang';
+  if (lower.includes('cà rốt')) return 'Cà rốt';
+  if (lower.includes('dưa leo') || lower.includes('dưa chuột')) return 'Dưa leo';
+  if (lower.includes('xà lách') || lower.includes('romaine')) return 'Xà lách';
+  if (lower.includes('rau muống')) return 'Rau muống';
+  if (lower.includes('rau mồng tơi') || lower.includes('mồng tơi')) return 'Rau mồng tơi';
+  if (lower.includes('rau ngót')) return 'Rau ngót';
+  if (lower.includes('cải ngọt')) return 'Cải ngọt';
+  if (lower.includes('cải thìa') || lower.includes('cải chíp')) return 'Cải thìa';
+  if (lower.includes('mướp hương') || lower.includes('mướp')) return 'Mướp hương';
+  if (lower.includes('bí đỏ')) return 'Bí đỏ';
+  if (lower.includes('bí đao') || lower.includes('bí xanh')) return 'Bí đao';
+  if (lower.includes('đậu bắp')) return 'Đậu bắp';
+  if (lower.includes('đậu cô ve') || lower.includes('đậu cove') || lower.includes('đậu que')) return 'Đậu cô ve';
+  if (lower.includes('giá đỗ') || lower.includes('giá sống')) return 'Giá đỗ';
+  if (lower.includes('dứa') || lower.includes('thơm')) return 'Dứa (thơm)';
+  if (lower.includes('đậu phụ') || lower.includes('đậu hũ')) return 'Đậu phụ';
 
-  if (lower.includes('cá lóc') || lower.includes('cá quả') || lower.includes('cá chuối')) return 'Cá lóc';
-  if (lower.includes('cá hồi')) return 'Cá hồi';
-  if (lower.includes('cá basa') || lower.includes('cá ba sa')) return 'Cá basa';
-  if (lower.includes('cá nục')) return 'Cá nục';
-  if (lower.includes('cá diêu hồng') || lower.includes('cá điêu hồng')) return 'Cá diêu hồng';
-  if (lower.includes('tôm sú') || lower.includes('tôm thẻ') || lower.includes('tôm tươi') || lower === 'tôm') return 'Tôm tươi';
-  if (lower.includes('mực ống') || lower.includes('mực tươi') || lower.includes('mực lá') || lower === 'mực') return 'Mực tươi';
-  if (lower.includes('nghêu') || lower.includes('ngao')) return 'Nghêu (Ngao)';
-  if (lower.includes('cua đồng')) return 'Cua đồng xay';
-
+  // 12. Aromatics
   if (lower.includes('hành tím') || lower.includes('hành khô')) return 'Hành tím (hành khô)';
   if (lower.includes('hành tây')) return 'Hành tây';
   if (lower.includes('hành hoa') || lower.includes('hành lá')) return 'Hành lá';
@@ -175,26 +240,7 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('thì là')) return 'Thì là';
   if (lower.includes('rau răm')) return 'Rau răm';
 
-  if (lower.includes('cà rốt')) return 'Cà rốt';
-  if (lower.includes('khoai tây')) return 'Khoai tây';
-  if (lower.includes('khoai lang')) return 'Khoai lang';
-  if (lower.includes('dưa leo') || lower.includes('dưa chuột')) return 'Dưa leo';
-  if (lower.includes('rau muống')) return 'Rau muống';
-  if (lower.includes('rau mồng tơi') || lower.includes('mồng tơi')) return 'Rau mồng tơi';
-  if (lower.includes('rau ngót')) return 'Rau ngót';
-  if (lower.includes('cải ngọt')) return 'Cải ngọt';
-  if (lower.includes('cải thìa') || lower.includes('cải chíp')) return 'Cải thìa';
-  if (lower.includes('bắp cải')) return 'Bắp cải';
-  if (lower.includes('súp lơ') || lower.includes('bông cải')) return 'Súp lơ xanh';
-  if (lower.includes('mướp hương') || lower.includes('mướp')) return 'Mướp hương';
-  if (lower.includes('bí đỏ')) return 'Bí đỏ';
-  if (lower.includes('bí đao') || lower.includes('bí xanh')) return 'Bí đao';
-  if (lower.includes('đậu bắp')) return 'Đậu bắp';
-  if (lower.includes('đậu cô ve') || lower.includes('đậu cove') || lower.includes('đậu que')) return 'Đậu cô ve';
-  if (lower.includes('giá đỗ') || lower.includes('giá sống')) return 'Giá đỗ';
-  if (lower.includes('dứa') || lower.includes('thơm')) return 'Dứa (thơm)';
-  if (lower.includes('đậu phụ') || lower.includes('đậu hũ')) return 'Đậu phụ';
-
+  // 13. Staples, Seasonings, Grains
   if (lower.includes('nước mắm')) return 'Nước mắm';
   if (lower.includes('nước tương') || lower.includes('xì dầu')) return 'Nước tương';
   if (lower.includes('dầu hào')) return 'Dầu hào';
@@ -204,8 +250,12 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('muối')) return 'Muối';
   if (lower.includes('tiêu')) return 'Tiêu xay';
   if (lower.includes('giấm')) return 'Giấm gạo';
+  if (lower.includes('yến mạch')) return 'Yến mạch';
+  if (lower.includes('gạo nếp')) return 'Gạo nếp';
+  if (lower.includes('gạo')) return 'Gạo';
+  if (lower.includes('xúc xích')) return 'Xúc xích';
 
-  // 2. Generic Cleaning for non-dictionary items:
+  // 14. Generic Cleaning for non-dictionary items:
   // Remove parentheticals
   s = s.replace(/\s*\([^)]*\)/g, '').trim();
 
@@ -318,8 +368,20 @@ export function decomposeBundledIngredients(
     }
   }
 
+  // 2. Resolve alternative clauses e.g. "Phô mai Parmesan hoặc Bơ lạt", "Cá hú (hoặc cá lóc)", "Cá Tuyết / Basa Phi Lê"
+  let resolvedName = rawName;
+  if (/\s+hoặc\s+/i.test(resolvedName)) {
+    resolvedName = resolvedName.split(/\s+hoặc\s+/i)[0].trim();
+  }
+  if (/\s*\/\s*/.test(resolvedName) && !/\d+\/\d+/.test(resolvedName)) {
+    const slashParts = resolvedName.split(/\s*\/\s*/).map(p => p.trim()).filter(Boolean);
+    if (slashParts.length >= 2) {
+      resolvedName = slashParts[0];
+    }
+  }
+
   return [{
-    name: rawName,
+    name: resolvedName,
     amount: parsedAmt,
     unit: safeUnit,
     category: category as any,

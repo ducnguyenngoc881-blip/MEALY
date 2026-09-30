@@ -555,5 +555,175 @@ describe('Unit: Grocery Aggregation & Consolidated Ingredient Counting', () => {
     });
   });
 
+  describe('De-duplication & Summed Totals Invariants (Never Individual Duplicates)', () => {
+    it('aggregates all Spaghetti and Pasta variants into a single summed total item', () => {
+      const dishes = [
+        { name: 'Mì Ý sợi dài Spaghetti', amount: 1.44, unit: 'kg', cost: 64000, dish: 'Mì Ý Sốt Bò Băm Cà Chua' },
+        { name: 'Mì Ý sợi dài Spaghetti lúa mì cứng', amount: 300, unit: 'g', cost: 19000, dish: 'Spaghetti Hải Sản' },
+        { name: 'Spaghetti Sợi Dài', amount: 400, unit: 'g', cost: 22000, dish: 'Spaghetti Aglio e Olio' }
+      ];
+
+      const itemsMap: Record<string, any> = {};
+
+      dishes.forEach(item => {
+        const subs = decomposeBundledIngredients(item.name, item.amount, item.unit, 'do-kho', item.cost);
+        subs.forEach(sub => {
+          const norm = normalizeIngredientUnitAndAmount(sub.name, sub.amount, sub.unit);
+          expect(norm.cleanName).toBe('Mì Ý (Spaghetti)');
+
+          let targetKey = norm.groupKey;
+          const matchKey = Object.keys(itemsMap).find(k => itemsMap[k].cleanName.toLowerCase() === norm.cleanName.toLowerCase());
+          if (matchKey) targetKey = matchKey;
+
+          if (!itemsMap[targetKey]) {
+            itemsMap[targetKey] = {
+              cleanName: norm.cleanName,
+              baseAmount: norm.baseAmount,
+              baseUnit: norm.baseUnit,
+              family: norm.family,
+              cost: sub.cost,
+              dishNames: [item.dish],
+              dishCount: 1
+            };
+          } else {
+            itemsMap[targetKey].baseAmount += norm.baseAmount;
+            itemsMap[targetKey].cost += sub.cost;
+            if (!itemsMap[targetKey].dishNames.includes(item.dish)) {
+              itemsMap[targetKey].dishNames.push(item.dish);
+            }
+            itemsMap[targetKey].dishCount += 1;
+          }
+        });
+      });
+
+      const entries = Object.values(itemsMap);
+      // NEVER separate duplicates: must be exactly ONE merged entry
+      expect(entries.length).toBe(1);
+      const merged = entries[0];
+      expect(merged.cleanName).toBe('Mì Ý (Spaghetti)');
+      // 1440g + 300g + 400g = 2140g = 2.14 kg
+      expect(merged.baseAmount).toBe(2140);
+      expect(merged.dishCount).toBe(3);
+      expect(merged.dishNames.length).toBe(3);
+      expect(merged.cost).toBe(64000 + 19000 + 22000);
+
+      const formatted = formatDisplayAmountAndUnit(merged.baseAmount, merged.family, merged.baseUnit);
+      expect(formatted.amount).toBe(2.14);
+      expect(formatted.unit).toBe('kg');
+      expect(formatted.displayStr).toBe('2.14 kg');
+    });
+
+    it('aggregates butter variants into a single summed Bơ lạt item', () => {
+      const butterInputs = [
+        { name: 'Bơ lạt Anchor', amount: 50, unit: 'g', cost: 15000 },
+        { name: 'Bơ lạt tự nhiên Anchor', amount: 30, unit: 'g', cost: 10000 },
+        { name: 'Bơ lạt Anchor béo ngậy', amount: 20, unit: 'g', cost: 8000 }
+      ];
+
+      const itemsMap: Record<string, any> = {};
+
+      butterInputs.forEach(item => {
+        const norm = normalizeIngredientUnitAndAmount(item.name, item.amount, item.unit);
+        expect(norm.cleanName).toBe('Bơ lạt');
+
+        let targetKey = norm.groupKey;
+        const matchKey = Object.keys(itemsMap).find(k => itemsMap[k].cleanName.toLowerCase() === norm.cleanName.toLowerCase());
+        if (matchKey) targetKey = matchKey;
+
+        if (!itemsMap[targetKey]) {
+          itemsMap[targetKey] = {
+            cleanName: norm.cleanName,
+            baseAmount: norm.baseAmount,
+            cost: item.cost,
+            dishCount: 1
+          };
+        } else {
+          itemsMap[targetKey].baseAmount += norm.baseAmount;
+          itemsMap[targetKey].cost += item.cost;
+          itemsMap[targetKey].dishCount += 1;
+        }
+      });
+
+      const entries = Object.values(itemsMap);
+      expect(entries.length).toBe(1);
+      expect(entries[0].cleanName).toBe('Bơ lạt');
+      expect(entries[0].baseAmount).toBe(100);
+      expect(entries[0].cost).toBe(33000);
+      expect(entries[0].dishCount).toBe(3);
+    });
+
+    it('aggregates cheese variants into distinct Mozzarella, Parmesan, and Cheddar totals', () => {
+      const cheeseInputs = [
+        { name: 'Phô mai Mozzarella bào sợi', amount: 200, unit: 'g' },
+        { name: 'Phô mai Mozzarella kéo sợi', amount: 150, unit: 'g' },
+        { name: 'Phô mai sợi Mozzarella', amount: 50, unit: 'g' },
+        { name: 'Phô mai bột Parmesan', amount: 80, unit: 'g' }
+      ];
+
+      const itemsMap: Record<string, any> = {};
+
+      cheeseInputs.forEach(item => {
+        const norm = normalizeIngredientUnitAndAmount(item.name, item.amount, item.unit);
+        let targetKey = norm.groupKey;
+        const matchKey = Object.keys(itemsMap).find(k => itemsMap[k].cleanName.toLowerCase() === norm.cleanName.toLowerCase());
+        if (matchKey) targetKey = matchKey;
+
+        if (!itemsMap[targetKey]) {
+          itemsMap[targetKey] = { cleanName: norm.cleanName, baseAmount: norm.baseAmount };
+        } else {
+          itemsMap[targetKey].baseAmount += norm.baseAmount;
+        }
+      });
+
+      expect(itemsMap['phô mai mozzarella__weight'].cleanName).toBe('Phô mai Mozzarella');
+      expect(itemsMap['phô mai mozzarella__weight'].baseAmount).toBe(400); // 200 + 150 + 50 = 400g
+
+      expect(itemsMap['phô mai parmesan__weight'].cleanName).toBe('Phô mai Parmesan');
+      expect(itemsMap['phô mai parmesan__weight'].baseAmount).toBe(80);
+    });
+
+    it('aggregates beef cuts into proper categories (Thăn bò, Bắp bò, Sườn bò)', () => {
+      const beefInputs = [
+        { name: 'Thịt Bò Thăn Mềm', amount: 400, unit: 'g' },
+        { name: 'Thăn Bò Mỹ', amount: 300, unit: 'g' },
+        { name: 'Thăn Bò Tươi Làm Bít Tết / Steak', amount: 300, unit: 'g' },
+        { name: 'Bắp Bò Úc', amount: 500, unit: 'g' },
+        { name: 'Bắp Bò Hoa Tươi Nhúng Lẩu Giòn Sần Sật', amount: 300, unit: 'g' }
+      ];
+
+      const itemsMap: Record<string, any> = {};
+
+      beefInputs.forEach(item => {
+        const norm = normalizeIngredientUnitAndAmount(item.name, item.amount, item.unit);
+        let targetKey = norm.groupKey;
+        const matchKey = Object.keys(itemsMap).find(k => itemsMap[k].cleanName.toLowerCase() === norm.cleanName.toLowerCase());
+        if (matchKey) targetKey = matchKey;
+
+        if (!itemsMap[targetKey]) {
+          itemsMap[targetKey] = { cleanName: norm.cleanName, baseAmount: norm.baseAmount };
+        } else {
+          itemsMap[targetKey].baseAmount += norm.baseAmount;
+        }
+      });
+
+      expect(itemsMap['thịt bò thăn__weight'].cleanName).toBe('Thịt bò thăn');
+      expect(itemsMap['thịt bò thăn__weight'].baseAmount).toBe(1000); // 400 + 300 + 300 = 1000g = 1kg
+
+      expect(itemsMap['bắp bò__weight'].cleanName).toBe('Bắp bò');
+      expect(itemsMap['bắp bò__weight'].baseAmount).toBe(800); // 500 + 300 = 800g
+    });
+
+    it('resolves alternative or compound ingredients into primary grocery items without duplication', () => {
+      const alt1 = decomposeBundledIngredients('Phô mai Parmesan hoặc Bơ lạt', 100, 'g', 'do-kho', 30000);
+      expect(alt1.length).toBe(1);
+      expect(alt1[0].name).toBe('Phô mai Parmesan');
+      expect(canonicalizeIngredientName(alt1[0].name)).toBe('Phô mai Parmesan');
+
+      const alt2 = decomposeBundledIngredients('Cá Tuyết / Basa Phi Lê', 200, 'g', 'thit-ca', 40000);
+      expect(alt2.length).toBe(1);
+      expect(canonicalizeIngredientName(alt2[0].name)).toBe('Cá basa');
+    });
+  });
+
 });
 
