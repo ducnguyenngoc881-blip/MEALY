@@ -1009,11 +1009,11 @@ export const CateringPartyPlanner: React.FC = () => {
                       value={partyPlan.title}
                       onChange={(e) => updatePartyPlan({ title: e.target.value })}
                       placeholder="VD: Tiệc Tất Niên Công Ty..."
-                      className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                      className="w-full bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3 py-2 text-xs font-semibold text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                    <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
                       Tên Khách Hàng / Đơn Vị Đặt
                     </label>
                     <input
@@ -1021,15 +1021,15 @@ export const CateringPartyPlanner: React.FC = () => {
                       value={partyPlan.clientName || ''}
                       onChange={(e) => updatePartyPlan({ clientName: e.target.value })}
                       placeholder="VD: Anh Minh (Phòng Marketing)..."
-                      className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                      className="w-full bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3 py-2 text-xs font-semibold text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 transition-colors"
                     />
                   </div>
                 </div>
 
                 {/* Table Size & Budget Per Head */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="bg-white dark:bg-slate-900/80 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
-                    <label className="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                  <div className="bg-white dark:bg-[#121110] p-3 rounded-2xl border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-between">
+                    <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
                       Quy Cách Bàn Tiệc
                     </label>
                     <div className="flex items-center gap-1 mt-1">
@@ -1040,8 +1040,8 @@ export const CateringPartyPlanner: React.FC = () => {
                           onClick={() => updatePartyPlan({ tableSize: size })}
                           className={`flex-1 py-1.5 rounded-lg text-xs font-extrabold transition-colors ${
                             tableSize === size
-                              ? 'bg-emerald-500 text-slate-950 shadow font-black'
-                              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                              ? 'bg-amber-500 text-stone-950 shadow font-black'
+                              : 'bg-stone-100 dark:bg-[#252220] text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                           }`}
                         >
                           {size} người
@@ -1050,8 +1050,8 @@ export const CateringPartyPlanner: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="bg-white dark:bg-slate-900/80 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
-                    <label className="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                  <div className="bg-white dark:bg-[#121110] p-3 rounded-2xl border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-between">
+                    <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
                       Báo Giá / Khách (VND)
                     </label>
                     <input
@@ -1067,9 +1067,9 @@ export const CateringPartyPlanner: React.FC = () => {
                           updatePartyPlan({ budgetPerHeadVnd: 50000 });
                         }
                       }}
-                      className="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1 text-xs font-black text-emerald-700 dark:text-emerald-400 text-center focus:outline-none focus:border-emerald-500"
+                      className="w-full mt-1 bg-[#FAF8F5] dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-lg px-2 py-1 text-xs font-black text-amber-700 dark:text-amber-400 text-center focus:outline-none focus:border-amber-500"
                     />
-                    <div className="flex items-center justify-center gap-1 mt-1 pt-1 border-t border-slate-200 dark:border-slate-800/80">
+                    <div className="flex items-center justify-center gap-1 mt-1 pt-1 border-t border-[#E8E2D8] dark:border-[#252220]">
                       {[150000, 200000, 250000, 300000].map(val => (
                         <button
                           key={val}
@@ -1077,8 +1077,8 @@ export const CateringPartyPlanner: React.FC = () => {
                           onClick={() => updatePartyPlan({ budgetPerHeadVnd: val })}
                           className={`px-1 py-0.5 rounded text-[9px] font-bold transition-colors ${
                             budgetPerHead === val
-                              ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40'
-                              : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-950'
+                              ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40'
+                              : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-[#252220]'
                           }`}
                         >
                           {val / 1000}k
