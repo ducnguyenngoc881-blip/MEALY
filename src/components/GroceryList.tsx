@@ -2004,14 +2004,19 @@ export const GroceryList: React.FC = () => {
       )}
 
       {/* REAL-LIFE GROCERY AISLE FILTERING TABS */}
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <div className="flex items-center justify-between px-1">
-          <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1">
-            <Store className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-            Lọc Theo Quầy Nguyên Liệu ({displayedList.length} món)
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+              <Store className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>Quầy Thực Phẩm</span>
+            </span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 border border-stone-200/60 dark:border-stone-700/50">
+              {displayedList.length} món
+            </span>
+          </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             {deletedItemNames.length > 0 && (
               <button
                 type="button"
@@ -2020,7 +2025,7 @@ export const GroceryList: React.FC = () => {
                   localStorage.removeItem('mealwise_deleted_grocery_items');
                   showToast('🔄 Đã khôi phục các món đã xóa!');
                 }}
-                className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 flex items-center gap-1 transition-colors cursor-pointer"
+                className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors cursor-pointer"
                 title="Khôi phục lại các nguyên liệu đã xóa"
               >
                 <RotateCcw className="w-3 h-3" />
@@ -2031,7 +2036,7 @@ export const GroceryList: React.FC = () => {
             {overallCheckedCount > 0 && (
               <button
                 onClick={clearGroceryCheckedItems}
-                className="text-[11px] font-bold text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 transition-colors"
+                className="text-[11px] font-bold text-stone-500 dark:text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
                 title="Đặt lại toàn bộ trạng thái đã mua"
               >
                 <RotateCcw className="w-3 h-3" />
@@ -2042,120 +2047,133 @@ export const GroceryList: React.FC = () => {
         </div>
 
         {/* Horizontal scrollable aisle tabs (6 aisles) */}
-        <div className="flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-6 sm:gap-1 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xs">
+        <div className="flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-6 sm:gap-1.5 rounded-2xl bg-stone-100/80 dark:bg-stone-900/80 border border-stone-200/70 dark:border-stone-800/70 shadow-2xs">
           {/* Tất Cả */}
           <button
             onClick={() => setAisleFilter('all')}
-            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
               aisleFilter === 'all'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
+                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
             }`}
           >
-            <div className="flex items-center gap-1">
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Tất Cả</span>
-            </div>
-            <span className={`text-[10px] ${aisleFilter === 'all' ? 'text-stone-900 dark:text-white font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({aisleCounts['all']})
+            <span className="text-xs">🧺</span>
+            <span className="text-[11px] whitespace-nowrap">Tất Cả</span>
+            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
+              aisleFilter === 'all'
+                ? 'bg-white/20 text-white dark:bg-stone-900/20 dark:text-stone-950'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+            }`}>
+              {aisleCounts['all']}
             </span>
           </button>
 
           {/* Thịt & Trứng */}
           <button
             onClick={() => setAisleFilter('thit')}
-            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
               aisleFilter === 'thit'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
+                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
             }`}
           >
-            <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-                <span className="sm:hidden">Thịt/Trứng</span>
-                <span className="hidden sm:inline">Thịt & Trứng</span>
-              </span>
-            </div>
-            <span className={`text-[10px] ${aisleFilter === 'thit' ? 'text-rose-700 dark:text-rose-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({aisleCounts['thit']})
+            <span className="text-xs">🥩</span>
+            <span className="text-[11px] whitespace-nowrap">
+              <span className="sm:hidden">Thịt/Trứng</span>
+              <span className="hidden sm:inline">Thịt & Trứng</span>
+            </span>
+            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
+              aisleFilter === 'thit'
+                ? 'bg-rose-500 text-white'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+            }`}>
+              {aisleCounts['thit']}
             </span>
           </button>
 
           {/* Hải Sản */}
           <button
             onClick={() => setAisleFilter('hai-san')}
-            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
               aisleFilter === 'hai-san'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
+                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
             }`}
           >
-            <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Hải Sản</span>
-            </div>
-            <span className={`text-[10px] ${aisleFilter === 'hai-san' ? 'text-sky-700 dark:text-sky-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({aisleCounts['hai-san']})
+            <span className="text-xs">🦐</span>
+            <span className="text-[11px] whitespace-nowrap">Hải Sản</span>
+            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
+              aisleFilter === 'hai-san'
+                ? 'bg-sky-500 text-white'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+            }`}>
+              {aisleCounts['hai-san']}
             </span>
           </button>
 
           {/* Rau Củ & Nấm */}
           <button
             onClick={() => setAisleFilter('rau-cu')}
-            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
               aisleFilter === 'rau-cu'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
+                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
             }`}
           >
-            <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-                <span className="sm:hidden">Rau Củ</span>
-                <span className="hidden sm:inline">Rau Củ & Nấm</span>
-              </span>
-            </div>
-            <span className={`text-[10px] ${aisleFilter === 'rau-cu' ? 'text-emerald-700 dark:text-emerald-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({aisleCounts['rau-cu']})
+            <span className="text-xs">🥬</span>
+            <span className="text-[11px] whitespace-nowrap">
+              <span className="sm:hidden">Rau Củ</span>
+              <span className="hidden sm:inline">Rau Củ & Nấm</span>
+            </span>
+            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
+              aisleFilter === 'rau-cu'
+                ? 'bg-emerald-500 text-white'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+            }`}>
+              {aisleCounts['rau-cu']}
             </span>
           </button>
 
           {/* Trái Cây */}
           <button
             onClick={() => setAisleFilter('trai-cay')}
-            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
               aisleFilter === 'trai-cay'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
+                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
             }`}
           >
-            <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Trái Cây</span>
-            </div>
-            <span className={`text-[10px] ${aisleFilter === 'trai-cay' ? 'text-amber-700 dark:text-amber-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({aisleCounts['trai-cay']})
+            <span className="text-xs">🍎</span>
+            <span className="text-[11px] whitespace-nowrap">Trái Cây</span>
+            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
+              aisleFilter === 'trai-cay'
+                ? 'bg-amber-500 text-white'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+            }`}>
+              {aisleCounts['trai-cay']}
             </span>
           </button>
 
           {/* Gia Vị & Đồ Khô */}
           <button
             onClick={() => setAisleFilter('gia-vi-kho')}
-            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
               aisleFilter === 'gia-vi-kho'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
+                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
             }`}
           >
-            <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-                <span className="sm:hidden">Gia Vị</span>
-                <span className="hidden sm:inline">Gia Vị & Khô</span>
-              </span>
-            </div>
-            <span className={`text-[10px] ${aisleFilter === 'gia-vi-kho' ? 'text-purple-700 dark:text-purple-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({aisleCounts['gia-vi-kho']})
+            <span className="text-xs">🧂</span>
+            <span className="text-[11px] whitespace-nowrap">
+              <span className="sm:hidden">Gia Vị</span>
+              <span className="hidden sm:inline">Gia Vị & Khô</span>
+            </span>
+            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
+              aisleFilter === 'gia-vi-kho'
+                ? 'bg-purple-500 text-white'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+            }`}>
+              {aisleCounts['gia-vi-kho']}
             </span>
           </button>
         </div>

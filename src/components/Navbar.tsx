@@ -90,7 +90,7 @@ export const Navbar: React.FC = () => {
 
         {/* Center: Active Screen Badge Pill */}
         <div 
-          className="px-2 min-[360px]:px-2.5 py-1 rounded-full bg-stone-200/50 dark:bg-stone-800/50 text-[10.5px] min-[360px]:text-[11px] sm:text-xs font-extrabold text-stone-800 dark:text-stone-200 max-w-[115px] min-[360px]:max-w-[150px] min-[390px]:max-w-[185px] sm:max-w-[240px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis border border-stone-300/40 dark:border-stone-700/40"
+          className="px-2.5 min-[360px]:px-3 py-1 rounded-full bg-stone-100/90 dark:bg-stone-850/90 text-[10.5px] min-[360px]:text-[11px] sm:text-xs font-black text-stone-800 dark:text-stone-200 max-w-[115px] min-[360px]:max-w-[150px] min-[390px]:max-w-[185px] sm:max-w-[240px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis border border-stone-200/80 dark:border-stone-700/60 shadow-2xs"
           title={currentTitle.full}
         >
           <span className="sm:hidden">{currentTitle.short}</span>
@@ -104,7 +104,7 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => openDownloadAppModal()}
-              className="px-2.5 py-1 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[10.5px] font-black flex items-center gap-1 shadow-xs transition-all active:scale-95 cursor-pointer"
+              className="px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[10.5px] font-black flex items-center gap-1 shadow-xs transition-all active:scale-95 cursor-pointer"
               title="Tải ứng dụng điện thoại MealWise"
             >
               <Smartphone className="w-3.5 h-3.5" />
@@ -117,7 +117,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setActiveTab(activeTab === 'admin' ? 'meal-sets' : 'admin')}
-                className="px-2 py-1 rounded-xl bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 transition-all cursor-pointer shadow-xs"
+                className="px-2.5 py-1 rounded-full bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 active:scale-95 transition-all cursor-pointer shadow-xs"
                 title="Bảng Quản Trị"
               >
                 <Sparkles className="w-3 h-3 text-stone-300 dark:text-stone-700" />
@@ -127,7 +127,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setActiveTab('account')}
-                className="px-2 py-1 rounded-xl bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 transition-all cursor-pointer shadow-xs"
+                className="px-2.5 py-1 rounded-full bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 active:scale-95 transition-all cursor-pointer shadow-xs"
                 title="Tài khoản thành viên (Đã đăng nhập)"
               >
                 <Sparkles className="w-3 h-3 text-stone-300 dark:text-stone-700" />
@@ -138,10 +138,10 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => openAuthModal('register')}
-              className="px-2 py-1 rounded-xl bg-stone-200/80 text-stone-800 dark:bg-stone-800/80 dark:text-stone-200 border border-stone-300/60 dark:border-stone-700/60 text-[10px] font-extrabold flex items-center gap-1 hover:bg-stone-300/80 dark:hover:bg-stone-700/80 transition-all cursor-pointer"
+              className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300 border border-amber-500/20 dark:border-amber-400/25 text-[10px] font-black flex items-center gap-1 hover:bg-amber-500/15 dark:hover:bg-amber-400/15 active:scale-95 transition-all cursor-pointer shadow-2xs"
               title="Bạn đang ở chế độ khách. Bấm để đăng ký mở khóa toàn bộ tính năng."
             >
-              <Lock className="w-3 h-3 text-stone-600 dark:text-stone-400" />
+              <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" />
               <span>Khách 🔒</span>
             </button>
           )}
@@ -150,7 +150,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="w-8 h-8 rounded-xl bg-stone-200/50 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800 border border-stone-300/40 dark:border-stone-700/40 text-stone-700 dark:text-stone-200 transition-all flex items-center justify-center active:scale-95 focus:outline-none"
+            className="w-8 h-8 rounded-full bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-850/90 dark:hover:bg-stone-800 border border-stone-200/70 dark:border-stone-700/60 text-stone-700 dark:text-stone-200 transition-all flex items-center justify-center active:scale-95 focus:outline-none shadow-2xs"
             title={theme === 'light' ? 'Chuyển sang Chế độ Tối' : 'Chuyển sang Chế độ Sáng'}
             aria-label="Chuyển đổi giao diện Sáng / Tối"
           >
@@ -165,7 +165,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={resetOnboarding}
-            className="w-8 h-8 rounded-xl bg-stone-200/50 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800 text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 border border-stone-300/40 dark:border-stone-700/40 transition-all flex items-center justify-center active:scale-95 focus:outline-none"
+            className="w-8 h-8 rounded-full bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-850/90 dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:text-stone-500 dark:hover:text-stone-200 border border-stone-200/70 dark:border-stone-700/60 transition-all flex items-center justify-center active:scale-95 focus:outline-none shadow-2xs"
             title="Cài đặt lại khẩu vị"
             aria-label="Cài đặt lại khẩu vị"
           >
