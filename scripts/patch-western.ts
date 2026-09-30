@@ -1,12 +1,14 @@
 import fs from 'fs';
 import { westernDishes500 } from '../src/data/westernDishes500';
-import { getDishImageUrl, OVERUSED_PLACEHOLDER_IDS } from '../src/utils/dishImageResolver';
+import { getDishImageUrl, OVERUSED_PLACEHOLDER_IDS, isDeadOrPlaceholderUrl } from '../src/utils/dishImageResolver';
 
 console.log(`Auditing and patching ${westernDishes500.length} western dishes...`);
 
 let replacedCount = 0;
 const updatedDishes = westernDishes500.map((dish) => {
-  const isBad = !dish.imageUrl || OVERUSED_PLACEHOLDER_IDS.some(id => dish.imageUrl.includes(id));
+  const isDeadOrOver = !dish.imageUrl || isDeadOrPlaceholderUrl(dish.imageUrl);
+  const isMismatchedBurger = dish.imageUrl?.includes('photo-1586190848861-99aa4a171e90') && !dish.title.toLowerCase().includes('burger');
+  const isBad = isDeadOrOver || isMismatchedBurger;
   if (isBad) {
     const newUrl = getDishImageUrl(dish.title, dish.category);
     replacedCount++;

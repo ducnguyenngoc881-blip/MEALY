@@ -22,7 +22,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Cà pháo muối giòn tan & Nước mắm chanh tỏi ớt tươi',
     totalCostVnd: 140000,
     totalCalories: 710,
-    imageUrl: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
     tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Đồng Quê', 'Bán Chạy']
   },
   {
@@ -92,7 +92,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Sốt chấm mè rang thanh nhẹ & Chanh tươi',
     totalCostVnd: 105000,
     totalCalories: 520,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
     tags: ['Eat Clean', 'Ăn Chay', 'Thanh Tịnh', 'Mâm Cơm 3 Món']
   },
   {
@@ -148,7 +148,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Nước tương tỏi ớt truyền thống',
     totalCostVnd: 78000,
     totalCalories: 510,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
     tags: ['Tiết Kiệm', '1 Người', 'Mâm Cơm 3 Món', 'Nhanh Gọn']
   },
   {
@@ -162,7 +162,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Nước mắm tiêu ớt',
     totalCostVnd: 85000,
     totalCalories: 560,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=800&q=80',
     tags: ['Tiết Kiệm', '1 Người', 'Mâm Cơm 3 Món', 'Bình Dân']
   },
   {
@@ -302,7 +302,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Sốt chấm BBQ khói & Mayonnaise mù tạt vàng',
     totalCostVnd: 155000,
     totalCalories: 770,
-    imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
     tags: ['Món Âu', 'Western Food', 'BBQ', 'American Feast', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   {
@@ -373,7 +373,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Muối hồng Himalaya & Tiêu đen xay giã dập',
     totalCostVnd: 175000,
     totalCalories: 770,
-    imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
     tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Steakhouse', 'Mâm Cơm 3 Món']
   },
   {
@@ -401,7 +401,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Sốt chấm BBQ khói cay nhẹ & Chanh vàng',
     totalCostVnd: 160000,
     totalCalories: 740,
-    imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
     tags: ['Món Âu', 'Western Food', 'Sườn BBQ', 'Địa Trung Hải', 'Mâm Cơm 3 Món']
   },
   {
@@ -429,7 +429,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Mù tạt vàng hạt Dijon & Mayonnaise béo',
     totalCostVnd: 135000,
     totalCalories: 720,
-    imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=800&q=80',
     tags: ['Món Âu', 'Western Food', 'Xúc Xích Đức', 'Nhanh Gọn', 'Mâm Cơm 3 Món']
   },
   {
@@ -569,7 +569,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Sốt BBQ chua ngọt & Tiêu đập dập',
     totalCostVnd: 160000,
     totalCalories: 740,
-    imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
     tags: ['Món Âu', 'Western Food', 'BBQ Ribs', 'Măng Tây', 'Mâm Cơm 3 Món']
   }
 ];

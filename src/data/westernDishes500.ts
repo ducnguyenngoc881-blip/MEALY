@@ -6816,7 +6816,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 502,
     "estimatedCostVnd": 101000,
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đùi Gà Rút Xương",
@@ -8031,7 +8031,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 517,
     "estimatedCostVnd": 154000,
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà",
@@ -8517,7 +8517,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 619,
     "estimatedCostVnd": 175000,
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gà Nửa Con Nướng",
@@ -9003,7 +9003,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 481,
     "estimatedCostVnd": 101000,
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Que Nạc",
@@ -9489,7 +9489,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 583,
     "estimatedCostVnd": 122000,
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Cây Heo",
@@ -9975,7 +9975,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 685,
     "estimatedCostVnd": 143000,
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Cây Heo",
@@ -10542,7 +10542,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 564,
     "estimatedCostVnd": 167000,
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Cốt Lết",
@@ -12891,7 +12891,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 577,
     "estimatedCostVnd": 174000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Vược Chẽm Phi Lê",
@@ -13620,7 +13620,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 110000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Tuyết / Basa Phi Lê",
@@ -20262,7 +20262,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 172,
     "estimatedCostVnd": 44000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -21142,7 +21142,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 173,
     "estimatedCostVnd": 63000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -21382,7 +21382,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 206,
     "estimatedCostVnd": 41000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -21622,7 +21622,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 239,
     "estimatedCostVnd": 46000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -21862,7 +21862,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 272,
     "estimatedCostVnd": 52000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -22102,7 +22102,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 185,
     "estimatedCostVnd": 57000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -22342,7 +22342,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 218,
     "estimatedCostVnd": 62000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -22582,7 +22582,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 251,
     "estimatedCostVnd": 40000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -22662,7 +22662,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 262,
     "estimatedCostVnd": 42000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -24262,7 +24262,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 242,
     "estimatedCostVnd": 50000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -24502,7 +24502,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 275,
     "estimatedCostVnd": 55000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -24582,7 +24582,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 166,
     "estimatedCostVnd": 57000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -24742,7 +24742,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 188,
     "estimatedCostVnd": 60000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -25062,7 +25062,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 232,
     "estimatedCostVnd": 40000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nguyên liệu súp tươi (rau củ/nấm)",
@@ -27112,7 +27112,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 192,
     "estimatedCostVnd": 44000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -27412,7 +27412,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 228,
     "estimatedCostVnd": 50000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -27562,7 +27562,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 246,
     "estimatedCostVnd": 28000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -27787,7 +27787,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 143,
     "estimatedCostVnd": 33000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -28312,7 +28312,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 206,
     "estimatedCostVnd": 44000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -28462,7 +28462,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 224,
     "estimatedCostVnd": 48000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -28687,7 +28687,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 251,
     "estimatedCostVnd": 52000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -28762,7 +28762,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 260,
     "estimatedCostVnd": 29000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -29137,7 +29137,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 175,
     "estimatedCostVnd": 37000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -29662,7 +29662,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 238,
     "estimatedCostVnd": 48000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -29812,7 +29812,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 256,
     "estimatedCostVnd": 51000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -30037,7 +30037,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 153,
     "estimatedCostVnd": 31000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -30487,7 +30487,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 207,
     "estimatedCostVnd": 41000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -30562,7 +30562,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 216,
     "estimatedCostVnd": 42000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -31012,7 +31012,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 140,
     "estimatedCostVnd": 52000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -31162,7 +31162,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 158,
     "estimatedCostVnd": 30000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -31387,7 +31387,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 185,
     "estimatedCostVnd": 35000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -31612,7 +31612,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 212,
     "estimatedCostVnd": 40000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -31912,7 +31912,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 248,
     "estimatedCostVnd": 46000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Rau củ / Khoai tây tươi tuyển chọn",
@@ -34310,7 +34310,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 352,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi (quả to)",
@@ -35225,7 +35225,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 348,
     "estimatedCostVnd": 43000,
-    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",
@@ -35447,7 +35447,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 387,
     "estimatedCostVnd": 49000,
-    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",
@@ -35891,7 +35891,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 465,
     "estimatedCostVnd": 35000,
-    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",
@@ -36113,7 +36113,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 344,
     "estimatedCostVnd": 41000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",
@@ -36853,7 +36853,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 314,
     "estimatedCostVnd": 35000,
-    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",
@@ -37667,7 +37667,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 457,
     "estimatedCostVnd": 57000,
-    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",
@@ -38111,7 +38111,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 375,
     "estimatedCostVnd": 43000,
-    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",
@@ -38777,7 +38777,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 332,
     "estimatedCostVnd": 35000,
-    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà / Bánh mì / Yến mạch",

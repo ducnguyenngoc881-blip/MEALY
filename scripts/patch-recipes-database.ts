@@ -1,12 +1,12 @@
 import fs from 'fs';
 import { recipesDatabase } from '../src/data/recipesDatabase';
-import { getDishImageUrl, OVERUSED_PLACEHOLDER_IDS } from '../src/utils/dishImageResolver';
+import { getDishImageUrl, OVERUSED_PLACEHOLDER_IDS, isDeadOrPlaceholderUrl } from '../src/utils/dishImageResolver';
 
 console.log(`Auditing and patching ${recipesDatabase.length} recipes in recipesDatabase...`);
 
 let replacedCount = 0;
 const updatedDishes = recipesDatabase.map((dish) => {
-  const isBad = !dish.imageUrl || OVERUSED_PLACEHOLDER_IDS.some(id => dish.imageUrl.includes(id));
+  const isBad = !dish.imageUrl || isDeadOrPlaceholderUrl(dish.imageUrl);
   if (isBad) {
     const newUrl = getDishImageUrl(dish.title, dish.category);
     replacedCount++;

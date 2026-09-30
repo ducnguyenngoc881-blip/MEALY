@@ -13,7 +13,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 450,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt ba chỉ rút sườn', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -71,7 +71,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 180,
     estimatedCostVnd: 50000,
-    imageUrl: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cua đồng xay nguyên chất', amount: 350, unit: 'g', category: 'thit-ca' },
@@ -128,7 +128,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 80,
     estimatedCostVnd: 15000,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Rau muống ngọn non cọng nhỏ', amount: 1, unit: 'bó (500g)', category: 'rau-cu' },
@@ -246,7 +246,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 230,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cá hú (hoặc cá lóc) cắt khúc dày', amount: 450, unit: 'g', category: 'thit-ca' },
@@ -601,7 +601,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 150,
     estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Hạt sen tươi thông tâm', amount: 150, unit: 'g', category: 'rau-cu' },
@@ -782,7 +782,7 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     servings: 4,
     calories: 490,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Cơm nguội bữa trước (để tơi hạt)', amount: 600, unit: 'g', category: 'do-kho' },
@@ -955,7 +955,7 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     servings: 4,
     calories: 320,
     estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt gà luộc thừa (xé phay)', amount: 350, unit: 'g', category: 'thit-ca' },
@@ -1012,7 +1012,7 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     servings: 4,
     calories: 420,
     estimatedCostVnd: 60000,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt heo luộc thừa thái mỏng', amount: 350, unit: 'g', category: 'thit-ca' },
@@ -1244,7 +1244,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 390,
     estimatedCostVnd: 42000,
-    imageUrl: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bột làm bánh pancake hoặc bột mì đa dụng', amount: 200, unit: 'g', category: 'do-kho' },
@@ -1417,7 +1417,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 220,
     estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Nấm mỡ tươi hoặc nấm đùi gà baby', amount: 300, unit: 'g', category: 'rau-cu' },
@@ -1475,7 +1475,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 190,
     estimatedCostVnd: 45000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Cà chua chín đỏ mọng', amount: 500, unit: 'g', category: 'rau-cu' },
@@ -1532,7 +1532,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 230,
     estimatedCostVnd: 50000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bắp ngọt Mỹ tách hạt', amount: 2, unit: 'bắp', category: 'rau-cu' },
@@ -1591,7 +1591,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 180,
     estimatedCostVnd: 45000,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Xà lách Romaine tươi giòn', amount: 300, unit: 'g', category: 'rau-cu' },
@@ -1762,7 +1762,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 160,
     estimatedCostVnd: 42000,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Dưa leo baby giòn', amount: 300, unit: 'g', category: 'rau-cu' },
