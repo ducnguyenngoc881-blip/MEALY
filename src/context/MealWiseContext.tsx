@@ -27,6 +27,7 @@ import {
   loadGuestPartition,
   saveGuestPartition,
   hasCustomGuestData,
+  getRegisteredUserByEmail,
   registerUserInDatabase,
   loadUserPartition,
   saveUserPartition,
@@ -380,33 +381,14 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   // Onboarding screen logic:
-  // ONLY appears for registered users on their first login/registration if not completed yet.
-  // Guests NEVER see this popup automatically upon opening the app!
+  // ONLY appears when a new user registers for the first time via AuthModal.
+  // Guests and returning users NEVER see this popup automatically upon opening the app!
   const [showOnboarding, setShowOnboarding] = useState<boolean>(() => {
-    try {
-      const savedUser = localStorage.getItem('mealwise_registered_user');
-      const hasUser = savedUser ? Boolean(JSON.parse(savedUser).isRegistered) : false;
-      if (!hasUser || !savedUser) {
-        return false; // Guest account: NEVER show onboarding modal on launch!
-      }
-      const parsedUser = JSON.parse(savedUser);
-      if (parsedUser.role === 'admin') return false;
-      if (parsedUser.onboardingCompleted) return false;
-      if (parsedUser.email) {
-        const userOnboardingKey = `mealwise_onboarding_completed_${parsedUser.email.toLowerCase()}`;
-        if (localStorage.getItem(userOnboardingKey) === 'true') {
-          return false;
-        }
-      }
-      const saved = localStorage.getItem('mealwise_onboarding');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return !parsed.completed;
-      }
-      return true; // First time registered user who has not completed onboarding
-    } catch {
-      return false;
+    const hasUser = typeof window !== 'undefined' && Boolean(localStorage.getItem('mealwise_registered_user'));
+    if (!hasUser) {
+      return false; // Guest account: NEVER show onboarding modal on launch!
     }
+    return false; // Registered users: never auto-open on launch!
   });
 
 
@@ -886,27 +868,30 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const defaultDisplayName = isAdmin ? 'MealWise Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên MealWise');
     const displayName = profile.name.trim() || defaultDisplayName;
 
-    // Check if this specific email has ever completed onboarding
+    const isNew = Boolean(isNewRegistration);
     const userOnboardingKey = `mealwise_onboarding_completed_${emailLower}`;
-    const userHasCompletedOnboarding = typeof window !== 'undefined' && localStorage.getItem(userOnboardingKey) === 'true';
 
-    // If it's an explicit registration, or the user account has never completed onboarding, they need onboarding
-    const needsOnboarding = !isAdmin && (Boolean(isNewRegistration) || !userHasCompletedOnboarding);
+    // Admin never gets onboarding. For members, onboarding is ONLY triggered on first-time registration!
+    const needsOnboarding = !isAdmin && isNew;
 
     // Save current guest state if this is a new registration to migrate
     const guestHadData = hasCustomGuestData();
+
+    // Check if user already exists in DB to preserve their onboarding status if returning
+    const existingDbUser = getRegisteredUserByEmail(emailLower);
+    const existingOnboardingCompleted = existingDbUser?.onboardingCompleted ?? true;
 
     // Register or retrieve in user database
     const { user: dbUser, migrated } = registerUserInDatabase(
       { name: displayName, email: rawEmail, role: isAdmin ? 'admin' : 'user' },
       { 
-        migrateGuestData: Boolean(isNewRegistration && guestHadData),
+        migrateGuestData: Boolean(isNew && guestHadData),
         guestData: {
           weeklyPlan: weeklyPlan as any,
           pantryItems,
           updatedAt: Date.now()
         },
-        onboardingCompleted: !needsOnboarding 
+        onboardingCompleted: isNew ? false : existingOnboardingCompleted 
       }
     );
 
@@ -918,7 +903,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       role: isAdmin ? 'admin' : 'user',
       registeredAt: dbUser.registeredAt || new Date().toLocaleDateString('vi-VN'),
       lastLoginAt: dbUser.lastLoginAt || new Date().toLocaleDateString('vi-VN'),
-      onboardingCompleted: !needsOnboarding
+      onboardingCompleted: isNew ? false : (dbUser.onboardingCompleted ?? true)
     };
 
     try {
@@ -926,13 +911,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {}
 
     if (!isAdmin) {
-      recordTelemetryEvent('auth', isNewRegistration ? 'Đăng ký thành viên mới thành công' : 'Đăng nhập thành viên thành công', displayName);
+      recordTelemetryEvent('auth', isNew ? 'Đăng ký thành viên mới thành công' : 'Đăng nhập thành viên thành công', displayName);
     }
     setUser(newProfile);
     setIsAuthModalOpen(false);
 
-    // If returning user has existing partition, restore their saved weekly plan and fridge!
-    if (!isNewRegistration && dbUser.id) {
+    // If returning user has existing partition, restore their saved weekly plan, fridge, and onboarding preferences
+    if (!isNew && dbUser.id) {
       const userPartition = loadUserPartition(dbUser.id);
       if (userPartition?.weeklyPlan && Array.isArray(userPartition.weeklyPlan) && userPartition.weeklyPlan.length > 0) {
         setWeeklyPlan(userPartition.weeklyPlan);
@@ -940,30 +925,40 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (userPartition?.pantryItems && Array.isArray(userPartition.pantryItems) && userPartition.pantryItems.length > 0) {
         setPantryItems(userPartition.pantryItems);
       }
+      if (userPartition?.onboardingData) {
+        setOnboardingData(userPartition.onboardingData);
+        if (userPartition.onboardingData.familySize) {
+          setServings(userPartition.onboardingData.familySize);
+        }
+      }
     }
 
     if (isAdmin) {
       setActiveTab('admin');
+      setShowOnboarding(false);
       setToastMessage('🔐 Xin chào Quản Trị Viên! Đã kích hoạt Trung Tâm Dữ Liệu SteamDB Telemetry.');
       return;
     }
 
-    // If user needs onboarding, reset stale flags and show modal immediately!
-    if (needsOnboarding && !migrated) {
+    // Trigger onboarding ONLY on brand new registration! Returning logins are NEVER interrupted.
+    if (needsOnboarding) {
       setOnboardingData(prev => ({ ...prev, completed: false }));
       try {
+        localStorage.setItem(userOnboardingKey, 'false');
         const savedOnboarding = localStorage.getItem('mealwise_onboarding');
         const parsed = savedOnboarding ? JSON.parse(savedOnboarding) : INITIAL_ONBOARDING;
         parsed.completed = false;
         localStorage.setItem('mealwise_onboarding', JSON.stringify(parsed));
       } catch {}
       setShowOnboarding(true);
+    } else {
+      setShowOnboarding(false);
     }
 
     if (migrated) {
       setToastMessage(`🎉 Chào mừng ${displayName}! Đã giữ lại thực đơn tuần và tủ lạnh từ phiên dùng thử!`);
     } else {
-      setToastMessage(isNewRegistration ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
+      setToastMessage(isNew ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
     }
   }, [weeklyPlan, pantryItems]);
 
@@ -986,6 +981,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setUser(null);
     setCollabRoom(null);
     setCollabCheckedMap({});
+    setShowOnboarding(false);
 
     // Restore guest session and guest partition if available
     const guestData = loadGuestPartition();
@@ -1672,6 +1668,17 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           localStorage.setItem('mealwise_registered_user', JSON.stringify(parsed));
         }
       } catch {}
+
+      if (user.id) {
+        saveUserPartition(user.id, {
+          onboardingData: updated,
+          updatedAt: Date.now()
+        });
+        registerUserInDatabase(
+          { name: user.name, email: user.email, role: user.role },
+          { onboardingCompleted: true }
+        );
+      }
     }
 
     setShowOnboarding(false);
