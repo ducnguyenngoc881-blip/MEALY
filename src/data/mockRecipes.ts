@@ -1244,7 +1244,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 390,
     estimatedCostVnd: 42000,
-    imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bột làm bánh pancake hoặc bột mì đa dụng', amount: 200, unit: 'g', category: 'do-kho' },
@@ -1938,11 +1938,12 @@ export const WESTERN_RECIPES: Recipe[] = [
     imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Cầu kỳ',
     ingredients: [
-      { name: 'Bắp bò hoặc thăn bò cắt khối vuông', amount: 500, unit: 'g', category: 'thit-ca' },
-      { name: 'Cà rốt & Khoai tây cắt miếng lớn', amount: 300, unit: 'g', category: 'rau-cu' },
-      { name: 'Nấm mỡ tươi hoặc nấm hương', amount: 150, unit: 'g', category: 'rau-cu' },
-      { name: 'Rượu vang đỏ Đà Lạt nấu ăn', amount: 150, unit: 'ml', category: 'gia-vi' },
-      { name: 'Lá thơm Thyme, lá nguyệt quế & Bơ tỏi', amount: 1, unit: 'muỗng cà phê', category: 'gia-vi' }
+      { name: 'Thịt bắp bò (hoặc thăn bò)', amount: 500, unit: 'g', category: 'thit-ca' },
+      { name: 'Cà rốt', amount: 150, unit: 'g', category: 'rau-cu' },
+      { name: 'Khoai tây', amount: 150, unit: 'g', category: 'rau-cu' },
+      { name: 'Nấm mỡ tươi', amount: 150, unit: 'g', category: 'rau-cu' },
+      { name: 'Rượu vang đỏ Đà Lạt', amount: 150, unit: 'ml', category: 'gia-vi' },
+      { name: 'Bơ tỏi & lá thơm Thyme', amount: 1, unit: 'muỗng cà phê', category: 'gia-vi' }
     ],
     instructions: [
       {

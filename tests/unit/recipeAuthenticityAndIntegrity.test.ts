@@ -10,6 +10,7 @@ import {
 import { Recipe, Ingredient, CookingInstruction } from '../../src/types';
 import { 
   getDishImageUrl, 
+  resolveCulinaryCluster,
   OVERUSED_PLACEHOLDER_IDS, 
   isDeadOrPlaceholderUrl 
 } from '../../src/utils/dishImageResolver';
@@ -618,5 +619,48 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
       }
     });
     expect(mealSetViolations.length).toBe(0);
+
+    // 5. Global anti-burger invariant: 0 non-burger recipes have burger photo
+    const BURGER_PHOTO_ID = 'photo-1586190848861-99aa4a171e90';
+    const nonBurgerWithBurgerPhoto = mockRecipes.filter(r => {
+      const isBurger = /burger|hamburger/i.test(r.title);
+      return !isBurger && r.imageUrl?.includes(BURGER_PHOTO_ID);
+    });
+    expect(nonBurgerWithBurgerPhoto.length).toBe(0);
+
+    // 6. Global anti-ice-cream invariant: No savory dish resolves to kem_gelato_yogurt or contains ice cream photo IDs
+    const ICE_CREAM_PHOTO_IDS = [
+      'photo-1563805042-7684c019e1cb',
+      'photo-1501443762994-82bd5dace89a',
+      'photo-1579372786545-d24232daf58c',
+    ];
+    const savoryIceCreamViolations: { id: string; title: string; issue: string }[] = [];
+    mockRecipes.forEach(r => {
+      const isDessertOrSnack = r.category === 'trang-mieng' || r.category === 'an-vat';
+      if (!isDessertOrSnack) {
+        const cluster = resolveCulinaryCluster(r.title, r.category);
+        if (cluster === 'kem_gelato_yogurt') {
+          savoryIceCreamViolations.push({ id: r.id, title: r.title, issue: 'resolved_to_kem_gelato_yogurt' });
+        }
+        for (const iceCreamId of ICE_CREAM_PHOTO_IDS) {
+          if (r.imageUrl?.includes(iceCreamId)) {
+            savoryIceCreamViolations.push({ id: r.id, title: r.title, issue: `contains_${iceCreamId}` });
+          }
+        }
+      }
+    });
+    expect(savoryIceCreamViolations.length).toBe(0);
+
+    // 7. Semantic isolation: Western salads with cheese/butter never resolve to pho_bo
+    const cheeseButterSaladTitles = [
+      'Salad Cà Chua Phô Mai Caprese',
+      'Salad Quả Bơ Phô Mai Bơ Lạt',
+      'Salad Phô Mai Bơ Trộn Giấm Đen Balsamic',
+    ];
+    cheeseButterSaladTitles.forEach(title => {
+      const cluster = resolveCulinaryCluster(title, 'khai-vi');
+      expect(cluster).not.toBe('pho_bo');
+      expect(cluster).toBe('salad_tay_caesar');
+    });
   });
 });

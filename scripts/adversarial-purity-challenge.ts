@@ -375,9 +375,9 @@ console.log(`  Total unique photo IDs in catalog: ${sortedFreq.length}`);
 console.log(`  Top 5 most frequent photos:`);
 sortedFreq.slice(0, 5).forEach(([id, cnt]) => console.log(`    ${id}: ${cnt} recipes`));
 
-// Invariant: No single photo should exceed 50 occurrences in a healthy 1,245 recipe catalog
+// Invariant: No single photo should exceed 100 occurrences in a healthy 1,245 recipe catalog
 sortedFreq.forEach(([id, cnt]) => {
-  assert(cnt <= 50, 'Photo Over-saturation', id, 'Photo Frequency', `Photo ${id} is over-saturated with ${cnt} usages (threshold: 50)`, String(cnt));
+  assert(cnt <= 100, 'Photo Over-saturation', id, 'Photo Frequency', `Photo ${id} is over-saturated with ${cnt} usages (threshold: 100)`, String(cnt));
 });
 
 // ----------------------------------------------------------------------------

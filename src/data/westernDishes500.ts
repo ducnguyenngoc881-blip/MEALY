@@ -4224,7 +4224,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 678,
     "estimatedCostVnd": 179000,
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bắp Bò",
@@ -4629,7 +4629,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 523,
     "estimatedCostVnd": 102000,
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Dẻ Sườn Bò",
@@ -7545,7 +7545,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 655,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1587593810167-a84920ea0781?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà",
@@ -9732,7 +9732,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 634,
     "estimatedCostVnd": 132000,
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Cây Heo",
@@ -11433,7 +11433,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 511,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Heo Xé",
@@ -12648,7 +12648,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 526,
     "estimatedCostVnd": 163000,
-    "imageUrl": "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Vược Chẽm Phi Lê",
@@ -14835,7 +14835,7 @@ export const westernDishes500: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 163000,
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Ống & Nghêu",

@@ -120,182 +120,28 @@ export const STORE_CHANNELS: Record<Exclude<StoreChannel, 'all'>, StoreChannelCo
   }
 };
 
-// Pure Helper: Safely parse numerical amount from number, string, or fraction
-export function parseAmount(val: number | string | undefined | null): number {
-  if (val === null || val === undefined) return 1;
-  if (typeof val === 'number') {
-    return Number.isFinite(val) && val > 0 ? val : 1;
-  }
-  if (typeof val === 'string') {
-    const sanitized = val.trim().replace(',', '.');
-    if (sanitized.includes('/')) {
-      const parts = sanitized.split('/');
-      const num = parseFloat(parts[0]);
-      const den = parseFloat(parts[1]);
-      if (Number.isFinite(num) && Number.isFinite(den) && den !== 0) {
-        return Math.max(0.01, num / den);
-      }
-    }
-    const parsed = parseFloat(sanitized);
-    return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-  }
-  return 1;
-}
+import {
+  canonicalizeIngredientName,
+  decomposeBundledIngredients,
+  parseAmount,
+  normalizeIngredientUnitAndAmount,
+  formatDisplayAmountAndUnit,
+  PRODUCE_UNIT_WEIGHTS,
+  NormalizedIngredientInfo
+} from '../utils/ingredientNormalizer';
 
-// Pure Helper: Normalize convertible Vietnamese units and identify grouping families
-export interface NormalizedIngredientInfo {
-  cleanName: string;
-  baseAmount: number;
-  baseUnit: string;
-  family: 'weight' | 'volume' | 'spoon_soup' | 'spoon_tea' | 'spoon' | 'count' | 'other';
-  groupKey: string;
-}
+export {
+  canonicalizeIngredientName,
+  decomposeBundledIngredients,
+  parseAmount,
+  normalizeIngredientUnitAndAmount,
+  formatDisplayAmountAndUnit,
+  PRODUCE_UNIT_WEIGHTS
+};
+export type { NormalizedIngredientInfo };
 
-export function normalizeIngredientUnitAndAmount(
-  rawName: string,
-  rawAmount: number | string | undefined | null,
-  rawUnit: string | undefined | null
-): NormalizedIngredientInfo {
-  const cleanName = (rawName || '').trim();
-  const parsedAmt = parseAmount(rawAmount);
-  const u = (rawUnit || '').trim().toLowerCase();
 
-  // 1. Weight family: g, gram, gam, kg, kilogram, kí, ký, lạng, lang
-  if (u === 'kg' || u === 'kilogram' || u === 'kí' || u === 'ký') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt * 1000,
-      baseUnit: 'g',
-      family: 'weight',
-      groupKey: `${cleanName.toLowerCase()}__weight`
-    };
-  }
-  if (u === 'lạng' || u === 'lang') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt * 100,
-      baseUnit: 'g',
-      family: 'weight',
-      groupKey: `${cleanName.toLowerCase()}__weight`
-    };
-  }
-  if (u === 'g' || u === 'gram' || u === 'gam' || u === 'gr') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'g',
-      family: 'weight',
-      groupKey: `${cleanName.toLowerCase()}__weight`
-    };
-  }
 
-  // 2. Volume family: l, lít, lit, ml, mililit
-  if (u === 'l' || u === 'lít' || u === 'lit') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt * 1000,
-      baseUnit: 'ml',
-      family: 'volume',
-      groupKey: `${cleanName.toLowerCase()}__volume`
-    };
-  }
-  if (u === 'ml' || u === 'mililit') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'ml',
-      family: 'volume',
-      groupKey: `${cleanName.toLowerCase()}__volume`
-    };
-  }
-
-  // 3. Spoons family: muỗng canh vs thìa canh
-  if (u === 'muỗng canh' || u === 'thìa canh' || u === 'muong canh' || u === 'thia canh' || u === 'tbsp') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'muỗng canh',
-      family: 'spoon_soup',
-      groupKey: `${cleanName.toLowerCase()}__spoon_soup`
-    };
-  }
-  if (u === 'muỗng cà phê' || u === 'thìa cà phê' || u === 'muỗng cafe' || u === 'thìa cafe' || u === 'tsp') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'muỗng cà phê',
-      family: 'spoon_tea',
-      groupKey: `${cleanName.toLowerCase()}__spoon_tea`
-    };
-  }
-  if (u === 'muỗng' || u === 'thìa') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'muỗng',
-      family: 'spoon',
-      groupKey: `${cleanName.toLowerCase()}__spoon`
-    };
-  }
-
-  // 4. Default / Other units: quả, củ, bó, miếng, tép, nhánh, bát, gói, ít...
-  const safeUnit = rawUnit && rawUnit.trim() ? rawUnit.trim() : 'phần';
-  return {
-    cleanName,
-    baseAmount: parsedAmt,
-    baseUnit: safeUnit,
-    family: 'other',
-    groupKey: `${cleanName.toLowerCase()}__${safeUnit.toLowerCase()}`
-  };
-}
-
-// Pure Helper: Format accumulated base quantity back to smart readable Vietnamese units
-export function formatDisplayAmountAndUnit(
-  baseAmount: number,
-  family: NormalizedIngredientInfo['family'],
-  baseUnit: string
-): { amount: number; unit: string; displayStr: string } {
-  if (family === 'weight') {
-    if (baseAmount >= 1000) {
-      const kg = Math.round((baseAmount / 1000) * 100) / 100;
-      return {
-        amount: kg,
-        unit: 'kg',
-        displayStr: `${kg} kg`
-      };
-    }
-    const g = Math.round(baseAmount * 10) / 10;
-    return {
-      amount: g,
-      unit: 'g',
-      displayStr: `${g} g`
-    };
-  }
-
-  if (family === 'volume') {
-    if (baseAmount >= 1000) {
-      const l = Math.round((baseAmount / 1000) * 100) / 100;
-      return {
-        amount: l,
-        unit: 'lít',
-        displayStr: `${l} lít`
-      };
-    }
-    const ml = Math.round(baseAmount * 10) / 10;
-    return {
-      amount: ml,
-      unit: 'ml',
-      displayStr: `${ml} ml`
-    };
-  }
-
-  const rounded = Math.round(baseAmount * 100) / 100;
-  return {
-    amount: rounded,
-    unit: baseUnit,
-    displayStr: `${rounded} ${baseUnit}`
-  };
-}
 
 // Pure Helper: Assign optimal store channel based on Vietnamese culinary market reality
 export function getOptimalStoreChannel(name: string, category: string): Exclude<StoreChannel, 'all'> {
@@ -361,6 +207,8 @@ export interface ProcessedGroceryItem {
   type: 'fresh' | 'pantry';
   cost: number;
   storeChannel: Exclude<StoreChannel, 'all'>;
+  dishCount?: number;
+  dishNames?: string[];
 }
 
 // Pure Helper: Generate formatted Zalo shopping export text
@@ -387,7 +235,8 @@ export function generateZaloShoppingText(
   } else {
     checkedList.forEach(item => {
       const store = STORE_CHANNELS[item.storeChannel];
-      text += `• ${item.name}: ${item.displayAmount} [${store.shortName}]\n`;
+      const countSuffix = item.dishCount && item.dishCount > 1 ? ` (${item.dishCount} món)` : '';
+      text += `• ${item.name}${countSuffix}: ${item.displayAmount} [${store.shortName}]\n`;
     });
   }
 
@@ -398,7 +247,8 @@ export function generateZaloShoppingText(
   } else {
     uncheckedList.forEach(item => {
       const store = STORE_CHANNELS[item.storeChannel];
-      text += `• ${item.name}: ${item.displayAmount} [${store.shortName}]\n`;
+      const countSuffix = item.dishCount && item.dishCount > 1 ? ` (${item.dishCount} món)` : '';
+      text += `• ${item.name}${countSuffix}: ${item.displayAmount} [${store.shortName}]\n`;
     });
   }
 
@@ -475,6 +325,8 @@ export const GroceryList: React.FC = () => {
     category: 'thit-ca' | 'rau-cu' | 'gia-vi' | 'do-kho' | 'khac';
     cost: number;
     storeChannel: Exclude<StoreChannel, 'all'>;
+    dishNames: string[];
+    dishCount: number;
   }
 
   const itemsMap: Record<string, AccumulatorEntry> = {};
@@ -483,27 +335,39 @@ export const GroceryList: React.FC = () => {
     if (!recipe || !recipe.ingredients || recipe.ingredients.length === 0) return;
     const ingCount = Math.max(1, recipe.ingredients.length);
     const costPerIng = Math.round((recipe.estimatedCostVnd || 30000) / ingCount);
+    const recipeTitle = recipe.title || 'Món ăn';
 
-    recipe.ingredients.forEach(ing => {
-      const norm = normalizeIngredientUnitAndAmount(ing.name, ing.amount, ing.unit);
-      const isFresh = ing.category === 'thit-ca' || ing.category === 'rau-cu';
-      const channel = getOptimalStoreChannel(norm.cleanName, ing.category);
+    recipe.ingredients.forEach(rawIng => {
+      // Decompose bundled ingredients (e.g., "Cà rốt & Khoai tây" -> "Cà rốt" and "Khoai tây")
+      const subItems = decomposeBundledIngredients(rawIng.name, rawIng.amount, rawIng.unit, rawIng.category, costPerIng);
+      
+      subItems.forEach(ing => {
+        const norm = normalizeIngredientUnitAndAmount(ing.name, ing.amount, ing.unit);
+        const isFresh = ing.category === 'thit-ca' || ing.category === 'rau-cu';
+        const channel = getOptimalStoreChannel(norm.cleanName, ing.category);
 
-      if (!itemsMap[norm.groupKey]) {
-        itemsMap[norm.groupKey] = {
-          cleanName: norm.cleanName,
-          baseAmount: norm.baseAmount,
-          baseUnit: norm.baseUnit,
-          family: norm.family,
-          category: (ing.category || (isFresh ? 'rau-cu' : 'do-kho')) as any,
-          cost: costPerIng,
-          storeChannel: channel
-        };
-      } else {
-        // Mathematically correct aggregation: add additional amount and its corresponding recipe cost fraction
-        itemsMap[norm.groupKey].baseAmount += norm.baseAmount;
-        itemsMap[norm.groupKey].cost += costPerIng;
-      }
+        if (!itemsMap[norm.groupKey]) {
+          itemsMap[norm.groupKey] = {
+            cleanName: norm.cleanName,
+            baseAmount: norm.baseAmount,
+            baseUnit: norm.baseUnit,
+            family: norm.family,
+            category: (ing.category || (isFresh ? 'rau-cu' : 'do-kho')) as any,
+            cost: ing.cost,
+            storeChannel: channel,
+            dishNames: [recipeTitle],
+            dishCount: 1
+          };
+        } else {
+          // Mathematically correct aggregation: add additional amount and its corresponding recipe cost fraction
+          itemsMap[norm.groupKey].baseAmount += norm.baseAmount;
+          itemsMap[norm.groupKey].cost += ing.cost;
+          if (!itemsMap[norm.groupKey].dishNames.includes(recipeTitle)) {
+            itemsMap[norm.groupKey].dishNames.push(recipeTitle);
+          }
+          itemsMap[norm.groupKey].dishCount += 1;
+        }
+      });
     });
   };
 
@@ -526,23 +390,32 @@ export const GroceryList: React.FC = () => {
   // Also include extra ingredients (from Catering Party Planner)
   if (extraGroceryItems && Array.isArray(extraGroceryItems)) {
     extraGroceryItems.forEach(item => {
-      const norm = normalizeIngredientUnitAndAmount(item.name, item.amount, item.unit);
-      const channel = getOptimalStoreChannel(norm.cleanName, item.category);
+      const subItems = decomposeBundledIngredients(item.name, item.amount, item.unit, item.category, item.cost || 0);
+      subItems.forEach(ing => {
+        const norm = normalizeIngredientUnitAndAmount(ing.name, ing.amount, ing.unit);
+        const channel = getOptimalStoreChannel(norm.cleanName, ing.category);
 
-      if (!itemsMap[norm.groupKey]) {
-        itemsMap[norm.groupKey] = {
-          cleanName: norm.cleanName,
-          baseAmount: norm.baseAmount,
-          baseUnit: norm.baseUnit,
-          family: norm.family,
-          category: item.category,
-          cost: item.cost || 0,
-          storeChannel: channel
-        };
-      } else {
-        itemsMap[norm.groupKey].baseAmount += norm.baseAmount;
-        itemsMap[norm.groupKey].cost += (item.cost || 0);
-      }
+        if (!itemsMap[norm.groupKey]) {
+          itemsMap[norm.groupKey] = {
+            cleanName: norm.cleanName,
+            baseAmount: norm.baseAmount,
+            baseUnit: norm.baseUnit,
+            family: norm.family,
+            category: ing.category,
+            cost: ing.cost,
+            storeChannel: channel,
+            dishNames: ['Tiệc / Catering'],
+            dishCount: 1
+          };
+        } else {
+          itemsMap[norm.groupKey].baseAmount += norm.baseAmount;
+          itemsMap[norm.groupKey].cost += ing.cost;
+          if (!itemsMap[norm.groupKey].dishNames.includes('Tiệc / Catering')) {
+            itemsMap[norm.groupKey].dishNames.push('Tiệc / Catering');
+          }
+          itemsMap[norm.groupKey].dishCount += 1;
+        }
+      });
     });
   }
 
@@ -559,7 +432,9 @@ export const GroceryList: React.FC = () => {
       category: entry.category,
       type: isFresh ? 'fresh' : 'pantry',
       cost: entry.cost,
-      storeChannel: entry.storeChannel
+      storeChannel: entry.storeChannel,
+      dishCount: entry.dishCount,
+      dishNames: entry.dishNames
     };
   });
 
@@ -1368,6 +1243,14 @@ export const GroceryList: React.FC = () => {
                           <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-white'}`}>
                             {item.name}
                           </span>
+                          {item.dishCount && item.dishCount > 1 && (
+                            <span 
+                              className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 shrink-0" 
+                              title={`Dùng cho ${item.dishCount} món: ${item.dishNames?.join(', ')}`}
+                            >
+                              <span>{item.dishCount} món</span>
+                            </span>
+                          )}
                           {isChecked && (
                             <span className={`inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border ${
                               checkInfo.isMine 
@@ -1389,6 +1272,14 @@ export const GroceryList: React.FC = () => {
                           <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
                             ~{(item.cost || 0).toLocaleString('vi-VN')} đ
                           </span>
+                          {item.dishNames && item.dishNames.length > 1 && (
+                            <span 
+                              className="text-[9.5px] text-stone-400 dark:text-stone-500 truncate max-w-[170px] sm:max-w-xs" 
+                              title={`Dùng cho: ${item.dishNames.join(', ')}`}
+                            >
+                              • {item.dishCount} món ({item.dishNames.slice(0, 2).join(', ')}{item.dishNames.length > 2 ? '...' : ''})
+                            </span>
+                          )}
                           {inFridge && (
                             <span 
                               onClick={(e) => {
@@ -1516,6 +1407,14 @@ export const GroceryList: React.FC = () => {
                           <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-white'}`}>
                             {item.name}
                           </span>
+                          {item.dishCount && item.dishCount > 1 && (
+                            <span 
+                              className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 shrink-0" 
+                              title={`Dùng cho ${item.dishCount} món: ${item.dishNames?.join(', ')}`}
+                            >
+                              <span>{item.dishCount} món</span>
+                            </span>
+                          )}
                           {isChecked && (
                             <span className={`inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border ${
                               checkInfo.isMine 
@@ -1537,6 +1436,14 @@ export const GroceryList: React.FC = () => {
                           <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
                             ~{(item.cost || 0).toLocaleString('vi-VN')} đ
                           </span>
+                          {item.dishNames && item.dishNames.length > 1 && (
+                            <span 
+                              className="text-[9.5px] text-stone-400 dark:text-stone-500 truncate max-w-[170px] sm:max-w-xs" 
+                              title={`Dùng cho: ${item.dishNames.join(', ')}`}
+                            >
+                              • {item.dishCount} món ({item.dishNames.slice(0, 2).join(', ')}{item.dishNames.length > 2 ? '...' : ''})
+                            </span>
+                          )}
                           {inFridge && (
                             <span 
                               onClick={(e) => {
