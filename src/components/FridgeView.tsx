@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { 
   Plus, 
   Trash2, 
@@ -61,6 +61,9 @@ export const FridgeView: React.FC = () => {
     openConfirmModal
   } = useMealWise();
 
+  const addFormRef = useRef<HTMLDivElement>(null);
+  const singleItemSuggestionsRef = useRef<HTMLDivElement>(null);
+
   const [activeFilter, setActiveFilter] = useState<'all' | 'leftovers' | 'warning' | 'fresh'>('all');
   const [isAddingOpen, setIsAddingOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -111,7 +114,10 @@ export const FridgeView: React.FC = () => {
     setIsLeftover(sug.isLeftover);
     setNotes(sug.note);
     setIsAddingOpen(true);
-    window.scrollTo({ top: 120, behavior: 'smooth' });
+    // Smoothly bring the add form into view without jumping to top of page
+    setTimeout(() => {
+      addFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
   };
 
   const handleSaveItem = (e: React.FormEvent) => {
@@ -142,6 +148,9 @@ export const FridgeView: React.FC = () => {
   const handleSelectItemForRecipe = (item: PantryItem) => {
     setSingleItemReloadOffset(0);
     setSelectedItemForRecipe(item);
+    setTimeout(() => {
+      singleItemSuggestionsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
   };
 
   // Whole-fridge multi-ingredient suggestion
@@ -434,7 +443,7 @@ export const FridgeView: React.FC = () => {
       </div>
 
       {/* Add Item Form (Collapsible Card) */}
-      <div className="rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 overflow-hidden shadow-2xs">
+      <div ref={addFormRef} className="rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 overflow-hidden shadow-2xs">
         <button
           type="button"
           onClick={() => setIsAddingOpen(prev => !prev)}
@@ -644,7 +653,7 @@ export const FridgeView: React.FC = () => {
 
       {/* Active Leftover Recipe Suggestions Section */}
       {selectedItemForRecipe && (
-        <div className="p-4 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 border-2 border-indigo-500/40 shadow-lg space-y-3 animate-fadeIn">
+        <div ref={singleItemSuggestionsRef} className="p-4 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 border-2 border-indigo-500/40 shadow-lg space-y-3 animate-fadeIn">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
               <div className="w-8 h-8 rounded-xl bg-indigo-500 text-white flex items-center justify-center shadow-xs shrink-0">
@@ -841,10 +850,7 @@ export const FridgeView: React.FC = () => {
                   <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 ml-auto">
                     <button
                       type="button"
-                      onClick={() => {
-                        handleSelectItemForRecipe(item);
-                        window.scrollTo({ top: 380, behavior: 'smooth' });
-                      }}
+                      onClick={() => handleSelectItemForRecipe(item)}
                       className="px-2 sm:px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[10.5px] sm:text-[11px] font-extrabold flex items-center gap-1 transition-all active:scale-95 cursor-pointer whitespace-nowrap"
                       title="Gợi ý món ăn có thể nấu từ nguyên liệu này"
                     >

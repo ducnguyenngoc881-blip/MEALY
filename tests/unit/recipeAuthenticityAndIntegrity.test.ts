@@ -8,6 +8,12 @@ import {
   westernDishes500 
 } from '../../src/data/mockRecipes';
 import { Recipe, Ingredient, CookingInstruction } from '../../src/types';
+import { 
+  getDishImageUrl, 
+  OVERUSED_PLACEHOLDER_IDS, 
+  isDeadOrPlaceholderUrl 
+} from '../../src/utils/dishImageResolver';
+import { mockMealSets } from '../../src/data/mockMealSets';
 
 // ============================================================================
 // HELPER FUNCTIONS & LOGIC UNDER TEST
@@ -520,5 +526,97 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
 
       expect(matchCount).toBeGreaterThanOrEqual(minExpected);
     });
+  });
+
+  // --------------------------------------------------------------------------
+  // Test 9: Catalog-Wide Zero Dead / Blacklisted Image URLs (Spec 1)
+  // --------------------------------------------------------------------------
+  it('should assert 0 dead URLs, 0 blacklisted placeholder IDs, 0 human faces, and 0 cloche fallbacks across all 1,245 recipes in mockRecipes (both static and resolved) (Spec 1)', () => {
+    expect(mockRecipes.length).toBe(1245);
+
+    const violations: { id: string; title: string; badId: string; type: string }[] = [];
+
+    const KNOWN_DEAD_AND_OVERUSED = [
+      ...OVERUSED_PLACEHOLDER_IDS,
+      'photo-1621996346565-e3d5d6281292',
+      'photo-1621996346565-e3d5d6281744',
+      'photo-1576107232684-1279f3908594',
+      'photo-1627054234057-a41764661031',
+      'photo-176107232684-1279f3908594',
+      'photo-1573140247632-f8fd74997d5c', // human face
+    ];
+
+    mockRecipes.forEach(recipe => {
+      // 1. Static URL check
+      if (!recipe.imageUrl || typeof recipe.imageUrl !== 'string' || recipe.imageUrl.trim() === '') {
+        violations.push({ id: recipe.id, title: recipe.title, badId: 'empty_static_url', type: 'static_empty' });
+      } else {
+        if (!recipe.imageUrl.startsWith('https://images.unsplash.com/') && !recipe.imageUrl.startsWith('http')) {
+          violations.push({ id: recipe.id, title: recipe.title, badId: 'invalid_domain', type: 'static_domain' });
+        }
+        for (const badId of KNOWN_DEAD_AND_OVERUSED) {
+          if (recipe.imageUrl.includes(badId)) {
+            violations.push({ id: recipe.id, title: recipe.title, badId, type: 'static' });
+          }
+        }
+        if (isDeadOrPlaceholderUrl(recipe.imageUrl)) {
+          violations.push({ id: recipe.id, title: recipe.title, badId: 'isDeadOrPlaceholderUrl_true', type: 'static_predicate' });
+        }
+        if (recipe.imageUrl.startsWith('data:image/svg+xml')) {
+          violations.push({ id: recipe.id, title: recipe.title, badId: 'static_cloche_svg', type: 'static_cloche' });
+        }
+      }
+
+      // 2. Resolved URL check
+      const resolved = getDishImageUrl(recipe.title, recipe.category, recipe.imageUrl);
+      if (!resolved || typeof resolved !== 'string' || resolved.trim() === '') {
+        violations.push({ id: recipe.id, title: recipe.title, badId: 'empty_resolved_url', type: 'resolved_empty' });
+      } else {
+        if (!resolved.startsWith('https://images.unsplash.com/') && !resolved.startsWith('http')) {
+          violations.push({ id: recipe.id, title: recipe.title, badId: 'invalid_resolved_domain', type: 'resolved_domain' });
+        }
+        for (const badId of KNOWN_DEAD_AND_OVERUSED) {
+          if (resolved.includes(badId)) {
+            violations.push({ id: recipe.id, title: recipe.title, badId, type: 'resolved' });
+          }
+        }
+        if (isDeadOrPlaceholderUrl(resolved)) {
+          violations.push({ id: recipe.id, title: recipe.title, badId: 'isDeadOrPlaceholderUrl_resolved_true', type: 'resolved_predicate' });
+        }
+        // 3. Online cloche check
+        if (resolved.startsWith('data:image/svg+xml') || resolved.includes('Offline') || resolved.includes('Ngoại Tuyến')) {
+          violations.push({ id: recipe.id, title: recipe.title, badId: 'cloche_placeholder', type: 'cloche' });
+        }
+      }
+    });
+
+    expect(violations.length).toBe(0);
+
+    // Specific verification for western-bfast-433
+    const omeletteDish = mockRecipes.find(r => r.id === 'western-bfast-433');
+    expect(omeletteDish).toBeDefined();
+    expect(omeletteDish?.title).toBe('Trứng Cuộn Omelette Xúc Xích Đức & Bánh Mì Bơ');
+    expect(omeletteDish?.imageUrl).toContain('photo-1584776296944-ab6fb57b0bdd');
+    expect(omeletteDish?.imageUrl).not.toContain('photo-1621996346565-e3d5d6281292');
+    expect(omeletteDish?.imageUrl).not.toContain('photo-1586190848861-99aa4a171e90');
+
+    const resolvedOmelette = getDishImageUrl(omeletteDish!.title, omeletteDish!.category, omeletteDish!.imageUrl);
+    expect(resolvedOmelette).toContain('photo-1584776296944-ab6fb57b0bdd');
+
+    // 4. Also assert across all 40 meal sets in mockMealSets
+    expect(mockMealSets.length).toBe(40);
+    const mealSetViolations: string[] = [];
+    mockMealSets.forEach(ms => {
+      if (!ms.imageUrl) {
+        mealSetViolations.push(`${ms.id}: empty imageUrl`);
+      } else {
+        for (const badId of KNOWN_DEAD_AND_OVERUSED) {
+          if (ms.imageUrl.includes(badId)) {
+            mealSetViolations.push(`${ms.id}: contains ${badId}`);
+          }
+        }
+      }
+    });
+    expect(mealSetViolations.length).toBe(0);
   });
 });

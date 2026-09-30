@@ -2,10 +2,14 @@ import { describe, it, expect } from '../helpers/testRunner';
 import {
   getDishImageUrl,
   FOOD_IMAGE_POOLS,
+  CULINARY_82_POOLS,
   OVERUSED_PLACEHOLDER_IDS,
   normalizeVietnameseDish,
-  hashDishTitle
+  hashDishTitle,
+  resolveCulinaryCluster,
+  isDeadOrPlaceholderUrl
 } from '../../src/utils/dishImageResolver';
+import { mockRecipes } from '../../src/data/mockRecipes';
 
 describe('Unit: Semantic Dish Image Matching Engine (dishImageResolver)', () => {
 
@@ -307,5 +311,205 @@ describe('Unit: Semantic Dish Image Matching Engine (dishImageResolver)', () => 
 
     const vegUrl = getDishImageUrl('Rau Muống Xào Tỏi Xanh Mướt', 'mon-xao');
     expect(FOOD_IMAGE_POOLS.veggie_dish.includes(vegUrl)).toBe(true);
+  });
+
+  // ==========================================================================
+  // Specification 2: Internal Pool Purity & Food Photography Invariants
+  // ==========================================================================
+  it('should assert internal pool purity across all keys in FOOD_IMAGE_POOLS and CULINARY_82_POOLS (Spec 2)', () => {
+    const poolViolations: { pool: string; url: string; reason: string }[] = [];
+    const allBadIds = [
+      ...OVERUSED_PLACEHOLDER_IDS,
+      'photo-1621996346565-e3d5d6281292',
+      'photo-1621996346565-e3d5d6281744',
+      'photo-1576107232684-1279f3908594',
+      'photo-1627054234057-a41764661031',
+      'photo-176107232684-1279f3908594',
+      'photo-1573140247632-f8fd74997d5c', // portrait / human face
+    ];
+
+    // Assert CULINARY_82_POOLS has at least 82 cluster keys
+    const clusterKeys = Object.keys(CULINARY_82_POOLS);
+    expect(clusterKeys.length).toBeGreaterThanOrEqual(82);
+
+    // Assert FOOD_IMAGE_POOLS has at least 102 keys (82 + western aliases + legacy aliases)
+    const foodPoolKeys = Object.keys(FOOD_IMAGE_POOLS);
+    expect(foodPoolKeys.length).toBeGreaterThanOrEqual(102);
+
+    for (const [poolName, urls] of Object.entries(FOOD_IMAGE_POOLS)) {
+      expect(Array.isArray(urls)).toBe(true);
+      expect(urls.length).toBeGreaterThanOrEqual(1);
+
+      for (const url of urls) {
+        if (!url || typeof url !== 'string' || !url.startsWith('https://images.unsplash.com/')) {
+          poolViolations.push({ pool: poolName, url: String(url), reason: 'invalid_url_format' });
+        }
+
+        for (const badId of allBadIds) {
+          if (url.includes(badId)) {
+            poolViolations.push({ pool: poolName, url, reason: `blacklisted_id: ${badId}` });
+          }
+        }
+
+        // Verify CDN crop parameters
+        if (!url.includes('auto=format') || !url.includes('fit=crop')) {
+          poolViolations.push({ pool: poolName, url, reason: 'missing_format_or_crop_params' });
+        }
+
+        // Verify no offline cloches or data URIs
+        if (url.startsWith('data:image/svg+xml')) {
+          poolViolations.push({ pool: poolName, url, reason: 'svg_cloche_in_pool' });
+        }
+      }
+    }
+
+    expect(poolViolations.length).toBe(0);
+  });
+
+  // ==========================================================================
+  // Specification 3: Dedicated Western Culinary Semantic Mappings
+  // ==========================================================================
+  it('should assert dedicated Western culinary semantic mappings across breakfasts, steaks, pastas, soups, salads, and seafood (Spec 3)', () => {
+    // 1. Omelette & Egg skillet: "Trứng Cuộn Omelette Xúc Xích Đức & Bánh Mì Bơ" (western-bfast-433)
+    const omeletteUrl = getDishImageUrl('Trứng Cuộn Omelette Xúc Xích Đức & Bánh Mì Bơ', 'an-sang');
+    expect(FOOD_IMAGE_POOLS.western_omelette_egg.includes(omeletteUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.trung_cuon_omelette.includes(omeletteUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.burger.includes(omeletteUrl)).toBe(false);
+
+    // 2. French Toast & Pancakes & Avocado Toast
+    const frenchToastUrl = getDishImageUrl('Bánh Mì Nướng Kiểu Pháp (French Toast)', 'an-sang');
+    expect(FOOD_IMAGE_POOLS.western_toast_pancake.includes(frenchToastUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.burger.includes(frenchToastUrl)).toBe(false);
+
+    const pancakeUrl = getDishImageUrl('Pancakes Mật Ong Rừng', 'an-sang');
+    expect(FOOD_IMAGE_POOLS.western_toast_pancake.includes(pancakeUrl)).toBe(true);
+
+    const avoToastUrl = getDishImageUrl('Avocado Toast Bơ Sáp', 'an-sang');
+    expect(FOOD_IMAGE_POOLS.western_toast_pancake.includes(avoToastUrl)).toBe(true);
+
+    // 3. Beefsteak
+    const steakUrl = getDishImageUrl('Bò Bít Tết Sốt Tiêu Đen Kiểu Pháp', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_steak.includes(steakUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.steak_beef.includes(steakUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.burger.includes(steakUrl)).toBe(false);
+
+    const ribeyeUrl = getDishImageUrl('Ribeye Steak Nướng Thảo Mộc', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_steak.includes(ribeyeUrl)).toBe(true);
+
+    // 4. Italian Pasta (Bolognese, Carbonara, Pesto)
+    const bologneseUrl = getDishImageUrl('Mì Ý Spaghetti Sốt Bò Bằm Bolognese', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_pasta.includes(bologneseUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.my_y_pasta.includes(bologneseUrl)).toBe(true);
+
+    const carbonaraUrl = getDishImageUrl('Mì Ý Carbonara Sốt Kem Trứng', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_pasta.includes(carbonaraUrl)).toBe(true);
+
+    const pestoUrl = getDishImageUrl('Mì Ý Sốt Húng Tây Pesto Hải Sản', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_pasta.includes(pestoUrl)).toBe(true);
+
+    // 5. Clam Chowder & Western Cream Soups
+    const chowderUrl = getDishImageUrl('Clam Chowder Súp Nghêu Kiểu Mỹ', 'mon-canh');
+    expect(FOOD_IMAGE_POOLS.western_soup.includes(chowderUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.sup_kem_tay_chowder.includes(chowderUrl)).toBe(true);
+
+    const pumpkinSoupUrl = getDishImageUrl('Súp Kem Bí Đỏ Hạt Dẻ', 'mon-canh');
+    expect(FOOD_IMAGE_POOLS.western_soup.includes(pumpkinSoupUrl)).toBe(true);
+
+    // 6. Caesar Salad & Western Salads
+    const caesarUrl = getDishImageUrl('Caesar Salad Lườn Gà Nướng Parmesan', 'mon-xao');
+    expect(FOOD_IMAGE_POOLS.western_salad.includes(caesarUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.salad_tay_caesar.includes(caesarUrl)).toBe(true);
+
+    const coleslawUrl = getDishImageUrl('Coleslaw Bắp Cải Tươi', 'mon-xao');
+    expect(FOOD_IMAGE_POOLS.western_salad.includes(coleslawUrl)).toBe(true);
+
+    // 7. Western Seafood (Salmon steak, pan-seared garlic seafood)
+    const salmonUrl = getDishImageUrl('Cá Hồi Áp Chảo Sốt Cam', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_seafood.includes(salmonUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.seafood_western.includes(salmonUrl)).toBe(true);
+
+    const shrimpGarlicUrl = getDishImageUrl('Tôm Bơ Tỏi', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_seafood.includes(shrimpGarlicUrl)).toBe(true);
+  });
+
+  // ==========================================================================
+  // Specification 4: Traditional Vietnamese Semantic Mapping & Homograph Disambiguation
+  // ==========================================================================
+  it('should assert traditional Vietnamese semantic mappings and homograph disambiguation (Spec 4)', () => {
+    // 1. Thịt Kho Tàu
+    const thitKhoUrl = getDishImageUrl('Thịt Kho Tàu Nước Dừa Hột Vịt', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.thit_kho_tau.includes(thitKhoUrl)).toBe(true);
+
+    // 2. Canh Chua
+    const canhChuaUrl = getDishImageUrl('Canh Chua Cá Hồi Nấu Thơm Bạc Hà', 'mon-canh');
+    expect(FOOD_IMAGE_POOLS.canh_chua.includes(canhChuaUrl)).toBe(true);
+
+    // 3. Cá Basa Kho Tộ
+    const caKhoUrl = getDishImageUrl('Cá Basa Kho Tộ Đậm Đà', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.ca_kho_to.includes(caKhoUrl)).toBe(true);
+
+    // 4. Gà Luộc Lá Chanh
+    const gaLuocUrl = getDishImageUrl('Gà Luộc Lá Chanh Thảo Mộc', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.ga_kho_gung_sa.includes(gaLuocUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.fried_chicken.includes(gaLuocUrl)).toBe(false);
+
+    // 5. Canh Cua Mồng Tơi
+    const canhCuaUrl = getDishImageUrl('Canh Cua Mồng Tơi Mướp Hương', 'mon-canh');
+    expect(FOOD_IMAGE_POOLS.canh_cua_rau_day.includes(canhCuaUrl)).toBe(true);
+
+    // 6. Đậu Phụ Sốt Cà Chua MUST NOT resolve to fish (ca_kho_to) or meat (thit_kho_tau)
+    const dauPhuUrl = getDishImageUrl('Đậu Phụ Sốt Cà Chua', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.dau_sot_ca_chua.includes(dauPhuUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.ca_kho_to.includes(dauPhuUrl)).toBe(false);
+    expect(FOOD_IMAGE_POOLS.thit_kho_tau.includes(dauPhuUrl)).toBe(false);
+    expect(FOOD_IMAGE_POOLS.fish_seafood.includes(dauPhuUrl)).toBe(false);
+
+    // 7. Cà Tím Xào Thịt Băm MUST NOT resolve to fish (ca_kho_to)
+    const caTimUrl = getDishImageUrl('Cà Tím Xào Thịt Băm', 'mon-xao');
+    expect(FOOD_IMAGE_POOLS.ca_kho_to.includes(caTimUrl)).toBe(false);
+    expect(FOOD_IMAGE_POOLS.fish_seafood.includes(caTimUrl)).toBe(false);
+  });
+
+  // ==========================================================================
+  // Specification 5: Zero Offline Cloche Graphics in Online Mode
+  // ==========================================================================
+  it('should assert zero offline cloche graphics in online mode for all 1,245 recipes in mockRecipes (Spec 5)', () => {
+    expect(mockRecipes.length).toBe(1245);
+
+    let clocheCount = 0;
+    let emptyCount = 0;
+    let nonHttpCount = 0;
+
+    mockRecipes.forEach(recipe => {
+      // 1. With existingUrl
+      const url = getDishImageUrl(recipe.title, recipe.category, recipe.imageUrl);
+      if (!url || typeof url !== 'string' || url.trim() === '') {
+        emptyCount++;
+      } else {
+        if (url.startsWith('data:image/svg+xml') || url.includes('Offline') || url.includes('Ngoại Tuyến')) {
+          clocheCount++;
+        }
+        if (!url.startsWith('https://images.unsplash.com/') && !url.startsWith('http')) {
+          nonHttpCount++;
+        }
+      }
+
+      // 2. Pure semantic resolution (without existingUrl)
+      const pureResolved = getDishImageUrl(recipe.title, recipe.category);
+      if (!pureResolved || typeof pureResolved !== 'string' || pureResolved.trim() === '') {
+        emptyCount++;
+      } else {
+        if (pureResolved.startsWith('data:image/svg+xml') || pureResolved.includes('Offline') || pureResolved.includes('Ngoại Tuyến')) {
+          clocheCount++;
+        }
+        if (!pureResolved.startsWith('https://images.unsplash.com/') && !pureResolved.startsWith('http')) {
+          nonHttpCount++;
+        }
+      }
+    });
+
+    expect(clocheCount).toBe(0);
+    expect(emptyCount).toBe(0);
+    expect(nonHttpCount).toBe(0);
   });
 });
