@@ -64,6 +64,7 @@ import {
   recordUserInRegistry 
 } from '../utils/telemetryEngine';
 import { initScreenTimeTracker } from '../utils/screenTimeService';
+import { canonicalizeIngredientName } from '../utils/ingredientNormalizer';
 
 export interface ExtraGroceryItem {
   name: string;
@@ -832,8 +833,23 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   const removeExtraGroceryItem = useCallback((name: string) => {
+    const targetRaw = (name || '').toLowerCase().trim();
+    const targetClean = canonicalizeIngredientName(targetRaw).toLowerCase().trim();
+
     setExtraGroceryItems(prev => {
-      const next = prev.filter(it => it.name.toLowerCase() !== name.toLowerCase());
+      const next = prev.filter(it => {
+        const itRaw = (it.name || '').toLowerCase().trim();
+        const itClean = canonicalizeIngredientName(itRaw).toLowerCase().trim();
+
+        if (itRaw === targetRaw) return false;
+        if (itClean === targetClean) return false;
+        if (itClean === targetRaw || itRaw === targetClean) return false;
+        if (targetClean.length >= 3 && itClean.includes(targetClean)) return false;
+        if (itClean.length >= 3 && targetClean.includes(itClean)) return false;
+        if (targetRaw.length >= 3 && itRaw.includes(targetRaw)) return false;
+        if (itRaw.length >= 3 && targetRaw.includes(itRaw)) return false;
+        return true;
+      });
       try {
         localStorage.setItem('mealwise_extra_grocery', JSON.stringify(next));
       } catch (e) {

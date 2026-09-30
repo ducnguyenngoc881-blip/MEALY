@@ -570,7 +570,54 @@ export const GroceryList: React.FC = () => {
     { name: 'Gạo tẻ thơm ST25', amount: 5, unit: 'kg', cost: 160000, store: 'winmart', category: 'do-kho' }
   ];
 
+  // Local state for deleted/hidden grocery items in current plan
+  const [deletedItemNames, setDeletedItemNames] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('mealwise_deleted_grocery_items');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const handleDeleteItem = (item: ProcessedGroceryItem) => {
+    // 1. Remove from extraGroceryItems in context
+    removeExtraGroceryItem(item.name);
+
+    // 2. Add to deletedItemNames to guarantee it disappears from allList even if recipes referenced it!
+    setDeletedItemNames(prev => {
+      const canonical = canonicalizeIngredientName(item.name).toLowerCase().trim();
+      const raw = (item.name || '').toLowerCase().trim();
+      const idStr = (item.id || '').toLowerCase().trim();
+      const updated = Array.from(new Set([...prev, canonical, raw, idStr]));
+      try {
+        localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(updated));
+      } catch (e) {
+        console.error('Failed to save deleted grocery items', e);
+      }
+      return updated;
+    });
+
+    showToast(`🗑️ Đã xóa "${item.name}" khỏi danh sách đi chợ!`);
+  };
+
   const handleAddPreset = (preset: typeof DEPLETED_PANTRY_PRESETS[0]) => {
+    // Un-delete if previously deleted
+    setDeletedItemNames(prev => {
+      const pNameLower = preset.name.toLowerCase().trim();
+      const pCanon = canonicalizeIngredientName(preset.name).toLowerCase().trim();
+      const filtered = prev.filter(d => {
+        const dLower = d.toLowerCase().trim();
+        return dLower !== pNameLower && dLower !== pCanon;
+      });
+      try {
+        localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(filtered));
+      } catch (e) {
+        console.error(e);
+      }
+      return filtered;
+    });
+
     addExtraGroceryItems([{
       name: preset.name,
       amount: preset.amount,
@@ -588,6 +635,23 @@ export const GroceryList: React.FC = () => {
       return;
     }
     const cleanName = customItemName.trim();
+
+    // Un-delete if previously deleted
+    setDeletedItemNames(prev => {
+      const cLower = cleanName.toLowerCase().trim();
+      const cCanon = canonicalizeIngredientName(cleanName).toLowerCase().trim();
+      const filtered = prev.filter(d => {
+        const dLower = d.toLowerCase().trim();
+        return dLower !== cLower && dLower !== cCanon;
+      });
+      try {
+        localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(filtered));
+      } catch (e) {
+        console.error(e);
+      }
+      return filtered;
+    });
+
     addExtraGroceryItems([{
       name: cleanName,
       amount: Math.max(0.1, customItemAmount || 1),
@@ -748,7 +812,18 @@ export const GroceryList: React.FC = () => {
   }
 
   // Convert accumulated map into clean processed grocery item list with 1,000 VND rounding
-  const allList: ProcessedGroceryItem[] = Object.values(itemsMap).map(entry => {
+  const allList: ProcessedGroceryItem[] = Object.values(itemsMap)
+    .filter(entry => {
+      if (deletedItemNames.length === 0) return true;
+      const cleanLower = entry.cleanName.toLowerCase().trim();
+      const canonicalLower = canonicalizeIngredientName(cleanLower).toLowerCase().trim();
+      const isDeleted = deletedItemNames.some(del => {
+        const d = del.toLowerCase().trim();
+        return d === cleanLower || d === canonicalLower || (d.length >= 3 && cleanLower.includes(d));
+      });
+      return !isDeleted;
+    })
+    .map(entry => {
     const formatted = formatDisplayAmountAndUnit(entry.baseAmount, entry.family, entry.baseUnit);
     const isFresh = entry.category === 'thit-ca' || entry.category === 'rau-cu';
     const roundedCost = Math.round(entry.cost / 1000) * 1000 || (entry.cost > 0 ? 1000 : 0);
@@ -1066,11 +1141,10 @@ export const GroceryList: React.FC = () => {
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                removeExtraGroceryItem(item.name);
-                showToast(`🗑️ Đã xóa "${item.name}"`);
+                handleDeleteItem(item);
               }}
               className="w-7 h-7 rounded-xl flex items-center justify-center text-stone-400 hover:text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
-              title="Xóa món tự thêm này"
+              title="Xóa món này khỏi giỏ đi chợ"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
@@ -1937,16 +2011,34 @@ export const GroceryList: React.FC = () => {
             Lọc Theo Quầy Nguyên Liệu ({displayedList.length} món)
           </span>
 
-          {overallCheckedCount > 0 && (
-            <button
-              onClick={clearGroceryCheckedItems}
-              className="text-[11px] font-bold text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 transition-colors"
-              title="Đặt lại toàn bộ trạng thái đã mua"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span>Bỏ chọn tất cả</span>
-            </button>
-          )}
+          <div className="flex items-center gap-2.5">
+            {deletedItemNames.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setDeletedItemNames([]);
+                  localStorage.removeItem('mealwise_deleted_grocery_items');
+                  showToast('🔄 Đã khôi phục các món đã xóa!');
+                }}
+                className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 flex items-center gap-1 transition-colors cursor-pointer"
+                title="Khôi phục lại các nguyên liệu đã xóa"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Khôi phục ({deletedItemNames.length})</span>
+              </button>
+            )}
+
+            {overallCheckedCount > 0 && (
+              <button
+                onClick={clearGroceryCheckedItems}
+                className="text-[11px] font-bold text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 transition-colors"
+                title="Đặt lại toàn bộ trạng thái đã mua"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Bỏ chọn tất cả</span>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Horizontal scrollable aisle tabs (6 aisles) */}
