@@ -1235,7 +1235,7 @@ export const RecipeDetailModal: React.FC = () => {
                                   ? 'text-emerald-900 dark:text-emerald-300 line-through opacity-80' 
                                   : 'text-stone-900 dark:text-white'
                               }`}>
-                                Bước {inst.step}: {inst.title}
+                                Bước {inst.step}: {inst.title.replace(/^bước\s*\d+\s*:\s*/i, '').trim()}
                               </h4>
                             </div>
                           </div>
@@ -1259,31 +1259,33 @@ export const RecipeDetailModal: React.FC = () => {
                           <div className="px-3.5 pb-3 pt-0 text-xs text-stone-600 dark:text-stone-300 pl-11 leading-relaxed border-t border-[#E8E2D8]/60 dark:border-[#252220]/60 mt-1 space-y-2">
                             <p>{inst.content}</p>
 
-                            {/* Badges & Actions row */}
-                            <div className="flex flex-wrap items-center gap-2 pt-1">
+                            {/* Badges & Actions row - aligned together with consistent spacing, no wide gap */}
+                            <div className="flex items-center gap-2 pt-1 flex-wrap">
                               {inst.heatLevel && (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
-                                  <Flame className="w-3 h-3 text-amber-600 dark:text-amber-400" />
-                                  Canh lửa: {inst.heatLevel}
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 min-h-[28px]">
+                                  <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                                  <span>{inst.heatLevel}</span>
                                 </span>
                               )}
                               {inst.durationMinutes && (
                                 <button
                                   type="button"
-                                  onClick={() => startTimerWithDuration(inst.durationMinutes! * 60, `Bước ${inst.step}: ${inst.title}`)}
-                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer min-h-[28px]"
+                                  onClick={() => startTimerWithDuration(inst.durationMinutes! * 60, `Bước ${inst.step}: ${inst.title.replace(/^bước\s*\d+\s*:\s*/i, '').trim()}`)}
+                                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer min-h-[28px]"
+                                  title={`Hẹn giờ ${inst.durationMinutes} phút`}
                                 >
-                                  <Timer className="w-3 h-3 text-stone-700 dark:text-stone-300" />
-                                  Hẹn giờ {inst.durationMinutes}p
+                                  <Timer className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
+                                  <span>Hẹn giờ {inst.durationMinutes}p</span>
                                 </button>
                               )}
                               <button
                                 type="button"
                                 onClick={() => enterHandsFreeMode(inst.step - 1)}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors ml-auto cursor-pointer min-h-[28px]"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer min-h-[28px]"
+                                title="Bật chế độ rảnh tay cho bước này"
                               >
-                                <ChefHat className="w-3 h-3 text-stone-700 dark:text-stone-300" />
-                                Nấu bước này rảnh tay
+                                <ChefHat className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                                <span>Nấu rảnh tay</span>
                               </button>
                             </div>
 

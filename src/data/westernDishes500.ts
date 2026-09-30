@@ -34313,65 +34313,92 @@ export const westernDishes500: Recipe[] = [
     "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
-        "name": "Trứng gà / Bánh mì / Yến mạch",
-        "amount": 300,
-        "unit": "g",
-        "category": "khac"
+        "name": "Trứng gà tươi (quả to)",
+        "amount": 4,
+        "unit": "quả",
+        "category": "thit-ca"
       },
       {
-        "name": "Bơ lạt Anchor hoặc Sữa tươi",
-        "amount": 150,
+        "name": "Xúc xích Đức xông khói",
+        "amount": 2,
+        "unit": "cây",
+        "category": "thit-ca"
+      },
+      {
+        "name": "Bơ lạt Anchor",
+        "amount": 25,
+        "unit": "g",
+        "category": "gia-vi"
+      },
+      {
+        "name": "Bánh mì sandwich bơ",
+        "amount": 4,
+        "unit": "lát",
+        "category": "do-kho"
+      },
+      {
+        "name": "Sữa tươi không đường",
+        "amount": 30,
         "unit": "ml",
-        "category": "khac"
+        "category": "gia-vi"
       },
       {
-        "name": "Phô mai / Hoa quả tươi / Xúc xích",
-        "amount": 100,
+        "name": "Phô mai sợi Mozzarella",
+        "amount": 30,
         "unit": "g",
-        "category": "khac"
+        "category": "gia-vi"
+      },
+      {
+        "name": "Hành hoa & Tiêu đen xay",
+        "amount": 5,
+        "unit": "g",
+        "category": "rau-cu"
       }
     ],
     "instructions": [
       {
         "step": 1,
-        "title": "Bước 1: Sơ chế & Làm sạch nguyên liệu",
-        "durationMinutes": 5,
+        "title": "Sơ chế nguyên liệu & Đánh tan trứng",
+        "durationMinutes": 4,
         "heatLevel": "không dùng nhiệt",
-        "content": "Làm sạch trứng gà / bánh mì / yến mạch, dùng khăn giấy nhà bếp thấm thật khô ráo bề mặt để sẵn sàng chế biến. Chuẩn bị các nguyên liệu bơ tỏi và thảo mộc tươi.",
-        "tip": "Thấm thật khô ráo nước bề mặt là yếu tố tiên quyết để món áp chảo có lớp vỏ xém nâu giòn đẹp mắt."
+        "content": "Xúc xích Đức cắt hạt lựu nhỏ vừa ăn. Đập 4 quả trứng gà vào tô, thêm 30ml sữa tươi không đường, 1/3 muỗng cà phê muối và 1/2 muỗng cà phê tiêu xay. Dùng phới lồng đánh nhẹ tay cho trứng và sữa hòa quyện mịn màng.",
+        "tip": "Thêm một chút sữa tươi vào trứng giúp trứng sau khi chiên giữ được độ xốp mềm, béo ngậy và không bao giờ bị khô xác."
       },
       {
         "step": 2,
-        "title": "Bước 2: Ướp gia vị & Thảo mộc chuẩn vị",
-        "durationMinutes": 10,
-        "heatLevel": "không dùng nhiệt",
-        "content": "Ướp trứng gà / bánh mì / yến mạch với muối hồng, tiêu đen giã dập, lá thảo mộc khô và 1 muỗng dầu ô liu nguyên chất trong 10-15 phút cho ngấm đều vị.",
-        "tip": "Ướp cùng dầu ô liu giúp khóa ẩm và làm mềm thớ thịt tự nhiên."
+        "title": "Xào thơm nhân xúc xích Đức",
+        "durationMinutes": 3,
+        "heatLevel": "lửa vừa",
+        "content": "Đặt chảo chống dính lên bếp, cho 10g bơ lạt vào đun chảy sủi bọt nhẹ. Trút xúc xích Đức cắt hạt lựu vào đảo nhanh tay trong 1-2 phút cho vàng xém cạnh và dậy mùi xông khói thơm lừng, trút ra đĩa riêng.",
+        "tip": "Xào sơ xúc xích trước giúp nhân săn giòn và giải phóng hương thơm đậm đà vào bơ."
       },
       {
         "step": 3,
-        "title": "Bước 3: Kỹ thuật chế biến & Canh lửa",
-        "durationMinutes": 5,
-        "heatLevel": "lửa vừa",
-        "content": "Nấu nhanh trên chảo nóng với chút bơ lạt cho vàng thơm ngậy.",
-        "tip": "Rưới bơ nóng liên tục lên bề mặt trong quá trình áp chảo (basting) giúp thịt chín mềm ngậy vị bơ."
+        "title": "Kỹ thuật đổ trứng & Cuộn Omelette chuẩn Âu",
+        "durationMinutes": 4,
+        "heatLevel": "lửa nhỏ",
+        "content": "Cho 15g bơ lạt còn lại vào chảo tráng đều mặt, hạ lửa nhỏ vừa. Đổ toàn bộ hỗn hợp trứng vào, dùng đũa khuấy nhẹ vòng tròn ở tâm trong 30 giây đầu tạo vân kem mềm. Khi đáy vừa đông nhưng mặt còn ẩm mượt, rải xúc xích và phô mai sợi vào giữa, khéo léo cuộn gập hai mép trứng tạo hình thoi dài vàng ươm.",
+        "tip": "Luôn giữ lửa nhỏ và cuộn khi mặt trứng còn hơi ướt mướt (creamy). Trứng sẽ tự chín mềm hoàn hảo bằng nhiệt dư bên trong."
       },
       {
         "step": 4,
-        "title": "Bước 4: Nêm nếm sốt & Hoàn thiện",
-        "durationMinutes": 4,
-        "heatLevel": "lửa nhỏ",
-        "content": "Dọn ăn nóng kèm ly cà phê hoặc nước hoa quả tươi.",
-        "tip": "Để thịt nghỉ (rest) 3-5 phút trước khi cắt lát để nước ngọt tự nhiên không bị chảy tràn ra đĩa."
+        "title": "Áp chảo bánh mì bơ giòn & Hoàn thiện",
+        "durationMinutes": 3,
+        "heatLevel": "lửa vừa",
+        "content": "Gạt trứng cuộn ra mép đĩa. Cho các lát bánh mì vào chảo nóng áp mỗi mặt 30 giây cho vàng giòn rụm thơm bơ. Rắc thêm chút hành hoa thái nhỏ và tiêu xay lên mặt trứng cuộn. Dọn ăn nóng kèm bánh mì bơ giòn và ly sữa tươi hoặc cà phê.",
+        "tip": "Thưởng thức ngay khi còn nóng hổi để cảm nhận trọn vẹn lớp phô mai béo ngậy kéo sợi bên trong trứng cuộn mềm mịn."
       }
     ],
     "tags": [
       "Món Âu",
       "Western Food",
       "Ăn Sáng",
+      "Omelette",
+      "Trứng Cuộn",
+      "Bánh Mì Bơ",
       "Nhanh Gọn"
     ],
-    "chefTip": "Bí quyết đầu bếp: Chà xát gà bằng rượu gừng để khử sạch mùi hôi lông. Xào gà thật săn trên lửa lớn cho da tươm mỡ vàng óng rồi mới châm nước om liu riu với gừng sả cho ngấm đượm vị cay ấm."
+    "chefTip": "Bí quyết đầu bếp: Đừng bao giờ chiên trứng Omelette trên lửa lớn vì trứng sẽ bị phồng rộp, khô xác và xém cháy. Canh lửa nhỏ liu riu và cuộn khi lòng trứng còn ướt nhẹ (custardy) chính là bí quyết nhà hàng để trứng cuộn mềm mịn tan ngay trong miệng."
   },
   {
     "id": "western-bfast-434",

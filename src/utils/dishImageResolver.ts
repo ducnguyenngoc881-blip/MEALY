@@ -31,11 +31,26 @@ export const OVERUSED_PLACEHOLDER_IDS = [
   'photo-1573140247632-f8fd74997d5c', // HUMAN FACE - strictly blacklisted from all food displays
 ];
 
+/**
+ * Pre-flight validation helper to detect broken, dead, or blacklisted image URLs.
+ */
+export function isDeadOrPlaceholderUrl(url?: string | null): boolean {
+  if (!url || typeof url !== 'string') return true;
+  const trimmed = url.trim();
+  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://') && !trimmed.startsWith('data:image/')) {
+    return true;
+  }
+  if (trimmed.startsWith('data:image/svg+xml')) {
+    return true;
+  }
+  return OVERUSED_PLACEHOLDER_IDS.some(badId => trimmed.includes(badId));
+}
+
 // ============================================================================
 // 2. CURATED HIGH-DEFINITION CULINARY POOLS (VERIFIED UNSPLASH CDN)
 // ============================================================================
-const CULINARY_55_POOLS: Record<string, string[]> = {
-  // FAST FOOD & SNACKS: Burger, Hamburger, Cheeseburger
+export const CULINARY_82_POOLS: Record<string, string[]> = {
+  // 1. burger
   burger: [
     'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80',
@@ -43,7 +58,7 @@ const CULINARY_55_POOLS: Record<string, string[]> = {
     'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Gà Rán, Gà Xối Mỡ, Cánh Gà Chiên Mắm
+  // 2. fried_chicken
   fried_chicken: [
     'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=600&q=80',
@@ -51,7 +66,7 @@ const CULINARY_55_POOLS: Record<string, string[]> = {
     'https://images.unsplash.com/photo-1587593810167-a84920ea0781?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Pizza Hải Sản, Pepperoni, Phô Mai
+  // 3. pizza
   pizza: [
     'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80',
@@ -59,432 +74,588 @@ const CULINARY_55_POOLS: Record<string, string[]> = {
     'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Khoai Tây Chiên, Khoai Lang Kén, Khoai Lắc
+  // 4. french_fries
   french_fries: [
     'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Hotdog, Xúc Xích Nướng, Lạp Xưởng
+  // 5. hotdogs_sausage
   hotdogs_sausage: [
     'https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Tacos, Burrito, Quesadilla, Wrap Cuốn
+  // 6. tacos_wraps
   tacos_wraps: [
     'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Bánh Tráng Nướng Đà Lạt, Pizza Việt Nam
+  // 7. banh_trang_nuong
   banh_trang_nuong: [
     'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Bánh Tráng Trộn, Bánh Tráng Cuốn Bơ
+  // 8. banh_trang_tron
   banh_trang_tron: [
     'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Nem Chua Rán, Chả Giò, Ram Cuốn
+  // 9. nem_chua_ran
   nem_chua_ran: [
     'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FAST FOOD & SNACKS: Xiên Que Nướng, Cá Viên Chiên, Bò Viên
+  // 10. xien_que_ca_vien
   xien_que_ca_vien: [
     'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Phở Bò Tái, Chín, Nạm, Gầu, Sốt Vang
+  // 11. pho_bo
   pho_bo: [
     'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Phở Gà Ta Lá Chanh, Phở Đùi Gà Xé
+  // 12. pho_ga
   pho_ga: [
     'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Bún Chả Hà Nội Nướng Than Hoa, Nem Cua Bể
+  // 13. bun_cha
   bun_cha: [
-    'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Bún Bò Huế Giò Chả Cua, Bún Bò Cay
+  // 14. bun_bo_hue
   bun_bo_hue: [
     'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Bún Riêu Cua Đồng, Bún Ốc Sườn Sụn
+  // 15. bun_rieu
   bun_rieu: [
     'https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Mẹt Bún Đậu Mắm Tôm, Chả Cốm, Dồi Sụn
+  // 16. bun_dau_mam_tom
   bun_dau_mam_tom: [
     'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Bún Thịt Nướng Chả Giò, Bún Thịt Xào
+  // 17. bun_thit_nuong
   bun_thit_nuong: [
     'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Hủ Tiếu Nam Vang, Hủ Tiếu Gõ, Hủ Tiếu Sườn
+  // 18. hu_tieu
   hu_tieu: [
     'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Mì Quảng Tôm Thịt, Cao Lầu Hội An
+  // 19. mi_quang_cao_lau
   mi_quang_cao_lau: [
     'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Bánh Mì Pate, Bánh Mì Thịt Nguội, Bánh Mì Chảo
+  // 20. banh_mi
   banh_mi: [
     'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Cơm Tấm Sườn Bì Chả Trứng Ốp La
+  // 21. com_tam
   com_tam: [
     'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // NOODLES & RICE CLASSICS: Cơm Rang Dưa Bò, Cơm Chiên Dương Châu
+  // 22. com_rang
   com_rang: [
-    'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
-  ],
-
-  // NOODLES & RICE CLASSICS: Xôi Xéo Mỡ Hành, Xôi Khúc, Xôi Gà Xé
-  xoi: [
-    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Thịt Kho Tàu Nước Dừa, Thịt Kho Trứng Cút
+  // 23. xoi
+  xoi: [
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 24. thit_kho_tau
   thit_kho_tau: [
     'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Thịt Ba Chỉ Rang Cháy Cạnh Mắm Hành
+  // 25. thit_rang_chay_canh
   thit_rang_chay_canh: [
-    'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Cá Basa / Cá Bống / Cá Lóc / Cá Nục Kho Tộ
+  // 26. ca_kho_to
   ca_kho_to: [
     'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Sườn Non Ram Mặn Ngọt, Sườn Xào Chua Ngọt
+  // 27. suon_ram
   suon_ram: [
     'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Gà Kho Gừng, Gà Rang Sả Ớt, Gà Hấp Lá Chanh
+  // 28. ga_kho_gung_sa
   ga_kho_gung_sa: [
     'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Bò Xào Cần Tỏi, Bò Lúc Lắc, Bò Né
+  // 29. bo_xao_can_toi
   bo_xao_can_toi: [
     'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1504973960431-1c467e159aa4?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Tôm Rim Thịt, Tôm Rang Muối, Mực Xào
+  // 30. tom_rim_hai_san
   tom_rim_hai_san: [
     'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Đậu Phụ Sốt Cà Chua, Đậu Hũ Nhồi Thịt Sốt Cà
+  // 31. dau_sot_ca_chua
   dau_sot_ca_chua: [
-    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Canh Chua Cá Lóc, Canh Chua Cá Hú, Canh Chua Tôm
+  // 32. canh_chua
   canh_chua: [
-    'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Canh Cua Đồng Mồng Tơi Mướp Rau Đay
+  // 33. canh_cua_rau_day
   canh_cua_rau_day: [
-    'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Canh Sườn Nấu Sấu, Canh Sườn Chua
+  // 34. canh_suon_sau_kim_chi
   canh_suon_sau_kim_chi: [
-    'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Canh Rau Ngót Thịt Bằm, Canh Bí Đỏ, Canh Cải
+  // 35. canh_thanh_mat
   canh_thanh_mat: [
     'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Canh Khổ Qua Nhồi Thịt, Mướp Đắng Nấu Tôm
+  // 36. canh_kho_qua
   canh_kho_qua: [
-    'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Rau Muống Xào Tỏi, Rau Muống Luộc Dầm Sấu
+  // 37. rau_muong_xao_luoc
   rau_muong_xao_luoc: [
-    'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Bắp Cải Luộc, Rau Củ Thập Cẩm Luộc Kho Quẹt
+  // 38. rau_cu_luoc_kho_quet
   rau_cu_luoc_kho_quet: [
     'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // HOME-COOKED MEAL SETS: Đậu Que Xào Thịt Bò, Mướp Đắng Xào Trứng, Cà Tím Xào
+  // 39. rau_xao_thap_cam
   rau_xao_thap_cam: [
-    'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Ca Phe Sua Da Sai Gon, Ca Phe Den, Bac Xiu
+  // 40. ca_phe_vietnam
   ca_phe_vietnam: [
     'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Ca Phe Muoi Hue, Cappuccino, Latte Art, Cold Brew
+  // 41. ca_phe_muoi_artisan
   ca_phe_muoi_artisan: [
     'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Tra Dao Cam Sa, Tra Vai Mint, Tra Quat Mat Ong, Tra Tac
+  // 42. tra_dao_cam_sa
   tra_dao_cam_sa: [
     'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Tra Sua Tran Chau Duong Den, Tra Sua O Long, Matcha
+  // 43. tra_sua_tran_chau
   tra_sua_tran_chau: [
     'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Sinh To Bo, Sinh To Xoai, Nuoc Ep Hoa Qua
+  // 44. sinh_to_trai_cay
   sinh_to_trai_cay: [
     'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Nuoc Mia Sieu Sach, Nuoc Sam Bi Dao, Tra Atiso
+  // 45. nuoc_mia_nuoc_sam
   nuoc_mia_nuoc_sam: [
     'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Che Duong Nhan Tuyet Yen, Che Khuc Bach Pho Mai
+  // 46. che_duong_nhan_khuc_bach
   che_duong_nhan_khuc_bach: [
     'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Che Buoi An Giang, Che Dau Den / Do Hat Sen
+  // 47. che_truyen_thong
   che_truyen_thong: [
     'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Caramen Flan Sua Tuoi Cot Dua, Banh Flan Trung
+  // 48. flan_caramen
   flan_caramen: [
     'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // BEVERAGES AND DESSERTS: Kem Bo Da Lat, Sua Chua Tran Chau Ha Long, Gelato
+  // 49. kem_gelato_yogurt
   kem_gelato_yogurt: [
     'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // DARE AND STREET NOVELTY: Mam Tom Nguyen Chat Sui Bot Tac Ot, Mam Nem
+  // 50. mam_tom_mam_nem
   mam_tom_mam_nem: [
     'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // DARE AND STREET NOVELTY: Sau Rieng Ri6 Cay Nong, Sau Rieng Nuong
+  // 51. sau_rieng_dac_san
   sau_rieng_dac_san: [
     'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // DARE AND STREET NOVELTY: Hot Vit Lon Luoc Ngai Cuu, Cut Lon Xao Me
+  // 52. trung_vit_lon
   trung_vit_lon: [
-    'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // DARE AND STREET NOVELTY: De Men Chien Gion Bo Toi, Nhong Tam La Chanh
+  // 53. con_trung_chien_gion
   con_trung_chien_gion: [
     'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // DARE AND STREET NOVELTY: Mi Cay 7 Cap Do, Ot Hiem Sa Te Sieu Cay
+  // 54. do_cay_nong_extreme
   do_cay_nong_extreme: [
     'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // DARE AND STREET NOVELTY: Tra Sua Hanh La Tuoi, Dau Hu Thoi Sa Te, Kem Ot
+  // 55. bizarre_modern_fusion
   bizarre_modern_fusion: [
     'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // WESTERN & BREAKFAST: Omelette, Scrambled Eggs, Sunny Side Up Skillet
-  western_omelette_egg: [
-    'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80',
+  // --- 27 NEW GRANULAR CULINARY CLUSTERS (56 - 82) ---
+  // 56. trung_cuon_omelette
+  trung_cuon_omelette: [
     'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // WESTERN & BREAKFAST: Pancakes, French Toast, Avocado Toast, Overnight Oats
-  western_toast_pancake: [
-    'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
-  ],
-
-  // WESTERN MAINS: Beefsteak (Tenderloin, Ribeye, Striploin, Peppercorn Sauce)
-  western_steak: [
+  // 57. steak_beef
+  steak_beef: [
+    'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1504973960431-1c467e159aa4?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // WESTERN MAINS: Italian Pasta (Spaghetti Bolognese, Carbonara, Pesto)
-  western_pasta: [
-    'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80',
+  // 58. my_y_pasta
+  my_y_pasta: [
     'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // WESTERN SOUPS: Pumpkin Soup, Cream of Mushroom, Chowder, Tomato Basil
-  western_soup: [
+  // 59. burrito_quesadilla
+  burrito_quesadilla: [
+    'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 60. sup_kem_tay_chowder
+  sup_kem_tay_chowder: [
+    'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // WESTERN SIDES & SALADS: Caesar Salad, Greek Salad, Coleslaw
-  western_salad: [
+  // 61. salad_tay_caesar
+  salad_tay_caesar: [
     'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // WESTERN SIDES: Mashed Potatoes, Potato Wedges, Garlic Bread, Sautéed Asparagus
-  western_sides: [
-    'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80',
+  // 62. banh_mi_sandwich_toast
+  banh_mi_sandwich_toast: [
+    'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // WESTERN SEAFOOD: Salmon Steak, Garlic Butter Shrimp, Pan-Seared Cod
-  western_seafood: [
+  // 63. risotto_paella
+  risotto_paella: [
+    'https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 64. seafood_western
+  seafood_western: [
     'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // FRESH FRUITS: Watermelon, Mango, Guava, Papaya, Pomelo, Dragon Fruit
-  trai_cay_trang_mieng: [
-    'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80',
+  // 65. bbq_ribs_roast
+  bbq_ribs_roast: [
+    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 66. pancake_waffle
+  pancake_waffle: [
+    'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 67. overnight_oats_granola
+  overnight_oats_granola: [
+    'https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 68. curry_dishes
+  curry_dishes: [
+    'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 69. soup_clear_western
+  soup_clear_western: [
+    'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 70. goi_nom_vietnam
+  goi_nom_vietnam: [
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 71. cha_ca_vietnam
+  cha_ca_vietnam: [
+    'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 72. banh_xeo_banh_khot
+  banh_xeo_banh_khot: [
+    'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 73. banh_cuon_banh_uot
+  banh_cuon_banh_uot: [
+    'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 74. chao_vietnam
+  chao_vietnam: [
+    'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 75. lau_vietnam
+  lau_vietnam: [
+    'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 76. nem_cuon_spring_rolls
+  nem_cuon_spring_rolls: [
+    'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 77. trung_chien_op_la
+  trung_chien_op_la: [
+    'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 78. ha_cao_dimsum
+  ha_cao_dimsum: [
+    'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 79. muc_bach_tuoc_nuong_xao
+  muc_bach_tuoc_nuong_xao: [
+    'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 80. thit_heo_quay_kho_dua
+  thit_heo_quay_kho_dua: [
+    'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 81. canh_kim_chi_hai_san
+  canh_kim_chi_hai_san: [
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // 82. mon_chay_tofu_mushroom
+  mon_chay_tofu_mushroom: [
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
   ],
 };
 
 function combinePools(...poolKeys: string[]): string[] {
   const urls: string[] = [];
   for (const key of poolKeys) {
-    const list = CULINARY_55_POOLS[key];
+    const list = CULINARY_82_POOLS[key];
     if (list) urls.push(...list);
   }
   return Array.from(new Set(urls));
 }
 
+export const CULINARY_55_POOLS = CULINARY_82_POOLS;
+
 export const FOOD_IMAGE_POOLS: Record<string, string[]> = {
-  ...CULINARY_55_POOLS,
+  ...CULINARY_82_POOLS,
+
+  // ==========================================================================
+  // WESTERN ALIAS POOLS (100% test & semantic backward compatibility)
+  // ==========================================================================
+  western_omelette_egg: CULINARY_82_POOLS.trung_cuon_omelette,
+  western_steak: CULINARY_82_POOLS.steak_beef,
+  western_pasta: CULINARY_82_POOLS.my_y_pasta,
+  western_soup: CULINARY_82_POOLS.sup_kem_tay_chowder,
+  western_salad: CULINARY_82_POOLS.salad_tay_caesar,
+  western_toast_pancake: CULINARY_82_POOLS.banh_mi_sandwich_toast,
+  western_sides: [
+    'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80',
+  ],
+  western_seafood: CULINARY_82_POOLS.seafood_western,
+  trai_cay_trang_mieng: [
+    'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80',
+  ],
 
   // ==========================================================================
   // LEGACY BACKWARD-COMPATIBILITY ALIAS POOLS
@@ -494,10 +665,10 @@ export const FOOD_IMAGE_POOLS: Record<string, string[]> = {
   coffee: combinePools('ca_phe_vietnam', 'ca_phe_muoi_artisan'),
   tea_drink: combinePools('tra_dao_cam_sa', 'tra_sua_tran_chau', 'nuoc_mia_nuoc_sam'),
   soup_dish: combinePools('canh_chua', 'canh_cua_rau_day', 'canh_suon_sau_kim_chi', 'canh_thanh_mat', 'canh_kho_qua'),
-  fish_seafood: combinePools('ca_kho_to', 'tom_rim_hai_san'),
-  beef_dish: combinePools('bo_xao_can_toi'),
-  pork_dish: combinePools('thit_kho_tau', 'thit_rang_chay_canh', 'suon_ram'),
-  veggie_dish: combinePools('rau_muong_xao_luoc', 'rau_cu_luoc_kho_quet', 'rau_xao_thap_cam', 'dau_sot_ca_chua'),
+  fish_seafood: combinePools('ca_kho_to', 'tom_rim_hai_san', 'cha_ca_vietnam', 'seafood_western'),
+  beef_dish: combinePools('bo_xao_can_toi', 'steak_beef'),
+  pork_dish: combinePools('thit_kho_tau', 'thit_rang_chay_canh', 'suon_ram', 'thit_heo_quay_kho_dua'),
+  veggie_dish: combinePools('rau_muong_xao_luoc', 'rau_cu_luoc_kho_quet', 'rau_xao_thap_cam', 'dau_sot_ca_chua', 'mon_chay_tofu_mushroom'),
   dessert: combinePools('che_duong_nhan_khuc_bach', 'che_truyen_thong', 'flan_caramen', 'kem_gelato_yogurt'),
   bizarre_dare: combinePools(
     'mam_tom_mam_nem',
@@ -669,6 +840,7 @@ const CLUSTER_RULES: ClusterRule[] = [
     key: 'hotdogs_sausage',
     exactCompounds: ['hotdog', 'xuc xich', 'lap xuong', 'xuc xich duc', 'xuc xich nuong'],
     requiredTokenGroups: [['hotdog', 'xuc xich', 'lap xuong']],
+    disqualifiers: ['omelette', 'trung cuon'],
     categoryBonus: ['an-vat'],
   },
   {
@@ -863,7 +1035,7 @@ const CLUSTER_RULES: ClusterRule[] = [
       ['ca', 'fish'],
       ['kho', 'chien', 'nuong', 'to', 'kho to', 'basa', 'loc', 'nuc', 'hoi', 'dieu hong']
     ],
-    disqualifiers: ['__veg_ca_chua__', '__veg_ca_tim__', '__veg_ca_phao__', '__drink_ca_phe__', 'vien', 'canh chua', 'canh'],
+    disqualifiers: ['__veg_ca_chua__', '__veg_ca_tim__', '__veg_ca_phao__', '__drink_ca_phe__', 'vien', 'canh chua', 'canh', 'cha ca'],
     categoryBonus: ['mon-man'],
   },
   {
@@ -873,7 +1045,7 @@ const CLUSTER_RULES: ClusterRule[] = [
       ['suon'],
       ['ram', 'xao chua ngot', 'rim', 'nuong', 'man']
     ],
-    disqualifiers: ['canh suon', 'canh'],
+    disqualifiers: ['canh suon', 'canh', 'bbq', 'ribs'],
     categoryBonus: ['mon-man'],
   },
   {
@@ -894,13 +1066,13 @@ const CLUSTER_RULES: ClusterRule[] = [
     key: 'bo_xao_can_toi',
     exactCompounds: [
       'bo xao can toi', 'bo xao', 'bo xao can tay', 'bo xao hanh tay',
-      'bo luc lac', 'bit tet', 'bo bit tet', 'bo ne', 'thit bo xao'
+      'bo luc lac', 'thit bo xao'
     ],
     requiredTokenGroups: [
       ['bo', 'beef'],
-      ['xao', 'luc lac', 'bit tet', 'ne', 'ap chao', 'can toi']
+      ['xao', 'luc lac', 'can toi']
     ],
-    disqualifiers: ['pho', 'bun bo'],
+    disqualifiers: ['pho', 'bun bo', 'steak', 'bit tet', 'beefsteak'],
     categoryBonus: ['mon-man', 'mon-xao'],
   },
   {
@@ -942,11 +1114,12 @@ const CLUSTER_RULES: ClusterRule[] = [
   },
   {
     key: 'canh_suon_sau_kim_chi',
-    exactCompounds: ['canh suon', 'canh suon sau', 'canh kim chi', 'canh suon chua', 'canh suon bi', 'canh suon ham'],
+    exactCompounds: ['canh suon', 'canh suon sau', 'canh suon chua', 'canh suon bi', 'canh suon ham'],
     requiredTokenGroups: [
       ['canh'],
-      ['suon', 'kim chi', 'sau']
+      ['suon', 'sau']
     ],
+    disqualifiers: ['kim chi'],
     categoryBonus: ['mon-canh'],
   },
   {
@@ -1139,79 +1312,283 @@ const CLUSTER_RULES: ClusterRule[] = [
     categoryBonus: ['doc-la'],
   },
 
-  // --- WESTERN BREAKFASTS & EGGS ---
+  // ==========================================================================
+  // 27 NEW GRANULAR CULINARY CLUSTERS (TOTAL 82 TAXONOMY CLUSTERS)
+  // ==========================================================================
   {
-    key: 'western_omelette_egg',
+    key: 'trung_cuon_omelette',
     exactCompounds: [
       'trung cuon omelette', 'omelette', 'trung cuon', 'scrambled eggs', 'trung khuay',
-      'trung op la', 'trung op la long dao', 'trung chao', 'skillet eggs'
+      'tamagoyaki', 'frittata', 'trung cuon xuc xich', 'omelet', 'skillet eggs'
     ],
     requiredTokenGroups: [
-      ['trung', 'omelette', 'scrambled']
+      ['trung cuon', 'omelette', 'scrambled', 'tamagoyaki', 'frittata', 'omelet']
     ],
+    modifiers: ['xuc xich', 'pho mai', 'nam', 'thit', 'bo', 'duc'],
     categoryBonus: ['an-sang'],
   },
   {
-    key: 'western_toast_pancake',
-    exactCompounds: [
-      'french toast', 'avocado toast', 'pancake', 'banh pancake', 'banh mi nuong kieu phap',
-      'overnight oats', 'yen mach sua chua', 'banh mi bo sap'
-    ],
-    requiredTokenGroups: [
-      ['pancake', 'toast', 'oats', 'yen mach']
-    ],
-    categoryBonus: ['an-sang', 'mon-rau'],
-  },
-
-  // --- WESTERN MAINS: STEAKS & PASTAS ---
-  {
-    key: 'western_steak',
+    key: 'steak_beef',
     exactCompounds: [
       'bo bit tet', 'beefsteak', 'steak', 'than noi', 'than lung', 'ribeye', 'striploin',
-      'bo bit tet sot tieu', 'than bo my', 'bap bo uc sot'
+      'bo bit tet sot tieu', 'than bo my', 'bap bo uc sot', 'bit tet'
     ],
     requiredTokenGroups: [
-      ['bit tet', 'steak', 'ribeye', 'striploin', 'beefsteak']
+      ['bit tet', 'steak', 'ribeye', 'striploin', 'beefsteak', 'than noi', 'than lung']
     ],
     categoryBonus: ['mon-man', 'mon-chinh'],
   },
   {
-    key: 'western_pasta',
+    key: 'my_y_pasta',
     exactCompounds: [
       'spaghetti', 'mi y', 'bolognese', 'carbonara', 'pesto', 'lasagna', 'mac and cheese',
-      'pasta', 'mi y sot bo bam', 'mi y carbonara'
+      'pasta', 'mi y sot bo bam', 'mi y carbonara', 'mi y sot kem', 'mi y sot hung tay'
     ],
     requiredTokenGroups: [
       ['mi y', 'spaghetti', 'pasta', 'bolognese', 'carbonara', 'lasagna', 'pesto']
     ],
     categoryBonus: ['mon-man', 'mon-chinh'],
   },
-
-  // --- WESTERN SOUPS & SALADS ---
   {
-    key: 'western_soup',
+    key: 'burrito_quesadilla',
+    exactCompounds: ['burrito', 'quesadilla', 'fajita', 'enchilada', 'wrap bo', 'wrap ga'],
+    requiredTokenGroups: [
+      ['burrito', 'quesadilla', 'fajita', 'enchilada']
+    ],
+    categoryBonus: ['an-nhanh', 'an-vat'],
+  },
+  {
+    key: 'sup_kem_tay_chowder',
     exactCompounds: [
-      'sup kem bi do', 'sup kem nam', 'sup ca chua hung que', 'clam chowder', 'sup ngheu',
-      'sup kem', 'sup tay', 'sup phap', 'sup minestrone'
+      'sup kem bi do', 'sup kem nam', 'clam chowder', 'sup ngheu', 'sup kem',
+      'chowder', 'pumpkin cream soup', 'sup kem tay', 'sup bi do hat de'
     ],
     requiredTokenGroups: [
-      ['sup kem', 'chowder', 'sup ca chua hung que', 'sup bi do', 'sup nam']
+      ['sup kem', 'chowder', 'sup bi do', 'sup nam']
     ],
     categoryBonus: ['mon-canh'],
   },
   {
-    key: 'western_salad',
+    key: 'salad_tay_caesar',
     exactCompounds: [
-      'salad caesar', 'caesar salad', 'salad coleslaw', 'salad tron dau giam', 'salad nga',
-      'salad bo trai cay', 'salad ca ngu', 'salad rau mam', 'coleslaw'
+      'salad caesar', 'caesar salad', 'greek salad', 'cobb salad', 'salad luon ga',
+      'salad ga nuong', 'coleslaw', 'caesar'
     ],
     requiredTokenGroups: [
-      ['salad', 'coleslaw', 'caesar']
+      ['salad caesar', 'caesar salad', 'caesar', 'coleslaw', 'greek salad']
     ],
     categoryBonus: ['mon-rau', 'mon-chay'],
   },
+  {
+    key: 'banh_mi_sandwich_toast',
+    exactCompounds: [
+      'french toast', 'garlic bread', 'avocado toast', 'banh mi nuong bo toi',
+      'banh mi nuong kieu phap', 'banh mi bo sap', 'garlic toast'
+    ],
+    requiredTokenGroups: [
+      ['french toast', 'avocado toast', 'banh mi nuong kieu phap', 'banh mi bo sap', 'garlic bread']
+    ],
+    categoryBonus: ['an-sang'],
+  },
+  {
+    key: 'risotto_paella',
+    exactCompounds: ['risotto', 'paella', 'com y risotto', 'paella hai san', 'com tay ban nha'],
+    requiredTokenGroups: [
+      ['risotto', 'paella']
+    ],
+    categoryBonus: ['mon-man', 'mon-chinh'],
+  },
+  {
+    key: 'seafood_western',
+    exactCompounds: [
+      'ca hoi ap chao', 'salmon steak', 'tom bo toi', 'ca tuyet ap chao',
+      'hai san sot bo toi', 'pan seared salmon', 'ca hoi sot cam', 'ca hoi sot bo chanh'
+    ],
+    requiredTokenGroups: [
+      ['ca hoi ap chao', 'salmon steak', 'salmon', 'ca tuyet', 'tom bo toi']
+    ],
+    categoryBonus: ['mon-man'],
+  },
+  {
+    key: 'bbq_ribs_roast',
+    exactCompounds: [
+      'suon nuong bbq', 'bbq ribs', 'roast beef', 'bo dut lo', 'ga quay thao moc',
+      'suon tang nuong', 'suon bbq'
+    ],
+    requiredTokenGroups: [
+      ['bbq ribs', 'roast beef', 'suon nuong bbq', 'suon bbq', 'suon tang']
+    ],
+    categoryBonus: ['mon-man'],
+  },
+  {
+    key: 'pancake_waffle',
+    exactCompounds: ['pancake', 'waffle', 'banh kep pancake', 'waffle bi', 'pancakes mat ong', 'pancakes'],
+    requiredTokenGroups: [
+      ['pancake', 'pancakes', 'waffle']
+    ],
+    categoryBonus: ['an-sang', 'trang-mieng'],
+  },
+  {
+    key: 'overnight_oats_granola',
+    exactCompounds: [
+      'overnight oats', 'granola', 'yen mach ngam sua chua', 'muesli', 'granola bowl',
+      'yen mach sua chua', 'overnight oat'
+    ],
+    requiredTokenGroups: [
+      ['overnight oats', 'granola', 'muesli', 'yen mach ngam']
+    ],
+    categoryBonus: ['an-sang'],
+  },
+  {
+    key: 'curry_dishes',
+    exactCompounds: [
+      '__dish_ca_ri__', 'ca ri', 'curry', 'ca ri ga', 'ca ri bo', 'japanese curry',
+      'ca ri nhat', 'ca ri an do', 'ca ri nuoc cot dua'
+    ],
+    requiredTokenGroups: [
+      ['__dish_ca_ri__', 'ca ri', 'curry']
+    ],
+    categoryBonus: ['mon-chinh', 'mon-man'],
+  },
+  {
+    key: 'soup_clear_western',
+    exactCompounds: [
+      'french onion soup', 'sup hanh tay kieu phap', 'minestrone', 'goulash', 'sup trong'
+    ],
+    requiredTokenGroups: [
+      ['french onion', 'sup hanh tay', 'minestrone', 'goulash']
+    ],
+    categoryBonus: ['mon-canh'],
+  },
+  {
+    key: 'goi_nom_vietnam',
+    exactCompounds: [
+      'goi ngo sen', 'goi ga xe phay', 'nom bo kho', 'nom du du', 'goi tai heo',
+      'goi tom thit', 'nom rau muong', 'nom sua'
+    ],
+    requiredTokenGroups: [
+      ['goi', 'nom'],
+      ['ngo sen', 'bo kho', 'du du', 'tai heo', 'xe phay', 'tom thit', 'rau muong', 'sua']
+    ],
+    disqualifiers: ['goi cuon'],
+    categoryBonus: ['mon-xao', 'mon-chay'],
+  },
+  {
+    key: 'cha_ca_vietnam',
+    exactCompounds: ['cha ca la vong', 'cha ca thi la', 'cha ca chien rim', 'cha ca ha noi'],
+    requiredTokenGroups: [
+      ['cha ca la vong', 'cha ca thi la', 'cha ca ha noi']
+    ],
+    categoryBonus: ['mon-chinh', 'mon-man'],
+  },
+  {
+    key: 'banh_xeo_banh_khot',
+    exactCompounds: ['banh xeo', 'banh khot', 'banh xeo mien tay', 'banh khot vung tau', 'banh xeo tom thit'],
+    requiredTokenGroups: [
+      ['banh xeo', 'banh khot']
+    ],
+    categoryBonus: ['an-nhanh', 'mon-chinh'],
+  },
+  {
+    key: 'banh_cuon_banh_uot',
+    exactCompounds: ['banh cuon', 'banh uot', 'banh cuon nong', 'banh cuon cha que', 'banh uot long ga'],
+    requiredTokenGroups: [
+      ['banh cuon', 'banh uot']
+    ],
+    categoryBonus: ['an-sang', 'mon-chinh'],
+  },
+  {
+    key: 'chao_vietnam',
+    exactCompounds: [
+      'chao suon', 'chao ga', 'chao bo', 'chao long', 'chao ca', 'chao vit', 'chao ech', 'chao nam'
+    ],
+    requiredTokenGroups: [
+      ['chao'],
+      ['suon', 'ga', 'bo', 'long', 'ca', 'vit', 'ech', 'nam', 'thit']
+    ],
+    categoryBonus: ['mon-canh', 'mon-chinh', 'an-sang'],
+  },
+  {
+    key: 'lau_vietnam',
+    exactCompounds: [
+      'lau thai', 'lau rieu cua', 'lau ga la giang', 'lau bo', 'lau hai san', 'lau nam', 'lau ech'
+    ],
+    requiredTokenGroups: [
+      ['lau'],
+      ['thai', 'rieu cua', 'la giang', 'bo', 'hai san', 'nam', 'ech', 'chua cay']
+    ],
+    categoryBonus: ['mon-chinh'],
+  },
+  {
+    key: 'nem_cuon_spring_rolls',
+    exactCompounds: ['goi cuon', 'nem cuon', 'goi cuon tom thit', 'bi cuon', 'summer rolls'],
+    requiredTokenGroups: [
+      ['goi cuon', 'nem cuon', 'bi cuon', 'summer rolls']
+    ],
+    categoryBonus: ['an-nhanh', 'an-vat'],
+  },
+  {
+    key: 'trung_chien_op_la',
+    exactCompounds: [
+      'trung op la', 'trung chien', 'trung ran', 'trung op la long dao', 'trung chien thit bam'
+    ],
+    requiredTokenGroups: [
+      ['trung'],
+      ['op la', 'chien', 'ran', 'long dao']
+    ],
+    disqualifiers: ['omelette', 'trung cuon', 'vit lon', 'scrambled'],
+    categoryBonus: ['an-sang', 'mon-man'],
+  },
+  {
+    key: 'ha_cao_dimsum',
+    exactCompounds: ['ha cao', 'dimsum', 'dim sum', 'xiu mai', 'ha cao tom', 'banh bao hap', 'xiu mai sot ca'],
+    requiredTokenGroups: [
+      ['ha cao', 'dimsum', 'dim sum', 'xiu mai', 'banh bao']
+    ],
+    categoryBonus: ['an-nhanh', 'an-sang'],
+  },
+  {
+    key: 'muc_bach_tuoc_nuong_xao',
+    exactCompounds: [
+      'muc nuong', 'bach tuoc nuong', 'muc sa te', 'muc xao sa te', 'bach tuoc nuong muoi ot', 'muc mot nang'
+    ],
+    requiredTokenGroups: [
+      ['muc', 'bach tuoc'],
+      ['nuong', 'sa te', 'muoi ot', 'mot nang', 'xao cay']
+    ],
+    categoryBonus: ['mon-man', 'mon-xao'],
+  },
+  {
+    key: 'thit_heo_quay_kho_dua',
+    exactCompounds: [
+      'thit heo quay', 'heo quay', 'heo quay gion bi', 'ba chi kho dua', 'thit kho dua cai', 'thit quay'
+    ],
+    requiredTokenGroups: [
+      ['heo quay', 'thit quay', 'kho dua']
+    ],
+    categoryBonus: ['mon-man'],
+  },
+  {
+    key: 'canh_kim_chi_hai_san',
+    exactCompounds: [
+      'canh kim chi', 'canh kim chi dau non', 'canh kim chi hai san', 'canh rong bien', 'canh rong bien thit bo'
+    ],
+    requiredTokenGroups: [
+      ['canh kim chi', 'canh rong bien']
+    ],
+    categoryBonus: ['mon-canh'],
+  },
+  {
+    key: 'mon_chay_tofu_mushroom',
+    exactCompounds: ['dau hu kho nam', 'nam kho chay', 'dau non sot nam', 'dau hu chien sa ot', 'mon chay'],
+    requiredTokenGroups: [
+      ['dau hu', 'dau phu', 'nam'],
+      ['kho chay', 'sot nam', 'chay', 'kho nam']
+    ],
+    categoryBonus: ['mon-chay'],
+  },
 
-  // --- WESTERN SIDES & SEAFOOD ---
+  // Western aliases
   {
     key: 'western_sides',
     exactCompounds: [
@@ -1223,18 +1600,6 @@ const CLUSTER_RULES: ClusterRule[] = [
     ],
     categoryBonus: ['mon-rau'],
   },
-  {
-    key: 'western_seafood',
-    exactCompounds: [
-      'ca hoi ap chao', 'salmon steak', 'tom bo toi', 'ca tuyet ap chao', 'hai san sot bo toi'
-    ],
-    requiredTokenGroups: [
-      ['ca hoi ap chao', 'salmon', 'tom bo toi']
-    ],
-    categoryBonus: ['mon-man'],
-  },
-
-  // --- TROPICAL FRUITS & DESSERTS ---
   {
     key: 'trai_cay_trang_mieng',
     exactCompounds: [
@@ -1279,7 +1644,7 @@ function pickDeterministicUrl(poolKey: string, seedString: string): string {
 // 6. TIER 2 & TIER 3 FALLBACK CASCADE
 // ============================================================================
 
-function getCategoryFallbackKey(category?: string): string {
+export function getCategoryFallbackKey(category?: string): string {
   if (!category) return 'com_tam';
   const cleanCat = category.toLowerCase().trim();
 
@@ -1287,8 +1652,9 @@ function getCategoryFallbackKey(category?: string): string {
     case 'mon-canh':
       return 'canh_thanh_mat';
     case 'mon-xao':
-    case 'mon-chay':
       return 'rau_xao_thap_cam';
+    case 'mon-chay':
+      return 'mon_chay_tofu_mushroom';
     case 'mon-man':
       return 'thit_kho_tau';
     case 'an-nhanh':
@@ -1303,9 +1669,9 @@ function getCategoryFallbackKey(category?: string): string {
     case 'doc-la':
       return 'mam_tom_mam_nem';
     case 'an-sang':
-      return 'western_omelette_egg';
+      return 'trung_cuon_omelette';
     case 'mon-rau':
-      return 'western_salad';
+      return 'salad_tay_caesar';
     case 'mon-chinh':
     default:
       return 'com_tam';
@@ -1313,36 +1679,18 @@ function getCategoryFallbackKey(category?: string): string {
 }
 
 // ============================================================================
-// 7. PRIMARY PUBLIC RESOLVER FUNCTION
+// 7. SEMANTIC CLUSTER RESOLUTION & PUBLIC RESOLVER FUNCTION
 // ============================================================================
 
 /**
- * Resolves the most accurate, high-definition food photograph for a dish.
- * 
- * @param title The dish, drink, or snack title in Vietnamese or English.
- * @param category Optional category slug (e.g. 'mon-chinh', 'mon-canh', 'nuoc-uong').
- * @param existingUrl Optional existing image URL in the database.
- * @returns Verified Unsplash CDN URL with auto=format&fit=crop&w=600&q=80.
+ * Resolves a dish or recipe title to its best-matching culinary cluster key.
  */
-export function getDishImageUrl(
-  title: string,
-  category?: string,
-  existingUrl?: string
-): string {
-  // Step A: Inspect existingUrl for validity
-  if (existingUrl && typeof existingUrl === 'string' && existingUrl.startsWith('http')) {
-    const isOverused = OVERUSED_PLACEHOLDER_IDS.some(id => existingUrl.includes(id));
-    if (!isOverused) {
-      return existingUrl;
-    }
-  }
-
+export function resolveCulinaryCluster(title: string, category?: string): string {
   const rawTitle = title || '';
   const parsed = normalizeVietnameseDish(rawTitle);
   const normTitle = parsed.normalized;
   const tokens = parsed.tokens;
 
-  // Step B: Evaluate Precedence-Weighted Rules across all 55 Clusters
   let bestClusterKey: string | null = null;
   let bestScore = -Infinity;
 
@@ -1400,13 +1748,34 @@ export function getDishImageUrl(
     }
   }
 
-  // Step C: Fallback Decision
   // Threshold >= 40 indicates positive semantic confidence
   if (bestClusterKey && bestScore >= 40) {
-    return pickDeterministicUrl(bestClusterKey, rawTitle);
+    return bestClusterKey;
   }
 
-  // Tier 2 Fallback: Category Default Pool
-  const categoryFallbackKey = getCategoryFallbackKey(category);
-  return pickDeterministicUrl(categoryFallbackKey, rawTitle);
+  return getCategoryFallbackKey(category);
 }
+
+/**
+ * Resolves the most accurate, high-definition food photograph for a dish.
+ * 
+ * @param title The dish, drink, or snack title in Vietnamese or English.
+ * @param category Optional category slug (e.g. 'mon-chinh', 'mon-canh', 'nuoc-uong').
+ * @param existingUrl Optional existing image URL in the database.
+ * @returns Verified Unsplash CDN URL with auto=format&fit=crop&w=600&q=80.
+ */
+export function getDishImageUrl(
+  title: string,
+  category?: string,
+  existingUrl?: string
+): string {
+  // Step A: Inspect existingUrl for validity
+  if (existingUrl && !isDeadOrPlaceholderUrl(existingUrl)) {
+    return existingUrl;
+  }
+
+  const rawTitle = title || '';
+  const clusterKey = resolveCulinaryCluster(rawTitle, category);
+  return pickDeterministicUrl(clusterKey, rawTitle);
+}
+
