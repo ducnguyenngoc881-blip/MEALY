@@ -553,7 +553,7 @@ export const GroceryList: React.FC = () => {
   // Quick-Add custom grocery item state (for when household runs out of staples)
   const [isQuickAddOpen, setIsQuickAddOpen] = useState<boolean>(false);
   const [customItemName, setCustomItemName] = useState<string>('');
-  const [customItemAmount, setCustomItemAmount] = useState<number>(1);
+  const [customItemAmount, setCustomItemAmount] = useState<number | string>(1);
   const [customItemUnit, setCustomItemUnit] = useState<string>('chai');
   const [customItemCost, setCustomItemCost] = useState<number>(30000);
   const [customItemStore, setCustomItemStore] = useState<Exclude<StoreChannel, 'all'>>('winmart');
@@ -661,9 +661,13 @@ export const GroceryList: React.FC = () => {
       return filtered;
     });
 
+    const numericAmount = typeof customItemAmount === 'number' 
+      ? customItemAmount 
+      : (parseFloat(customItemAmount) || 1);
+
     addExtraGroceryItems([{
       name: cleanName,
-      amount: Math.max(0.1, customItemAmount || 1),
+      amount: Math.max(0.01, numericAmount),
       unit: customItemUnit.trim() || 'phần',
       category: 'khac',
       cost: Math.max(0, customItemCost || 0)
@@ -1569,11 +1573,11 @@ export const GroceryList: React.FC = () => {
                     <div className="col-span-1">
                       <input
                         type="number"
-                        min="0.1"
-                        step="0.5"
+                        min="0.01"
+                        step="any"
                         placeholder="Số lượng"
                         value={customItemAmount}
-                        onChange={(e) => setCustomItemAmount(parseFloat(e.target.value) || 1)}
+                        onChange={(e) => setCustomItemAmount(e.target.value)}
                         className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:border-amber-500 text-stone-900 dark:text-white text-center shadow-2xs"
                       />
                     </div>
