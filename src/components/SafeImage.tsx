@@ -20,15 +20,21 @@ export const SafeImage: React.FC<SafeImageProps> = ({
   ...rest
 }) => {
   const [hasError, setHasError] = useState(false);
+  const [retryWithResolver, setRetryWithResolver] = useState(false);
   const title = dishTitle || fallbackTitle || alt || 'Món Ăn';
 
   // Reset error state when image source or dish title changes
   useEffect(() => {
     setHasError(false);
+    setRetryWithResolver(false);
   }, [src, title]);
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (!hasError) {
+    if (!retryWithResolver) {
+      // First attempt: try semantic resolver without using the failing src
+      setRetryWithResolver(true);
+    } else if (!hasError) {
+      // Second failure: truly offline or network unavailable, fall back to offline cloche
       setHasError(true);
     }
     if (onError) {
@@ -37,8 +43,14 @@ export const SafeImage: React.FC<SafeImageProps> = ({
   };
 
   // Semantically optimize image to match dish title & category
-  const resolvedSrc = getDishImageUrl(title, category, src);
-  const currentSrc = hasError || !resolvedSrc ? getOfflineFoodPlaceholder(title, category) : resolvedSrc;
+  const initialResolved = getDishImageUrl(title, category, src);
+  const dynamicFallback = getDishImageUrl(title, category);
+
+  const currentSrc = hasError || (!initialResolved && !dynamicFallback)
+    ? getOfflineFoodPlaceholder(title, category)
+    : retryWithResolver
+    ? dynamicFallback
+    : initialResolved;
 
   return (
     <img

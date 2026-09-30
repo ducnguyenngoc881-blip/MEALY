@@ -19,10 +19,15 @@ export const OVERUSED_PLACEHOLDER_IDS = [
   'photo-1528735602780-2552fd46c7af', // overused grilled sandwich (58 times in db)
   'photo-1574484284002-952d92456975', // overused street bowl (52 times in db)
   'photo-1541832676-9b763b0239ab', // overused clay pot (45 times in db)
+  'photo-1534422298391-e4f8c172dddb', // overused dumplings (161 times in db, falsely on fruits)
+  'photo-1546069901-ba9599a7e63c', // overused salad greens (120 times in db, falsely on sweet soup)
+  'photo-1512058564366-18510be2db19', // overused xoi (119 times in db)
+  'photo-1528207776546-365bb710ee93', // overused pancakes (42 times in db, falsely on beefsteak)
   'photo-1576107232684-1279f3908594', // DEAD URL (HTTP 404 Not Found)
   'photo-176107232684-1279f3908594', // DEAD URL (HTTP 404 Not Found)
   'photo-1627054234057-a41764661031', // DEAD URL (HTTP 404 Not Found)
   'photo-1621996346565-e3d5d6281744', // DEAD URL (HTTP 404 Not Found in snackPool)
+  'photo-1621996346565-e3d5d6281292', // DEAD URL (HTTP 404 Not Found in westernDishes500 & mockMealSets)
   'photo-1573140247632-f8fd74997d5c', // HUMAN FACE - strictly blacklisted from all food displays
 ];
 
@@ -404,6 +409,68 @@ const CULINARY_55_POOLS: Record<string, string[]> = {
   bizarre_modern_fusion: [
     'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN & BREAKFAST: Omelette, Scrambled Eggs, Sunny Side Up Skillet
+  western_omelette_egg: [
+    'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN & BREAKFAST: Pancakes, French Toast, Avocado Toast, Overnight Oats
+  western_toast_pancake: [
+    'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN MAINS: Beefsteak (Tenderloin, Ribeye, Striploin, Peppercorn Sauce)
+  western_steak: [
+    'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN MAINS: Italian Pasta (Spaghetti Bolognese, Carbonara, Pesto)
+  western_pasta: [
+    'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN SOUPS: Pumpkin Soup, Cream of Mushroom, Chowder, Tomato Basil
+  western_soup: [
+    'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN SIDES & SALADS: Caesar Salad, Greek Salad, Coleslaw
+  western_salad: [
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN SIDES: Mashed Potatoes, Potato Wedges, Garlic Bread, Sautéed Asparagus
+  western_sides: [
+    'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // WESTERN SEAFOOD: Salmon Steak, Garlic Butter Shrimp, Pan-Seared Cod
+  western_seafood: [
+    'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
+  ],
+
+  // FRESH FRUITS: Watermelon, Mango, Guava, Papaya, Pomelo, Dragon Fruit
+  trai_cay_trang_mieng: [
+    'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80',
   ],
 };
 
@@ -1071,6 +1138,114 @@ const CLUSTER_RULES: ClusterRule[] = [
     ],
     categoryBonus: ['doc-la'],
   },
+
+  // --- WESTERN BREAKFASTS & EGGS ---
+  {
+    key: 'western_omelette_egg',
+    exactCompounds: [
+      'trung cuon omelette', 'omelette', 'trung cuon', 'scrambled eggs', 'trung khuay',
+      'trung op la', 'trung op la long dao', 'trung chao', 'skillet eggs'
+    ],
+    requiredTokenGroups: [
+      ['trung', 'omelette', 'scrambled']
+    ],
+    categoryBonus: ['an-sang'],
+  },
+  {
+    key: 'western_toast_pancake',
+    exactCompounds: [
+      'french toast', 'avocado toast', 'pancake', 'banh pancake', 'banh mi nuong kieu phap',
+      'overnight oats', 'yen mach sua chua', 'banh mi bo sap'
+    ],
+    requiredTokenGroups: [
+      ['pancake', 'toast', 'oats', 'yen mach']
+    ],
+    categoryBonus: ['an-sang', 'mon-rau'],
+  },
+
+  // --- WESTERN MAINS: STEAKS & PASTAS ---
+  {
+    key: 'western_steak',
+    exactCompounds: [
+      'bo bit tet', 'beefsteak', 'steak', 'than noi', 'than lung', 'ribeye', 'striploin',
+      'bo bit tet sot tieu', 'than bo my', 'bap bo uc sot'
+    ],
+    requiredTokenGroups: [
+      ['bit tet', 'steak', 'ribeye', 'striploin', 'beefsteak']
+    ],
+    categoryBonus: ['mon-man', 'mon-chinh'],
+  },
+  {
+    key: 'western_pasta',
+    exactCompounds: [
+      'spaghetti', 'mi y', 'bolognese', 'carbonara', 'pesto', 'lasagna', 'mac and cheese',
+      'pasta', 'mi y sot bo bam', 'mi y carbonara'
+    ],
+    requiredTokenGroups: [
+      ['mi y', 'spaghetti', 'pasta', 'bolognese', 'carbonara', 'lasagna', 'pesto']
+    ],
+    categoryBonus: ['mon-man', 'mon-chinh'],
+  },
+
+  // --- WESTERN SOUPS & SALADS ---
+  {
+    key: 'western_soup',
+    exactCompounds: [
+      'sup kem bi do', 'sup kem nam', 'sup ca chua hung que', 'clam chowder', 'sup ngheu',
+      'sup kem', 'sup tay', 'sup phap', 'sup minestrone'
+    ],
+    requiredTokenGroups: [
+      ['sup kem', 'chowder', 'sup ca chua hung que', 'sup bi do', 'sup nam']
+    ],
+    categoryBonus: ['mon-canh'],
+  },
+  {
+    key: 'western_salad',
+    exactCompounds: [
+      'salad caesar', 'caesar salad', 'salad coleslaw', 'salad tron dau giam', 'salad nga',
+      'salad bo trai cay', 'salad ca ngu', 'salad rau mam', 'coleslaw'
+    ],
+    requiredTokenGroups: [
+      ['salad', 'coleslaw', 'caesar']
+    ],
+    categoryBonus: ['mon-rau', 'mon-chay'],
+  },
+
+  // --- WESTERN SIDES & SEAFOOD ---
+  {
+    key: 'western_sides',
+    exactCompounds: [
+      'khoai tay nghien', 'khoai tay mui cau', 'banh mi bo toi', 'mang tay ap chao',
+      'dau que ap chao', 'khoai tay dut lo'
+    ],
+    requiredTokenGroups: [
+      ['khoai tay nghien', 'khoai tay mui cau', 'banh mi bo toi', 'mang tay ap chao']
+    ],
+    categoryBonus: ['mon-rau'],
+  },
+  {
+    key: 'western_seafood',
+    exactCompounds: [
+      'ca hoi ap chao', 'salmon steak', 'tom bo toi', 'ca tuyet ap chao', 'hai san sot bo toi'
+    ],
+    requiredTokenGroups: [
+      ['ca hoi ap chao', 'salmon', 'tom bo toi']
+    ],
+    categoryBonus: ['mon-man'],
+  },
+
+  // --- TROPICAL FRUITS & DESSERTS ---
+  {
+    key: 'trai_cay_trang_mieng',
+    exactCompounds: [
+      'dua hau', 'xoai cat', 'xoai chin', 'oi bo', 'thanh long', 'du du chin', 'buoi da xanh',
+      'trai cay dia', 'hoa qua trang mieng', 'dia dua hau'
+    ],
+    requiredTokenGroups: [
+      ['dua hau', 'xoai', 'oi bo', 'thanh long', 'du du', 'buoi', 'trai cay', 'hoa qua']
+    ],
+    categoryBonus: ['trang-mieng', 'an-vat'],
+  },
 ];
 
 // ============================================================================
@@ -1127,6 +1302,10 @@ function getCategoryFallbackKey(category?: string): string {
       return 'che_truyen_thong';
     case 'doc-la':
       return 'mam_tom_mam_nem';
+    case 'an-sang':
+      return 'western_omelette_egg';
+    case 'mon-rau':
+      return 'western_salad';
     case 'mon-chinh':
     default:
       return 'com_tam';

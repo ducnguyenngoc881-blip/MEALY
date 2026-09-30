@@ -176,7 +176,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 290,
     "estimatedCostVnd": 33000,
-    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -346,7 +346,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 146000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -453,7 +453,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 167000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -573,7 +573,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 420,
     "estimatedCostVnd": 67000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -775,7 +775,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 680,
     "estimatedCostVnd": 121000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -890,7 +890,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 165000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -997,7 +997,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 136000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -1098,7 +1098,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 257000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -1198,7 +1198,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 420,
     "estimatedCostVnd": 60000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -1299,7 +1299,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 77000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -1408,7 +1408,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 84000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -1516,7 +1516,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 460,
     "estimatedCostVnd": 71000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -1625,7 +1625,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 81000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -2265,7 +2265,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 70000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -2358,7 +2358,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 90000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -2465,7 +2465,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 137000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cua Đồng Tươi Xay Lọc Sẵn",
@@ -2566,7 +2566,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Ống Tươi Rửa Sạch",
@@ -2674,7 +2674,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 150000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -2781,7 +2781,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 125000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -2883,7 +2883,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 60,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Dưa Hấu Đỏ Ruột Ngọt Mát",
@@ -2947,7 +2947,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 70,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ổi Bo Giòn Ngọt Giàu Vitamin C",
@@ -3011,7 +3011,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 85,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thanh Long Ruột Đỏ Ngọt Dịu",
@@ -3075,7 +3075,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 100,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Xoài Cát Chu Chín Cây",
@@ -3138,7 +3138,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 150,
     "estimatedCostVnd": 21000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chè Hạt Sen Long Nhãn Đường Phèn",
@@ -3201,7 +3201,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 170,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chè Đậu Đen Nước Cốt Dừa",
@@ -3265,7 +3265,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 66000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -3365,7 +3365,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 470,
     "estimatedCostVnd": 83000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -3468,7 +3468,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 460,
     "estimatedCostVnd": 79000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -3570,7 +3570,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 77000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -3766,7 +3766,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 380,
     "estimatedCostVnd": 55000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -3854,7 +3854,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 81000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -3962,7 +3962,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 72000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi Sạch (Ba Rọi)",
@@ -6138,7 +6138,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 460,
     "estimatedCostVnd": 21000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -6300,7 +6300,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 59000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -6381,7 +6381,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 52000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -6462,7 +6462,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 440,
     "estimatedCostVnd": 20000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -6543,7 +6543,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 430,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -6624,7 +6624,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 390,
     "estimatedCostVnd": 34000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bắp ngọt vàng (ngô Mỹ)",
@@ -6705,7 +6705,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 470,
     "estimatedCostVnd": 62000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -6786,7 +6786,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 34000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -6867,7 +6867,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 430,
     "estimatedCostVnd": 21000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -7104,7 +7104,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 36000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -7185,7 +7185,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 470,
     "estimatedCostVnd": 73000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -7266,7 +7266,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 31000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -7428,7 +7428,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 420,
     "estimatedCostVnd": 34000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -7509,7 +7509,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 460,
     "estimatedCostVnd": 55000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo Nếp Cái Hoa Vàng",
@@ -7752,7 +7752,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 360,
     "estimatedCostVnd": 67000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -7834,7 +7834,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 350,
     "estimatedCostVnd": 83000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -7916,7 +7916,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 370,
     "estimatedCostVnd": 48000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8080,7 +8080,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 340,
     "estimatedCostVnd": 40000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8162,7 +8162,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 310,
     "estimatedCostVnd": 64000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8244,7 +8244,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 300,
     "estimatedCostVnd": 44000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8326,7 +8326,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 280,
     "estimatedCostVnd": 43000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8408,7 +8408,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 320,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Yến mạch Úc cán mỏng",
@@ -8490,7 +8490,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 360,
     "estimatedCostVnd": 58000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8572,7 +8572,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 330,
     "estimatedCostVnd": 82000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8654,7 +8654,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 320,
     "estimatedCostVnd": 44000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8736,7 +8736,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 350,
     "estimatedCostVnd": 124000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8818,7 +8818,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 340,
     "estimatedCostVnd": 22000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8900,7 +8900,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 320,
     "estimatedCostVnd": 38000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8982,7 +8982,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 370,
     "estimatedCostVnd": 62000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -9064,7 +9064,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 300,
     "estimatedCostVnd": 66000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Yến mạch Úc cán mỏng",
@@ -9146,7 +9146,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 340,
     "estimatedCostVnd": 31000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -9228,7 +9228,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 350,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -9310,7 +9310,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 360,
     "estimatedCostVnd": 68000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -11499,7 +11499,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 280,
     "estimatedCostVnd": 64000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -11581,7 +11581,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 330,
     "estimatedCostVnd": 43000,
-    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chuối tiêu chín",
@@ -11663,7 +11663,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 420,
     "estimatedCostVnd": 53000,
-    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bánh Mì Chuột Nóng Giòn",
@@ -12061,7 +12061,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 290,
     "estimatedCostVnd": 55000,
-    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bắp ngọt vàng (ngô Mỹ)",
@@ -12131,7 +12131,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 290,
     "estimatedCostVnd": 32000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -12207,7 +12207,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 300,
     "estimatedCostVnd": 44000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -12365,7 +12365,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 290,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -12523,7 +12523,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 280,
     "estimatedCostVnd": 41000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Yến mạch Úc cán mỏng",
@@ -12599,7 +12599,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 635,
     "estimatedCostVnd": 120000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -12698,7 +12698,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 645,
     "estimatedCostVnd": 141000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -12809,7 +12809,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 119000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -12914,7 +12914,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 146000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -13013,7 +13013,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 107000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -13118,7 +13118,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 89000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -13334,7 +13334,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 126000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -13451,7 +13451,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 104000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -13667,7 +13667,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 81000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -13772,7 +13772,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -13871,7 +13871,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 78000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -13976,7 +13976,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 140000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -14087,7 +14087,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 154000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Ống Tươi Rửa Sạch",
@@ -14192,7 +14192,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -14291,7 +14291,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 129000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -14402,7 +14402,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 90000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -14513,7 +14513,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 85000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -14612,7 +14612,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -14711,7 +14711,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 665,
     "estimatedCostVnd": 151000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -14810,7 +14810,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 595,
     "estimatedCostVnd": 114000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -14927,7 +14927,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 107000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -15026,7 +15026,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 159000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -15131,7 +15131,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 102000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -15335,7 +15335,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 585,
     "estimatedCostVnd": 121000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -15446,7 +15446,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 117000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -15662,7 +15662,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 77000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -15773,7 +15773,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 138000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -15878,7 +15878,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 91000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -15989,7 +15989,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -16094,7 +16094,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 188000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Ống Tươi Rửa Sạch",
@@ -16199,7 +16199,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 565,
     "estimatedCostVnd": 92000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -16298,7 +16298,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 114000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -16409,7 +16409,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 102000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -16520,7 +16520,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 80000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -16631,7 +16631,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 595,
     "estimatedCostVnd": 107000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -16730,7 +16730,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 670,
     "estimatedCostVnd": 165000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -16835,7 +16835,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 615,
     "estimatedCostVnd": 125000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -16946,7 +16946,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 565,
     "estimatedCostVnd": 102000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -17057,7 +17057,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 123000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -17162,7 +17162,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 680,
     "estimatedCostVnd": 154000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -17360,7 +17360,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 100000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -17483,7 +17483,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 655,
     "estimatedCostVnd": 123000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -17705,7 +17705,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 57000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -17810,7 +17810,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -17921,7 +17921,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 95000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -18032,7 +18032,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 565,
     "estimatedCostVnd": 124000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -18137,7 +18137,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 159000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Ống Tươi Rửa Sạch",
@@ -18242,7 +18242,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 128000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -18347,7 +18347,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 605,
     "estimatedCostVnd": 119000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -18452,7 +18452,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -18557,7 +18557,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 93000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -18662,7 +18662,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 102000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -18767,7 +18767,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 138000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -18872,7 +18872,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 138000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -18983,7 +18983,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 585,
     "estimatedCostVnd": 113000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -19088,7 +19088,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 118000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -19205,7 +19205,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 116000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -19403,7 +19403,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -19508,7 +19508,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 91000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -19736,7 +19736,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 70000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -19841,7 +19841,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 114000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -19940,7 +19940,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 90000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -20057,7 +20057,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 127000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -20156,7 +20156,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 172000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Ống Tươi Rửa Sạch",
@@ -20267,7 +20267,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 97000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -20366,7 +20366,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 153000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -20471,7 +20471,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 575,
     "estimatedCostVnd": 92000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -20570,7 +20570,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 78000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -20669,7 +20669,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 114000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -20774,7 +20774,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -20879,7 +20879,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 575,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -20978,7 +20978,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 126000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -21083,7 +21083,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 645,
     "estimatedCostVnd": 129000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -21194,7 +21194,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 665,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -21404,7 +21404,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 163000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Trứng gà tươi",
@@ -21515,7 +21515,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 104000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -21731,7 +21731,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 76000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -21842,7 +21842,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 127000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -21947,7 +21947,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 70000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -22052,7 +22052,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 123000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -22163,7 +22163,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 175000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Ống Tươi Rửa Sạch",
@@ -22274,7 +22274,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 565,
     "estimatedCostVnd": 110000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -22379,7 +22379,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 595,
     "estimatedCostVnd": 123000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -22484,7 +22484,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 127000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -22595,7 +22595,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 85000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -22694,7 +22694,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 132000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -22811,7 +22811,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 655,
     "estimatedCostVnd": 127000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -22934,7 +22934,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 142000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -23045,7 +23045,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 136000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -23156,7 +23156,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -23261,7 +23261,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -23372,7 +23372,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 166000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -23717,7 +23717,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 605,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -23828,7 +23828,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 99000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Hến Thịt Đãi Sẵn Tươi",
@@ -23939,7 +23939,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 117000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -24050,7 +24050,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 148000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -24260,7 +24260,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 615,
     "estimatedCostVnd": 103000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -24371,7 +24371,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 615,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -24488,7 +24488,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 110000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -24605,7 +24605,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 135000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -24728,7 +24728,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 645,
     "estimatedCostVnd": 156000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -24833,7 +24833,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 114000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -24944,7 +24944,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 96000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -25055,7 +25055,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 186000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -25172,7 +25172,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 144000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -25523,7 +25523,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 585,
     "estimatedCostVnd": 149000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -25634,7 +25634,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 107000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Hến Thịt Đãi Sẵn Tươi",
@@ -25745,7 +25745,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 131000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -25856,7 +25856,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 126000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -26072,7 +26072,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 118000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -26183,7 +26183,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 595,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -26300,7 +26300,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 575,
     "estimatedCostVnd": 118000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -26411,7 +26411,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 675,
     "estimatedCostVnd": 149000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -26528,7 +26528,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -26639,7 +26639,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 122000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -26744,7 +26744,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 110000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -26855,7 +26855,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 605,
     "estimatedCostVnd": 164000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -26966,7 +26966,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 151000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -27317,7 +27317,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 157000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -27428,7 +27428,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 121000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Hến Thịt Đãi Sẵn Tươi",
@@ -27533,7 +27533,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -27650,7 +27650,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -27866,7 +27866,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 96000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -27977,7 +27977,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 119000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -28094,7 +28094,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 132000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -28211,7 +28211,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 655,
     "estimatedCostVnd": 127000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -28334,7 +28334,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 142000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -28445,7 +28445,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 136000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -28556,7 +28556,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -28661,7 +28661,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -28772,7 +28772,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 166000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -29117,7 +29117,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 605,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -29228,7 +29228,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 99000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Hến Thịt Đãi Sẵn Tươi",
@@ -29339,7 +29339,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 117000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -29450,7 +29450,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 148000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -29660,7 +29660,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 615,
     "estimatedCostVnd": 103000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -29771,7 +29771,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 615,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -29888,7 +29888,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 110000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Rô Đồng Làm Sạch",
@@ -30005,7 +30005,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 135000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -30128,7 +30128,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 645,
     "estimatedCostVnd": 156000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -30233,7 +30233,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 114000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -30344,7 +30344,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 96000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Nục Hoa Tươi Biển",
@@ -30455,7 +30455,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 186000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -30572,7 +30572,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 144000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -30923,7 +30923,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 585,
     "estimatedCostVnd": 149000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -31034,7 +31034,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 107000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Hến Thịt Đãi Sẵn Tươi",
@@ -31145,7 +31145,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 131000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -31256,7 +31256,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 126000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -31472,7 +31472,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 118000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -31583,7 +31583,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 595,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Sụn Heo Giòn Sần Sật",
@@ -31700,7 +31700,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 685,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -31817,7 +31817,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 590,
     "estimatedCostVnd": 128000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Lóc Đồng Tươi (Cá Quả)",
@@ -31928,7 +31928,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 645,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -32156,7 +32156,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 174000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -32267,7 +32267,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 119000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -32378,7 +32378,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 575,
     "estimatedCostVnd": 115000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -32489,7 +32489,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 695,
     "estimatedCostVnd": 150000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà Ta Tươi",
@@ -32717,7 +32717,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -32816,7 +32816,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 158000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -32933,7 +32933,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 690,
     "estimatedCostVnd": 151000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -33056,7 +33056,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 148000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bạch Tuộc Mini Tươi Sống",
@@ -33167,7 +33167,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 605,
     "estimatedCostVnd": 127000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Trứng Nauy Tươi Đầy Bụng",
@@ -33272,7 +33272,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 635,
     "estimatedCostVnd": 181000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -33389,7 +33389,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 177000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -33512,7 +33512,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 103000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -33623,7 +33623,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 595,
     "estimatedCostVnd": 130000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -33728,7 +33728,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 680,
     "estimatedCostVnd": 141000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -33839,7 +33839,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 132000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Lóc Đồng Tươi (Cá Quả)",
@@ -33956,7 +33956,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 655,
     "estimatedCostVnd": 143000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -34178,7 +34178,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 145000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -34283,7 +34283,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 665,
     "estimatedCostVnd": 146000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -34400,7 +34400,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 152000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -34511,7 +34511,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 680,
     "estimatedCostVnd": 124000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà Ta Tươi",
@@ -34733,7 +34733,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 635,
     "estimatedCostVnd": 135000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -34850,7 +34850,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 169000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -34967,7 +34967,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 680,
     "estimatedCostVnd": 113000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -35072,7 +35072,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 152000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bạch Tuộc Mini Tươi Sống",
@@ -35189,7 +35189,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 139000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Trứng Nauy Tươi Đầy Bụng",
@@ -35312,7 +35312,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 155000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -35423,7 +35423,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 162000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -35528,7 +35528,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 675,
     "estimatedCostVnd": 136000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -35639,7 +35639,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 145000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -35756,7 +35756,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 670,
     "estimatedCostVnd": 120000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -35873,7 +35873,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 585,
     "estimatedCostVnd": 137000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Lóc Đồng Tươi (Cá Quả)",
@@ -35984,7 +35984,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 150000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -36212,7 +36212,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 635,
     "estimatedCostVnd": 153000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -36323,7 +36323,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 116000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -36434,7 +36434,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 565,
     "estimatedCostVnd": 123000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -36539,7 +36539,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 715,
     "estimatedCostVnd": 150000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà Ta Tươi",
@@ -36767,7 +36767,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -36872,7 +36872,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 144000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -36989,7 +36989,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 685,
     "estimatedCostVnd": 160000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -37112,7 +37112,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 163000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bạch Tuộc Mini Tươi Sống",
@@ -37229,7 +37229,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 101000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Trứng Nauy Tươi Đầy Bụng",
@@ -37334,7 +37334,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 160000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -37451,7 +37451,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 174000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -37574,7 +37574,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -37679,7 +37679,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 615,
     "estimatedCostVnd": 130000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -37784,7 +37784,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 725,
     "estimatedCostVnd": 153000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -37895,7 +37895,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 152000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Lóc Đồng Tươi (Cá Quả)",
@@ -38018,7 +38018,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 129000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -38240,7 +38240,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 160000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -38345,7 +38345,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 680,
     "estimatedCostVnd": 120000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -38462,7 +38462,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 575,
     "estimatedCostVnd": 131000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -38573,7 +38573,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 120000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà Ta Tươi",
@@ -38789,7 +38789,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 655,
     "estimatedCostVnd": 135000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -38906,7 +38906,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 182000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -39023,7 +39023,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 670,
     "estimatedCostVnd": 133000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -39134,7 +39134,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 138000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bạch Tuộc Mini Tươi Sống",
@@ -39251,7 +39251,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 625,
     "estimatedCostVnd": 148000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Trứng Nauy Tươi Đầy Bụng",
@@ -39368,7 +39368,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 575,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -39479,7 +39479,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 136000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -39584,7 +39584,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 115000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -39695,7 +39695,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 142000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -39812,7 +39812,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 660,
     "estimatedCostVnd": 127000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -39923,7 +39923,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 605,
     "estimatedCostVnd": 137000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Lóc Đồng Tươi (Cá Quả)",
@@ -40028,7 +40028,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 695,
     "estimatedCostVnd": 162000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -40256,7 +40256,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 139000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -40367,7 +40367,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 605,
     "estimatedCostVnd": 125000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -40472,7 +40472,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 138000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -40583,7 +40583,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 730,
     "estimatedCostVnd": 124000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà Ta Tươi",
@@ -40805,7 +40805,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 600,
     "estimatedCostVnd": 105000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -40910,7 +40910,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 152000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -41021,7 +41021,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 705,
     "estimatedCostVnd": 160000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -41144,7 +41144,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 175000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bạch Tuộc Mini Tươi Sống",
@@ -41261,7 +41261,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 122000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Trứng Nauy Tươi Đầy Bụng",
@@ -41372,7 +41372,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 595,
     "estimatedCostVnd": 146000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -41483,7 +41483,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 575,
     "estimatedCostVnd": 183000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -41600,7 +41600,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 615,
     "estimatedCostVnd": 126000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -41711,7 +41711,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 104000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -41810,7 +41810,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 700,
     "estimatedCostVnd": 132000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -41921,7 +41921,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 149000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Lóc Đồng Tươi (Cá Quả)",
@@ -42044,7 +42044,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 136000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -42260,7 +42260,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 675,
     "estimatedCostVnd": 172000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -42371,7 +42371,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 670,
     "estimatedCostVnd": 140000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -42494,7 +42494,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 117000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Kèo Tươi Sống",
@@ -42605,7 +42605,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 655,
     "estimatedCostVnd": 129000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cánh Gà Ta Tươi",
@@ -42827,7 +42827,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 670,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Basa Tươi Cắt Khúc",
@@ -42938,7 +42938,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 160000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -43055,7 +43055,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 130000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -43166,7 +43166,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 146000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bạch Tuộc Mini Tươi Sống",
@@ -43277,7 +43277,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 645,
     "estimatedCostVnd": 148000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Trứng Nauy Tươi Đầy Bụng",
@@ -43394,7 +43394,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 183000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -43511,7 +43511,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 156000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -43622,7 +43622,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 635,
     "estimatedCostVnd": 101000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Chân Giò Heo Rút Xương",
@@ -43733,7 +43733,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 635,
     "estimatedCostVnd": 151000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Chim Trắng Tươi",
@@ -43850,7 +43850,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 665,
     "estimatedCostVnd": 143000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -43967,7 +43967,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Lóc Đồng Tươi (Cá Quả)",
@@ -44072,7 +44072,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 93000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -44190,7 +44190,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 263000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -44408,7 +44408,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -44526,7 +44526,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 450,
     "estimatedCostVnd": 142000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -44632,7 +44632,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 159000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -44850,7 +44850,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -44962,7 +44962,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 94000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -45068,7 +45068,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 152000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -45186,7 +45186,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 455,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -45292,7 +45292,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 122000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -45398,7 +45398,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 94000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -45516,7 +45516,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 251000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -45740,7 +45740,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 183000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -45858,7 +45858,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 141000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -45970,7 +45970,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -46194,7 +46194,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 495,
     "estimatedCostVnd": 96000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -46306,7 +46306,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 95000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -46406,7 +46406,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 140000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -46518,7 +46518,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 450,
     "estimatedCostVnd": 150000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -46624,7 +46624,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -46736,7 +46736,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 93000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -46854,7 +46854,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 263000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -47072,7 +47072,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -47190,7 +47190,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 450,
     "estimatedCostVnd": 142000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -47296,7 +47296,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 159000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -47514,7 +47514,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -47626,7 +47626,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 94000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -47732,7 +47732,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 152000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -47850,7 +47850,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 455,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -47956,7 +47956,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 122000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -48062,7 +48062,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 94000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -48180,7 +48180,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 251000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -48404,7 +48404,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 183000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -48522,7 +48522,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 141000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -48634,7 +48634,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -48858,7 +48858,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 495,
     "estimatedCostVnd": 96000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -48970,7 +48970,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 95000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -49070,7 +49070,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 140000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -49182,7 +49182,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 450,
     "estimatedCostVnd": 150000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -49288,7 +49288,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -49400,7 +49400,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 93000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -49518,7 +49518,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 263000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -49736,7 +49736,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -49854,7 +49854,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 450,
     "estimatedCostVnd": 142000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -49960,7 +49960,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 159000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -50178,7 +50178,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -50290,7 +50290,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 94000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -50396,7 +50396,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 152000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -50514,7 +50514,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 455,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -50620,7 +50620,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 122000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -50726,7 +50726,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 94000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -50844,7 +50844,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 251000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -51068,7 +51068,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 183000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Bò Thăn Mềm",
@@ -51186,7 +51186,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 141000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",
@@ -51298,7 +51298,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 171000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Thu Cắt Lát Khay Tươi",
@@ -51522,7 +51522,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 495,
     "estimatedCostVnd": 96000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -51634,7 +51634,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 95000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Diêu Hồng Tươi Sống",
@@ -51734,7 +51734,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 140000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Chả Cá Thác Lác Nạo Tươi",
@@ -51846,7 +51846,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 450,
     "estimatedCostVnd": 150000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mực Lá Câu / Mực Nang Tươi",
@@ -51952,7 +51952,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 545,
     "estimatedCostVnd": 134000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Nạc Dăm Heo (Xay / Thái)",
@@ -52064,7 +52064,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 535,
     "estimatedCostVnd": 93000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ức Gà Phi Lê Tươi",
@@ -52182,7 +52182,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 263000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -52400,7 +52400,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 85000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -52518,7 +52518,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ chiên (đậu phụ)",
@@ -52754,7 +52754,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cà Tím Dài Đà Lạt",
@@ -52878,7 +52878,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 89000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mướp Đắng (Khổ Qua Rừng / Trái)",
@@ -52996,7 +52996,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 87000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -53114,7 +53114,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 91000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm Bào Ngư Trắng Sạch",
@@ -53226,7 +53226,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 470,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm kim châm tươi",
@@ -53344,7 +53344,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 475,
     "estimatedCostVnd": 101000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -53456,7 +53456,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 73000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Củ Sen Tươi Giòn Ngọt",
@@ -53568,7 +53568,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 97000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -53686,7 +53686,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ chiên (đậu phụ)",
@@ -53916,7 +53916,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 121000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cà Tím Dài Đà Lạt",
@@ -54040,7 +54040,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 495,
     "estimatedCostVnd": 89000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mướp Đắng (Khổ Qua Rừng / Trái)",
@@ -54158,7 +54158,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 75000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -54276,7 +54276,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 103000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm Bào Ngư Trắng Sạch",
@@ -54394,7 +54394,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 465,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm kim châm tươi",
@@ -54512,7 +54512,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 89000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -54624,7 +54624,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 85000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Củ Sen Tươi Giòn Ngọt",
@@ -54736,7 +54736,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 97000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -54848,7 +54848,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 565,
     "estimatedCostVnd": 99000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ chiên (đậu phụ)",
@@ -55078,7 +55078,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 121000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cà Tím Dài Đà Lạt",
@@ -55196,7 +55196,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 77000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mướp Đắng (Khổ Qua Rừng / Trái)",
@@ -55314,7 +55314,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 87000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -55432,7 +55432,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 103000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm Bào Ngư Trắng Sạch",
@@ -55550,7 +55550,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 76000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm kim châm tươi",
@@ -55668,7 +55668,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 480,
     "estimatedCostVnd": 101000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -55786,7 +55786,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 495,
     "estimatedCostVnd": 85000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Củ Sen Tươi Giòn Ngọt",
@@ -55898,7 +55898,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 540,
     "estimatedCostVnd": 85000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -56016,7 +56016,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 555,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ chiên (đậu phụ)",
@@ -56252,7 +56252,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 520,
     "estimatedCostVnd": 109000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cà Tím Dài Đà Lạt",
@@ -56376,7 +56376,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 89000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mướp Đắng (Khổ Qua Rừng / Trái)",
@@ -56494,7 +56494,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 87000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -56612,7 +56612,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 91000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm Bào Ngư Trắng Sạch",
@@ -56724,7 +56724,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 470,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm kim châm tươi",
@@ -56842,7 +56842,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 475,
     "estimatedCostVnd": 101000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -56954,7 +56954,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 73000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Củ Sen Tươi Giòn Ngọt",
@@ -57066,7 +57066,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 97000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -57184,7 +57184,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 550,
     "estimatedCostVnd": 111000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ chiên (đậu phụ)",
@@ -57414,7 +57414,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 121000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cà Tím Dài Đà Lạt",
@@ -57538,7 +57538,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 495,
     "estimatedCostVnd": 89000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mướp Đắng (Khổ Qua Rừng / Trái)",
@@ -57656,7 +57656,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 530,
     "estimatedCostVnd": 75000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -57774,7 +57774,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 515,
     "estimatedCostVnd": 103000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm Bào Ngư Trắng Sạch",
@@ -57892,7 +57892,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 465,
     "estimatedCostVnd": 88000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Nấm kim châm tươi",
@@ -58010,7 +58010,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 490,
     "estimatedCostVnd": 89000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",
@@ -58122,7 +58122,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 500,
     "estimatedCostVnd": 85000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Củ Sen Tươi Giòn Ngọt",
@@ -58234,7 +58234,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 525,
     "estimatedCostVnd": 97000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ trắng (đậu phụ)",
@@ -58346,7 +58346,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 565,
     "estimatedCostVnd": 99000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ chiên (đậu phụ)",
@@ -58576,7 +58576,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 505,
     "estimatedCostVnd": 121000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cà Tím Dài Đà Lạt",
@@ -58694,7 +58694,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 510,
     "estimatedCostVnd": 77000,
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Mướp Đắng (Khổ Qua Rừng / Trái)",
@@ -59338,7 +59338,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 160,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bột rau câu dẻo Jelly",
@@ -59478,7 +59478,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 95,
     "estimatedCostVnd": 48000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bưởi da xanh ruột hồng",
@@ -59542,7 +59542,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 120,
     "estimatedCostVnd": 26000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Xoài Cát Chu Chín Cây",
@@ -61024,7 +61024,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 160,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bột rau câu dẻo Jelly",
@@ -61164,7 +61164,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 95,
     "estimatedCostVnd": 48000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bưởi da xanh ruột hồng",
@@ -61228,7 +61228,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 120,
     "estimatedCostVnd": 26000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Xoài Cát Chu Chín Cây",
@@ -62710,7 +62710,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 160,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bột rau câu dẻo Jelly",
@@ -62850,7 +62850,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 95,
     "estimatedCostVnd": 48000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bưởi da xanh ruột hồng",
@@ -62914,7 +62914,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 120,
     "estimatedCostVnd": 26000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Xoài Cát Chu Chín Cây",
@@ -64396,7 +64396,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 160,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Bột rau câu dẻo Jelly",
@@ -64776,7 +64776,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 670,
     "estimatedCostVnd": 194000,
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Sườn Non Heo Chặt Sẵn",
@@ -65638,7 +65638,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 157000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Ba Chỉ Heo Tươi",
@@ -65948,7 +65948,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 159000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đùi Tỏi Gà Ta Tươi",
@@ -66040,7 +66040,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 392000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cá Hồi Tươi Phi Lê",
@@ -66214,7 +66214,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 570,
     "estimatedCostVnd": 180000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Thăn Cốt Lết Heo Tươi Sạch",
@@ -66401,7 +66401,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 630,
     "estimatedCostVnd": 113000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đùi Tỏi Gà Ta Tươi",
@@ -66656,7 +66656,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 560,
     "estimatedCostVnd": 116000,
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Xúc xích Đức xông khói",
@@ -66923,7 +66923,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 640,
     "estimatedCostVnd": 140000,
-    "imageUrl": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thịt Thăn Cốt Lết Heo Tươi Sạch",
@@ -67975,7 +67975,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 190000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thăn Bò Tươi Làm Bít Tết / Steak",
@@ -68577,7 +68577,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 580,
     "estimatedCostVnd": 190000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Thăn Bò Tươi Làm Bít Tết / Steak",
@@ -69953,7 +69953,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 680,
     "estimatedCostVnd": 376000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Ba Chỉ Bò Mỹ Cuộn Lẩu / Xào",
@@ -70211,7 +70211,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 650,
     "estimatedCostVnd": 366000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Cua Đồng Tươi Xay Lọc Sẵn",
@@ -70331,7 +70331,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 620,
     "estimatedCostVnd": 153000,
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đùi Tỏi Gà Ta Tươi",
@@ -70433,7 +70433,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 610,
     "estimatedCostVnd": 402000,
-    "imageUrl": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Tôm Thẻ Sống Tươi Rói",

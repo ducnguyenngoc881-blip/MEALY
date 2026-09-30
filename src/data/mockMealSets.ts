@@ -260,7 +260,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Phô mai bột Parmesan & Lá oregano khô',
     totalCostVnd: 135000,
     totalCalories: 710,
-    imageUrl: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281292?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80',
     tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Bolognese', 'Ý Gia Đình', 'Mâm Cơm 3 Món']
   },
   {
@@ -555,7 +555,7 @@ export const mockMealSets: VietnameseMealSet[] = [
     condimentNote: 'Phô mai Parmesan & Lá mùi tây Oregano',
     totalCostVnd: 140000,
     totalCalories: 730,
-    imageUrl: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281292?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
     tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Bolognese', 'Mâm Cơm 3 Món']
   },
   {

@@ -659,6 +659,67 @@ Upgrade `RecipeDetailModal.tsx` and recipe views:
 - [ ] Full test runner (`cmd /c npm test`) passes 100% of test suites with expanded recipe instruction assertions.
 - [ ] Dev server running and responsive with HTTP 200 on `http://localhost:5173/`.
 
+## 2026-09-30T02:16:00Z
+
+Audit, verify, and overhaul every single dish image in the MealWise database (`d:\New folder\Remotion`) to guarantee that every recipe displays high-definition, authentic, appetizing food photography perfectly matching the dish's actual name and ingredients in real life, eliminating all HTTP 404 dead links, mismatched photos, and offline cloche placeholders.
+
+Working directory: `d:\New folder\Remotion`
+Integrity mode: development
+
+## Requirements
+
+### R1. Comprehensive Audit & Elimination of Dead 404 URLs & Offline Fallbacks
+Inspect every recipe image URL across `mockRecipes.ts`, `recipesDatabase.ts`, and `westernDishes500.ts`:
+- Detect and eliminate all dead/broken URLs (such as `photo-1621996346565-e3d5d6281292` on "Trứng Cuộn Omelette Xúc Xích Đức & Bánh Mì Bơ" that triggered HTTP 404).
+- Ensure 0 recipes display the offline cloche placeholder graphic in normal online browsing.
+- Verify every URL responds with valid HTTP 200 image content from reliable, high-resolution CDNs (Unsplash curated food collections).
+
+### R2. Strict Semantic Matching (Dish Name & Real-World Appearance Alignment)
+Verify every dish image genuinely depicts the dish described by its title and ingredients:
+- **Breakfast & Egg Dishes**: Omelettes must show genuine rolled/folded omelettes with sausage/bread, fried eggs must show sunny-side up eggs, xôi must show sticky rice, phở must show noodle soup with beef/chicken broth.
+- **Traditional Vietnamese Mains**: Thịt kho tàu must show caramelized braised pork belly with eggs in clay pot/bowl, Canh chua must show tamarind pineapple fish soup with herbs, Cá kho tộ must show caramelized fish cutlets, Gà luộc must show poached yellow chicken with lime leaves.
+- **Western Entrées & Soups**: Beefsteak must show seared beef steak with sauces, Pastas must show authentic Italian pasta (Bolognese, Carbonara, Pesto), Pumpkin soup must show golden cream soup, Caesar salad must show romaine with parmesan and croutons.
+- **No Mismatches**: A soup must never display a grilled meat plate; a vegetarian tofu dish must never display pork ribs; a dessert/sweet soup must never display savory stir-fry.
+
+### R3. Food Photography Purity & Quality Standards
+Enforce project visual invariants from `GEMINI.md`:
+- Every image must depict appetizing, high-quality food, fresh ingredients, or refreshing drinks.
+- Zero images depicting human faces, selfies, portraits, animals, or non-food subjects.
+- Eliminate overused generic placeholders from `OVERUSED_PLACEHOLDER_IDS`.
+
+### R4. Upgrade Semantic Dish Image Resolver (`dishImageResolver.ts`)
+Upgrade `src/utils/dishImageResolver.ts` and `SafeImage.tsx`:
+- Expand culinary clusters to 75+ granular categories covering every Western dish (omelettes, steaks, pastas, burritos, burgers, chowders, toasts) and traditional Vietnamese dish.
+- Ensure that if an existing URL is invalid or blacklisted, `getDishImageUrl` seamlessly supplies the exact cluster-matched authentic photo.
+- Add pre-flight validation against known 404 IDs so broken URLs never reach the browser `<img>` tag.
+
+### R5. Automated Regression Test Suite & Verification Matrix
+Create/expand automated test suites (`tests/unit/dishImageResolver.test.ts` and `tests/unit/recipeAuthenticityAndIntegrity.test.ts`):
+- Assert 0 dead or blacklisted placeholder URLs across all 1,245 recipes.
+- Programmatically verify semantic cluster mapping across Vietnamese and Western titles (asserting that "Trứng Cuộn Omelette", "Bò Bít Tết Sốt Tiêu", "Canh Chua Cá Hồi", etc., map to their respective high-quality food photo pools).
+- Ensure 100% test pass rate across all unit, boundary, and scenario suites (1,194+ tests).
+- Compile TypeScript with 0 errors (`cmd /c npx tsc --noEmit`).
+- Rebuild production bundle, sync showcase, and verify dev server on `http://localhost:5173/`.
+
+## Acceptance Criteria
+
+### URL Health & Visual Quality
+- [ ] 0 HTTP 404 / broken image URLs across all 1,245 recipes in the database.
+- [ ] "Trứng Cuộn Omelette Xúc Xích Đức & Bánh Mì Bơ" (western-bfast-433) displays a genuine, delicious omelette with sausage and buttered toast, not a cloche placeholder.
+- [ ] 0 recipes display the fallback cloche graphic when connected to the internet.
+- [ ] 100% compliance with Food Photography Purity: 0 human faces or non-food images.
+
+### Semantic Alignment
+- [ ] 100% of dish images accurately represent the dish name, meal category, and core ingredients.
+- [ ] Western dishes feature authentic Western food photography; Vietnamese dishes feature authentic Vietnamese food photography.
+
+### Verification & Quality
+- [ ] `cmd /c npx tsc --noEmit` exits with 0 errors.
+- [ ] Full automated test suite passes 100% of test suites with zero failures.
+- [ ] Production build compiles cleanly via Vite and showcase sync succeeds.
+- [ ] Dev server live and verified responding with HTTP 200 on `http://localhost:5173/`.
+
+
 
 
 
