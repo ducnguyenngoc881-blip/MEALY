@@ -60,6 +60,7 @@ import {
   formatDuration,
   TimeframeFilter
 } from '../utils/screenTimeService';
+import { getUserDatabaseStats } from '../services/userDatabase';
 
 export const AdminDashboard: React.FC = () => {
   const { 
@@ -87,6 +88,7 @@ export const AdminDashboard: React.FC = () => {
   // Real data state
   const [sessions, setSessions] = useState<ActiveSession[]>([]);
   const [registeredAccounts, setRegisteredAccounts] = useState<RegisteredUserRecord[]>([]);
+  const [dbStats, setDbStats] = useState(() => getUserDatabaseStats());
   const [events, setEvents] = useState<TelemetryEvent[]>([]);
   const [hoveredPoint, setHoveredPoint] = useState<{ hour: string; count: number; note: string } | null>(null);
   const [simulationStatus, setSimulationStatus] = useState<string | null>(null);
@@ -96,6 +98,7 @@ export const AdminDashboard: React.FC = () => {
     const active = getActiveSessions();
     setSessions(active);
     setRegisteredAccounts(getRegisteredAccounts());
+    setDbStats(getUserDatabaseStats());
     setEvents(getRecentTelemetryEvents(40));
   }, []);
 
@@ -1420,6 +1423,57 @@ export const AdminDashboard: React.FC = () => {
                   </span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Dual-Track User Database Metrics (Registered vs Guest Users) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Thành Viên Đã Đăng Ký
+              </span>
+              <span className="text-xl font-black text-purple-400 mt-1 block font-mono">
+                {dbStats.totalRegistered} Tài Khoản
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">
+                Dữ liệu lưu riêng biệt
+              </span>
+            </div>
+
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Khách Vãng Lai (Dùng Thử)
+              </span>
+              <span className="text-xl font-black text-amber-400 mt-1 block font-mono">
+                {dbStats.totalGuests} Phiên Dùng Thử
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">
+                Tự động lưu trên máy khách
+              </span>
+            </div>
+
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Khách Có Thực Đơn Tuần
+              </span>
+              <span className="text-xl font-black text-emerald-400 mt-1 block font-mono">
+                {dbStats.guestsWithCustomPlan} Phiên Đã Tạo
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">
+                Sẵn sàng giữ lại khi đăng ký
+              </span>
+            </div>
+
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Tỷ Lệ Thành Viên
+              </span>
+              <span className="text-xl font-black text-blue-400 mt-1 block font-mono">
+                {dbStats.conversionRatePercent}%
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">
+                Khách → Đã Đăng Ký
+              </span>
             </div>
           </div>
 

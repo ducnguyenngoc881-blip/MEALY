@@ -216,7 +216,8 @@ export const AccountView: React.FC = () => {
     user,
     isRegistered,
     logoutUser,
-    openAuthModal
+    openAuthModal,
+    guestSession
   } = useMealWise();
   const [isAdSequenceOpen, setIsAdSequenceOpen] = useState(false);
   const isLight = theme === 'light';
@@ -260,12 +261,14 @@ export const AccountView: React.FC = () => {
                 </span>
               ) : (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-400 border border-stone-200 dark:border-stone-700 flex items-center gap-1">
-                  <Lock className="w-3 h-3 text-stone-500" /> Chế Độ Khách
+                  <Lock className="w-3 h-3 text-stone-500" /> Chế Độ Dùng Thử (Khách)
                 </span>
               )}
             </div>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
-              {user?.email ? `Tài khoản: ${user.email}` : 'Tính năng Đi chợ chung & Tiệc đang bị khóa. Đăng ký để mở khóa!'}
+              {user?.email 
+                ? `Tài khoản: ${user.email} • ID: ${user.id || 'usr_registered'}` 
+                : `Phiên dùng thử đang được lưu tự động (ID: ${guestSession?.guestId.slice(0, 14) || 'guest'}...). Đăng ký sẽ giữ nguyên toàn bộ thực đơn tuần!`}
             </p>
           </div>
         </div>

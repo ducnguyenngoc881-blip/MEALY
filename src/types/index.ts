@@ -276,13 +276,46 @@ export const isMealSet = (item: any): item is VietnameseMealSet => {
 };
 
 export interface RegisteredUser {
+  id?: string;
   name: string;
   email: string;
   isRegistered: boolean;
   registeredAt?: string;
+  lastLoginAt?: string;
   role?: 'user' | 'admin';
   onboardingCompleted?: boolean;
 }
+
+export interface GuestUserSession {
+  guestId: string;
+  createdAt: string;
+  lastActiveAt: string;
+  planModified: boolean;
+  fridgeItemCount: number;
+  deviceFingerprint?: string;
+}
+
+export type WeeklyPlan = DailyMealPlan[];
+
+export interface ExtraGroceryItem {
+  name: string;
+  amount: number;
+  unit: string;
+  category: 'thit-ca' | 'rau-cu' | 'gia-vi' | 'do-kho' | 'khac';
+  cost: number;
+}
+
+export interface UserAppDataPartition {
+  weeklyPlan?: WeeklyPlan;
+  pantryItems?: PantryItem[];
+  favoriteRecipeIds?: string[];
+  onboardingData?: OnboardingData;
+  customRecipes?: Recipe[];
+  groceryCheckedMap?: Record<string, boolean>;
+  extraGroceryItems?: ExtraGroceryItem[];
+  updatedAt: number;
+}
+
 
 
 

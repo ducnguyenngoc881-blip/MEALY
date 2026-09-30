@@ -3766,7 +3766,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 380,
     "estimatedCostVnd": 55000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -7752,7 +7752,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 360,
     "estimatedCostVnd": 67000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8080,7 +8080,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 340,
     "estimatedCostVnd": 40000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -8572,7 +8572,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 330,
     "estimatedCostVnd": 82000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -9228,7 +9228,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 350,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Gạo ST25 Ông Cua Thơm Dẻo",
@@ -12365,7 +12365,7 @@ export const recipesDatabase: Recipe[] = [
     "servings": 4,
     "calories": 290,
     "estimatedCostVnd": 45000,
-    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80",
     "ingredients": [
       {
         "name": "Đậu hũ non Nhật Bản",

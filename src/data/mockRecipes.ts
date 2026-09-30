@@ -945,7 +945,7 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     tags: ['Tận Dụng Cơm Nguội', 'Cơm Cháy', 'Ăn Vặt', 'Dễ Làm']
   },
   {
-    id: 'goi-ga-xe-phay-bap-cai',
+    id: 'leftover-goi-ga-xe-phay-bap-cai',
     title: 'Gỏi Gà Xé Phay Bắp Cải Hành Tây',
     description: 'Giải pháp hoàn hảo tận dụng thịt gà luộc thừa bữa trước: Gà xé sợi dai ngọt quyện cùng bắp cải giòn rụm, hành tây chua thanh và nước mắm tỏi ớt chua cay đậm đà.',
     category: 'mon-rau',

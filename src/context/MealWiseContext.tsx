@@ -19,8 +19,19 @@ import {
   CollabCheckState,
   CollabShopper,
   isMealSet,
-  RegisteredUser
+  RegisteredUser,
+  GuestUserSession
 } from '../types';
+import { 
+  getOrCreateGuestSession,
+  loadGuestPartition,
+  saveGuestPartition,
+  hasCustomGuestData,
+  registerUserInDatabase,
+  loadUserPartition,
+  saveUserPartition,
+  updateGuestSession
+} from '../services/userDatabase';
 import { 
   generateCollabRoomId, 
   createOrSyncCollabRoom, 
@@ -62,6 +73,7 @@ export interface ExtraGroceryItem {
 }
 
 interface MealWiseContextType {
+  guestSession: GuestUserSession | null;
   recipes: Recipe[];
   mealSets: VietnameseMealSet[];
   weeklyPlan: DailyMealPlan[];
@@ -349,6 +361,11 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   });
   const isRegistered = Boolean(user && user.isRegistered);
+  const [guestSession, setGuestSession] = useState<GuestUserSession | null>(() => getOrCreateGuestSession());
+
+  useEffect(() => {
+    setGuestSession(getOrCreateGuestSession());
+  }, []);
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('register');
@@ -392,73 +409,6 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   });
 
-  const loginUser = useCallback((profile: { name: string; email: string }, isNewRegistration?: boolean) => {
-    const rawEmail = profile.email.trim();
-    const emailLower = rawEmail.toLowerCase();
-    const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
-    const defaultDisplayName = isAdmin ? 'MealWise Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên MealWise');
-    const displayName = profile.name.trim() || defaultDisplayName;
-
-    // Check if this specific email has ever completed onboarding
-    const userOnboardingKey = `mealwise_onboarding_completed_${emailLower}`;
-    const userHasCompletedOnboarding = typeof window !== 'undefined' && localStorage.getItem(userOnboardingKey) === 'true';
-
-    // If it's an explicit registration, or the user account has never completed onboarding, they need onboarding
-    const needsOnboarding = !isAdmin && (Boolean(isNewRegistration) || !userHasCompletedOnboarding);
-
-    const newProfile: RegisteredUser = {
-      name: displayName,
-      email: rawEmail,
-      isRegistered: true,
-      role: isAdmin ? 'admin' : 'user',
-      registeredAt: new Date().toLocaleDateString('vi-VN'),
-      onboardingCompleted: !needsOnboarding
-    };
-    try {
-      localStorage.setItem('mealwise_registered_user', JSON.stringify(newProfile));
-    } catch {}
-    recordUserInRegistry({ name: displayName, email: rawEmail, role: isAdmin ? 'admin' : 'user' });
-    if (!isAdmin) {
-      recordTelemetryEvent('auth', isNewRegistration ? 'Đăng ký thành viên mới thành công' : 'Đăng nhập thành viên thành công', displayName);
-    }
-    setUser(newProfile);
-    setIsAuthModalOpen(false);
-
-    if (isAdmin) {
-      setActiveTab('admin');
-      setToastMessage('🔐 Xin chào Quản Trị Viên! Đã kích hoạt Trung Tâm Dữ Liệu SteamDB Telemetry.');
-      return;
-    }
-
-    // If user needs onboarding, reset stale flags and show modal immediately!
-    if (needsOnboarding) {
-      setOnboardingData(prev => ({ ...prev, completed: false }));
-      try {
-        const savedOnboarding = localStorage.getItem('mealwise_onboarding');
-        const parsed = savedOnboarding ? JSON.parse(savedOnboarding) : INITIAL_ONBOARDING;
-        parsed.completed = false;
-        localStorage.setItem('mealwise_onboarding', JSON.stringify(parsed));
-      } catch {}
-      setShowOnboarding(true);
-    }
-
-    setToastMessage(isNewRegistration ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
-  }, []);
-
-  const logoutUser = useCallback(() => {
-    const actorName = user?.name || 'Người dùng';
-    try {
-      localStorage.removeItem('mealwise_registered_user');
-      localStorage.removeItem('mealwise_collab_room');
-      localStorage.removeItem('mealwise_collab_checked');
-    } catch {}
-    recordTelemetryEvent('auth', 'Đăng xuất tài khoản', actorName);
-    setUser(null);
-    setCollabRoom(null);
-    setCollabCheckedMap({});
-    setActiveTab('meal-sets');
-    setToastMessage('Đã đăng xuất tài khoản. Thiết bị chuyển về chế độ khách.');
-  }, [user]);
 
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [selectedMealSet, setSelectedMealSet] = useState<VietnameseMealSet | null>(null);
@@ -574,7 +524,12 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     localStorage.setItem('mealwise_pantry_items_v2', JSON.stringify(pantryItems));
-  }, [pantryItems]);
+    if (user?.id) {
+      saveUserPartition(user.id, { pantryItems });
+    } else {
+      saveGuestPartition({ pantryItems });
+    }
+  }, [pantryItems, user?.id]);
 
   const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -914,10 +869,137 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     try {
       localStorage.setItem('mealwise_weekly_plan', JSON.stringify(weeklyPlan));
+      if (user?.id) {
+        saveUserPartition(user.id, { weeklyPlan: weeklyPlan as any });
+      } else {
+        saveGuestPartition({ weeklyPlan: weeklyPlan as any });
+      }
     } catch (e) {
       console.error('Failed to persist mealwise_weekly_plan to localStorage', e);
     }
-  }, [weeklyPlan]);
+  }, [weeklyPlan, user?.id]);
+
+  const loginUser = useCallback((profile: { name: string; email: string }, isNewRegistration?: boolean) => {
+    const rawEmail = profile.email.trim();
+    const emailLower = rawEmail.toLowerCase();
+    const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
+    const defaultDisplayName = isAdmin ? 'MealWise Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên MealWise');
+    const displayName = profile.name.trim() || defaultDisplayName;
+
+    // Check if this specific email has ever completed onboarding
+    const userOnboardingKey = `mealwise_onboarding_completed_${emailLower}`;
+    const userHasCompletedOnboarding = typeof window !== 'undefined' && localStorage.getItem(userOnboardingKey) === 'true';
+
+    // If it's an explicit registration, or the user account has never completed onboarding, they need onboarding
+    const needsOnboarding = !isAdmin && (Boolean(isNewRegistration) || !userHasCompletedOnboarding);
+
+    // Save current guest state if this is a new registration to migrate
+    const guestHadData = hasCustomGuestData();
+
+    // Register or retrieve in user database
+    const { user: dbUser, migrated } = registerUserInDatabase(
+      { name: displayName, email: rawEmail, role: isAdmin ? 'admin' : 'user' },
+      { 
+        migrateGuestData: Boolean(isNewRegistration && guestHadData),
+        guestData: {
+          weeklyPlan: weeklyPlan as any,
+          pantryItems,
+          updatedAt: Date.now()
+        },
+        onboardingCompleted: !needsOnboarding 
+      }
+    );
+
+    const newProfile: RegisteredUser = {
+      id: dbUser.id,
+      name: displayName,
+      email: rawEmail,
+      isRegistered: true,
+      role: isAdmin ? 'admin' : 'user',
+      registeredAt: dbUser.registeredAt || new Date().toLocaleDateString('vi-VN'),
+      lastLoginAt: dbUser.lastLoginAt || new Date().toLocaleDateString('vi-VN'),
+      onboardingCompleted: !needsOnboarding
+    };
+
+    try {
+      localStorage.setItem('mealwise_registered_user', JSON.stringify(newProfile));
+    } catch {}
+
+    if (!isAdmin) {
+      recordTelemetryEvent('auth', isNewRegistration ? 'Đăng ký thành viên mới thành công' : 'Đăng nhập thành viên thành công', displayName);
+    }
+    setUser(newProfile);
+    setIsAuthModalOpen(false);
+
+    // If returning user has existing partition, restore their saved weekly plan and fridge!
+    if (!isNewRegistration && dbUser.id) {
+      const userPartition = loadUserPartition(dbUser.id);
+      if (userPartition?.weeklyPlan && Array.isArray(userPartition.weeklyPlan) && userPartition.weeklyPlan.length > 0) {
+        setWeeklyPlan(userPartition.weeklyPlan);
+      }
+      if (userPartition?.pantryItems && Array.isArray(userPartition.pantryItems) && userPartition.pantryItems.length > 0) {
+        setPantryItems(userPartition.pantryItems);
+      }
+    }
+
+    if (isAdmin) {
+      setActiveTab('admin');
+      setToastMessage('🔐 Xin chào Quản Trị Viên! Đã kích hoạt Trung Tâm Dữ Liệu SteamDB Telemetry.');
+      return;
+    }
+
+    // If user needs onboarding, reset stale flags and show modal immediately!
+    if (needsOnboarding && !migrated) {
+      setOnboardingData(prev => ({ ...prev, completed: false }));
+      try {
+        const savedOnboarding = localStorage.getItem('mealwise_onboarding');
+        const parsed = savedOnboarding ? JSON.parse(savedOnboarding) : INITIAL_ONBOARDING;
+        parsed.completed = false;
+        localStorage.setItem('mealwise_onboarding', JSON.stringify(parsed));
+      } catch {}
+      setShowOnboarding(true);
+    }
+
+    if (migrated) {
+      setToastMessage(`🎉 Chào mừng ${displayName}! Đã giữ lại thực đơn tuần và tủ lạnh từ phiên dùng thử!`);
+    } else {
+      setToastMessage(isNewRegistration ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
+    }
+  }, [weeklyPlan, pantryItems]);
+
+  const logoutUser = useCallback(() => {
+    const actorName = user?.name || 'Người dùng';
+    if (user?.id) {
+      saveUserPartition(user.id, {
+        weeklyPlan: weeklyPlan as any,
+        pantryItems
+      });
+    }
+
+    try {
+      localStorage.removeItem('mealwise_registered_user');
+      localStorage.removeItem('mealwise_collab_room');
+      localStorage.removeItem('mealwise_collab_checked');
+    } catch {}
+
+    recordTelemetryEvent('auth', 'Đăng xuất tài khoản', actorName);
+    setUser(null);
+    setCollabRoom(null);
+    setCollabCheckedMap({});
+
+    // Restore guest session and guest partition if available
+    const guestData = loadGuestPartition();
+    if (guestData?.weeklyPlan && Array.isArray(guestData.weeklyPlan) && guestData.weeklyPlan.length > 0) {
+      setWeeklyPlan(guestData.weeklyPlan);
+    }
+    if (guestData?.pantryItems && Array.isArray(guestData.pantryItems) && guestData.pantryItems.length > 0) {
+      setPantryItems(guestData.pantryItems);
+    }
+
+    setActiveTab('meal-sets');
+    setToastMessage('Đã đăng xuất tài khoản. Dữ liệu thành viên được lưu an toàn; chuyển về chế độ khách.');
+  }, [user, weeklyPlan, pantryItems]);
+
 
   // Generation counter for stochastic variation tracking
   const [generationCount, setGenerationCount] = useState<number>(0);
@@ -2271,6 +2353,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const contextValue: MealWiseContextType = {
+        guestSession,
         recipes,
         mealSets,
         weeklyPlan,
@@ -2408,6 +2491,7 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
   }));
 
   return {
+    guestSession: null,
     recipes: mockRecipes,
     mealSets: mockMealSets,
     weeklyPlan: defaultWeeklyPlan,

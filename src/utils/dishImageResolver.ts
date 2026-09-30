@@ -714,6 +714,9 @@ const PRE_LEXICAL_MASKS: [RegExp, string][] = [
   [/cà pháo|ca phao/gi, '__VEG_CA_PHAO__'],
   [/cà ri|ca ri|curry/gi, '__DISH_CA_RI__'],
   [/cà phê|ca phe|coffee|càphe/gi, '__DRINK_CA_PHE__'],
+  [/phô mai|pho mai/gi, '__INGR_PHO_MAI__'],
+  [/bơ lạt|bo lat|bơ thơm|bo thom/gi, '__INGR_BUTTER__'],
+  [/sốt kem|sot kem|kem chua|kem nấm|kem nam|kem tỏi|kem toi|kem béo|kem beo/gi, '__SAUCE_CREAM__'],
   [/nam vang/gi, '__GEO_NAM_VANG__'],
   [/bánh mì chảo|banh mi chao/gi, '__DISH_BANH_MI_CHAO__'],
   [/cơm gà xối mỡ|com ga xoi mo/gi, '__DISH_COM_GA_XOI_MO__'],
@@ -748,12 +751,14 @@ export function normalizeVietnameseDish(rawTitle: string): NormalizedDish {
   let hasCurryMask = false;
 
   for (const [pattern, mask] of PRE_LEXICAL_MASKS) {
+    pattern.lastIndex = 0;
     if (pattern.test(text)) {
       if (mask === '__VEG_CA_CHUA__') hasTomatoMask = true;
       if (mask === '__VEG_CA_TIM__') hasEggplantMask = true;
       if (mask === '__DRINK_CA_PHE__') hasCoffeeMask = true;
       if (mask === '__GEO_NAM_VANG__') hasNamVangMask = true;
       if (mask === '__DISH_CA_RI__') hasCurryMask = true;
+      pattern.lastIndex = 0;
       text = text.replace(pattern, mask);
     }
   }
@@ -811,15 +816,16 @@ const CLUSTER_RULES: ClusterRule[] = [
     key: 'fried_chicken',
     exactCompounds: [
       '__dish_com_ga_xoi_mo__', 'ga xoi mo', 'ga ran', 'ga chien', 'canh ga chien',
-      'dui ga chien', 'chicken nuggets', 'ga pop', 'ga sot cay', 'ga sot me', 'ga sot bo', 'ga gion'
+      'dui ga chien', 'chicken nuggets', 'ga pop', 'ga sot cay', 'ga sot me', 'ga sot bo', 'ga gion',
+      'canh ga ap chao', 'thit ga kieu au', 'ga ap chao'
     ],
     requiredTokenGroups: [
       ['ga', 'chicken'],
-      ['ran', 'xoi mo', 'chien', 'nuggets', 'pop', 'gion', 'crispy']
+      ['ran', 'xoi mo', 'chien', 'nuggets', 'pop', 'gion', 'crispy', 'ap chao']
     ],
     modifiers: ['ran', 'chien', 'xoi mo', 'gion', 'canh ga', 'dui ga', 'sot cay'],
     disqualifiers: ['burger', 'hamburger', 'sandwich', 'banh mi', 'luoc', 'hap', 'chao ga', 'pho ga'],
-    categoryBonus: ['an-nhanh', 'mon-chinh'],
+    categoryBonus: ['an-nhanh', 'mon-chinh', 'mon-man'],
   },
   {
     key: 'pizza',
@@ -840,7 +846,7 @@ const CLUSTER_RULES: ClusterRule[] = [
     key: 'hotdogs_sausage',
     exactCompounds: ['hotdog', 'xuc xich', 'lap xuong', 'xuc xich duc', 'xuc xich nuong'],
     requiredTokenGroups: [['hotdog', 'xuc xich', 'lap xuong']],
-    disqualifiers: ['omelette', 'trung cuon'],
+    disqualifiers: ['omelette', 'trung cuon', 'banh mi', '__dish_banh_mi_chao__', 'chao', 'my y', 'pasta'],
     categoryBonus: ['an-vat'],
   },
   {
@@ -896,7 +902,10 @@ const CLUSTER_RULES: ClusterRule[] = [
       ['pho'],
       ['bo', 'tai', 'chin', 'gau', 'nam', 'bap', 'sot vang']
     ],
-    disqualifiers: ['pho ga', 'xao', 'cuon'],
+    disqualifiers: [
+      'pho ga', 'xao', 'cuon', '__ingr_pho_mai__', 'pho mai', 'salad',
+      'banh mi', 'pizza', 'pasta', 'burger', 'sandwich', 'caprese', 'anchor', 'parmesan'
+    ],
     categoryBonus: ['mon-chinh'],
   },
   {
@@ -1035,7 +1044,11 @@ const CLUSTER_RULES: ClusterRule[] = [
       ['ca', 'fish'],
       ['kho', 'chien', 'nuong', 'to', 'kho to', 'basa', 'loc', 'nuc', 'hoi', 'dieu hong']
     ],
-    disqualifiers: ['__veg_ca_chua__', '__veg_ca_tim__', '__veg_ca_phao__', '__drink_ca_phe__', 'vien', 'canh chua', 'canh', 'cha ca'],
+    disqualifiers: [
+      '__veg_ca_chua__', '__veg_ca_tim__', '__veg_ca_phao__', '__drink_ca_phe__',
+      'vien', 'canh chua', 'canh', 'cha ca', 'fish and chips', 'fish & chips',
+      'kieu au', 'nauy', 'tartar', 'seafood'
+    ],
     categoryBonus: ['mon-man'],
   },
   {
@@ -1152,11 +1165,14 @@ const CLUSTER_RULES: ClusterRule[] = [
   },
   {
     key: 'rau_cu_luoc_kho_quet',
-    exactCompounds: ['rau cu luoc kho quet', 'kho quet', 'rau tap tang', 'cu qua luoc', 'bap cai luoc', 'cai ngot luoc', 'ca phao', 'rau cu luoc'],
-    requiredTokenGroups: [
-      ['kho quet', 'rau cu luoc', 'rau luoc', 'bap cai luoc']
+    exactCompounds: [
+      'rau cu luoc kho quet', 'kho quet', 'rau tap tang', 'cu qua luoc',
+      'bap cai luoc', 'cai ngot luoc', 'ca phao', '__veg_ca_phao__', 'rau cu luoc'
     ],
-    categoryBonus: ['mon-xao', 'mon-chay'],
+    requiredTokenGroups: [
+      ['kho quet', 'rau cu luoc', 'rau luoc', 'bap cai luoc', 'ca phao', '__veg_ca_phao__']
+    ],
+    categoryBonus: ['mon-xao', 'mon-chay', 'mon-rau'],
   },
   {
     key: 'rau_xao_thap_cam',
@@ -1258,6 +1274,11 @@ const CLUSTER_RULES: ClusterRule[] = [
     requiredTokenGroups: [
       ['kem', 'sua chua', 'gelato', 'ice cream']
     ],
+    disqualifiers: [
+      '__sauce_cream__', 'sot kem', 'kem chua', 'kem nam', 'kem toi', 'kem beo',
+      'thit', 'bo', 'heo', 'ga', 'ca', 'muc', 'ngheu', 'so', 'stroganoff',
+      'pasta', 'my y', 'sup', 'soup'
+    ],
     categoryBonus: ['trang-mieng', 'an-vat'],
   },
 
@@ -1331,10 +1352,11 @@ const CLUSTER_RULES: ClusterRule[] = [
     key: 'steak_beef',
     exactCompounds: [
       'bo bit tet', 'beefsteak', 'steak', 'than noi', 'than lung', 'ribeye', 'striploin',
-      'bo bit tet sot tieu', 'than bo my', 'bap bo uc sot', 'bit tet'
+      'bo bit tet sot tieu', 'than bo my', 'bap bo uc sot', 'bit tet',
+      'beef stroganoff', 'stroganoff', 'bap bo kieu nga', 'de suon bo kieu nga'
     ],
     requiredTokenGroups: [
-      ['bit tet', 'steak', 'ribeye', 'striploin', 'beefsteak', 'than noi', 'than lung']
+      ['bit tet', 'steak', 'ribeye', 'striploin', 'beefsteak', 'than noi', 'than lung', 'stroganoff', 'beef stroganoff']
     ],
     categoryBonus: ['mon-man', 'mon-chinh'],
   },
@@ -1372,10 +1394,11 @@ const CLUSTER_RULES: ClusterRule[] = [
     key: 'salad_tay_caesar',
     exactCompounds: [
       'salad caesar', 'caesar salad', 'greek salad', 'cobb salad', 'salad luon ga',
-      'salad ga nuong', 'coleslaw', 'caesar'
+      'salad ga nuong', 'coleslaw', 'caesar', 'caprese', 'salad caprese',
+      'salad bo', 'salad trai cay', 'salad qua bo', 'salad rau cu'
     ],
     requiredTokenGroups: [
-      ['salad caesar', 'caesar salad', 'caesar', 'coleslaw', 'greek salad']
+      ['salad caesar', 'caesar salad', 'caesar', 'coleslaw', 'greek salad', 'caprese', 'salad']
     ],
     categoryBonus: ['mon-rau', 'mon-chay'],
   },
@@ -1402,23 +1425,26 @@ const CLUSTER_RULES: ClusterRule[] = [
     key: 'seafood_western',
     exactCompounds: [
       'ca hoi ap chao', 'salmon steak', 'tom bo toi', 'ca tuyet ap chao',
-      'hai san sot bo toi', 'pan seared salmon', 'ca hoi sot cam', 'ca hoi sot bo chanh'
+      'hai san sot bo toi', 'pan seared salmon', 'ca hoi sot cam', 'ca hoi sot bo chanh',
+      'fish and chips', 'fish & chips', 'ca hoi nauy', 'ca hoi nuong', 'ca vuoc', 'ca tuyet',
+      'hai san kieu au', 'seafood kieu au'
     ],
     requiredTokenGroups: [
-      ['ca hoi ap chao', 'salmon steak', 'salmon', 'ca tuyet', 'tom bo toi']
+      ['ca hoi', 'salmon', 'ca tuyet', 'ca vuoc', 'fish and chips', 'fish & chips', 'tom bo toi', 'hai san', 'muc', 'ngheu']
     ],
-    categoryBonus: ['mon-man'],
+    categoryBonus: ['mon-man', 'mon-chinh'],
   },
   {
     key: 'bbq_ribs_roast',
     exactCompounds: [
       'suon nuong bbq', 'bbq ribs', 'roast beef', 'bo dut lo', 'ga quay thao moc',
-      'suon tang nuong', 'suon bbq'
+      'suon tang nuong', 'suon bbq', 'schnitzel', 'pulled pork', 'suon cay heo',
+      'thit cot let', 'thit heo xe', 'viennese schnitzel', 'thit heo kieu au', 'chien xu kieu ao'
     ],
     requiredTokenGroups: [
-      ['bbq ribs', 'roast beef', 'suon nuong bbq', 'suon bbq', 'suon tang']
+      ['bbq ribs', 'roast beef', 'suon nuong bbq', 'suon bbq', 'suon tang', 'schnitzel', 'pulled pork', 'suon cay heo', 'thit cot let', 'thit heo xe', 'viennese schnitzel', 'thit heo kieu au']
     ],
-    categoryBonus: ['mon-man'],
+    categoryBonus: ['mon-man', 'mon-chinh'],
   },
   {
     key: 'pancake_waffle',
