@@ -130,7 +130,8 @@ import {
   formatDisplayAmountAndUnit,
   PRODUCE_UNIT_WEIGHTS,
   NormalizedIngredientInfo,
-  isCommonPantryStaple
+  isCommonPantryStaple,
+  isGroceryItemMatch
 } from '../utils/ingredientNormalizer';
 
 export {
@@ -422,6 +423,7 @@ export interface ProcessedGroceryItem {
   dishCount?: number;
   dishNames?: string[];
   isCustom?: boolean;
+  extraOriginalNames?: string[];
 }
 
 // Pure Helper: Generate formatted Zalo shopping export text
@@ -580,16 +582,28 @@ export const GroceryList: React.FC = () => {
     }
   });
 
+  const isItemDeleted = (name: string, extraNames?: string[]): boolean => {
+    if (deletedItemNames.length === 0) return false;
+    const candidates = [name, ...(extraNames || [])].filter(Boolean);
+    return deletedItemNames.some(del =>
+      candidates.some(cand => isGroceryItemMatch(del, cand))
+    );
+  };
+
   const handleDeleteItem = (item: ProcessedGroceryItem) => {
+    const namesToDelete = Array.from(new Set([
+      item.name,
+      item.id,
+      ...(item.extraOriginalNames || []),
+      canonicalizeIngredientName(item.name)
+    ].filter(Boolean)));
+
     // 1. Remove from extraGroceryItems in context
-    removeExtraGroceryItem(item.name);
+    removeExtraGroceryItem(namesToDelete);
 
     // 2. Add to deletedItemNames to guarantee it disappears from allList even if recipes referenced it!
     setDeletedItemNames(prev => {
-      const canonical = canonicalizeIngredientName(item.name).toLowerCase().trim();
-      const raw = (item.name || '').toLowerCase().trim();
-      const idStr = (item.id || '').toLowerCase().trim();
-      const updated = Array.from(new Set([...prev, canonical, raw, idStr]));
+      const updated = Array.from(new Set([...prev, ...namesToDelete]));
       try {
         localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(updated));
       } catch (e) {
@@ -598,18 +612,18 @@ export const GroceryList: React.FC = () => {
       return updated;
     });
 
+    // 3. Clear checked or buyer states for this item if any
+    if (groceryCheckedItems[item.id] || groceryCheckedItems[item.name]) {
+      toggleGroceryItemChecked(item.id);
+    }
+
     showToast(`🗑️ Đã xóa "${item.name}" khỏi danh sách đi chợ!`);
   };
 
   const handleAddPreset = (preset: typeof DEPLETED_PANTRY_PRESETS[0]) => {
     // Un-delete if previously deleted
     setDeletedItemNames(prev => {
-      const pNameLower = preset.name.toLowerCase().trim();
-      const pCanon = canonicalizeIngredientName(preset.name).toLowerCase().trim();
-      const filtered = prev.filter(d => {
-        const dLower = d.toLowerCase().trim();
-        return dLower !== pNameLower && dLower !== pCanon;
-      });
+      const filtered = prev.filter(d => !isGroceryItemMatch(d, preset.name) && !isGroceryItemMatch(d, canonicalizeIngredientName(preset.name)));
       try {
         localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(filtered));
       } catch (e) {
@@ -638,12 +652,7 @@ export const GroceryList: React.FC = () => {
 
     // Un-delete if previously deleted
     setDeletedItemNames(prev => {
-      const cLower = cleanName.toLowerCase().trim();
-      const cCanon = canonicalizeIngredientName(cleanName).toLowerCase().trim();
-      const filtered = prev.filter(d => {
-        const dLower = d.toLowerCase().trim();
-        return dLower !== cLower && dLower !== cCanon;
-      });
+      const filtered = prev.filter(d => !isGroceryItemMatch(d, cleanName) && !isGroceryItemMatch(d, canonicalizeIngredientName(cleanName)));
       try {
         localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(filtered));
       } catch (e) {
@@ -703,6 +712,7 @@ export const GroceryList: React.FC = () => {
     dishNames: string[];
     dishCount: number;
     isCustom?: boolean;
+    extraOriginalNames?: string[];
   }
 
   const itemsMap: Record<string, AccumulatorEntry> = {};
@@ -753,12 +763,19 @@ export const GroceryList: React.FC = () => {
           storeChannel: channel,
           dishNames: [recipeTitle],
           dishCount: 1,
-          isCustom: isExtra
+          isCustom: isExtra,
+          extraOriginalNames: isExtra ? [rawName] : []
         };
       } else {
         itemsMap[targetKey].baseAmount += norm.baseAmount;
         itemsMap[targetKey].cost += ing.cost;
-        if (isExtra) itemsMap[targetKey].isCustom = true;
+        if (isExtra) {
+          itemsMap[targetKey].isCustom = true;
+          if (!itemsMap[targetKey].extraOriginalNames) itemsMap[targetKey].extraOriginalNames = [];
+          if (!itemsMap[targetKey].extraOriginalNames!.includes(rawName)) {
+            itemsMap[targetKey].extraOriginalNames!.push(rawName);
+          }
+        }
         if (!itemsMap[targetKey].dishNames.includes(recipeTitle)) {
           itemsMap[targetKey].dishNames.push(recipeTitle);
         }
@@ -813,16 +830,7 @@ export const GroceryList: React.FC = () => {
 
   // Convert accumulated map into clean processed grocery item list with 1,000 VND rounding
   const allList: ProcessedGroceryItem[] = Object.values(itemsMap)
-    .filter(entry => {
-      if (deletedItemNames.length === 0) return true;
-      const cleanLower = entry.cleanName.toLowerCase().trim();
-      const canonicalLower = canonicalizeIngredientName(cleanLower).toLowerCase().trim();
-      const isDeleted = deletedItemNames.some(del => {
-        const d = del.toLowerCase().trim();
-        return d === cleanLower || d === canonicalLower || (d.length >= 3 && cleanLower.includes(d));
-      });
-      return !isDeleted;
-    })
+    .filter(entry => !isItemDeleted(entry.cleanName, entry.extraOriginalNames))
     .map(entry => {
     const formatted = formatDisplayAmountAndUnit(entry.baseAmount, entry.family, entry.baseUnit);
     const isFresh = entry.category === 'thit-ca' || entry.category === 'rau-cu';
@@ -841,7 +849,8 @@ export const GroceryList: React.FC = () => {
       aisleCategory: aisleCat,
       dishCount: entry.dishCount,
       dishNames: entry.dishNames,
-      isCustom: entry.isCustom
+      isCustom: entry.isCustom,
+      extraOriginalNames: entry.extraOriginalNames
     };
   });
 
@@ -879,11 +888,13 @@ export const GroceryList: React.FC = () => {
   // Effective list: if connected to a collaborative room, use room items (preserves items for User B)
   const isCollabActive = Boolean(collabRoom?.roomId);
   const effectiveList: ProcessedGroceryItem[] = (isCollabActive && collabRoom?.items && collabRoom.items.length > 0)
-    ? collabRoom.items.map(it => ({
-        ...it,
-        storeChannel: (it.storeChannel as any) || 'cho-dan-sinh',
-        aisleCategory: (it as any).aisleCategory || getGroceryAisleCategory(it.name, it.category)
-      }))
+    ? collabRoom.items
+        .filter(it => !isItemDeleted(it.name, (it as any).extraOriginalNames))
+        .map(it => ({
+          ...it,
+          storeChannel: (it.storeChannel as any) || 'cho-dan-sinh',
+          aisleCategory: (it as any).aisleCategory || getGroceryAisleCategory(it.name, it.category)
+        }))
     : allList;
 
   // Helper to determine check status, user attribution, and multi-buyer count
@@ -1141,9 +1152,10 @@ export const GroceryList: React.FC = () => {
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 handleDeleteItem(item);
               }}
-              className="w-7 h-7 rounded-xl flex items-center justify-center text-stone-400 hover:text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+              className="w-7 h-7 rounded-xl flex items-center justify-center text-stone-400 hover:text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950/40 transition-colors cursor-pointer active:scale-90"
               title="Xóa món này khỏi giỏ đi chợ"
             >
               <Trash2 className="w-3.5 h-3.5" />

@@ -535,3 +535,47 @@ export function formatDisplayAmountAndUnit(
     displayStr: `${rounded} ${baseUnit}`
   };
 }
+
+/**
+ * Universal fuzzy matching for grocery item deletion, checkoff, and deduplication.
+ * Accurately matches raw names, canonical names, diacritic-stripped forms, and prefix variants
+ * while preserving distinct entities (e.g. "Nước mắm" !== "Nước tương").
+ */
+export function isGroceryItemMatch(target: string, candidate: string): boolean {
+  if (!target || !candidate) return false;
+  const tRaw = target.toLowerCase().trim();
+  const cRaw = candidate.toLowerCase().trim();
+  if (tRaw === cRaw) return true;
+
+  const tClean = canonicalizeIngredientName(tRaw).toLowerCase().trim();
+  const cClean = canonicalizeIngredientName(cRaw).toLowerCase().trim();
+  if (tClean === cClean || tClean === cRaw || tRaw === cClean) return true;
+
+  // Strip prefixes like [Tiệc]
+  const tStripped = tRaw.replace(/^\[tiệc\]\s*/i, '').trim();
+  const cStripped = cRaw.replace(/^\[tiệc\]\s*/i, '').trim();
+  if (tStripped === cStripped) return true;
+  if (canonicalizeIngredientName(tStripped).toLowerCase().trim() === cClean) return true;
+  if (tClean === canonicalizeIngredientName(cStripped).toLowerCase().trim()) return true;
+
+  // Substring checks (support 2+ characters for Vietnamese words like Cá, Bò, Gà, Mì, Ớt, Sả)
+  if (tClean.length >= 2 && cClean.includes(tClean)) return true;
+  if (cClean.length >= 2 && tClean.includes(cClean)) return true;
+  if (tRaw.length >= 2 && cRaw.includes(tRaw)) return true;
+  if (cRaw.length >= 2 && tRaw.includes(cRaw)) return true;
+
+  // Diacritics stripped check (both clean and raw)
+  const strip = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().trim();
+  const tNoAcc = strip(tClean);
+  const cNoAcc = strip(cClean);
+  const tRawNoAcc = strip(tRaw);
+  const cRawNoAcc = strip(cRaw);
+  if (tNoAcc === cNoAcc || tRawNoAcc === cRawNoAcc || tNoAcc === cRawNoAcc || tRawNoAcc === cNoAcc) return true;
+  if (tNoAcc.length >= 2 && (cNoAcc.includes(tNoAcc) || cRawNoAcc.includes(tNoAcc))) return true;
+  if (cNoAcc.length >= 2 && (tNoAcc.includes(cNoAcc) || tRawNoAcc.includes(cNoAcc))) return true;
+  if (tRawNoAcc.length >= 2 && (cNoAcc.includes(tRawNoAcc) || cRawNoAcc.includes(tRawNoAcc))) return true;
+  if (cRawNoAcc.length >= 2 && (tNoAcc.includes(cRawNoAcc) || tRawNoAcc.includes(cRawNoAcc))) return true;
+
+  return false;
+}
+

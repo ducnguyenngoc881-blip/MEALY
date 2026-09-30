@@ -5,7 +5,8 @@ import {
   normalizeIngredientUnitAndAmount,
   formatDisplayAmountAndUnit,
   isCommonPantryStaple,
-  PRODUCE_UNIT_WEIGHTS
+  PRODUCE_UNIT_WEIGHTS,
+  isGroceryItemMatch
 } from '../../src/utils/ingredientNormalizer';
 import { Recipe } from '../../src/types';
 import { getGroceryAisleCategory, GROCERY_AISLES } from '../../src/components/GroceryList';
@@ -485,6 +486,72 @@ describe('Unit: Grocery Aggregation & Consolidated Ingredient Counting', () => {
       expect(GROCERY_AISLES['rau-cu'].icon).toBe('🥬');
       expect(GROCERY_AISLES['trai-cay'].icon).toBe('🍎');
       expect(GROCERY_AISLES['gia-vi-kho'].icon).toBe('🧂');
+    });
+  });
+
+  describe('Comprehensive Grocery Item Deletion & Edge Case Matching', () => {
+    it('matches preset item names against clean displayed item names', () => {
+      expect(isGroceryItemMatch('Nước tương', 'Nước tương đậu nành')).toBe(true);
+      expect(isGroceryItemMatch('Nước mắm', 'Nước mắm cá cơm')).toBe(true);
+      expect(isGroceryItemMatch('Hạt nêm', 'Hạt nêm thịt thăn')).toBe(true);
+      expect(isGroceryItemMatch('Đường', 'Đường cát trắng')).toBe(true);
+      expect(isGroceryItemMatch('Muối', 'Muối tinh sấy')).toBe(true);
+      expect(isGroceryItemMatch('Tiêu', 'Tiêu đen xay')).toBe(true);
+      expect(isGroceryItemMatch('Tiêu xay', 'Tiêu đen xay')).toBe(true);
+      expect(isGroceryItemMatch('Gạo', 'Gạo tẻ thơm ST25')).toBe(true);
+      expect(isGroceryItemMatch('Trứng gà', 'Trứng gà (vỉ 10 quả)')).toBe(true);
+    });
+
+    it('matches 2-character short Vietnamese ingredient names', () => {
+      expect(isGroceryItemMatch('Cá', 'Cá tươi')).toBe(true);
+      expect(isGroceryItemMatch('Bò', 'Thịt bò')).toBe(true);
+      expect(isGroceryItemMatch('Gà', 'Thịt gà')).toBe(true);
+      expect(isGroceryItemMatch('Ớt', 'Ớt hiểm')).toBe(true);
+      expect(isGroceryItemMatch('Mì', 'Mì gói')).toBe(true);
+      expect(isGroceryItemMatch('Sả', 'Sả cây')).toBe(true);
+    });
+
+    it('matches and strips catering [Tiệc] prefixes', () => {
+      expect(isGroceryItemMatch('Thịt ba chỉ', '[Tiệc] Thịt ba chỉ')).toBe(true);
+      expect(isGroceryItemMatch('Nước tương', '[Tiệc] Nước tương')).toBe(true);
+      expect(isGroceryItemMatch('[Tiệc] Tôm sú', 'Tôm sú')).toBe(true);
+    });
+
+    it('matches tone-stripped and case-insensitive forms', () => {
+      expect(isGroceryItemMatch('nuoc tuong', 'Nước tương đậu nành')).toBe(true);
+      expect(isGroceryItemMatch('tieu den', 'Tiêu đen xay')).toBe(true);
+      expect(isGroceryItemMatch('KHĂN GIẤY', 'khăn giấy')).toBe(true);
+    });
+
+    it('accurately rejects non-matching ingredients to prevent accidental deletions', () => {
+      expect(isGroceryItemMatch('Nước mắm', 'Nước tương')).toBe(false);
+      expect(isGroceryItemMatch('Thịt bò', 'Thịt gà')).toBe(false);
+      expect(isGroceryItemMatch('Cà chua', 'Cà rốt')).toBe(false);
+      expect(isGroceryItemMatch('Trứng gà', 'Gà ta')).toBe(false);
+      expect(isGroceryItemMatch('Hành lá', 'Hành khô')).toBe(false);
+    });
+
+    it('simulates full deletion flow: removing custom Nước tương purges it from cart', () => {
+      // User added preset "Nước tương đậu nành"
+      let extraItems = [
+        { name: 'Nước tương đậu nành', amount: 1, unit: 'chai', category: 'gia-vi' as const, cost: 20000 },
+        { name: 'Tiêu đen xay', amount: 1, unit: 'lọ', category: 'gia-vi' as const, cost: 22000 }
+      ];
+
+      // Simulated delete trigger on displayed item "Nước tương"
+      const itemToDelete = { name: 'Nước tương', id: 'Nước tương', extraOriginalNames: ['Nước tương đậu nành'] };
+      const targets = [itemToDelete.name, itemToDelete.id, ...itemToDelete.extraOriginalNames];
+
+      // Filter context extras
+      extraItems = extraItems.filter(it => !targets.some(t => isGroceryItemMatch(t, it.name)));
+      expect(extraItems.length).toBe(1);
+      expect(extraItems[0].name).toBe('Tiêu đen xay');
+
+      // Filter displayed list with deletedItemNames
+      const deletedItemNames = [...targets];
+      const displayedItems = ['Nước tương', 'Tiêu xay'];
+      const filtered = displayedItems.filter(name => !deletedItemNames.some(del => isGroceryItemMatch(del, name)));
+      expect(filtered).toEqual(['Tiêu xay']);
     });
   });
 
