@@ -13,6 +13,7 @@ import { ConfirmModal } from './components/ConfirmModal';
 import { ShareCollabCartModal } from './components/ShareCollabCartModal';
 import { FridgeView } from './components/FridgeView';
 import { AuthModal } from './components/AuthModal';
+import { DownloadAppModal } from './components/DownloadAppModal';
 
 // Code-split secondary views and heavy interactive modals for ultra-fast initial page load
 const CateringPartyPlanner = lazy(() => import('./components/CateringPartyPlanner').then(m => ({ default: m.CateringPartyPlanner })));
@@ -72,6 +73,7 @@ const GlobalModals: React.FC = () => {
       <ConfirmModal />
       <ShareCollabCartModal />
       <AuthModal />
+      <DownloadAppModal />
     </>
   );
 };

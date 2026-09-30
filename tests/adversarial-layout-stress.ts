@@ -326,11 +326,11 @@ assert(
   'GroceryList Stress'
 );
 
-// 4.3 Channel Store Tabs Horizontal Scrolling
-const storeTabsHaveOverflowX = groceryCode.includes('flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-5');
+// 4.3 Aisle Tabs Horizontal Scrolling
+const storeTabsHaveOverflowX = groceryCode.includes('flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-6');
 assert(
   storeTabsHaveOverflowX,
-  'Store filter tabs use horizontal overflow-x-auto on mobile instead of squished 5-column grid',
+  'Aisle filter tabs use horizontal overflow-x-auto on mobile instead of squished 6-column grid',
   'GroceryList Stress'
 );
 

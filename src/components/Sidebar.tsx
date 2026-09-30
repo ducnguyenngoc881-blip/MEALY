@@ -15,7 +15,14 @@ import { ActiveTab } from '../types';
 import { playServoClick } from '../utils/audioSynth';
 
 export const Sidebar: React.FC = () => {
-  const { activeTab, setActiveTab, openMinigameHub, isRegistered } = useMealWise();
+  const { 
+    activeTab, 
+    setActiveTab, 
+    openMinigameHub, 
+    isRegistered, 
+    isWebGuestViewer,
+    openDownloadAppModal 
+  } = useMealWise();
 
   const leftNavItems: { id: ActiveTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { id: 'meal-sets', label: 'Hôm Nay', icon: UtensilsCrossed },
@@ -31,6 +38,10 @@ export const Sidebar: React.FC = () => {
 
   const handleOpenMinigames = () => {
     playServoClick();
+    if (isWebGuestViewer) {
+      openDownloadAppModal('Minigame & Giải Trí Bàn Tiệc');
+      return;
+    }
     openMinigameHub();
   };
 
@@ -45,10 +56,15 @@ export const Sidebar: React.FC = () => {
         {leftNavItems.map(item => {
           const Icon = item.icon;
           const active = activeTab === item.id;
+          const isGatedForGuest = isWebGuestViewer;
           return (
             <button
               key={item.id}
               onClick={() => {
+                if (isGatedForGuest) {
+                  openDownloadAppModal(item.label);
+                  return;
+                }
                 setActiveTab(item.id);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -60,9 +76,14 @@ export const Sidebar: React.FC = () => {
             >
               <div className={`p-1.5 rounded-xl transition-all relative ${active ? 'bg-stone-200/80 dark:bg-stone-800/80 -translate-y-0.5 shadow-xs' : ''}`}>
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2px]" />
+                {isGatedForGuest && (
+                  <span className="absolute -top-1 -right-1 text-[8px] bg-amber-500 text-stone-950 font-black px-1 rounded-full leading-tight shadow-xs">
+                    App
+                  </span>
+                )}
               </div>
               <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-tight mt-0.5 leading-none whitespace-nowrap ${active ? 'font-black text-stone-950 dark:text-white' : 'font-semibold'}`}>
-                {item.id === 'party' && !isRegistered ? 'Tiệc 🔒' : item.label}
+                {isGatedForGuest ? `${item.label} 🔒` : (item.id === 'party' && !isRegistered ? 'Tiệc 🔒' : item.label)}
               </span>
             </button>
           );
@@ -96,10 +117,15 @@ export const Sidebar: React.FC = () => {
         {rightNavItems.map(item => {
           const Icon = item.icon;
           const active = activeTab === item.id;
+          const isGatedForGuest = isWebGuestViewer && item.id !== 'grocery';
           return (
             <button
               key={item.id}
               onClick={() => {
+                if (isGatedForGuest) {
+                  openDownloadAppModal(item.label);
+                  return;
+                }
                 setActiveTab(item.id);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -109,11 +135,16 @@ export const Sidebar: React.FC = () => {
                   : 'text-stone-500 dark:text-stone-400 font-medium hover:text-stone-800 dark:hover:text-stone-200'
               }`}
             >
-              <div className={`p-1.5 rounded-xl transition-all ${active ? 'bg-stone-200/80 dark:bg-stone-800/80 -translate-y-0.5 shadow-xs' : ''}`}>
+              <div className={`p-1.5 rounded-xl transition-all relative ${active ? 'bg-stone-200/80 dark:bg-stone-800/80 -translate-y-0.5 shadow-xs' : ''}`}>
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2px]" />
+                {isGatedForGuest && (
+                  <span className="absolute -top-1 -right-1 text-[8px] bg-amber-500 text-stone-950 font-black px-1 rounded-full leading-tight shadow-xs">
+                    App
+                  </span>
+                )}
               </div>
               <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-tight mt-0.5 leading-none whitespace-nowrap ${active ? 'font-black text-stone-950 dark:text-white' : 'font-semibold'}`}>
-                {item.label}
+                {isGatedForGuest ? `${item.label} 🔒` : item.label}
               </span>
             </button>
           );

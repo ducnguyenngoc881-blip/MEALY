@@ -148,6 +148,7 @@ interface MealWiseContextType {
   // Extra grocery items
   extraGroceryItems: ExtraGroceryItem[];
   addExtraGroceryItems: (items: ExtraGroceryItem[]) => void;
+  removeExtraGroceryItem: (name: string) => void;
   clearExtraGrocery: () => void;
 
   // Apex Fast Meal Modal
@@ -212,6 +213,14 @@ interface MealWiseContextType {
   closeAuthModal: () => void;
   authModalMode: 'login' | 'register';
   setAuthModalMode: (mode: 'login' | 'register') => void;
+  // Web Guest Viewer Mode (Restricts access exclusively to Grocery List, prompts app download for other tabs)
+  isWebGuestViewer: boolean;
+  setIsWebGuestViewer: (val: boolean) => void;
+  isDownloadAppModalOpen: boolean;
+  setIsDownloadAppModalOpen: (open: boolean) => void;
+  downloadAppFeatureName: string;
+  openDownloadAppModal: (featureName?: string) => void;
+  closeDownloadAppModal: () => void;
 }
 
 const MealWiseContext: React.Context<MealWiseContextType | undefined> = 
@@ -320,7 +329,73 @@ const DEFAULT_PARTY_PLAN: CustomPartyPlan = {
 export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [recipes] = useState<Recipe[]>(mockRecipes);
   const [mealSets] = useState<VietnameseMealSet[]>(mockMealSets);
-  const [activeTab, setActiveTab] = useState<ActiveTab>('meal-sets');
+
+  // Web Guest Viewer Mode: accessed via shared grocery link (?collab_cart=...) or web guest parameter
+  const [isWebGuestViewer, setIsWebGuestViewerState] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      const url = new URL(window.location.href);
+      const isCollab = Boolean(url.searchParams.get('collab_cart') || url.searchParams.get('collab') || url.searchParams.get('shared_cart'));
+      const isGuestParam = url.searchParams.get('guest_viewer') === '1';
+      const stored = localStorage.getItem('mealwise_web_guest_viewer') === 'true';
+      return isCollab || isGuestParam || stored;
+    } catch {
+      return false;
+    }
+  });
+
+  const setIsWebGuestViewer = useCallback((val: boolean) => {
+    setIsWebGuestViewerState(val);
+    try {
+      if (val) localStorage.setItem('mealwise_web_guest_viewer', 'true');
+      else localStorage.removeItem('mealwise_web_guest_viewer');
+    } catch {}
+  }, []);
+
+  const [isDownloadAppModalOpen, setIsDownloadAppModalOpen] = useState<boolean>(false);
+  const [downloadAppFeatureName, setDownloadAppFeatureName] = useState<string>('');
+
+  const openDownloadAppModal = useCallback((featureName?: string) => {
+    setDownloadAppFeatureName(featureName || 'Lên Thực Đơn & Tủ Lạnh Thông Minh');
+    setIsDownloadAppModalOpen(true);
+  }, []);
+
+  const closeDownloadAppModal = useCallback(() => {
+    setIsDownloadAppModalOpen(false);
+  }, []);
+
+  const [activeTabState, setActiveTabState] = useState<ActiveTab>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        const isCollab = Boolean(url.searchParams.get('collab_cart') || url.searchParams.get('collab') || url.searchParams.get('shared_cart') || url.searchParams.get('guest_viewer') === '1');
+        const stored = localStorage.getItem('mealwise_web_guest_viewer') === 'true';
+        if (isCollab || stored) return 'grocery';
+      } catch {}
+    }
+    return 'meal-sets';
+  });
+
+  const setActiveTab = useCallback((tab: ActiveTab) => {
+    if (isWebGuestViewer && tab !== 'grocery') {
+      const featureNames: Record<ActiveTab, string> = {
+        'meal-sets': 'Mâm Cơm 3 Món Chuẩn Vị Việt',
+        'weekly': 'Lên Thực Đơn Tuần & Cân Đối Dinh Dưỡng',
+        'party': 'Đặt Tiệc & Lập Dự Toán Catering',
+        'grocery': 'Đi Chợ Tự Động',
+        'pantry': 'Tủ Lạnh & Gợi Ý Món Vét Tủ',
+        'recipes': 'Sổ Tay Công Thức Nấu Ăn',
+        'account': 'Tài Khoản & Cá Nhân Hóa Dinh Dưỡng',
+        'admin': 'Bảng Điều Khiển Quản Trị',
+        'fast-meal': 'Món Nhanh Tốc Biến (Apex Meal)'
+      };
+      openDownloadAppModal(featureNames[tab] || 'Tính năng này');
+      return;
+    }
+    setActiveTabState(tab);
+  }, [isWebGuestViewer, openDownloadAppModal]);
+
+  const activeTab = activeTabState;
   const [viewMode, setViewMode] = useState<ViewMode>('mobile');
 
   const [theme, setTheme] = useState<ThemeMode>(() => {
@@ -403,15 +478,33 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setConfirmDialog(null);
   }, []);
   const [isApexModalOpen, setIsApexModalOpen] = useState<boolean>(false);
-  const openApexModal = useCallback(() => setIsApexModalOpen(true), []);
+  const openApexModal = useCallback(() => {
+    if (isWebGuestViewer) {
+      openDownloadAppModal('Món Nhanh Tốc Biến (Apex Meal)');
+      return;
+    }
+    setIsApexModalOpen(true);
+  }, [isWebGuestViewer, openDownloadAppModal]);
   const closeApexModal = useCallback(() => setIsApexModalOpen(false), []);
 
   const [isMinigameHubOpen, setIsMinigameHubOpen] = useState<boolean>(false);
-  const openMinigameHub = useCallback(() => setIsMinigameHubOpen(true), []);
+  const openMinigameHub = useCallback(() => {
+    if (isWebGuestViewer) {
+      openDownloadAppModal('Minigame & Giải Trí Bàn Tiệc');
+      return;
+    }
+    setIsMinigameHubOpen(true);
+  }, [isWebGuestViewer, openDownloadAppModal]);
   const closeMinigameHub = useCallback(() => setIsMinigameHubOpen(false), []);
 
   const [isDrinkRouletteOpen, setIsDrinkRouletteOpen] = useState<boolean>(false);
-  const openDrinkRoulette = useCallback(() => setIsDrinkRouletteOpen(true), []);
+  const openDrinkRoulette = useCallback(() => {
+    if (isWebGuestViewer) {
+      openDownloadAppModal('Vòng Quay Bàn Nhậu (Drinking Roulette)');
+      return;
+    }
+    setIsDrinkRouletteOpen(true);
+  }, [isWebGuestViewer, openDownloadAppModal]);
   const closeDrinkRoulette = useCallback(() => setIsDrinkRouletteOpen(false), []);
 
   // Synchronize activeTab and modals with URL hash, query params, and parent iframe postMessages
@@ -738,6 +831,18 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   }, []);
 
+  const removeExtraGroceryItem = useCallback((name: string) => {
+    setExtraGroceryItems(prev => {
+      const next = prev.filter(it => it.name.toLowerCase() !== name.toLowerCase());
+      try {
+        localStorage.setItem('mealwise_extra_grocery', JSON.stringify(next));
+      } catch (e) {
+        console.error('Failed to persist mealwise_extra_grocery', e);
+      }
+      return next;
+    });
+  }, []);
+
   const clearExtraGrocery = () => {
     setExtraGroceryItems([]);
     localStorage.removeItem('mealwise_extra_grocery');
@@ -914,6 +1019,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       recordTelemetryEvent('auth', isNew ? 'Đăng ký thành viên mới thành công' : 'Đăng nhập thành viên thành công', displayName);
     }
     setUser(newProfile);
+    setIsWebGuestViewer(false);
     setIsAuthModalOpen(false);
 
     // If returning user has existing partition, restore their saved weekly plan, fridge, and onboarding preferences
@@ -936,7 +1042,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (isAdmin) {
       setActiveTab('admin');
       setShowOnboarding(false);
-      setToastMessage('🔐 Xin chào Quản Trị Viên! Đã kích hoạt Trung Tâm Dữ Liệu SteamDB Telemetry.');
+      showToast('🔐 Xin chào Quản Trị Viên! Đã kích hoạt Trung Tâm Dữ Liệu SteamDB Telemetry.');
       return;
     }
 
@@ -956,11 +1062,11 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
 
     if (migrated) {
-      setToastMessage(`🎉 Chào mừng ${displayName}! Đã giữ lại thực đơn tuần và tủ lạnh từ phiên dùng thử!`);
+      showToast(`🎉 Chào mừng ${displayName}! Đã giữ lại thực đơn tuần và tủ lạnh từ phiên dùng thử!`);
     } else {
-      setToastMessage(isNew ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
+      showToast(isNew ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
     }
-  }, [weeklyPlan, pantryItems]);
+  }, [weeklyPlan, pantryItems, showToast]);
 
   const logoutUser = useCallback(() => {
     const actorName = user?.name || 'Người dùng';
@@ -993,8 +1099,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
 
     setActiveTab('meal-sets');
-    setToastMessage('Đã đăng xuất tài khoản. Dữ liệu thành viên được lưu an toàn; chuyển về chế độ khách.');
-  }, [user, weeklyPlan, pantryItems]);
+    showToast('Đã đăng xuất tài khoản. Dữ liệu thành viên được lưu an toàn; chuyển về chế độ khách.');
+  }, [user, weeklyPlan, pantryItems, showToast]);
 
 
   // Generation counter for stochastic variation tracking
@@ -1187,6 +1293,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     updateCollabUserProfile(name);
   }, [updateCollabUserProfile]);
 
+  // Sync logged-in user display name to collaborative shopper profile
+  useEffect(() => {
+    if (user?.name && collabUser.name !== user.name) {
+      updateCollabUserProfile(user.name);
+    }
+  }, [user?.name, collabUser.name, updateCollabUserProfile]);
+
   // Session Heartbeat for real concurrent active users telemetry
   useEffect(() => {
     const role = user?.role === 'admin' ? 'admin' : (user?.isRegistered ? 'user' : 'guest');
@@ -1308,25 +1421,16 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => clearInterval(interval);
   }, [collabRoom, showToast]);
 
-  // Start a new collaborative room
+  // Start a new collaborative room (open to both registered members and guests)
   const startCollabRoom = useCallback(async (items: CollabCartItem[], title?: string): Promise<string> => {
-    if (!isRegistered) {
-      openConfirmModal({
-        title: 'Khóa Tính Năng: Đi Chợ Cùng Nhau',
-        message: 'Tính năng chia sẻ giỏ hàng đi chợ thời gian thực chỉ dành riêng cho tài khoản thành viên. Đăng ký tài khoản miễn phí chỉ mất 10 giây!',
-        confirmLabel: 'Đăng Ký / Đăng Nhập',
-        cancelLabel: 'Để sau',
-        onConfirm: () => openAuthModal('register')
-      });
-      return '';
-    }
-
     const roomId = generateCollabRoomId();
     const initialChecked: Record<string, CollabCheckState> = {};
 
     // Ensure creator is marked as host with host styling
+    const hostName = user?.name || collabUser.name || 'Bạn (Chủ phòng)';
     const hostProfile: CollabShopper = {
       ...collabUser,
+      name: hostName,
       role: 'host',
       color: collabUser.color || '#10b981'
     };
@@ -1371,7 +1475,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     recordTelemetryEvent('collab', `Tạo phòng mua chung #${roomId} (${items.length} món)`, hostProfile.name);
     showToast(`🎉 Đã tạo phòng mua chung #${roomId}!`);
     return roomId;
-  }, [collabUser, groceryCheckedItems, showToast]);
+  }, [user?.name, collabUser, groceryCheckedItems, showToast]);
 
   // Join an existing collaborative room
   const joinCollabRoom = useCallback(async (roomId: string, initialPayload?: Partial<CollabRoom>): Promise<boolean> => {
@@ -1418,13 +1522,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (room.participants) {
         setCollabParticipants(room.participants);
       }
-      if (room.checkedMap) {
-        const localChecks: Record<string, boolean> = {};
-        for (const [k, v] of Object.entries(room.checkedMap)) {
-          localChecks[k] = v.checked;
-        }
-        setGroceryCheckedItems(prev => ({ ...prev, ...localChecks }));
-      }
+      // Strictly isolated: Do NOT merge room.checkedMap into personal groceryCheckedItems
+      // so the joining user's personal grocery check-off state is 100% preserved.
       registerParticipantOnServer(roomId, currentShopper);
       recordTelemetryEvent('collab', `Tham gia phòng mua chung #${roomId}`, currentShopper.name);
       return true;
@@ -1466,18 +1565,6 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       ...prev,
       [itemId]: newState
     }));
-
-    setGroceryCheckedItems(prev => ({
-      ...prev,
-      [itemId]: nextChecked
-    }));
-
-    setGroceryItemBuyerCounts(prev => {
-      const next = { ...prev };
-      if (nextChecked) next[itemId] = 1;
-      else delete next[itemId];
-      return next;
-    });
 
     broadcastLocalCollabUpdate(collabRoom.roomId, {
       type: 'toggle',
@@ -1529,16 +1616,6 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       [itemId]: newState
     }));
 
-    setGroceryCheckedItems(prev => ({
-      ...prev,
-      [itemId]: true
-    }));
-
-    setGroceryItemBuyerCounts(prev => ({
-      ...prev,
-      [itemId]: nextCount
-    }));
-
     broadcastLocalCollabUpdate(collabRoom.roomId, {
       type: 'toggle',
       roomId: collabRoom.roomId,
@@ -1580,11 +1657,6 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCollabCheckedMap(prev => ({
       ...prev,
       [itemId]: newState
-    }));
-
-    setGroceryItemBuyerCounts(prev => ({
-      ...prev,
-      [itemId]: nextCount
     }));
 
     broadcastLocalCollabUpdate(collabRoom.roomId, {
@@ -2419,6 +2491,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         loadUserPartyPlan,
         extraGroceryItems,
         addExtraGroceryItems,
+        removeExtraGroceryItem,
         clearExtraGrocery,
         toastMessage,
         showToast,
@@ -2470,7 +2543,14 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         openAuthModal,
         closeAuthModal,
         authModalMode,
-        setAuthModalMode
+        setAuthModalMode,
+        isWebGuestViewer,
+        setIsWebGuestViewer,
+        isDownloadAppModalOpen,
+        setIsDownloadAppModalOpen,
+        downloadAppFeatureName,
+        openDownloadAppModal,
+        closeDownloadAppModal
   };
 
   if (typeof globalThis !== 'undefined') {
@@ -2575,6 +2655,7 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     loadUserPartyPlan: () => {},
     extraGroceryItems: [],
     addExtraGroceryItems: () => {},
+    removeExtraGroceryItem: () => {},
     clearExtraGrocery: () => {},
     isApexModalOpen: false,
     setIsApexModalOpen: () => {},
@@ -2623,7 +2704,14 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     openAuthModal: () => {},
     closeAuthModal: () => {},
     authModalMode: 'register',
-    setAuthModalMode: () => {}
+    setAuthModalMode: () => {},
+    isWebGuestViewer: false,
+    setIsWebGuestViewer: () => {},
+    isDownloadAppModalOpen: false,
+    setIsDownloadAppModalOpen: () => {},
+    downloadAppFeatureName: '',
+    openDownloadAppModal: () => {},
+    closeDownloadAppModal: () => {}
   };
 };
 

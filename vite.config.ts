@@ -3,11 +3,25 @@ import react from '@vitejs/plugin-react';
 // @ts-ignore
 import { handleCollabRequest } from './scripts/collab-server-handler.js';
 
+import fs from 'node:fs';
+import path from 'node:path';
+
 function collabSyncPlugin(): Plugin {
   return {
     name: 'collab-sync-plugin',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
+        if (req.url === '/MealWise.apk' || req.url === '/api/download/apk') {
+          const apkPath = path.resolve(__dirname, 'MealWise.apk');
+          if (fs.existsSync(apkPath)) {
+            res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+            res.setHeader('Content-Disposition', 'attachment; filename="MealWise.apk"');
+            res.setHeader('Content-Length', fs.statSync(apkPath).size);
+            fs.createReadStream(apkPath).pipe(res);
+            return;
+          }
+        }
+
         if (req.url && req.url.startsWith('/api/collab/')) {
           try {
             const handled = await handleCollabRequest(req, res);
@@ -30,6 +44,10 @@ export default defineConfig({
     host: true,
     port: 5173,
     strictPort: true,
+    allowedHosts: true,
+    watch: {
+      ignored: ['**/*.apk', '**/MealWise-Portable-PC/**', '**/tools/**']
+    },
     hmr: {
       protocol: 'ws',
       host: 'localhost',

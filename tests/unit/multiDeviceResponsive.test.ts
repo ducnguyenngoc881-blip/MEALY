@@ -208,9 +208,9 @@ describe('Unit: MultiDeviceResponsive - Container Bounds & Grid Calculations acr
     }
   });
 
-  it('GroceryList channel filter tabs provide smooth scrolling on mobile (<640px) and 5-col grid on tablet+', () => {
+  it('GroceryList aisle filter tabs provide smooth scrolling on mobile (<640px) and 6-col grid on tablet+', () => {
     const groceryCode = fs.readFileSync(path.join(srcDir, 'components/GroceryList.tsx'), 'utf-8');
-    expect(groceryCode).toContain('overflow-x-auto scrollbar-none sm:grid sm:grid-cols-5');
+    expect(groceryCode).toContain('overflow-x-auto scrollbar-none sm:grid sm:grid-cols-6');
     expect(groceryCode).toContain('sm:hidden');
     expect(groceryCode).toContain('hidden sm:inline');
   });

@@ -6,7 +6,8 @@ import {
   Sun,
   Moon,
   Lock,
-  Sparkles
+  Sparkles,
+  Smartphone
 } from 'lucide-react';
 import { ActiveTab } from '../types';
 
@@ -19,7 +20,9 @@ export const Navbar: React.FC = () => {
     toggleTheme,
     isRegistered,
     user,
-    openAuthModal
+    openAuthModal,
+    isWebGuestViewer,
+    openDownloadAppModal
   } = useMealWise();
 
   const getScreenTitle = (tab: ActiveTab): { short: string; full: string } => {
@@ -50,7 +53,9 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  const currentTitle = getScreenTitle(activeTab);
+  const currentTitle = isWebGuestViewer 
+    ? { short: 'Khách Web', full: 'Khách Xem Đi Chợ' }
+    : getScreenTitle(activeTab);
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/90 dark:bg-[#121110]/90 backdrop-blur-xl border-b border-[#E8E2D8]/70 dark:border-[#252220]/70 shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
@@ -59,7 +64,13 @@ export const Navbar: React.FC = () => {
         {/* Left: Brand Logo & Title */}
         <button
           type="button"
-          onClick={() => setActiveTab('meal-sets')} 
+          onClick={() => {
+            if (isWebGuestViewer) {
+              openDownloadAppModal('Mâm Cơm 3 Món Chuẩn Vị');
+              return;
+            }
+            setActiveTab('meal-sets');
+          }} 
           className="flex items-center gap-1.5 sm:gap-2 cursor-pointer group shrink-0 text-left focus:outline-none"
           title="Trang chủ: Mâm Cơm Việt"
           aria-label="MealWise - Về trang Hôm Nay"
@@ -88,6 +99,18 @@ export const Navbar: React.FC = () => {
 
         {/* Right: Quick Action Controls */}
         <div className="flex items-center gap-1.5 shrink-0">
+          {/* Download App CTA for Web Guests */}
+          {isWebGuestViewer && (
+            <button
+              type="button"
+              onClick={() => openDownloadAppModal()}
+              className="px-2.5 py-1 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[10.5px] font-black flex items-center gap-1 shadow-xs transition-all active:scale-95 cursor-pointer"
+              title="Tải ứng dụng điện thoại MealWise"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>Tải App</span>
+            </button>
+          )}
           {/* Guest / Member Account Status Badge */}
           {isRegistered ? (
             user?.role === 'admin' ? (

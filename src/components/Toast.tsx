@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { X } from 'lucide-react';
 
 export const Toast: React.FC = () => {
   const { toastMessage, hideToast } = useMealWise();
+
+  // Defensive auto-dismiss fallback: guarantees toast will never stay stuck on screen
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => {
+      hideToast();
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [toastMessage, hideToast]);
 
   if (!toastMessage) return null;
 

@@ -18,42 +18,53 @@ export interface NormalizedIngredientInfo {
 
 // Average culinary unit weights in grams for common Vietnamese market produce
 export const PRODUCE_UNIT_WEIGHTS: Record<string, { unit: string; grams: number; alt?: Record<string, number> }> = {
-  'cà chua': { unit: 'quả', grams: 100, alt: { 'trái': 100 } },
+  'cà chua': { unit: 'quả', grams: 100, alt: { 'trái': 100, 'muỗng canh': 15, 'thìa canh': 15 } },
   'cà chua bi': { unit: 'quả', grams: 15, alt: { 'trái': 15 } },
-  'chanh': { unit: 'quả', grams: 50, alt: { 'trái': 50 } },
-  'hành tây': { unit: 'củ', grams: 150 },
-  'cà rốt': { unit: 'củ', grams: 100 },
-  'khoai tây': { unit: 'củ', grams: 150 },
-  'khoai lang': { unit: 'củ', grams: 150 },
+  'chanh': { unit: 'quả', grams: 50, alt: { 'trái': 50, 'muỗng canh': 15, 'muỗng cà phê': 5, 'thìa canh': 15, 'thìa cà phê': 5 } },
+  'hành tây': { unit: 'củ', grams: 150, alt: { 'củ nhỏ': 100, 'củ to': 250 } },
+  'cà rốt': { unit: 'củ', grams: 100, alt: { 'củ nhỏ': 80, 'củ to': 150 } },
+  'khoai tây': { unit: 'củ', grams: 150, alt: { 'củ nhỏ': 100, 'củ to': 200 } },
+  'khoai lang': { unit: 'củ', grams: 150, alt: { 'củ nhỏ': 100, 'củ to': 200 } },
   'dưa leo': { unit: 'quả', grams: 150, alt: { 'trái': 150 } },
   'dưa chuột': { unit: 'quả', grams: 150, alt: { 'trái': 150 } },
-  'tỏi': { unit: 'củ', grams: 30, alt: { 'tép': 5, 'nhánh': 5 } },
-  'hành tím': { unit: 'củ', grams: 15, alt: { 'tép': 5 } },
-  'hành khô': { unit: 'củ', grams: 15 },
-  'hành tím (hành khô)': { unit: 'củ', grams: 15 },
-  'gừng': { unit: 'củ', grams: 40, alt: { 'nhánh': 20, 'lát': 5 } },
-  'sả': { unit: 'cây', grams: 20, alt: { 'nhánh': 20 } },
-  'ớt': { unit: 'quả', grams: 10, alt: { 'trái': 10 } },
-  'ớt tươi': { unit: 'quả', grams: 10, alt: { 'trái': 10 } },
-  'dứa': { unit: 'quả', grams: 600, alt: { 'trái': 600 } },
-  'thơm': { unit: 'quả', grams: 600, alt: { 'trái': 600 } },
-  'dứa (thơm)': { unit: 'quả', grams: 600, alt: { 'trái': 600 } },
-  'bắp cải': { unit: 'bắp', grams: 800 },
-  'súp lơ xanh': { unit: 'cái', grams: 400, alt: { 'cây': 400 } },
-  'súp lơ': { unit: 'cái', grams: 400, alt: { 'cây': 400 } },
-  'bông cải xanh': { unit: 'cái', grams: 400, alt: { 'cây': 400 } },
+  'tỏi': { unit: 'củ', grams: 30, alt: { 'tép': 5, 'nhánh': 5, 'lát': 3, 'muỗng canh': 15, 'muỗng cà phê': 5, 'thìa canh': 15, 'thìa cà phê': 5, 'củ / tép': 10, 'bát con': 100 } },
+  'hành tím': { unit: 'củ', grams: 15, alt: { 'tép': 5, 'củ nhỏ': 10 } },
+  'hành khô': { unit: 'củ', grams: 15, alt: { 'tép': 5, 'củ nhỏ': 10 } },
+  'hành tím (hành khô)': { unit: 'củ', grams: 15, alt: { 'tép': 5, 'củ nhỏ': 10 } },
+  'gừng': { unit: 'củ', grams: 40, alt: { 'nhánh': 20, 'lát': 5, 'muỗng canh': 15, 'muỗng cà phê': 5, 'thìa canh': 15, 'thìa cà phê': 5 } },
+  'sả': { unit: 'cây', grams: 20, alt: { 'nhánh': 20, 'bó': 100 } },
+  'ớt': { unit: 'quả', grams: 10, alt: { 'trái': 10, 'muỗng canh': 15, 'muỗng cà phê': 5, 'thìa canh': 15, 'thìa cà phê': 5 } },
+  'ớt tươi': { unit: 'quả', grams: 10, alt: { 'trái': 10, 'muỗng canh': 15, 'muỗng cà phê': 5, 'thìa canh': 15, 'thìa cà phê': 5 } },
+  'dứa': { unit: 'quả', grams: 600, alt: { 'trái': 600, 'bó': 600, 'lát': 50 } },
+  'thơm': { unit: 'quả', grams: 600, alt: { 'trái': 600, 'bó': 600, 'lát': 50 } },
+  'dứa (thơm)': { unit: 'quả', grams: 600, alt: { 'trái': 600, 'bó': 600, 'lát': 50 } },
+  'bắp cải': { unit: 'bắp', grams: 800, alt: { 'cái': 800 } },
+  'súp lơ xanh': { unit: 'cái', grams: 400, alt: { 'cây': 400, 'bông': 400 } },
+  'súp lơ': { unit: 'cái', grams: 400, alt: { 'cây': 400, 'bông': 400 } },
+  'bông cải xanh': { unit: 'cái', grams: 400, alt: { 'cây': 400, 'bông': 400 } },
   'bắp ngô': { unit: 'bắp', grams: 250, alt: { 'trái': 250 } },
   'bắp ngọt (ngô)': { unit: 'bắp', grams: 250, alt: { 'trái': 250 } },
-  'ngô ngọt': { unit: 'bắp', grams: 250 },
-  'mướp hương': { unit: 'quả', grams: 250, alt: { 'trái': 250 } },
+  'ngô ngọt': { unit: 'bắp', grams: 250, alt: { 'trái': 250 } },
+  'mướp hương': { unit: 'quả', grams: 250, alt: { 'trái': 250, 'quả nhỏ': 150 } },
   'bí đỏ': { unit: 'quả', grams: 800 },
   'bí đao': { unit: 'quả', grams: 700 },
   'đậu bắp': { unit: 'quả', grams: 20, alt: { 'trái': 20 } },
-  'hành lá': { unit: 'nhánh', grams: 10, alt: { 'bó': 100, 'cây': 10 } },
-  'rau muống': { unit: 'bó', grams: 300, alt: { 'mớ': 300 } },
-  'rau mồng tơi': { unit: 'bó', grams: 300, alt: { 'mớ': 300 } },
+  'hành lá': { unit: 'nhánh', grams: 10, alt: { 'bó': 100, 'bó nhỏ': 50, 'cây': 10, 'mớ': 100 } },
+  'rau muống': { unit: 'bó', grams: 300, alt: { 'bó nhỏ': 200, 'mớ': 300 } },
+  'rau mồng tơi': { unit: 'bó', grams: 300, alt: { 'bó nhỏ': 200, 'mớ': 300 } },
   'rau ngót': { unit: 'bó', grams: 200, alt: { 'mớ': 200 } },
-  'đậu phụ': { unit: 'miếng', grams: 150, alt: { 'bìa': 150 } },
+  'cải ngọt': { unit: 'bó', grams: 300, alt: { 'bó nhỏ': 200, 'mớ': 300 } },
+  'cải thìa': { unit: 'cây', grams: 50, alt: { 'bó': 300, 'bó nhỏ': 200 } },
+  'đậu phụ': { unit: 'miếng', grams: 150, alt: { 'bìa': 150, 'hộp': 300 } },
+  'nấm hương': { unit: 'tai', grams: 5, alt: { 'muỗng canh': 10, 'muỗng cà phê': 3, 'thìa canh': 10, 'thìa cà phê': 3 } },
+  'nấm tươi': { unit: 'gói', grams: 150, alt: { 'tai': 20, 'hộp': 200 } },
+  'nấm rơm': { unit: 'gói', grams: 150, alt: { 'hộp': 200 } },
+  'nấm bào ngư': { unit: 'gói', grams: 150, alt: { 'hộp': 200 } },
+  'rau mùi (ngò rí)': { unit: 'nhánh', grams: 5, alt: { 'cây': 5, 'bó': 50, 'bó nhỏ': 30 } },
+  'mùi tàu (ngò gai)': { unit: 'lá', grams: 3, alt: { 'nhánh': 5, 'cây': 5, 'bó': 50, 'bó nhỏ': 30 } },
+  'thì là': { unit: 'nhánh', grams: 5, alt: { 'cây': 5, 'bó': 50, 'bó nhỏ': 30 } },
+  'gạo': { unit: 'g', grams: 1, alt: { 'muỗng canh': 15, 'thìa canh': 15, 'bát': 150, 'chén': 150 } },
+  'chuối chín': { unit: 'quả', grams: 100, alt: { 'trái': 100 } },
   'trứng gà': { unit: 'quả', grams: 50, alt: { 'trái': 50, 'hột': 50 } },
   'trứng vịt': { unit: 'quả', grams: 65, alt: { 'trái': 65, 'hột': 65 } },
   'trứng cút': { unit: 'quả', grams: 12, alt: { 'trái': 12, 'hột': 12 } }
@@ -89,6 +100,22 @@ export function canonicalizeIngredientName(rawName: string): string {
   // But preserve recognizable disambiguations like (ngò om) or (thơm) if helpful
   const lower = s.toLowerCase();
 
+  // Negative guards to prevent false-positives on compound foods
+  if (lower.includes('chuối tiêu') || lower.includes('chuối')) return 'Chuối chín';
+  if (lower.includes('cà pháo muối') || lower.includes('cà pháo')) return 'Cà pháo muối';
+  if (lower.includes('dưa cải') || lower.includes('dưa muối') || lower.includes('dưa chua')) return 'Dưa cải muối chua';
+  if (lower.includes('sữa tươi') || lower.includes('sữa đặc')) return 'Sữa tươi';
+  if (lower.includes('gạo')) return 'Gạo';
+  if (lower.includes('pate')) return 'Pate';
+  if (lower.includes('rau thơm')) return 'Rau thơm';
+  if (lower.includes('cá trứng')) return 'Cá trứng';
+  if (lower.includes('mì trứng')) return 'Mì trứng';
+  if (lower.includes('mướp đắng') || lower.includes('khổ qua')) return 'Mướp đắng (khổ qua)';
+  if (lower.includes('tương ớt')) return 'Tương ớt';
+  if (lower.includes('tương cà')) return 'Tương cà';
+  if (lower.includes('hạt nêm')) return 'Hạt nêm';
+  if (lower.includes('bột ngọt') || lower.includes('mì chính')) return 'Bột ngọt';
+
   // Explicit High-Priority Culinary Mapping Dictionary
   if (lower.includes('cà chua')) return 'Cà chua';
   if (lower.includes('ba chỉ') || lower.includes('ba rọi')) return 'Thịt ba chỉ';
@@ -104,17 +131,19 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('nạm bò')) return 'Nạm bò';
 
   // Eggs must be evaluated strictly BEFORE poultry to prevent "Trứng gà ta" from matching "gà ta"
-  if (lower.includes('trứng gà')) return 'Trứng gà';
-  if (lower.includes('trứng vịt')) return 'Trứng vịt';
   if (lower.includes('trứng cút')) return 'Trứng cút';
-  if (lower.includes('trứng')) return 'Trứng gà';
+  if (lower.includes('trứng vịt')) return 'Trứng vịt';
+  if (lower.includes('trứng gà') || lower.includes('trứng tươi') || lower.includes('trứng ta') || lower === 'trứng') return 'Trứng gà';
 
   // Mushrooms must be evaluated strictly BEFORE poultry to prevent "Nấm đùi gà" from matching "đùi gà"
   if (lower.includes('nấm rơm')) return 'Nấm rơm';
   if (lower.includes('nấm đùi gà')) return 'Nấm đùi gà';
   if (lower.includes('nấm kim châm')) return 'Nấm kim châm';
-  if (lower.includes('nấm hương')) return 'Nấm hương';
+  if (lower.includes('nấm hương') || lower.includes('đông cô')) return 'Nấm hương';
   if (lower.includes('nấm mỡ')) return 'Nấm mỡ';
+  if (lower.includes('nấm bào ngư')) return 'Nấm bào ngư';
+  if (lower.includes('nấm linh chi')) return 'Nấm linh chi';
+  if (lower.includes('mộc nhĩ') || lower.includes('nấm mèo')) return 'Mộc nhĩ';
   if (lower.includes('nấm')) return 'Nấm tươi';
 
   if (lower.includes('đùi gà')) return 'Đùi gà';
@@ -166,13 +195,6 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('dứa') || lower.includes('thơm')) return 'Dứa (thơm)';
   if (lower.includes('đậu phụ') || lower.includes('đậu hũ')) return 'Đậu phụ';
 
-  if (lower.includes('nấm rơm')) return 'Nấm rơm';
-  if (lower.includes('nấm đùi gà')) return 'Nấm đùi gà';
-  if (lower.includes('nấm kim châm')) return 'Nấm kim châm';
-  if (lower.includes('nấm hương')) return 'Nấm hương';
-  if (lower.includes('nấm mỡ')) return 'Nấm mỡ';
-  if (lower.includes('ngô ngọt') || lower.includes('bắp ngọt') || lower.includes('bắp ngô')) return 'Bắp ngọt (ngô)';
-
   if (lower.includes('nước mắm')) return 'Nước mắm';
   if (lower.includes('nước tương') || lower.includes('xì dầu')) return 'Nước tương';
   if (lower.includes('dầu hào')) return 'Dầu hào';
@@ -181,8 +203,6 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('đường')) return 'Đường';
   if (lower.includes('muối')) return 'Muối';
   if (lower.includes('tiêu')) return 'Tiêu xay';
-  if (lower.includes('hạt nêm')) return 'Hạt nêm';
-  if (lower.includes('bột ngọt') || lower.includes('mì chính')) return 'Bột ngọt';
   if (lower.includes('giấm')) return 'Giấm gạo';
 
   // 2. Generic Cleaning for non-dictionary items:
@@ -204,6 +224,63 @@ export function canonicalizeIngredientName(rawName: string): string {
   }
 
   return s || rawName.trim();
+}
+
+/**
+ * Detects whether an ingredient is a common household pantry staple (sugar, salt, fish sauce, cooking oil, etc.)
+ * that ordinary families already keep stocked at home in bulk.
+ * 
+ * Niche and specialty sauces/spices (mắm tôm, dầu hào, dầu mè, ngũ vị hương, sa tế, cà ri, mắm nêm...)
+ * and fresh produce (tỏi, ớt tươi, hành tím, gừng, sả...) are NEVER considered common staples and
+ * remain visible in the weekly grocery shopping list.
+ */
+export function isCommonPantryStaple(rawName: string, category?: string): boolean {
+  if (!rawName || typeof rawName !== 'string') return false;
+  const s = rawName.toLowerCase().trim();
+
+  // Fresh produce / meats / seafood are NEVER pantry staples
+  if (category === 'thit-ca' || category === 'rau-cu') {
+    return false;
+  }
+
+  // 1. Explicit NICHE & SPECIALTY exceptions that must ALWAYS be kept in the grocery list:
+  const NICHE_EXCEPTIONS = [
+    'mắm tôm', 'mắm tép', 'mắm nêm', 'mắm cá', 'mắm ruốc', 'mắm ba khía', 'mắm chưng',
+    'dầu hào', 'dầu mè', 'dầu vừng', 'dầu điều', 'màu điều', 'dầu oliu', 'dầu ô liu', 'dầu ô-liu',
+    'sa tế', 'sa-tế', 'tương bần', 'tương hột', 'tương đen', 'sốt tương',
+    'ngũ vị hương', 'cà ri', 'cari', 'hoa hồi', 'tai vị', 'quế', 'thảo quả', 'mắc khén', 'hạt dổi',
+    'nước cốt dừa', 'sữa đặc', 'bơ lạt', 'bơ', 'mayonnaise', 'sốt me', 'bột nghệ', 'tương cà',
+    'chao', 'rượu mai quế lộ', 'mạch nha'
+  ];
+  for (const niche of NICHE_EXCEPTIONS) {
+    if (s.includes(niche)) {
+      return false; // Keep in grocery list!
+    }
+  }
+
+  // 2. Identify common household staples:
+  // Đường (sugar)
+  if (s.includes('đường') && !s.includes('đường thốt nốt')) return true;
+  // Muối & Bột canh (salt)
+  if (s.includes('muối') || s === 'bột canh') return true;
+  // Nước mắm (fish sauce)
+  if (s.includes('nước mắm') || s === 'mắm cá cơm' || s === 'nước mắm ngon') return true;
+  // Bột ngọt, mì chính, hạt nêm (bouillon / MSG)
+  if (s.includes('hạt nêm') || s.includes('bột ngọt') || s.includes('mì chính') || s.includes('bột nêm')) return true;
+  // Tiêu (pepper)
+  if (s.includes('tiêu') && !s.includes('tiêu xanh') && !s.includes('sốt tiêu')) return true;
+  // Dầu ăn / Mỡ lợn (cooking oil / lard)
+  if (s.includes('dầu ăn') || s.includes('dầu thực vật') || s.includes('dầu rán') || s.includes('dầu chiên') || s.includes('mỡ heo') || s.includes('mỡ lợn')) return true;
+  // Nước tương / Xì dầu (regular soy sauce)
+  if ((s.includes('nước tương') || s.includes('xì dầu')) && !s.includes('tương đen') && !s.includes('tamari')) return true;
+  // Tương ớt (hot sauce)
+  if (s.includes('tương ớt')) return true;
+  // Giấm thường (regular vinegar)
+  if (s.includes('giấm') && !s.includes('giấm táo') && !s.includes('giấm balsamic')) return true;
+  // Nước màu / Nước hàng (caramel coloring)
+  if (s.includes('nước màu') || s.includes('nước hàng')) return true;
+
+  return false;
 }
 
 /**
@@ -285,111 +362,100 @@ export function normalizeIngredientUnitAndAmount(
 ): NormalizedIngredientInfo {
   const cleanName = canonicalizeIngredientName(rawName);
   const parsedAmt = parseAmount(rawAmount);
-  const u = (rawUnit || '').trim().toLowerCase();
+  let rawU = (rawUnit || '').trim();
+  let u = rawU.toLowerCase();
   const lowerName = cleanName.toLowerCase();
+  const isProduce = Boolean(PRODUCE_UNIT_WEIGHTS[lowerName]);
 
-  // 1. Weight family: g, gram, gam, kg, kilogram, kí, ký, lạng, lang
-  if (u === 'kg' || u === 'kilogram' || u === 'kí' || u === 'ký') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt * 1000,
-      baseUnit: 'g',
-      family: 'weight',
-      groupKey: `${lowerName}__weight`
-    };
-  }
-  if (u === 'lạng' || u === 'lang') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt * 100,
-      baseUnit: 'g',
-      family: 'weight',
-      groupKey: `${lowerName}__weight`
-    };
-  }
-  if (u === 'g' || u === 'gram' || u === 'gam' || u === 'gr') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'g',
-      family: 'weight',
-      groupKey: `${lowerName}__weight`
-    };
-  }
-
-  // 2. Volume family: l, lít, lit, ml, mililit
-  if (u === 'l' || u === 'lít' || u === 'lit') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt * 1000,
-      baseUnit: 'ml',
-      family: 'volume',
-      groupKey: `${lowerName}__volume`
-    };
-  }
-  if (u === 'ml' || u === 'mililit') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'ml',
-      family: 'volume',
-      groupKey: `${lowerName}__volume`
-    };
-  }
-
-  // 3. Spoons family: muỗng canh vs thìa canh
-  if (u === 'muỗng canh' || u === 'thìa canh' || u === 'muong canh' || u === 'thia canh' || u === 'tbsp') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'muỗng canh',
-      family: 'spoon_soup',
-      groupKey: `${lowerName}__spoon_soup`
-    };
-  }
-  if (u === 'muỗng cà phê' || u === 'thìa cà phê' || u === 'muỗng cafe' || u === 'thìa cafe' || u === 'tsp') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'muỗng cà phê',
-      family: 'spoon_tea',
-      groupKey: `${lowerName}__spoon_tea`
-    };
-  }
-  if (u === 'muỗng' || u === 'thìa') {
-    return {
-      cleanName,
-      baseAmount: parsedAmt,
-      baseUnit: 'muỗng',
-      family: 'spoon',
-      groupKey: `${lowerName}__spoon`
-    };
-  }
-
-  // 4. Produce Count-to-Weight Equivalence:
-  // For produce that is commonly traded by weight (tomatoes, carrots, potatoes, onions, etc.),
-  // map count (quả, củ, tép, nhánh) directly into weight family so that "2 kg" and "6 quả" merge!
-  const produceConversion = PRODUCE_UNIT_WEIGHTS[lowerName];
-  if (produceConversion && (u === produceConversion.unit || (produceConversion.alt && produceConversion.alt[u]))) {
-    // If it's an egg, keep in count family unless already mixed with grams
-    if (lowerName.includes('trứng')) {
-      return {
-        cleanName,
-        baseAmount: parsedAmt,
-        baseUnit: produceConversion.unit,
-        family: 'count',
-        groupKey: `${lowerName}__count`,
-        isConvertibleProduce: true
-      };
+  // 1. Check for embedded weight/volume in parentheses: e.g. "bó nhỏ (50g)", "bó (300g)", "củ nhỏ (80g)"
+  const embeddedMatch = rawU.match(/\((\d+(?:\.\d+)?)\s*(g|kg|ml|l)\)/i) || (rawName && rawName.match(/\((\d+(?:\.\d+)?)\s*(g|kg|ml|l)\)/i));
+  if (embeddedMatch) {
+    const val = parseFloat(embeddedMatch[1]);
+    const unitType = embeddedMatch[2].toLowerCase();
+    if (unitType === 'g') {
+      return { cleanName, baseAmount: parsedAmt * val, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
     }
+    if (unitType === 'kg') {
+      return { cleanName, baseAmount: parsedAmt * val * 1000, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
+    }
+    if (unitType === 'ml') {
+      if (isProduce) {
+        return { cleanName, baseAmount: parsedAmt * val, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
+      }
+      return { cleanName, baseAmount: parsedAmt * val, baseUnit: 'ml', family: 'volume', groupKey: `${lowerName}__volume` };
+    }
+    if (unitType === 'l') {
+      if (isProduce) {
+        return { cleanName, baseAmount: parsedAmt * val * 1000, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
+      }
+      return { cleanName, baseAmount: parsedAmt * val * 1000, baseUnit: 'ml', family: 'volume', groupKey: `${lowerName}__volume` };
+    }
+  }
 
-    const unitGrams = produceConversion.alt && produceConversion.alt[u]
-      ? produceConversion.alt[u]
-      : produceConversion.grams;
+  // Clean unit string (strip parentheticals for matching against aliases)
+  const cleanUnitStr = u.replace(/\s*\([^)]*\)/g, '').trim();
 
+  // Special Eggs handler: always count family, converting grams if needed
+  if (lowerName.includes('trứng')) {
+    const prod = PRODUCE_UNIT_WEIGHTS[lowerName] || { unit: 'quả', grams: 50 };
+    if (['g', 'gram', 'gam'].includes(cleanUnitStr)) {
+      const eggs = Math.max(1, Math.round(parsedAmt / prod.grams));
+      return { cleanName, baseAmount: eggs, baseUnit: prod.unit, family: 'count', groupKey: `${lowerName}__count` };
+    }
+    return { cleanName, baseAmount: parsedAmt, baseUnit: prod.unit, family: 'count', groupKey: `${lowerName}__count` };
+  }
+
+  // 2. Weight family
+  if (['kg', 'kilogram', 'kí', 'ký'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt * 1000, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
+  }
+  if (['lạng', 'lang'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt * 100, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
+  }
+  if (['g', 'gram', 'gam', 'gr'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
+  }
+
+  // 3. Volume family
+  if (['l', 'lít', 'lit'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt * 1000, baseUnit: 'ml', family: 'volume', groupKey: `${lowerName}__volume` };
+  }
+  if (['ml', 'mililit'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt, baseUnit: 'ml', family: 'volume', groupKey: `${lowerName}__volume` };
+  }
+
+  // 4. Solid seasonings unification (Muối, Đường, Tiêu, Hạt nêm, Bột ngọt)
+  const isSolidSeasoning = ['muối', 'đường', 'tiêu xay', 'hạt nêm', 'bột ngọt'].includes(lowerName);
+  if (isSolidSeasoning) {
+    let g = parsedAmt * 5;
+    if (['muỗng canh', 'thìa canh', 'tbsp'].includes(cleanUnitStr)) g = parsedAmt * 15;
+    else if (['muỗng cà phê', 'thìa cà phê', 'tsp', 'muỗng cafe', 'thìa cafe'].includes(cleanUnitStr)) g = parsedAmt * 5;
+    else if (cleanUnitStr === 'nhúm') g = parsedAmt * 2;
+    else if (['hộp', 'gói'].includes(cleanUnitStr)) g = parsedAmt * 500;
+    else if (['cốc', 'bát con', 'bát'].includes(cleanUnitStr)) g = parsedAmt * 200;
+    else if (cleanUnitStr === 'ml') g = parsedAmt * 1;
+    return { cleanName, baseAmount: g, baseUnit: 'g', family: 'weight', groupKey: `${lowerName}__weight` };
+  }
+
+  // 5. Liquid seasonings unification (Nước mắm, Nước tương, Dầu ăn, Dầu hào, Dầu ô-liu, Giấm gạo)
+  const isLiquidSeasoning = ['nước mắm', 'nước tương', 'dầu hào', 'dầu ăn', 'dầu ô-liu', 'giấm gạo'].includes(lowerName);
+  if (isLiquidSeasoning) {
+    let ml = parsedAmt * 15;
+    if (['muỗng canh', 'thìa canh', 'tbsp'].includes(cleanUnitStr)) ml = parsedAmt * 15;
+    else if (['muỗng cà phê', 'thìa cà phê', 'tsp'].includes(cleanUnitStr)) ml = parsedAmt * 5;
+    return { cleanName, baseAmount: ml, baseUnit: 'ml', family: 'volume', groupKey: `${lowerName}__volume` };
+  }
+
+  // 6. Produce Count-to-Weight Equivalence (Check BEFORE generic spoons!)
+  const prod = PRODUCE_UNIT_WEIGHTS[lowerName];
+  if (prod) {
+    let unitG = prod.grams;
+    if (cleanUnitStr === prod.unit) unitG = prod.grams;
+    else if (prod.alt && prod.alt[cleanUnitStr]) unitG = prod.alt[cleanUnitStr];
+    
     return {
       cleanName,
-      baseAmount: parsedAmt * unitGrams,
+      baseAmount: parsedAmt * unitG,
       baseUnit: 'g',
       family: 'weight',
       groupKey: `${lowerName}__weight`,
@@ -397,8 +463,19 @@ export function normalizeIngredientUnitAndAmount(
     };
   }
 
-  // 5. Default / Other count units: quả, củ, bó, miếng, tép, nhánh, bát, gói, hộp...
-  const safeUnit = rawUnit && rawUnit.trim() ? rawUnit.trim() : 'phần';
+  // 7. Generic Spoons for other items
+  if (['muỗng canh', 'thìa canh', 'tbsp'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt, baseUnit: 'muỗng canh', family: 'spoon_soup', groupKey: `${lowerName}__spoon_soup` };
+  }
+  if (['muỗng cà phê', 'thìa cà phê', 'tsp', 'muỗng cafe', 'thìa cafe'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt, baseUnit: 'muỗng cà phê', family: 'spoon_tea', groupKey: `${lowerName}__spoon_tea` };
+  }
+  if (['muỗng', 'thìa'].includes(cleanUnitStr)) {
+    return { cleanName, baseAmount: parsedAmt, baseUnit: 'muỗng', family: 'spoon', groupKey: `${lowerName}__spoon` };
+  }
+
+  // 8. Default / Other count units: quả, củ, bó, miếng, tép, nhánh, bát, gói, hộp...
+  const safeUnit = cleanUnitStr || 'phần';
   return {
     cleanName,
     baseAmount: parsedAmt,

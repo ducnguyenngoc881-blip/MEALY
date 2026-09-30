@@ -28,9 +28,11 @@ import {
   Plus,
   Minus,
   AlertCircle,
-  Lock
+  Smartphone,
+  Trash2
 } from 'lucide-react';
 import { VietnameseMealSet, Recipe, StoreChannel, CollabCartItem, CollabShopper } from '../types';
+import { scaleCost } from '../utils/currency';
 import { copyTextToClipboard } from './CateringPartyPlanner';
 import { FridgeLeftoverModal } from './FridgeLeftoverModal';
 import { SHOPPER_PALETTE, getShopperStyle, formatTtlRemaining } from '../services/collabGroceryService';
@@ -127,7 +129,8 @@ import {
   normalizeIngredientUnitAndAmount,
   formatDisplayAmountAndUnit,
   PRODUCE_UNIT_WEIGHTS,
-  NormalizedIngredientInfo
+  NormalizedIngredientInfo,
+  isCommonPantryStaple
 } from '../utils/ingredientNormalizer';
 
 export {
@@ -136,7 +139,8 @@ export {
   parseAmount,
   normalizeIngredientUnitAndAmount,
   formatDisplayAmountAndUnit,
-  PRODUCE_UNIT_WEIGHTS
+  PRODUCE_UNIT_WEIGHTS,
+  isCommonPantryStaple
 };
 export type { NormalizedIngredientInfo };
 
@@ -197,6 +201,213 @@ export function getOptimalStoreChannel(name: string, category: string): Exclude<
   return 'cho-dan-sinh';
 }
 
+// Grocery Aisle Categories for intuitive real-world shopping navigation
+export type GroceryAisleCategory = 'all' | 'thit' | 'hai-san' | 'rau-cu' | 'trai-cay' | 'gia-vi-kho';
+
+export interface AisleCategoryConfig {
+  id: GroceryAisleCategory;
+  name: string;
+  shortName: string;
+  icon: string;
+  badgeBg: string;
+  badgeText: string;
+  badgeBorder: string;
+  tagline: string;
+}
+
+export const GROCERY_AISLES: Record<Exclude<GroceryAisleCategory, 'all'>, AisleCategoryConfig> = {
+  'thit': {
+    id: 'thit',
+    name: 'Thịt & Trứng',
+    shortName: 'Thịt/Trứng',
+    icon: '🥩',
+    badgeBg: 'bg-rose-50 dark:bg-rose-950/40',
+    badgeText: 'text-rose-700 dark:text-rose-300',
+    badgeBorder: 'border-rose-200/60 dark:border-rose-800/50',
+    tagline: 'Thịt heo, bò, gà, vịt, trứng'
+  },
+  'hai-san': {
+    id: 'hai-san',
+    name: 'Hải Sản',
+    shortName: 'Hải Sản',
+    icon: '🦐',
+    badgeBg: 'bg-sky-50 dark:bg-sky-950/40',
+    badgeText: 'text-sky-700 dark:text-sky-300',
+    badgeBorder: 'border-sky-200/60 dark:border-sky-800/50',
+    tagline: 'Cá tươi, tôm, cua, mực, nghêu'
+  },
+  'rau-cu': {
+    id: 'rau-cu',
+    name: 'Rau Củ & Nấm',
+    shortName: 'Rau Củ',
+    icon: '🥬',
+    badgeBg: 'bg-emerald-50 dark:bg-emerald-950/40',
+    badgeText: 'text-emerald-700 dark:text-emerald-300',
+    badgeBorder: 'border-emerald-200/60 dark:border-emerald-800/50',
+    tagline: 'Rau tươi, củ quả, hành tỏi, nấm'
+  },
+  'trai-cay': {
+    id: 'trai-cay',
+    name: 'Trái Cây',
+    shortName: 'Trái Cây',
+    icon: '🍎',
+    badgeBg: 'bg-amber-50 dark:bg-amber-950/40',
+    badgeText: 'text-amber-700 dark:text-amber-300',
+    badgeBorder: 'border-amber-200/60 dark:border-amber-800/50',
+    tagline: 'Hoa quả tươi, dứa, sấu, tráng miệng'
+  },
+  'gia-vi-kho': {
+    id: 'gia-vi-kho',
+    name: 'Gia Vị & Đồ Khô',
+    shortName: 'Gia Vị/Khô',
+    icon: '🧂',
+    badgeBg: 'bg-purple-50 dark:bg-purple-950/40',
+    badgeText: 'text-purple-700 dark:text-purple-300',
+    badgeBorder: 'border-purple-200/60 dark:border-purple-800/50',
+    tagline: 'Gia vị, dầu ăn, bún khô, gạo, đồ hộp'
+  }
+};
+
+// Pure Helper: Classify ingredients into real-life grocery aisles
+export function getGroceryAisleCategory(name: string, rawCategory?: string): Exclude<GroceryAisleCategory, 'all'> {
+  const lower = (name || '').toLowerCase().trim();
+
+  // 1. Trái Cây (Fruits)
+  if (
+    lower.includes('dứa') ||
+    lower.includes('thơm') ||
+    lower.includes('chuối') ||
+    lower.includes('sấu') ||
+    lower.includes('xoài') ||
+    lower.includes('bưởi') ||
+    lower.includes('cam') ||
+    lower.includes('táo') ||
+    lower.includes('dưa hấu') ||
+    lower.includes('thanh long') ||
+    lower.includes('đu đủ') ||
+    lower.includes('chanh dây') ||
+    lower.includes('quýt') ||
+    lower.includes('chôm chôm') ||
+    lower.includes('nhãn') ||
+    lower.includes('vải') ||
+    lower.includes('nho') ||
+    lower.includes('dâu') ||
+    lower.includes('bơ sáp') ||
+    lower.includes('dừa tươi') ||
+    lower.includes('dừa xiêm')
+  ) {
+    return 'trai-cay';
+  }
+
+  // 2. Hải Sản (Seafood & Fish)
+  const isFish = (lower.includes('cá ') || lower.startsWith('cá') || lower.endsWith(' cá') || lower === 'cá') &&
+    !lower.includes('cà chua') && !lower.includes('cà pháo') && !lower.includes('cà tím');
+  
+  if (
+    isFish ||
+    lower.includes('tôm') ||
+    lower.includes('tép') ||
+    lower.includes('mực') ||
+    lower.includes('bạch tuộc') ||
+    lower.includes('cua') ||
+    lower.includes('ghẹ') ||
+    lower.includes('rạm') ||
+    lower.includes('nghêu') ||
+    lower.includes('ngao') ||
+    lower.includes('sò') ||
+    lower.includes('hàu') ||
+    lower.includes('ốc') ||
+    lower.includes('hến') ||
+    lower.includes('chả cá') ||
+    lower.includes('chả mực') ||
+    lower.includes('lươn') ||
+    lower.includes('bào ngư')
+  ) {
+    return 'hai-san';
+  }
+
+  // 3. Thịt & Trứng (Meat, Poultry, Eggs)
+  const isChicken = (lower.includes('gà') || lower.includes('vịt') || lower.includes('chim') || lower.includes('ngan')) &&
+    !lower.includes('nấm');
+
+  if (
+    lower.includes('thịt') ||
+    lower.includes('heo') ||
+    lower.includes('lợn') ||
+    lower.includes('bò') ||
+    isChicken ||
+    lower.includes('sườn') ||
+    lower.includes('ba chỉ') ||
+    lower.includes('ba rọi') ||
+    lower.includes('nạc') ||
+    lower.includes('thăn') ||
+    lower.includes('chân giò') ||
+    lower.includes('móng giò') ||
+    lower.includes('giò lụa') ||
+    lower.includes('chả lụa') ||
+    lower.includes('xúc xích') ||
+    lower.includes('lạp xưởng') ||
+    lower.includes('pate') ||
+    lower.includes('trứng')
+  ) {
+    return 'thit';
+  }
+
+  // 4. Gia Vị & Đồ Khô (Sauces, Spices & Dry Pantry)
+  if (
+    rawCategory === 'gia-vi' ||
+    rawCategory === 'do-kho' ||
+    lower.includes('nước mắm') ||
+    lower.includes('dầu hào') ||
+    lower.includes('dầu mè') ||
+    lower.includes('dầu ăn') ||
+    lower.includes('nước tương') ||
+    lower.includes('xì dầu') ||
+    lower.includes('sa tế') ||
+    lower.includes('mắm tôm') ||
+    lower.includes('mắm nêm') ||
+    lower.includes('mắm tép') ||
+    lower.includes('mắm ruốc') ||
+    lower.includes('tương bần') ||
+    lower.includes('tương ớt') ||
+    lower.includes('tương cà') ||
+    lower.includes('hạt nêm') ||
+    lower.includes('bột ngọt') ||
+    lower.includes('mì chính') ||
+    lower.includes('muối') ||
+    lower.includes('đường') ||
+    lower.includes('tiêu') ||
+    lower.includes('giấm') ||
+    lower.includes('ngũ vị hương') ||
+    lower.includes('bột cà ri') ||
+    lower.includes('bột nghệ') ||
+    lower.includes('hoa hồi') ||
+    lower.includes('quế') ||
+    lower.includes('mè rang') ||
+    lower.includes('vừng') ||
+    lower.includes('lạc rang') ||
+    lower.includes('đậu phộng') ||
+    lower.includes('bột năng') ||
+    lower.includes('bột bắp') ||
+    lower.includes('bột chiên') ||
+    lower.includes('bột mì') ||
+    lower.includes('bún khô') ||
+    lower.includes('miến') ||
+    lower.includes('phở khô') ||
+    lower.includes('mì gói') ||
+    lower.includes('bánh tráng') ||
+    lower.includes('bánh mì') ||
+    lower.includes('gạo') ||
+    lower.includes('nếp') ||
+    lower.includes('nước cốt dừa')
+  ) {
+    return 'gia-vi-kho';
+  }
+
+  // 5. Default everything else (fresh vegetables, herbs, aromatics, mushrooms, tofu) -> 'rau-cu'
+  return 'rau-cu';
+}
+
 export interface ProcessedGroceryItem {
   id: string;
   name: string;
@@ -207,8 +418,10 @@ export interface ProcessedGroceryItem {
   type: 'fresh' | 'pantry';
   cost: number;
   storeChannel: Exclude<StoreChannel, 'all'>;
+  aisleCategory: Exclude<GroceryAisleCategory, 'all'>;
   dishCount?: number;
   dishNames?: string[];
+  isCustom?: boolean;
 }
 
 // Pure Helper: Generate formatted Zalo shopping export text
@@ -277,7 +490,10 @@ export function generateZaloShoppingText(
 export const GroceryList: React.FC = () => {
   const { 
     weeklyPlan, 
+    servings,
     extraGroceryItems, 
+    addExtraGroceryItems,
+    removeExtraGroceryItem,
     clearExtraGrocery, 
     showToast,
     groceryCheckedItems,
@@ -302,11 +518,14 @@ export const GroceryList: React.FC = () => {
     decrementCollabItemBuyer,
     isRegistered,
     openAuthModal,
-    openConfirmModal
+    openConfirmModal,
+    isWebGuestViewer,
+    openDownloadAppModal
   } = useMealWise();
 
   const [copied, setCopied] = useState<boolean>(false);
-  const [storeFilter, setStoreFilter] = useState<StoreChannel>('all');
+  const [aisleFilter, setAisleFilter] = useState<GroceryAisleCategory>('all');
+  const [storeFilter, setStoreFilter] = useState<StoreChannel>('all'); // Retained for online price simulation & Zalo export
   const [collabFilter, setCollabFilter] = useState<'all' | 'unclaimed' | 'mine' | 'others'>('all');
   const [showPriceSimulation, setShowPriceSimulation] = useState<boolean>(false);
   const [isFridgeModalOpen, setIsFridgeModalOpen] = useState<boolean>(false);
@@ -315,6 +534,98 @@ export const GroceryList: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [isLobbyOpen, setIsLobbyOpen] = useState<boolean>(false);
   const lobbyRef = useRef<HTMLDivElement | null>(null);
+
+  // In-cart items expansion states per aisle category (pushed to bottom)
+  const [expandedAisleCarts, setExpandedAisleCarts] = useState<Record<string, boolean>>({
+    thit: true,
+    'hai-san': true,
+    'rau-cu': true,
+    'trai-cay': true,
+    'gia-vi-kho': true
+  });
+
+  const toggleAisleCart = (aisleId: string) => {
+    setExpandedAisleCarts(prev => ({ ...prev, [aisleId]: prev[aisleId] === false ? true : false }));
+  };
+
+  // Quick-Add custom grocery item state (for when household runs out of staples)
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState<boolean>(false);
+  const [customItemName, setCustomItemName] = useState<string>('');
+  const [customItemAmount, setCustomItemAmount] = useState<number>(1);
+  const [customItemUnit, setCustomItemUnit] = useState<string>('chai');
+  const [customItemCost, setCustomItemCost] = useState<number>(30000);
+  const [customItemStore, setCustomItemStore] = useState<Exclude<StoreChannel, 'all'>>('winmart');
+
+  // Quick 1-tap presets for depleted household pantry essentials
+  const DEPLETED_PANTRY_PRESETS: Array<{ name: string; amount: number; unit: string; cost: number; store: Exclude<StoreChannel, 'all'>; category: 'gia-vi' | 'thit-ca' | 'rau-cu' | 'do-kho' | 'khac' }> = [
+    { name: 'Nước mắm cá cơm', amount: 1, unit: 'chai', cost: 35000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Dầu ăn thực vật', amount: 1, unit: 'chai', cost: 45000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Hạt nêm thịt thăn', amount: 1, unit: 'gói', cost: 25000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Đường cát trắng', amount: 1, unit: 'kg', cost: 24000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Muối tinh sấy', amount: 1, unit: 'gói', cost: 8000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Tiêu đen xay', amount: 1, unit: 'lọ', cost: 22000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Nước tương đậu nành', amount: 1, unit: 'chai', cost: 20000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Tương ớt', amount: 1, unit: 'chai', cost: 16000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Trứng gà (vỉ 10 quả)', amount: 10, unit: 'quả', cost: 32000, store: 'cho-dan-sinh', category: 'thit-ca' },
+    { name: 'Gạo tẻ thơm ST25', amount: 5, unit: 'kg', cost: 160000, store: 'winmart', category: 'do-kho' }
+  ];
+
+  const handleAddPreset = (preset: typeof DEPLETED_PANTRY_PRESETS[0]) => {
+    addExtraGroceryItems([{
+      name: preset.name,
+      amount: preset.amount,
+      unit: preset.unit,
+      category: preset.category,
+      cost: preset.cost
+    }]);
+    showToast(`🛒 Đã thêm "${preset.name}" (${preset.amount} ${preset.unit}) vào giỏ đi chợ!`);
+  };
+
+  const handleAddCustomItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customItemName.trim()) {
+      showToast('⚠️ Vui lòng nhập tên món cần mua!');
+      return;
+    }
+    const cleanName = customItemName.trim();
+    addExtraGroceryItems([{
+      name: cleanName,
+      amount: Math.max(0.1, customItemAmount || 1),
+      unit: customItemUnit.trim() || 'phần',
+      category: 'khac',
+      cost: Math.max(0, customItemCost || 0)
+    }]);
+    showToast(`🛒 Đã thêm "${cleanName}" vào giỏ đi chợ tuần!`);
+    setCustomItemName('');
+    setCustomItemAmount(1);
+    setIsQuickAddOpen(false);
+  };
+
+  // Household Servings sanitization & scale (matches WeeklyBoard 100%)
+  const safeServings = Number.isFinite(servings) && (servings as number) > 0 
+    ? Math.min(20, Math.max(1, Math.round(servings as number))) 
+    : 4;
+  const scale = safeServings / 4;
+
+  const isMealSet = (item: any): item is VietnameseMealSet => {
+    return item && 'mainDish' in item;
+  };
+
+  const getDayCost = (day: typeof weeklyPlan[0]) => {
+    let cost = 0;
+    Object.values(day.meals).forEach(m => {
+      if (m) {
+        if (isMealSet(m)) cost += m.totalCostVnd;
+        else cost += m.estimatedCostVnd || 35000;
+      }
+    });
+    return scaleCost(cost, safeServings);
+  };
+
+  // The definitive target weekly budget from Weekly Plan
+  const expectedWeeklyPlanCost = weeklyPlan.reduce((sum, d) => sum + getDayCost(d), 0);
+  const extraItemsCost = (extraGroceryItems || []).reduce((sum, it) => sum + (it.cost || 0), 0);
+  const targetTotalGroceryCost = expectedWeeklyPlanCost + extraItemsCost;
 
   // Accumulate ingredients with unit normalization & mathematically correct cost tracking
   interface AccumulatorEntry {
@@ -327,102 +638,121 @@ export const GroceryList: React.FC = () => {
     storeChannel: Exclude<StoreChannel, 'all'>;
     dishNames: string[];
     dishCount: number;
+    isCustom?: boolean;
   }
 
   const itemsMap: Record<string, AccumulatorEntry> = {};
 
-  const processRecipe = (recipe: Recipe) => {
-    if (!recipe || !recipe.ingredients || recipe.ingredients.length === 0) return;
-    const ingCount = Math.max(1, recipe.ingredients.length);
-    const costPerIng = Math.round((recipe.estimatedCostVnd || 30000) / ingCount);
-    const recipeTitle = recipe.title || 'Món ăn';
+  const addIngredientToAccumulator = (
+    rawName: string,
+    rawAmount: number | string,
+    rawUnit: string,
+    rawCategory: any,
+    allocatedCost: number,
+    recipeTitle: string,
+    isExtra: boolean = false
+  ) => {
+    // Exclude common household pantry staples (sugar, salt, fish sauce, cooking oil, etc.)
+    // as ordinary families already keep these stocked in bulk.
+    // However, if the user explicitly added this item (e.g. ran out of fish sauce), allow it!
+    if (!isExtra && isCommonPantryStaple(rawName, rawCategory)) {
+      return;
+    }
 
-    recipe.ingredients.forEach(rawIng => {
-      // Decompose bundled ingredients (e.g., "Cà rốt & Khoai tây" -> "Cà rốt" and "Khoai tây")
-      const subItems = decomposeBundledIngredients(rawIng.name, rawIng.amount, rawIng.unit, rawIng.category, costPerIng);
-      
-      subItems.forEach(ing => {
-        const norm = normalizeIngredientUnitAndAmount(ing.name, ing.amount, ing.unit);
-        const isFresh = ing.category === 'thit-ca' || ing.category === 'rau-cu';
-        const channel = getOptimalStoreChannel(norm.cleanName, ing.category);
+    // Scale amount by safeServings (base recipes are 4 servings; custom additions are preserved as-is)
+    const baseNumeric = typeof rawAmount === 'number' ? rawAmount : (parseFloat(rawAmount as string) || 1);
+    const scaledAmount = isExtra ? baseNumeric : baseNumeric * scale;
+    const subItems = decomposeBundledIngredients(rawName, scaledAmount, rawUnit, rawCategory, allocatedCost);
 
-        if (!itemsMap[norm.groupKey]) {
-          itemsMap[norm.groupKey] = {
-            cleanName: norm.cleanName,
-            baseAmount: norm.baseAmount,
-            baseUnit: norm.baseUnit,
-            family: norm.family,
-            category: (ing.category || (isFresh ? 'rau-cu' : 'do-kho')) as any,
-            cost: ing.cost,
-            storeChannel: channel,
-            dishNames: [recipeTitle],
-            dishCount: 1
-          };
-        } else {
-          // Mathematically correct aggregation: add additional amount and its corresponding recipe cost fraction
-          itemsMap[norm.groupKey].baseAmount += norm.baseAmount;
-          itemsMap[norm.groupKey].cost += ing.cost;
-          if (!itemsMap[norm.groupKey].dishNames.includes(recipeTitle)) {
-            itemsMap[norm.groupKey].dishNames.push(recipeTitle);
-          }
-          itemsMap[norm.groupKey].dishCount += 1;
+    subItems.forEach(ing => {
+      const norm = normalizeIngredientUnitAndAmount(ing.name, ing.amount, ing.unit);
+      const isFresh = ing.category === 'thit-ca' || ing.category === 'rau-cu';
+      const channel = getOptimalStoreChannel(norm.cleanName, ing.category);
+
+      const canonicalNameLower = norm.cleanName.toLowerCase();
+      let targetKey = norm.groupKey;
+      if (!itemsMap[targetKey]) {
+        const matchKey = Object.keys(itemsMap).find(k => itemsMap[k].cleanName.toLowerCase() === canonicalNameLower);
+        if (matchKey) {
+          targetKey = matchKey;
         }
-      });
+      }
+
+      if (!itemsMap[targetKey]) {
+        itemsMap[targetKey] = {
+          cleanName: norm.cleanName,
+          baseAmount: norm.baseAmount,
+          baseUnit: norm.baseUnit,
+          family: norm.family,
+          category: (ing.category || (isFresh ? 'rau-cu' : 'do-kho')) as any,
+          cost: ing.cost,
+          storeChannel: channel,
+          dishNames: [recipeTitle],
+          dishCount: 1,
+          isCustom: isExtra
+        };
+      } else {
+        itemsMap[targetKey].baseAmount += norm.baseAmount;
+        itemsMap[targetKey].cost += ing.cost;
+        if (isExtra) itemsMap[targetKey].isCustom = true;
+        if (!itemsMap[targetKey].dishNames.includes(recipeTitle)) {
+          itemsMap[targetKey].dishNames.push(recipeTitle);
+        }
+        itemsMap[targetKey].dishCount += 1;
+      }
     });
   };
 
-  // Traverse weekly plan
+  // Traverse weekly plan by meal slot to ensure 100% budget harmonization with WeeklyBoard
   weeklyPlan.forEach(day => {
     if (!day || !day.meals) return;
     Object.values(day.meals).forEach(meal => {
       if (!meal) return;
-      if ('mainDish' in meal) {
+      if (isMealSet(meal)) {
         const set = meal as VietnameseMealSet;
-        if (set.mainDish) processRecipe(set.mainDish);
-        if (set.soupDish) processRecipe(set.soupDish);
-        if (set.sideDish) processRecipe(set.sideDish);
+        const scaledSetBudget = scaleCost(set.totalCostVnd, safeServings);
+        const dishes = [set.mainDish, set.soupDish, set.sideDish].filter(Boolean) as Recipe[];
+        if (dishes.length === 0) return;
+
+        const sumDishEstimated = dishes.reduce((sum, d) => sum + (d.estimatedCostVnd || 35000), 0);
+        dishes.forEach(dish => {
+          const dishWeight = sumDishEstimated > 0 ? (dish.estimatedCostVnd || 35000) / sumDishEstimated : (1 / dishes.length);
+          const dishAllocatedBudget = scaledSetBudget * dishWeight;
+          const ingCount = Math.max(1, dish.ingredients?.length || 1);
+          const costPerIng = dishAllocatedBudget / ingCount;
+          const dishTitle = dish.title || set.title || 'Món ăn';
+
+          (dish.ingredients || []).forEach(rawIng => {
+            addIngredientToAccumulator(rawIng.name, rawIng.amount, rawIng.unit, rawIng.category, costPerIng, dishTitle, false);
+          });
+        });
       } else {
-        processRecipe(meal as Recipe);
+        const recipe = meal as Recipe;
+        const scaledRecipeBudget = scaleCost(recipe.estimatedCostVnd || 35000, safeServings);
+        const ingCount = Math.max(1, recipe.ingredients?.length || 1);
+        const costPerIng = scaledRecipeBudget / ingCount;
+        const recipeTitle = recipe.title || 'Món ăn';
+
+        (recipe.ingredients || []).forEach(rawIng => {
+          addIngredientToAccumulator(rawIng.name, rawIng.amount, rawIng.unit, rawIng.category, costPerIng, recipeTitle, false);
+        });
       }
     });
   });
 
-  // Also include extra ingredients (from Catering Party Planner)
+  // Also include extra ingredients (from Catering Party Planner or User Quick-Add)
   if (extraGroceryItems && Array.isArray(extraGroceryItems)) {
     extraGroceryItems.forEach(item => {
-      const subItems = decomposeBundledIngredients(item.name, item.amount, item.unit, item.category, item.cost || 0);
-      subItems.forEach(ing => {
-        const norm = normalizeIngredientUnitAndAmount(ing.name, ing.amount, ing.unit);
-        const channel = getOptimalStoreChannel(norm.cleanName, ing.category);
-
-        if (!itemsMap[norm.groupKey]) {
-          itemsMap[norm.groupKey] = {
-            cleanName: norm.cleanName,
-            baseAmount: norm.baseAmount,
-            baseUnit: norm.baseUnit,
-            family: norm.family,
-            category: ing.category,
-            cost: ing.cost,
-            storeChannel: channel,
-            dishNames: ['Tiệc / Catering'],
-            dishCount: 1
-          };
-        } else {
-          itemsMap[norm.groupKey].baseAmount += norm.baseAmount;
-          itemsMap[norm.groupKey].cost += ing.cost;
-          if (!itemsMap[norm.groupKey].dishNames.includes('Tiệc / Catering')) {
-            itemsMap[norm.groupKey].dishNames.push('Tiệc / Catering');
-          }
-          itemsMap[norm.groupKey].dishCount += 1;
-        }
-      });
+      addIngredientToAccumulator(item.name, item.amount, item.unit, item.category, item.cost || 0, 'Tự thêm', true);
     });
   }
 
-  // Convert accumulated map into clean processed grocery item list
+  // Convert accumulated map into clean processed grocery item list with 1,000 VND rounding
   const allList: ProcessedGroceryItem[] = Object.values(itemsMap).map(entry => {
     const formatted = formatDisplayAmountAndUnit(entry.baseAmount, entry.family, entry.baseUnit);
     const isFresh = entry.category === 'thit-ca' || entry.category === 'rau-cu';
+    const roundedCost = Math.round(entry.cost / 1000) * 1000 || (entry.cost > 0 ? 1000 : 0);
+    const aisleCat = getGroceryAisleCategory(entry.cleanName, entry.category);
     return {
       id: entry.cleanName,
       name: entry.cleanName,
@@ -431,25 +761,53 @@ export const GroceryList: React.FC = () => {
       displayAmount: formatted.displayStr,
       category: entry.category,
       type: isFresh ? 'fresh' : 'pantry',
-      cost: entry.cost,
+      cost: roundedCost,
       storeChannel: entry.storeChannel,
+      aisleCategory: aisleCat,
       dishCount: entry.dishCount,
-      dishNames: entry.dishNames
+      dishNames: entry.dishNames,
+      isCustom: entry.isCustom
     };
   });
 
-  // Sort list: keep stable order by category and name
+  // Reconcile rounding remainder against targetTotalGroceryCost to guarantee 100% exact match
+  if (allList.length > 0 && targetTotalGroceryCost > 0) {
+    const sumAll = allList.reduce((sum, it) => sum + it.cost, 0);
+    const remainder = targetTotalGroceryCost - sumAll;
+    if (remainder !== 0) {
+      // Find the highest cost item (e.g. main protein) and absorb rounding remainder
+      let maxItemIndex = 0;
+      for (let i = 1; i < allList.length; i++) {
+        if (allList[i].cost > allList[maxItemIndex].cost) {
+          maxItemIndex = i;
+        }
+      }
+      allList[maxItemIndex].cost += remainder;
+    }
+  }
+
+  // Sort list: Natural shopping aisle progression (Meat -> Seafood -> Vegetables -> Fruits -> Spices/Dry goods), then by Vietnamese name
+  const AISLE_ORDER: Record<Exclude<GroceryAisleCategory, 'all'>, number> = {
+    'thit': 1,
+    'hai-san': 2,
+    'rau-cu': 3,
+    'trai-cay': 4,
+    'gia-vi-kho': 5
+  };
+
   allList.sort((a, b) => {
-    if (a.type !== b.type) return a.type === 'fresh' ? -1 : 1;
+    const orderDiff = (AISLE_ORDER[a.aisleCategory] || 99) - (AISLE_ORDER[b.aisleCategory] || 99);
+    if (orderDiff !== 0) return orderDiff;
     return a.name.localeCompare(b.name, 'vi');
   });
 
   // Effective list: if connected to a collaborative room, use room items (preserves items for User B)
-  const isCollabActive = Boolean(isRegistered && collabRoom?.roomId);
+  const isCollabActive = Boolean(collabRoom?.roomId);
   const effectiveList: ProcessedGroceryItem[] = (isCollabActive && collabRoom?.items && collabRoom.items.length > 0)
     ? collabRoom.items.map(it => ({
         ...it,
-        storeChannel: (it.storeChannel as any) || 'cho-dan-sinh'
+        storeChannel: (it.storeChannel as any) || 'cho-dan-sinh',
+        aisleCategory: (it as any).aisleCategory || getGroceryAisleCategory(it.name, it.category)
       }))
     : allList;
 
@@ -503,10 +861,10 @@ export const GroceryList: React.FC = () => {
   const totalCount = effectiveList.length;
   const totalCostEstimate = effectiveList.reduce((sum, item) => sum + item.cost, 0);
 
-  // Filter by store channel AND collaborative assignment
+  // Filter by grocery aisle AND collaborative assignment
   const displayedList = effectiveList.filter(item => {
-    const channelMatch = storeFilter === 'all' || item.storeChannel === storeFilter;
-    if (!channelMatch) return false;
+    const aisleMatch = aisleFilter === 'all' || item.aisleCategory === aisleFilter;
+    if (!aisleMatch) return false;
 
     if (isCollabActive && collabRoom?.roomId && collabFilter !== 'all') {
       const info = getItemCheckInfo(item);
@@ -560,7 +918,17 @@ export const GroceryList: React.FC = () => {
     }
   };
 
-  // Store channel counts
+  // Grocery aisle counts
+  const aisleCounts: Record<GroceryAisleCategory, number> = {
+    'all': totalCount,
+    'thit': effectiveList.filter(i => i.aisleCategory === 'thit').length,
+    'hai-san': effectiveList.filter(i => i.aisleCategory === 'hai-san').length,
+    'rau-cu': effectiveList.filter(i => i.aisleCategory === 'rau-cu').length,
+    'trai-cay': effectiveList.filter(i => i.aisleCategory === 'trai-cay').length,
+    'gia-vi-kho': effectiveList.filter(i => i.aisleCategory === 'gia-vi-kho').length,
+  };
+
+  // Store channel counts (preserved for simulation & external exports)
   const channelCounts = {
     'all': totalCount,
     'cho-dan-sinh': effectiveList.filter(i => i.storeChannel === 'cho-dan-sinh').length,
@@ -569,9 +937,225 @@ export const GroceryList: React.FC = () => {
     'sap-doi-tac': effectiveList.filter(i => i.storeChannel === 'sap-doi-tac').length,
   };
 
+  // Pure Component Helper: Render an individual grocery row with crisp styling (no blur/opacity wash)
+  const renderGroceryItemRow = (item: ProcessedGroceryItem) => {
+    const checkInfo = getItemCheckInfo(item);
+    const isChecked = checkInfo.isChecked;
+    const store = STORE_CHANNELS[item.storeChannel];
+    const aisle = GROCERY_AISLES[item.aisleCategory];
+    const inFridge = pantryItems.find(p => 
+      p.name.toLowerCase().includes(item.name.toLowerCase()) || 
+      item.name.toLowerCase().includes(p.name.toLowerCase())
+    );
+
+    return (
+      <div
+        key={item.id}
+        onClick={() => handleToggle(item)}
+        className={`p-3 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-3 min-h-[52px] active:scale-[0.99] select-none ${
+          isChecked
+            ? 'bg-emerald-50/50 dark:bg-emerald-950/25 border-emerald-300/80 dark:border-emerald-800/60 shadow-2xs'
+            : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs'
+        }`}
+      >
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="shrink-0">
+            {isChecked ? (
+              <div 
+                className="w-5 h-5 rounded-lg flex items-center justify-center shadow-xs text-white transition-colors"
+                style={{ backgroundColor: checkInfo.checkedByColor || (checkInfo.isMine ? (collabUser.color || '#10b981') : '#8b5cf6') }}
+              >
+                <Check className="w-3.5 h-3.5 stroke-[3]" />
+              </div>
+            ) : (
+              <div className="w-5 h-5 rounded-lg border-2 border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-950" />
+            )}
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className={`text-xs font-extrabold block truncate ${
+                isChecked ? 'text-stone-700 dark:text-stone-200' : 'text-stone-900 dark:text-white'
+              }`}>
+                {item.name}
+              </span>
+
+              {item.isCustom && (
+                <span 
+                  className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-sky-500/15 text-sky-800 dark:text-sky-300 border border-sky-500/30 shrink-0" 
+                  title="Món bổ sung do bạn tự thêm"
+                >
+                  <span>✨ Tự thêm</span>
+                </span>
+              )}
+
+              {item.dishCount && item.dishCount > 1 && (
+                <span 
+                  className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 shrink-0" 
+                  title={`Dùng cho ${item.dishCount} món: ${item.dishNames?.join(', ')}`}
+                >
+                  <span>{item.dishCount} món</span>
+                </span>
+              )}
+
+              {isChecked && (
+                <span className={`inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border ${
+                  checkInfo.isMine 
+                    ? 'bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-500/40' 
+                    : `${checkInfo.style.badgeBg} ${checkInfo.style.badgeText} ${checkInfo.style.badgeBorder}`
+                }`}>
+                  <UserCheck className="w-2.5 h-2.5 shrink-0" />
+                  <span>{checkInfo.isMine ? '✓ Đã vào giỏ' : `${checkInfo.checkedBy || 'Đã mua'}`}</span>
+                </span>
+              )}
+
+              {checkInfo.buyerCount > 1 && (
+                <span className="inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-500/35 animate-pulse">
+                  <Users className="w-2.5 h-2.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <span>{checkInfo.buyerCount} người mua trùng!</span>
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap mt-0.5">
+              <span className={`text-[10px] font-semibold ${
+                isChecked ? 'text-emerald-700 dark:text-emerald-400' : 'text-stone-500 dark:text-stone-400'
+              }`}>
+                ~{(item.cost || 0).toLocaleString('vi-VN')} đ
+              </span>
+
+              {item.dishNames && item.dishNames.length > 1 && (
+                <span 
+                  className="text-[9.5px] text-stone-400 dark:text-stone-500 truncate max-w-[170px] sm:max-w-xs" 
+                  title={`Dùng cho: ${item.dishNames.join(', ')}`}
+                >
+                  • {item.dishCount} món ({item.dishNames.slice(0, 2).join(', ')}{item.dishNames.length > 2 ? '...' : ''})
+                </span>
+              )}
+
+              {inFridge && (
+                <span 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsFridgeModalOpen(true);
+                  }}
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 hover:bg-sky-100 px-1.5 py-0.2 rounded-md border border-sky-200 dark:border-sky-800 transition-colors shrink-0"
+                  title="Bấm để xem chi tiết trong tủ lạnh"
+                >
+                  <span>🧊 Có sẵn: {inFridge.quantity}</span>
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 shrink-0">
+          {/* Grocery aisle category badge: compact icon on mobile, full text on tablet+ */}
+          <span className={`text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-lg border ${aisle.badgeBg} ${aisle.badgeText} ${aisle.badgeBorder}`}>
+            <span>{aisle.icon}</span>
+            <span className="hidden sm:inline ml-1">{aisle.shortName}</span>
+          </span>
+
+          {/* Normalized Quantity badge */}
+          <span className="text-[11px] font-bold text-stone-700 dark:text-stone-300 bg-stone-100 dark:bg-stone-800 px-2 sm:px-2.5 py-1 rounded-xl border border-stone-200 dark:border-stone-700 whitespace-nowrap">
+            {item.displayAmount}
+          </span>
+
+          {/* Custom Item Delete Button */}
+          {item.isCustom && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                removeExtraGroceryItem(item.name);
+                showToast(`🗑️ Đã xóa "${item.name}"`);
+              }}
+              className="w-7 h-7 rounded-xl flex items-center justify-center text-stone-400 hover:text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+              title="Xóa món tự thêm này"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+
+          {/* Multi-buyer Plus Button & Counter */}
+          <div className="flex items-center gap-1">
+            {checkInfo.buyerCount > 1 && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDecrementBuyer(item);
+                }}
+                className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-rose-500/20 text-slate-600 dark:text-slate-300 hover:text-rose-600 text-xs font-black flex items-center justify-center border border-slate-300 dark:border-slate-700 transition-all active:scale-90 cursor-pointer"
+                title="Bỏ bớt 1 người mua trùng"
+              >
+                <Minus className="w-3 h-3 stroke-[3]" />
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleIncrementBuyer(item);
+              }}
+              className={`h-7 px-2 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black transition-all active:scale-90 border shadow-xs cursor-pointer ${
+                checkInfo.buyerCount > 1
+                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-400 shadow-amber-500/20'
+                  : isChecked
+                  ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border-emerald-500/40'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700'
+              }`}
+              title="Đánh dấu thêm người mua món này (nhiều người cùng mua)"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[3]" />
+              {checkInfo.buyerCount > 1 && (
+                <span className="flex items-center gap-0.5 font-black">
+                  <Users className="w-2.5 h-2.5" />
+                  <span>{checkInfo.buyerCount}</span>
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-4">
       
+      {/* Web Guest Viewer Mode Callout Banner */}
+      {isWebGuestViewer && (
+        <div className="p-3.5 sm:p-4 rounded-3xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-amber-500/10 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs animate-fade-in">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30 shadow-2xs">
+              <Smartphone className="w-5 h-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="font-black text-stone-900 dark:text-white text-xs">
+                  Chế Độ Khách Xem Đi Chợ (Web Sheet)
+                </span>
+                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300">
+                  Live Sync
+                </span>
+              </div>
+              <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-0.5 leading-snug">
+                Bạn đang xem & cùng tích chọn mua chung. Để tự động lên thực đơn 7 ngày, mâm cơm 3 món & quản lý tủ lạnh, hãy cài app MealWise.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => openDownloadAppModal()}
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs flex items-center justify-center gap-1.5 shrink-0 shadow-md shadow-emerald-600/20 active:scale-95 transition-all cursor-pointer self-start sm:self-auto"
+          >
+            <Smartphone className="w-3.5 h-3.5" />
+            <span>Tải App MealWise</span>
+          </button>
+        </div>
+      )}
+
       {/* Header Banner */}
       <div className="p-4 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -584,15 +1168,24 @@ export const GroceryList: React.FC = () => {
             {/* Smart Fridge & Leftovers Button */}
             <button
               type="button"
-              onClick={() => setActiveTab('pantry')}
+              onClick={() => {
+                if (isWebGuestViewer) {
+                  openDownloadAppModal('Tủ Lạnh & Gợi Ý Món Vét Tủ');
+                  return;
+                }
+                setActiveTab('pantry');
+              }}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
               title="Xem tủ lạnh, kiểm tra đồ thừa và nguyên liệu sẵn có"
             >
               <span className="text-xs">🧊</span>
               <span>Tủ Lạnh & Đồ Thừa</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] font-black">
-                {pantryItems.length}
-              </span>
+              {isWebGuestViewer && <span className="text-[9px] text-amber-600 dark:text-amber-400 font-black">🔒 App</span>}
+              {!isWebGuestViewer && (
+                <span className="px-1.5 py-0.2 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] font-black">
+                  {pantryItems.length}
+                </span>
+              )}
             </button>
 
             {/* Online Price Simulation Button */}
@@ -606,6 +1199,22 @@ export const GroceryList: React.FC = () => {
               <span>Mô Phỏng Giá Online</span>
               {showPriceSimulation ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
             </button>
+
+            {/* Quick-Add Depleted Pantry Essentials Button */}
+            <button
+              type="button"
+              onClick={() => setIsQuickAddOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500 hover:bg-amber-400 text-stone-950 text-[11px] font-black transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
+              title="Bổ sung món hoặc gia vị bếp vừa hết vào danh sách đi chợ tuần"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[3]" />
+              <span>+ Thêm Món / Gia Vị Hết</span>
+              {(extraGroceryItems || []).length > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full bg-stone-900 text-white text-[10px] font-black">
+                  +{(extraGroceryItems || []).length}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
@@ -614,8 +1223,25 @@ export const GroceryList: React.FC = () => {
             Danh Sách Đi Chợ Thông Minh
           </h1>
           <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed mt-0.5">
-            Tự động gộp nguyên liệu trùng lặp, chuẩn hóa đơn vị và phân luồng theo 4 kênh mua sắm tối ưu.
+            Tự động gộp nguyên liệu trùng lặp, chuẩn hóa đơn vị và phân luồng theo quầy mua sắm tối ưu.
           </p>
+        </div>
+
+        {/* Smart Pantry Exemption Reassurance Banner with direct pop-up trigger */}
+        <div className="flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-2xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-[11.5px] text-amber-900 dark:text-amber-200">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-sm shrink-0">✨</span>
+            <p className="leading-snug truncate sm:whitespace-normal">
+              Đã tự động <strong>ẩn gia vị phổ thông có sẵn</strong> trong bếp (mắm, muối, đường, dầu ăn...).
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsQuickAddOpen(true)}
+            className="px-2.5 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-[11px] font-black shrink-0 transition-all active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap"
+          >
+            + Bổ sung
+          </button>
         </div>
 
         <div className="pt-2 flex items-center justify-between text-xs text-stone-600 dark:text-stone-300 border-t border-stone-100 dark:border-stone-800 font-medium">
@@ -790,6 +1416,175 @@ export const GroceryList: React.FC = () => {
         </div>
       )}
 
+      {/* STREAMLINED POP-UP BANNER / MODAL: QUICK ADD DEPLETED ESSENTIALS & CUSTOM ITEMS */}
+      {isQuickAddOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs animate-fade-in"
+          onClick={() => setIsQuickAddOpen(false)}
+        >
+          <div 
+            className="w-full max-w-lg max-h-[88vh] bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xl rounded-t-[28px] sm:rounded-3xl flex flex-col overflow-hidden animate-slideUp sm:animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Mobile drag handle */}
+            <div className="pt-2.5 pb-1 sm:hidden flex justify-center">
+              <div className="w-10 h-1 rounded-full bg-stone-300 dark:bg-stone-700" />
+            </div>
+
+            {/* Modal Header */}
+            <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between gap-3 shrink-0">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 rounded-2xl bg-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-2xs">
+                  <Plus className="w-4 h-4 stroke-[3]" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-xs sm:text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider truncate">
+                    Bổ Sung Nhu Yếu Phẩm & Gia Vị Hết
+                  </h3>
+                  <p className="text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                    Gom tất cả vào 1 chuyến đi chợ tuần duy nhất, không lo quên đồ
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsQuickAddOpen(false)}
+                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                title="Đóng cửa sổ"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Scrollable Content */}
+            <div className="p-4 sm:p-5 overflow-y-auto space-y-4">
+              
+              {/* SECTION 1: CUSTOM ITEM INPUT (QUICK FORM) */}
+              <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700/60 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+                    <span>✍️</span> Tự nhập món / đồ gia dụng bất kỳ
+                  </span>
+                  <span className="text-[10px] text-stone-400 dark:text-stone-500">
+                    Thêm tự do
+                  </span>
+                </div>
+
+                <form onSubmit={handleAddCustomItem} className="space-y-2">
+                  <input
+                    type="text"
+                    placeholder="Ví dụ: Giấy ăn, Cà phê lon, Nước rửa chén, Bánh mì..."
+                    value={customItemName}
+                    onChange={(e) => setCustomItemName(e.target.value)}
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:border-amber-500 text-stone-900 dark:text-white placeholder:text-stone-400 shadow-2xs"
+                  />
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="col-span-1">
+                      <input
+                        type="number"
+                        min="0.1"
+                        step="0.5"
+                        placeholder="Số lượng"
+                        value={customItemAmount}
+                        onChange={(e) => setCustomItemAmount(parseFloat(e.target.value) || 1)}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:border-amber-500 text-stone-900 dark:text-white text-center shadow-2xs"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <input
+                        type="text"
+                        placeholder="Đơn vị (chai, gói...)"
+                        value={customItemUnit}
+                        onChange={(e) => setCustomItemUnit(e.target.value)}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:border-amber-500 text-stone-900 dark:text-white text-center shadow-2xs"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <button
+                        type="submit"
+                        className="w-full h-full min-h-[36px] px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs flex items-center justify-center gap-1 transition-all active:scale-95 shadow-xs cursor-pointer whitespace-nowrap"
+                      >
+                        <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                        <span>Thêm Vào Giỏ</span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              {/* SECTION 2: 1-TAP QUICK ADD FOR DEPLETED PANTRY STAPLES */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between px-0.5">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+                    <span>⚡</span> Bổ sung nhanh 1 chạm (gia vị hay hết):
+                  </span>
+                  <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold">
+                    Chạm để thêm
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-1.5">
+                  {DEPLETED_PANTRY_PRESETS.map((preset, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleAddPreset(preset)}
+                      className="flex items-center justify-between p-2 rounded-xl bg-stone-50 hover:bg-amber-50/80 dark:bg-stone-800/60 dark:hover:bg-amber-950/40 border border-stone-200/80 dark:border-stone-700/80 hover:border-amber-400 text-stone-900 dark:text-stone-100 text-left transition-all active:scale-95 cursor-pointer shadow-2xs group"
+                    >
+                      <div className="min-w-0 pr-1">
+                        <span className="text-xs font-bold block truncate group-hover:text-amber-800 dark:group-hover:text-amber-300">
+                          {preset.name}
+                        </span>
+                        <span className="text-[10px] text-stone-500 dark:text-stone-400 block truncate">
+                          {preset.amount} {preset.unit} • ~{(preset.cost / 1000).toFixed(0)}k
+                        </span>
+                      </div>
+                      <div className="w-5 h-5 rounded-lg bg-amber-500/20 group-hover:bg-amber-500 text-amber-700 group-hover:text-stone-950 flex items-center justify-center shrink-0 transition-colors">
+                        <Plus className="w-3 h-3 stroke-[3]" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Added Custom Items notification */}
+              {(extraGroceryItems || []).length > 0 && (
+                <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center justify-between gap-2">
+                  <span>
+                    ✓ Đã thêm <strong>{(extraGroceryItems || []).length} món bổ sung</strong> vào giỏ tuần này!
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsQuickAddOpen(false)}
+                    className="font-bold underline cursor-pointer"
+                  >
+                    Xem giỏ hàng
+                  </button>
+                </div>
+              )}
+
+            </div>
+
+            {/* Modal Bottom Action Bar */}
+            <div className="p-3 sm:p-4 border-t border-stone-100 dark:border-stone-800 bg-stone-50/80 dark:bg-stone-900/80 flex items-center justify-between gap-2 shrink-0 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]">
+              <span className="text-[11px] text-stone-500 dark:text-stone-400">
+                {(extraGroceryItems || []).length > 0 
+                  ? `Đang có ${(extraGroceryItems || []).length} món tự thêm`
+                  : 'Chưa thêm món bổ sung nào'}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsQuickAddOpen(false)}
+                className="px-4 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-950 font-bold text-xs hover:bg-stone-800 dark:hover:bg-white active:scale-95 transition-all cursor-pointer"
+              >
+                Xong & Xem Giỏ Hàng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Catering Sync Notification Banner */}
       {extraGroceryItems && extraGroceryItems.length > 0 && (
         <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-2">
@@ -818,16 +1613,18 @@ export const GroceryList: React.FC = () => {
       {/* COMPACT COLLAB STATUS PILL (WHEN LOBBY IS CLOSED) */}
       {isCollabActive && collabRoom && !isLobbyOpen && (
         <div 
-          onClick={() => {
-            setIsLobbyOpen(true);
-            setTimeout(() => {
-              lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 50);
-          }}
-          className="p-3 px-4 rounded-2xl bg-amber-500/15 dark:bg-amber-950/40 border border-amber-500/30 flex items-center justify-between gap-2 cursor-pointer hover:bg-amber-500/25 transition-all text-xs shadow-xs animate-fade-in"
-          title="Bấm để mở sảnh phòng mua chung"
+          className="p-3 px-4 rounded-2xl bg-amber-500/15 dark:bg-amber-950/40 border border-amber-500/30 flex items-center justify-between gap-2 text-xs shadow-xs animate-fade-in"
         >
-          <div className="flex items-center gap-2.5 min-w-0">
+          <div 
+            onClick={() => {
+              setIsLobbyOpen(true);
+              setTimeout(() => {
+                lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 50);
+            }}
+            className="flex items-center gap-2.5 min-w-0 cursor-pointer flex-1"
+            title="Bấm để mở sảnh phòng mua chung"
+          >
             <span className="relative flex h-2.5 w-2.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
@@ -837,13 +1634,44 @@ export const GroceryList: React.FC = () => {
                 Phòng Mua Chung: #{collabRoom.roomId} (Live Sync • {formatTtlRemaining(collabRoom.expiresAt, collabRoom.createdAt)})
               </span>
               <span className="text-[10.5px] text-amber-800/80 dark:text-amber-300/80 truncate block">
-                Chủ phòng: {collabRoom.hostName} • Đang kết nối
+                Chủ phòng: {collabRoom.hostName} • Danh sách riêng của bạn được lưu an toàn 🛡️
               </span>
             </div>
           </div>
-          <span className="text-[11px] font-black text-amber-900 dark:text-amber-300 px-2.5 py-1 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center gap-1 shrink-0">
-            Mở Sảnh ▼
-          </span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                openConfirmModal({
+                  title: 'Quay Lại Danh Sách Cá Nhân',
+                  message: 'Rời phòng mua chung để quay lại danh sách đi chợ và thực đơn riêng của bạn?',
+                  confirmLabel: 'Quay Lại Của Tôi',
+                  cancelLabel: 'Ở Lại Phòng',
+                  isDanger: false,
+                  onConfirm: () => {
+                    leaveCollabRoom();
+                    setIsLobbyOpen(false);
+                  }
+                });
+              }}
+              className="text-[10.5px] font-bold text-stone-700 dark:text-stone-300 px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors cursor-pointer"
+              title="Quay lại danh sách riêng"
+            >
+              Quay lại của tôi
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsLobbyOpen(true);
+                setTimeout(() => {
+                  lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+              }}
+              className="text-[11px] font-black text-amber-900 dark:text-amber-300 px-2.5 py-1 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center gap-1 shrink-0 cursor-pointer"
+            >
+              Mở Sảnh ▼
+            </button>
+          </div>
         </div>
       )}
 
@@ -917,6 +1745,40 @@ export const GroceryList: React.FC = () => {
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
+          </div>
+
+          {/* Personal Data Protection Reassurance */}
+          <div className="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/25 text-xs text-emerald-950 dark:text-emerald-200">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-base shrink-0">🛡️</span>
+              <div className="min-w-0">
+                <p className="font-extrabold text-[11px] leading-tight text-emerald-900 dark:text-emerald-200">
+                  Thực đơn & danh sách riêng của bạn vẫn an toàn 100%
+                </p>
+                <p className="text-[10px] text-emerald-700 dark:text-emerald-400 truncate">
+                  Bạn đang xem giỏ đi chợ chung của phòng. Rời phòng để quay về danh sách cá nhân bất kỳ lúc nào.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                openConfirmModal({
+                  title: 'Quay Lại Danh Sách Cá Nhân',
+                  message: 'Rời phòng mua chung để quay lại danh sách đi chợ và thực đơn riêng của bạn?',
+                  confirmLabel: 'Quay Lại Của Tôi',
+                  cancelLabel: 'Ở Lại Phòng',
+                  isDanger: false,
+                  onConfirm: () => {
+                    leaveCollabRoom();
+                    setIsLobbyOpen(false);
+                  }
+                });
+              }}
+              className="px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-white font-bold text-[10.5px] border border-stone-200 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors shadow-2xs shrink-0 cursor-pointer"
+            >
+              Quay Lại Của Tôi
+            </button>
           </div>
 
           {/* Shoppers in room Roster Bar */}
@@ -1067,12 +1929,12 @@ export const GroceryList: React.FC = () => {
         </div>
       )}
 
-      {/* 4-CHANNEL STORE FILTERING TABS (R1.4) */}
+      {/* REAL-LIFE GROCERY AISLE FILTERING TABS */}
       <div className="space-y-1.5">
         <div className="flex items-center justify-between px-1">
           <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1">
             <Store className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-            Lọc Theo Kênh Mua Hàng ({displayedList.length} món)
+            Lọc Theo Quầy Nguyên Liệu ({displayedList.length} món)
           </span>
 
           {overallCheckedCount > 0 && (
@@ -1087,13 +1949,13 @@ export const GroceryList: React.FC = () => {
           )}
         </div>
 
-        {/* Horizontal scrollable channel tabs */}
-        <div className="flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-5 sm:gap-1 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xs">
+        {/* Horizontal scrollable aisle tabs (6 aisles) */}
+        <div className="flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-6 sm:gap-1 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xs">
           {/* Tất Cả */}
           <button
-            onClick={() => setStoreFilter('all')}
+            onClick={() => setAisleFilter('all')}
             className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
-              storeFilter === 'all'
+              aisleFilter === 'all'
                 ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
                 : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
@@ -1101,16 +1963,55 @@ export const GroceryList: React.FC = () => {
             <div className="flex items-center gap-1">
               <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Tất Cả</span>
             </div>
-            <span className={`text-[10px] ${storeFilter === 'all' ? 'text-stone-900 dark:text-white font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({channelCounts['all']})
+            <span className={`text-[10px] ${aisleFilter === 'all' ? 'text-stone-900 dark:text-white font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
+              ({aisleCounts['all']})
             </span>
           </button>
 
-          {/* Chợ Dân Sinh */}
+          {/* Thịt & Trứng */}
           <button
-            onClick={() => setStoreFilter('cho-dan-sinh')}
+            onClick={() => setAisleFilter('thit')}
             className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
-              storeFilter === 'cho-dan-sinh'
+              aisleFilter === 'thit'
+                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
+                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+            }`}
+          >
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
+                <span className="sm:hidden">Thịt/Trứng</span>
+                <span className="hidden sm:inline">Thịt & Trứng</span>
+              </span>
+            </div>
+            <span className={`text-[10px] ${aisleFilter === 'thit' ? 'text-rose-700 dark:text-rose-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
+              ({aisleCounts['thit']})
+            </span>
+          </button>
+
+          {/* Hải Sản */}
+          <button
+            onClick={() => setAisleFilter('hai-san')}
+            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+              aisleFilter === 'hai-san'
+                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
+                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
+            }`}
+          >
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Hải Sản</span>
+            </div>
+            <span className={`text-[10px] ${aisleFilter === 'hai-san' ? 'text-sky-700 dark:text-sky-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
+              ({aisleCounts['hai-san']})
+            </span>
+          </button>
+
+          {/* Rau Củ & Nấm */}
+          <button
+            onClick={() => setAisleFilter('rau-cu')}
+            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
+              aisleFilter === 'rau-cu'
                 ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
                 : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
@@ -1118,59 +2019,38 @@ export const GroceryList: React.FC = () => {
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
               <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-                <span className="sm:hidden">Chợ Tươi</span>
-                <span className="hidden sm:inline">Chợ Dân Sinh</span>
+                <span className="sm:hidden">Rau Củ</span>
+                <span className="hidden sm:inline">Rau Củ & Nấm</span>
               </span>
             </div>
-            <span className={`text-[10px] ${storeFilter === 'cho-dan-sinh' ? 'text-emerald-700 dark:text-emerald-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({channelCounts['cho-dan-sinh']})
+            <span className={`text-[10px] ${aisleFilter === 'rau-cu' ? 'text-emerald-700 dark:text-emerald-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
+              ({aisleCounts['rau-cu']})
             </span>
           </button>
 
-          {/* WinMart */}
+          {/* Trái Cây */}
           <button
-            onClick={() => setStoreFilter('winmart')}
+            onClick={() => setAisleFilter('trai-cay')}
             className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
-              storeFilter === 'winmart'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
-            }`}
-          >
-            <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">WinMart</span>
-            </div>
-            <span className={`text-[10px] ${storeFilter === 'winmart' ? 'text-rose-700 dark:text-rose-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({channelCounts['winmart']})
-            </span>
-          </button>
-
-          {/* Bách Hóa Xanh */}
-          <button
-            onClick={() => setStoreFilter('bach-hoa-xanh')}
-            className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
-              storeFilter === 'bach-hoa-xanh'
+              aisleFilter === 'trai-cay'
                 ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
                 : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
           >
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-                <span className="sm:hidden">BHX</span>
-                <span className="hidden sm:inline">Bách Hóa Xanh</span>
-              </span>
+              <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">Trái Cây</span>
             </div>
-            <span className={`text-[10px] ${storeFilter === 'bach-hoa-xanh' ? 'text-amber-700 dark:text-amber-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({channelCounts['bach-hoa-xanh']})
+            <span className={`text-[10px] ${aisleFilter === 'trai-cay' ? 'text-amber-700 dark:text-amber-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
+              ({aisleCounts['trai-cay']})
             </span>
           </button>
 
-          {/* Sạp Đối Tác */}
+          {/* Gia Vị & Đồ Khô */}
           <button
-            onClick={() => setStoreFilter('sap-doi-tac')}
+            onClick={() => setAisleFilter('gia-vi-kho')}
             className={`py-2 px-1 rounded-xl text-center transition-all flex flex-col items-center justify-center min-h-[44px] flex-1 min-w-[62px] sm:min-w-0 cursor-pointer ${
-              storeFilter === 'sap-doi-tac'
+              aisleFilter === 'gia-vi-kho'
                 ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
                 : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 font-semibold border border-transparent'
             }`}
@@ -1178,357 +2058,88 @@ export const GroceryList: React.FC = () => {
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
               <span className="text-[10px] sm:text-[11px] leading-tight whitespace-nowrap sm:truncate">
-                <span className="sm:hidden">Sạp ĐT</span>
-                <span className="hidden sm:inline">Sạp Đối Tác</span>
+                <span className="sm:hidden">Gia Vị</span>
+                <span className="hidden sm:inline">Gia Vị & Khô</span>
               </span>
             </div>
-            <span className={`text-[10px] ${storeFilter === 'sap-doi-tac' ? 'text-purple-700 dark:text-purple-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
-              ({channelCounts['sap-doi-tac']})
+            <span className={`text-[10px] ${aisleFilter === 'gia-vi-kho' ? 'text-purple-700 dark:text-purple-400 font-extrabold' : 'text-stone-400 dark:text-stone-500'}`}>
+              ({aisleCounts['gia-vi-kho']})
             </span>
           </button>
         </div>
       </div>
 
-      {/* CHECKLIST ITEMS WITH GENEROUS TOUCH TARGETS (MIN 48PX) */}
+      {/* CHECKLIST ITEMS ORGANIZED BY REAL-LIFE SHOPPING AISLE */}
       <div className="space-y-4">
-        
-        {/* SECTION 1: CHỢ TƯƠI (THỊT, CÁ, RAU CỦ) */}
-        {freshList.length > 0 && (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-black text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wider">
-                <Store className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                Chợ Tươi (Thịt, Cá, Rau Củ)
-              </span>
-              <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">
-                {freshList.filter(i => getItemCheckInfo(i).isChecked).length}/{freshList.length} đã gom
-              </span>
-            </div>
+        {(['thit', 'hai-san', 'rau-cu', 'trai-cay', 'gia-vi-kho'] as const).map(aisleKey => {
+          const aisle = GROCERY_AISLES[aisleKey];
+          const aisleItems = displayedList.filter(i => i.aisleCategory === aisleKey);
+          if (aisleItems.length === 0) return null;
 
-            <div className="space-y-1.5">
-              {freshList.map((item) => {
-                const checkInfo = getItemCheckInfo(item);
-                const isChecked = checkInfo.isChecked;
-                const store = STORE_CHANNELS[item.storeChannel];
-                const inFridge = pantryItems.find(p => 
-                  p.name.toLowerCase().includes(item.name.toLowerCase()) || 
-                  item.name.toLowerCase().includes(p.name.toLowerCase())
-                );
+          const pendingItems = aisleItems.filter(i => !getItemCheckInfo(i).isChecked);
+          const cartedItems = aisleItems.filter(i => getItemCheckInfo(i).isChecked);
+          const isCartExpanded = expandedAisleCarts[aisleKey] !== false;
 
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => handleToggle(item)}
-                    className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 min-h-[52px] active:scale-[0.99] select-none ${
-                      isChecked
-                        ? 'bg-stone-50 dark:bg-stone-900/40 border-stone-200 dark:border-stone-800/60 opacity-60'
-                        : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <div className="shrink-0">
-                        {isChecked ? (
-                          <div 
-                            className="w-5 h-5 rounded-lg flex items-center justify-center shadow-xs text-white transition-colors"
-                            style={{ backgroundColor: checkInfo.checkedByColor || (checkInfo.isMine ? (collabUser.color || '#10b981') : '#8b5cf6') }}
-                          >
-                            <Check className="w-3.5 h-3.5 stroke-[3]" />
-                          </div>
-                        ) : (
-                          <div className="w-5 h-5 rounded-lg border-2 border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-950" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-white'}`}>
-                            {item.name}
-                          </span>
-                          {item.dishCount && item.dishCount > 1 && (
-                            <span 
-                              className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 shrink-0" 
-                              title={`Dùng cho ${item.dishCount} món: ${item.dishNames?.join(', ')}`}
-                            >
-                              <span>{item.dishCount} món</span>
-                            </span>
-                          )}
-                          {isChecked && (
-                            <span className={`inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border ${
-                              checkInfo.isMine 
-                                ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' 
-                                : `${checkInfo.style.badgeBg} ${checkInfo.style.badgeText} ${checkInfo.style.badgeBorder}`
-                            }`}>
-                              <UserCheck className="w-2.5 h-2.5 shrink-0" />
-                              <span>{checkInfo.isMine ? 'Bạn đã nhặt' : `${checkInfo.checkedBy || 'Đã mua'}`}</span>
-                            </span>
-                          )}
-                          {checkInfo.buyerCount > 1 && (
-                            <span className="inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/35 animate-pulse">
-                              <Users className="w-2.5 h-2.5 shrink-0 text-amber-600 dark:text-amber-400" />
-                              <span>{checkInfo.buyerCount} người mua trùng!</span>
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 flex-wrap mt-0.5">
-                          <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
-                            ~{(item.cost || 0).toLocaleString('vi-VN')} đ
-                          </span>
-                          {item.dishNames && item.dishNames.length > 1 && (
-                            <span 
-                              className="text-[9.5px] text-stone-400 dark:text-stone-500 truncate max-w-[170px] sm:max-w-xs" 
-                              title={`Dùng cho: ${item.dishNames.join(', ')}`}
-                            >
-                              • {item.dishCount} món ({item.dishNames.slice(0, 2).join(', ')}{item.dishNames.length > 2 ? '...' : ''})
-                            </span>
-                          )}
-                          {inFridge && (
-                            <span 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIsFridgeModalOpen(true);
-                              }}
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 hover:bg-sky-100 px-1.5 py-0.2 rounded-md border border-sky-200 dark:border-sky-800 transition-colors shrink-0"
-                              title="Bấm để xem chi tiết trong tủ lạnh"
-                            >
-                              <span>🧊 Có sẵn: {inFridge.quantity}</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+          return (
+            <div key={aisleKey} className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-black text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wider">
+                  <span className="text-sm">{aisle.icon}</span>
+                  <span>Quầy {aisle.name}</span>
+                </span>
+                <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">
+                  {cartedItems.length}/{aisleItems.length} đã vào giỏ
+                </span>
+              </div>
 
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {/* Store channel badge: compact icon on mobile, full text on tablet+ */}
-                      <span className={`text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-lg border ${store.badgeBg} ${store.badgeText} ${store.badgeBorder}`}>
-                        <span>{store.icon}</span>
-                        <span className="hidden sm:inline ml-1">{store.shortName}</span>
-                      </span>
-
-                      {/* Normalized Quantity badge */}
-                      <span className="text-[11px] font-bold text-stone-700 dark:text-stone-300 bg-stone-100 dark:bg-stone-800 px-2 sm:px-2.5 py-1 rounded-xl border border-stone-200 dark:border-stone-700 whitespace-nowrap">
-                        {item.displayAmount}
-                      </span>
-
-                      {/* Multi-buyer Plus Button & Counter */}
-                      <div className="flex items-center gap-1">
-                        {checkInfo.buyerCount > 1 && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDecrementBuyer(item);
-                            }}
-                            className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-rose-500/20 text-slate-600 dark:text-slate-300 hover:text-rose-600 text-xs font-black flex items-center justify-center border border-slate-300 dark:border-slate-700 transition-all active:scale-90 cursor-pointer"
-                            title="Bỏ bớt 1 người mua trùng"
-                          >
-                            <Minus className="w-3 h-3 stroke-[3]" />
-                          </button>
-                        )}
-
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleIncrementBuyer(item);
-                          }}
-                          className={`h-7 px-2 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black transition-all active:scale-90 border shadow-xs cursor-pointer ${
-                            checkInfo.buyerCount > 1
-                              ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-400 shadow-amber-500/20'
-                              : isChecked
-                              ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border-emerald-500/40'
-                              : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700'
-                          }`}
-                          title="Đánh dấu thêm người mua món này (nhiều người cùng mua)"
-                        >
-                          <Plus className="w-3.5 h-3.5 stroke-[3]" />
-                          {checkInfo.buyerCount > 1 && (
-                            <span className="flex items-center gap-0.5 font-black">
-                              <Users className="w-2.5 h-2.5" />
-                              <span>{checkInfo.buyerCount}</span>
-                            </span>
-                          )}
-                        </button>
-                      </div>
-                    </div>
+              {/* Pending Items to buy: ALWAYS at the top */}
+              <div className="space-y-1.5">
+                {pendingItems.map(renderGroceryItemRow)}
+                {pendingItems.length === 0 && cartedItems.length > 0 && (
+                  <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-300 dark:border-emerald-800 text-center text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center justify-center gap-2">
+                    <span>🎉</span>
+                    <span>Đã gom đủ toàn bộ nguyên liệu quầy {aisle.name.toLowerCase()}!</span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                )}
+              </div>
 
-        {/* SECTION 2: SIÊU THỊ & ĐỒ KHO (GIA VỊ, ĐỒ KHÔ) */}
-        {pantryList.length > 0 && (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-black text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wider">
-                <ShoppingBag className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                Siêu Thị & Gia Vị Khô
-              </span>
-              <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">
-                {pantryList.filter(i => getItemCheckInfo(i).isChecked).length}/{pantryList.length} đã gom
-              </span>
-            </div>
-
-            <div className="space-y-1.5">
-              {pantryList.map((item) => {
-                const checkInfo = getItemCheckInfo(item);
-                const isChecked = checkInfo.isChecked;
-                const store = STORE_CHANNELS[item.storeChannel];
-                const inFridge = pantryItems.find(p => 
-                  p.name.toLowerCase().includes(item.name.toLowerCase()) || 
-                  item.name.toLowerCase().includes(p.name.toLowerCase())
-                );
-
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => handleToggle(item)}
-                    className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 min-h-[52px] active:scale-[0.99] select-none ${
-                      isChecked
-                        ? 'bg-stone-50 dark:bg-stone-900/40 border-stone-200 dark:border-stone-800/60 opacity-60'
-                        : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs'
-                    }`}
+              {/* In-Cart Items: Pushed to bottom of the aisle section */}
+              {cartedItems.length > 0 && (
+                <div className="pt-2 mt-2 border-t border-dashed border-emerald-300/60 dark:border-emerald-800/60 space-y-1.5">
+                  <button
+                    type="button"
+                    onClick={() => toggleAisleCart(aisleKey)}
+                    className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/40 text-[11px] font-black text-emerald-800 dark:text-emerald-200 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors cursor-pointer select-none"
                   >
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <div className="shrink-0">
-                        {isChecked ? (
-                          <div 
-                            className="w-5 h-5 rounded-lg flex items-center justify-center shadow-xs text-white transition-colors"
-                            style={{ backgroundColor: checkInfo.checkedByColor || (checkInfo.isMine ? (collabUser.color || '#10b981') : '#8b5cf6') }}
-                          >
-                            <Check className="w-3.5 h-3.5 stroke-[3]" />
-                          </div>
-                        ) : (
-                          <div className="w-5 h-5 rounded-lg border-2 border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-950" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`text-xs font-extrabold block truncate ${isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-white'}`}>
-                            {item.name}
-                          </span>
-                          {item.dishCount && item.dishCount > 1 && (
-                            <span 
-                              className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 shrink-0" 
-                              title={`Dùng cho ${item.dishCount} món: ${item.dishNames?.join(', ')}`}
-                            >
-                              <span>{item.dishCount} món</span>
-                            </span>
-                          )}
-                          {isChecked && (
-                            <span className={`inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border ${
-                              checkInfo.isMine 
-                                ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' 
-                                : `${checkInfo.style.badgeBg} ${checkInfo.style.badgeText} ${checkInfo.style.badgeBorder}`
-                            }`}>
-                              <UserCheck className="w-2.5 h-2.5 shrink-0" />
-                              <span>{checkInfo.isMine ? 'Bạn đã nhặt' : `${checkInfo.checkedBy || 'Đã mua'}`}</span>
-                            </span>
-                          )}
-                          {checkInfo.buyerCount > 1 && (
-                            <span className="inline-flex items-center gap-1 text-[9.5px] font-black px-1.5 py-0.5 rounded-md border bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-500/35 animate-pulse">
-                              <Users className="w-2.5 h-2.5 shrink-0 text-amber-600 dark:text-amber-400" />
-                              <span>{checkInfo.buyerCount} người mua trùng!</span>
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 flex-wrap mt-0.5">
-                          <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
-                            ~{(item.cost || 0).toLocaleString('vi-VN')} đ
-                          </span>
-                          {item.dishNames && item.dishNames.length > 1 && (
-                            <span 
-                              className="text-[9.5px] text-stone-400 dark:text-stone-500 truncate max-w-[170px] sm:max-w-xs" 
-                              title={`Dùng cho: ${item.dishNames.join(', ')}`}
-                            >
-                              • {item.dishCount} món ({item.dishNames.slice(0, 2).join(', ')}{item.dishNames.length > 2 ? '...' : ''})
-                            </span>
-                          )}
-                          {inFridge && (
-                            <span 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIsFridgeModalOpen(true);
-                              }}
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 hover:bg-sky-100 px-1.5 py-0.2 rounded-md border border-sky-200 dark:border-sky-800 transition-colors shrink-0"
-                              title="Bấm để xem chi tiết trong tủ lạnh"
-                            >
-                              <span>🧊 Có sẵn: {inFridge.quantity}</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                    <span className="flex items-center gap-1.5 uppercase tracking-wider">
+                      <span>🛒</span>
+                      <span>Đã Cho Vào Giỏ ({cartedItems.length} món)</span>
+                    </span>
+                    <span className="flex items-center gap-1 text-[10.5px] font-bold text-emerald-700 dark:text-emerald-300">
+                      <span>{isCartExpanded ? 'Thu gọn' : 'Xem món đã nhặt'}</span>
+                      {isCartExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                    </span>
+                  </button>
+
+                  {isCartExpanded && (
+                    <div className="space-y-1.5 animate-fadeIn">
+                      {cartedItems.map(renderGroceryItemRow)}
                     </div>
-
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {/* Store channel badge: compact icon on mobile, full text on tablet+ */}
-                      <span className={`text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-lg border ${store.badgeBg} ${store.badgeText} ${store.badgeBorder}`}>
-                        <span>{store.icon}</span>
-                        <span className="hidden sm:inline ml-1">{store.shortName}</span>
-                      </span>
-
-                      {/* Normalized Quantity badge */}
-                      <span className="text-[11px] font-bold text-stone-700 dark:text-stone-300 bg-stone-100 dark:bg-stone-800 px-2 sm:px-2.5 py-1 rounded-xl border border-stone-200 dark:border-stone-700 whitespace-nowrap">
-                        {item.displayAmount}
-                      </span>
-
-                      {/* Multi-buyer Plus Button & Counter */}
-                      <div className="flex items-center gap-1">
-                        {checkInfo.buyerCount > 1 && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDecrementBuyer(item);
-                            }}
-                            className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-rose-500/20 text-slate-600 dark:text-slate-300 hover:text-rose-600 text-xs font-black flex items-center justify-center border border-slate-300 dark:border-slate-700 transition-all active:scale-90 cursor-pointer"
-                            title="Bỏ bớt 1 người mua trùng"
-                          >
-                            <Minus className="w-3 h-3 stroke-[3]" />
-                          </button>
-                        )}
-
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleIncrementBuyer(item);
-                          }}
-                          className={`h-7 px-2 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black transition-all active:scale-90 border shadow-xs cursor-pointer ${
-                            checkInfo.buyerCount > 1
-                              ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-400 shadow-amber-500/20'
-                              : isChecked
-                              ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border-emerald-500/40'
-                              : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700'
-                          }`}
-                          title="Đánh dấu thêm người mua món này (nhiều người cùng mua)"
-                        >
-                          <Plus className="w-3.5 h-3.5 stroke-[3]" />
-                          {checkInfo.buyerCount > 1 && (
-                            <span className="flex items-center gap-0.5 font-black">
-                              <Users className="w-2.5 h-2.5" />
-                              <span>{checkInfo.buyerCount}</span>
-                            </span>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  )}
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          );
+        })}
 
         {/* Empty state for current filter */}
         {displayedList.length === 0 && (
           <div className="py-8 text-center text-xs text-slate-500 dark:text-slate-400 italic rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
             {totalCount === 0 
               ? 'Chưa có món nào trong thực đơn tuần hoặc kế hoạch tiệc.' 
-              : `Không có nguyên liệu nào thuộc kênh "${storeFilter === 'all' ? 'Tất Cả' : STORE_CHANNELS[storeFilter].name}".`}
+              : `Không có nguyên liệu nào thuộc quầy "${aisleFilter === 'all' ? 'Tất Cả' : GROCERY_AISLES[aisleFilter].name}".`}
           </div>
         )}
-
       </div>
 
       {/* STICKY BOTTOM PROGRESS BAR (STICKY ABOVE BOTTOM TAB BAR AT bottom-16) */}
@@ -1564,16 +2175,6 @@ export const GroceryList: React.FC = () => {
           <button
             type="button"
             onClick={async () => {
-              if (!isRegistered) {
-                openConfirmModal({
-                  title: 'Tính Năng Dành Cho Thành Viên',
-                  message: 'Tính năng chia sẻ giỏ hàng đi chợ và cùng người thân tích chọn thời gian thực chỉ dành cho tài khoản thành viên. Đăng ký tài khoản miễn phí chỉ mất 10 giây!',
-                  confirmLabel: 'Đăng Ký / Đăng Nhập',
-                  cancelLabel: 'Để sau',
-                  onConfirm: () => openAuthModal('register')
-                });
-                return;
-              }
               if (collabRoom) {
                 const nextState = !isLobbyOpen;
                 setIsLobbyOpen(nextState);
@@ -1590,26 +2191,16 @@ export const GroceryList: React.FC = () => {
                 }, 50);
               }
             }}
-            className={`py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer ${
-              !isRegistered
-                ? 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 shadow-2xs'
-                : 'bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100 text-white dark:text-stone-950 shadow-md font-black'
-            }`}
-            title={!isRegistered ? 'Tính năng dành cho thành viên' : (collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng mua chung')}
+            className="py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100 text-white dark:text-stone-950 shadow-md font-black"
+            title={collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng mua chung'}
           >
-            {!isRegistered ? (
-              <Lock className="w-4 h-4 shrink-0 text-stone-500 dark:text-stone-400" />
-            ) : (
-              <Users className="w-4 h-4 shrink-0" />
-            )}
+            <Users className="w-4 h-4 shrink-0" />
             <span className="truncate">
-              {!isRegistered
-                ? 'Chia Sẻ Mua Chung 🔒'
-                : collabRoom
+              {collabRoom
                 ? (isLobbyOpen ? 'Đóng Sảnh (Live)' : 'Mua Chung (Live)')
                 : 'Chia Sẻ Mua Chung'}
             </span>
-            {isRegistered && (
+            {collabRoom && (
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>

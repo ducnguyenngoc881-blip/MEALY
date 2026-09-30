@@ -62,12 +62,12 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     expect(content.includes('Đăng Ký Miễn Phí Để Mở Khóa')).toBe(true);
   });
 
-  it('GUEST-03: Grocery List collaborative sharing is locked for guest accounts', () => {
+  it('GUEST-03: Grocery List collaborative sharing is unlocked without barriers for seamless guest and member collaboration', () => {
     const groceryFilePath = path.join(srcDir, 'components', 'GroceryList.tsx');
     const content = fs.readFileSync(groceryFilePath, 'utf-8');
-    expect(content.includes('if (!isRegistered) {')).toBe(true);
-    expect(content.includes('Chia Sẻ Mua Chung 🔒')).toBe(true);
-    expect(content.includes('Tính Năng Dành Cho Thành Viên')).toBe(true);
+    expect(content.includes('startCollabRoom(allList')).toBe(true);
+    expect(content.includes('Chia Sẻ Mua Chung')).toBe(true);
+    expect(content.includes('Mua Chung (Live)')).toBe(true);
   });
 
   it('GUEST-04: Sidebar displays lock badge on Tiệc tab for guests', () => {
