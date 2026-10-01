@@ -334,7 +334,7 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
 
             <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
               <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                Quy Cách Bàn Tiệc
+                Quy Cách Bàn (Khách/Bàn)
               </label>
               <div className="flex items-center gap-1">
                 {([6, 8, 10] as const).map(size => (
@@ -342,17 +342,25 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
                     key={size}
                     type="button"
                     onClick={() => setTableSize(size)}
-                    className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                    className={`flex-1 py-1.5 rounded-lg text-[11px] font-bold transition-colors cursor-pointer whitespace-nowrap ${
                       tableSize === size
                         ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
                         : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
                     }`}
                   >
-                    {size}k
+                    {size} khách
                   </button>
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Quick Table Count Summary */}
+          <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 text-[11px] font-semibold text-amber-900 dark:text-amber-200 flex items-center justify-between">
+            <span>Bố trí bàn tiệc:</span>
+            <span className="font-extrabold">
+              = {Math.ceil(guestCount / tableSize)} bàn ({tableSize} khách/bàn)
+            </span>
           </div>
 
           {/* 5. Menu Attachment Selection */}
