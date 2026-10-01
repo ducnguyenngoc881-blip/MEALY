@@ -59,7 +59,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/90 dark:bg-[#121110]/90 backdrop-blur-xl border-b border-[#E8E2D8]/70 dark:border-[#252220]/70 shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
-      <div className={`h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto ${activeTab === 'admin' ? '!max-w-7xl' : ''}`}>
+      <div className="h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
         
         {/* Left: Brand Logo & Title */}
         <button
@@ -116,12 +116,12 @@ export const Navbar: React.FC = () => {
             user?.role === 'admin' ? (
               <button
                 type="button"
-                onClick={() => setActiveTab(activeTab === 'admin' ? 'meal-sets' : 'admin')}
+                onClick={() => setActiveTab('admin')}
                 className="px-2.5 py-1 rounded-full bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 active:scale-95 transition-all cursor-pointer shadow-xs"
-                title="Bảng Quản Trị"
+                title="Mở Website Quản Trị Viên (Desktop Web Portal)"
               >
-                <Sparkles className="w-3 h-3 text-stone-300 dark:text-stone-700" />
-                <span>{activeTab === 'admin' ? 'App Mobile' : 'Admin'}</span>
+                <Sparkles className="w-3 h-3 text-amber-500" />
+                <span>Web Admin</span>
               </button>
             ) : (
               <button

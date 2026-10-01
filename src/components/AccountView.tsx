@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
-import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock } from 'lucide-react';
+import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock, LayoutDashboard, ArrowRight } from 'lucide-react';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
 import { getDailyBudgetTarget } from '../utils/currency';
 import { 
@@ -302,6 +302,41 @@ export const AccountView: React.FC = () => {
           </button>
         )}
       </div>
+
+      {/* Admin Portal Gateway for Administrator Account */}
+      {user?.role === 'admin' && (
+        <div className="p-4 sm:p-5 rounded-3xl bg-stone-900 border border-amber-500/40 text-white shadow-md space-y-3 relative overflow-hidden">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                <LayoutDashboard className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-black text-white">Website Quản Trị (Desktop Web Portal)</h3>
+                <span className="text-[10px] text-amber-400 font-extrabold uppercase tracking-wider block">
+                  Dành riêng cho máy tính & màn hình lớn
+                </span>
+              </div>
+            </div>
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase border border-amber-500/30">
+              Admin
+            </span>
+          </div>
+
+          <p className="text-xs text-stone-300 leading-relaxed">
+            Hệ thống giám sát dữ liệu telemetry thời gian thực, quản lý cơ sở dữ liệu tài khoản, phân tích quảng cáo và phòng mua chung được phát triển chuyên biệt dưới dạng Website Desktop.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('admin')}
+            className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xs cursor-pointer"
+          >
+            <span>Mở Website Quản Trị Desktop</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Theme Mode Preference: Sleek Interactive Toggle Switch */}
       <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-4">

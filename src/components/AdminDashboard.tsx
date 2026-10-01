@@ -30,7 +30,10 @@ import {
   Film,
   Timer,
   PlayCircle,
-  MonitorPlay
+  MonitorPlay,
+  UtensilsCrossed,
+  LayoutDashboard,
+  Globe
 } from 'lucide-react';
 import { 
   TelemetryEvent, 
@@ -343,126 +346,272 @@ export const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="w-full space-y-5 text-stone-100 animate-in fade-in duration-200">
+    <div className="min-h-screen w-full bg-[#0B0A09] text-stone-100 flex flex-col lg:flex-row antialiased">
       
-      {/* STEAMDB HEADER COMMAND BAR */}
-      <div className="p-4 sm:p-6 rounded-3xl bg-stone-900 border border-stone-800 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-emerald-500/10 via-amber-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                SteamDB Telemetry Engine
-              </span>
-
-              <span className="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-bold">
-                Admin Console
-              </span>
-
-              <span className="text-xs text-stone-400 font-mono">
-                {user?.email || 'admin@mealwise.vn'}
-              </span>
+      {/* DESKTOP SIDEBAR NAVIGATION (FIXED ON LG+) */}
+      <aside className="w-full lg:w-72 bg-[#121110] border-b lg:border-b-0 lg:border-r border-stone-800 shrink-0 flex flex-col justify-between p-5 lg:p-6 lg:min-h-screen lg:sticky lg:top-0">
+        <div className="space-y-6">
+          {/* Brand Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-stone-950 font-black shadow-lg shadow-amber-500/20">
+                <UtensilsCrossed className="w-5 h-5 text-stone-950" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-black text-white text-base tracking-tight">MealWise</span>
+                  <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] font-black uppercase tracking-wider">
+                    Cloud
+                  </span>
+                </div>
+                <p className="text-[11px] text-stone-400 font-mono">Desktop Web Portal</p>
+              </div>
             </div>
 
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
-              MealWise Live Telemetry & Platform Intelligence
-            </h1>
-            <p className="text-xs text-stone-400 mt-1 max-w-xl">
-              Hệ thống giám sát dữ liệu thực tế thời gian thực: phiên hoạt động, phòng mua chung, tồn kho tủ lạnh và thực đơn tuần.
-            </p>
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
           </div>
 
-          {/* Action Toolbar */}
-          <div className="flex items-center gap-2 flex-wrap shrink-0">
+          {/* Navigation Tab Group */}
+          <div className="space-y-1">
+            <div className="px-2 pb-1 text-[10px] font-black text-stone-400 uppercase tracking-wider">
+              Bảng Điều Khiển
+            </div>
+            
+            <button
+              type="button"
+              onClick={() => setAdminTab('overview')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                adminTab === 'overview'
+                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-black'
+                  : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <BarChart3 className="w-4 h-4 shrink-0" />
+                <span>Tổng Quan Ứng Dụng</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAdminTab('collab')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                adminTab === 'collab'
+                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-black'
+                  : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <ShoppingCart className="w-4 h-4 shrink-0" />
+                <span>Phòng Đi Chợ Chung</span>
+              </div>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                adminTab === 'collab' ? 'bg-stone-950/20 text-stone-950' : 'bg-stone-800 text-stone-300'
+              }`}>
+                {collabMetrics.isActive ? '1 Online' : '0'}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAdminTab('ads_screentime')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                adminTab === 'ads_screentime'
+                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-black'
+                  : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Tv className="w-4 h-4 shrink-0" />
+                <span>Quảng Cáo & Sử Dụng</span>
+              </div>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                adminTab === 'ads_screentime' ? 'bg-stone-950/20 text-stone-950' : 'bg-stone-800 text-stone-300'
+              }`}>
+                {adMetrics.totalAds} Ads
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAdminTab('accounts')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                adminTab === 'accounts'
+                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-black'
+                  : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Users className="w-4 h-4 shrink-0" />
+                <span>Tài Khoản & Phiên</span>
+              </div>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                adminTab === 'accounts' ? 'bg-stone-950/20 text-stone-950' : 'bg-stone-800 text-stone-300'
+              }`}>
+                {sessions.length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAdminTab('events')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                adminTab === 'events'
+                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-black'
+                  : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Activity className="w-4 h-4 shrink-0" />
+                <span>Nhật Ký Sự Kiện</span>
+              </div>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                adminTab === 'events' ? 'bg-stone-950/20 text-stone-950' : 'bg-stone-800 text-stone-300'
+              }`}>
+                {events.length}
+              </span>
+            </button>
+          </div>
+
+          {/* Teammate Simulator in Sidebar */}
+          <div className="p-3.5 rounded-2xl bg-stone-900/90 border border-stone-800/80 space-y-2.5">
+            <div className="flex items-center gap-1.5 text-xs text-amber-400 font-bold">
+              <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>Mô Phỏng Đồng Đội</span>
+            </div>
+            <p className="text-[11px] text-stone-400 leading-snug">
+              Kích hoạt hành động song song để kiểm tra phòng cộng tác & telemetry.
+            </p>
+            <div className="grid grid-cols-2 gap-1.5 pt-1">
+              <button
+                type="button"
+                onClick={() => handleSimulateTeammate('join_collab')}
+                className="p-2 rounded-xl bg-stone-800 hover:bg-emerald-500/20 hover:text-emerald-300 border border-stone-700/80 text-[11px] font-bold text-stone-300 transition-colors cursor-pointer flex items-center gap-1.5 justify-center"
+              >
+                <Users className="w-3 h-3 text-emerald-400" />
+                <span>Vào Phòng</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSimulateTeammate('check_item')}
+                className="p-2 rounded-xl bg-stone-800 hover:bg-amber-500/20 hover:text-amber-300 border border-stone-700/80 text-[11px] font-bold text-stone-300 transition-colors cursor-pointer flex items-center gap-1.5 justify-center"
+              >
+                <CheckCircle2 className="w-3 h-3 text-amber-400" />
+                <span>Nhặt Món</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSimulateTeammate('plan_weekly')}
+                className="p-2 rounded-xl bg-stone-800 hover:bg-blue-500/20 hover:text-blue-300 border border-stone-700/80 text-[11px] font-bold text-stone-300 transition-colors cursor-pointer flex items-center gap-1.5 justify-center"
+              >
+                <Calendar className="w-3 h-3 text-blue-400" />
+                <span>Lên Đơn</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSimulateTeammate('add_fridge')}
+                className="p-2 rounded-xl bg-stone-800 hover:bg-purple-500/20 hover:text-purple-300 border border-stone-700/80 text-[11px] font-bold text-stone-300 transition-colors cursor-pointer flex items-center gap-1.5 justify-center"
+              >
+                <Refrigerator className="w-3 h-3 text-purple-400" />
+                <span>Cất Tủ</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar Footer */}
+        <div className="pt-6 mt-6 border-t border-stone-800/80 space-y-3">
+          {/* Admin User Card */}
+          <div className="flex items-center justify-between p-2.5 rounded-2xl bg-stone-900/60 border border-stone-800/60">
+            <div className="flex items-center gap-2.5 overflow-hidden">
+              <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-black text-xs shrink-0">
+                AD
+              </div>
+              <div className="truncate">
+                <p className="text-xs font-bold text-stone-200 truncate">{user?.name || 'Administrator'}</p>
+                <p className="text-[10px] text-stone-400 font-mono truncate">{user?.email || 'admin@mealwise.vn'}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={logoutUser}
+              className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors cursor-pointer shrink-0"
+              title="Đăng xuất Admin"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Gateway back to Mobile Phone Simulation */}
+          <button
+            type="button"
+            onClick={() => setActiveTab('meal-sets')}
+            className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/15 transition-all cursor-pointer"
+          >
+            <Smartphone className="w-4 h-4" />
+            <span>Mở Ứng Dụng Mobile</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* MAIN WORKSPACE VIEWPORT */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Sticky Desktop Top Header */}
+        <header className="h-16 px-6 lg:px-8 border-b border-stone-800 bg-[#121110]/90 backdrop-blur-md flex items-center justify-between sticky top-0 z-20">
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-stone-400 font-medium">MealWise Cloud</span>
+            <span className="text-stone-400">/</span>
+            <span className="text-amber-400 font-bold capitalize">
+              {adminTab === 'overview' && 'Tổng Quan'}
+              {adminTab === 'collab' && 'Phòng Đi Chợ Chung'}
+              {adminTab === 'ads_screentime' && 'Quảng Cáo & Thời Lượng'}
+              {adminTab === 'accounts' && 'Quản Lý Tài Khoản'}
+              {adminTab === 'events' && 'Nhật Ký Realtime'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Live Indicator Pill */}
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[11px] text-emerald-400 font-bold">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>{sessions.length} phiên online</span>
+            </div>
+
             <button
               type="button"
               onClick={refreshTelemetry}
-              className="p-2.5 rounded-2xl bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700 transition-colors cursor-pointer"
+              className="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700 transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Làm mới số liệu thực tế"
             >
-              <RefreshCw className="w-4 h-4 text-emerald-400" />
+              <RefreshCw className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden sm:inline">Làm Mới</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('meal-sets')}
-              className="px-3.5 py-2.5 rounded-2xl bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold border border-stone-700 flex items-center gap-2 transition-colors cursor-pointer"
+              className="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-bold"
             >
               <Smartphone className="w-3.5 h-3.5 text-amber-400" />
-              <span>Giao Diện App</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={logoutUser}
-              className="p-2.5 rounded-2xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 transition-colors cursor-pointer"
-              title="Đăng xuất Admin"
-            >
-              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">App Mobile</span>
             </button>
           </div>
-        </div>
+        </header>
 
-        {/* Multi-Teammate Interactive Simulation Bar */}
-        <div className="mt-4 pt-3.5 border-t border-stone-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <div className="flex items-center gap-2 text-xs text-stone-300">
-            <Zap className="w-4 h-4 text-amber-400 shrink-0" />
-            <span className="font-extrabold text-[11px] uppercase tracking-wider text-amber-400">
-              Kiểm Tra Đồng Đội Dùng Đồng Thời:
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <button
-              type="button"
-              onClick={() => handleSimulateTeammate('join_collab')}
-              className="px-2.5 py-1.5 rounded-xl bg-stone-800 hover:bg-emerald-500/20 hover:text-emerald-300 border border-stone-700 text-[11px] font-bold text-stone-300 transition-all cursor-pointer flex items-center gap-1"
-            >
-              <Users className="w-3 h-3 text-emerald-400" />
-              + Đồng Đội Vào Phòng
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSimulateTeammate('check_item')}
-              className="px-2.5 py-1.5 rounded-xl bg-stone-800 hover:bg-amber-500/20 hover:text-amber-300 border border-stone-700 text-[11px] font-bold text-stone-300 transition-all cursor-pointer flex items-center gap-1"
-            >
-              <CheckCircle2 className="w-3 h-3 text-amber-400" />
-              ✓ Đồng Đội Nhặt Món
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSimulateTeammate('plan_weekly')}
-              className="px-2.5 py-1.5 rounded-xl bg-stone-800 hover:bg-blue-500/20 hover:text-blue-300 border border-stone-700 text-[11px] font-bold text-stone-300 transition-all cursor-pointer flex items-center gap-1"
-            >
-              <Calendar className="w-3 h-3 text-blue-400" />
-              📅 Đồng Đội Tạo Thực Đơn
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSimulateTeammate('add_fridge')}
-              className="px-2.5 py-1.5 rounded-xl bg-stone-800 hover:bg-purple-500/20 hover:text-purple-300 border border-stone-700 text-[11px] font-bold text-stone-300 transition-all cursor-pointer flex items-center gap-1"
-            >
-              <Refrigerator className="w-3 h-3 text-purple-400" />
-              🧊 Cất Đồ Thừa
-            </button>
-          </div>
-        </div>
-
-        {simulationStatus && (
-          <div className="mt-2.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono flex items-center gap-2 animate-in fade-in duration-150">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>{simulationStatus}</span>
-          </div>
-        )}
-      </div>
+        {/* Desktop Main Content Canvas */}
+        <main className="flex-1 p-6 lg:p-8 space-y-6 max-w-7xl w-full mx-auto">
+          {simulationStatus && (
+            <div className="px-4 py-2.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono flex items-center gap-2 animate-in fade-in duration-150">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>{simulationStatus}</span>
+            </div>
+          )}
 
       {/* 4 HIGH-DENSITY STEAMDB METRIC CARDS (REAL DATA) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -719,8 +868,8 @@ export const AdminDashboard: React.FC = () => {
 
       </div>
 
-      {/* NAVIGATION TABS FOR DETAILED REAL DATA PANELS */}
-      <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-stone-900 border border-stone-800 text-xs overflow-x-auto">
+      {/* NAVIGATION TABS FOR DETAILED REAL DATA PANELS (VISIBLE ON SMALLER SCREENS) */}
+      <div className="lg:hidden flex items-center gap-1.5 p-1 rounded-2xl bg-stone-900 border border-stone-800 text-xs overflow-x-auto">
         <button
           type="button"
           onClick={() => setAdminTab('overview')}
@@ -1612,6 +1761,8 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
+        </main>
+      </div>
     </div>
   );
 };
