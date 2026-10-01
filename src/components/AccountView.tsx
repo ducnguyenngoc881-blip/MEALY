@@ -510,28 +510,30 @@ export const AccountView: React.FC = () => {
 
 
 
-      {/* Reset Onboarding Action */}
-      <div className="p-5 sm:p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1 min-w-0 flex-1">
-            <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
-              Thiết Lập Lại Khẩu Vị & Khẩu Phần
-            </h2>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              Bạn có thể nhấn nút dưới đây để kích hoạt lại toàn bộ bảng câu hỏi Onboarding (chọn khẩu vị, số người, ngân sách).
-            </p>
-          </div>
+      {/* Reset Onboarding Action (Only for registered members) */}
+      {isRegistered && (
+        <div className="p-5 sm:p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1 min-w-0 flex-1">
+              <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+                Thiết Lập Lại Khẩu Vị & Khẩu Phần
+              </h2>
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                Bạn có thể nhấn nút dưới đây để kích hoạt lại toàn bộ bảng câu hỏi Onboarding (chọn khẩu vị, số người, ngân sách).
+              </p>
+            </div>
 
-          <button
-            type="button"
-            onClick={resetOnboarding}
-            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-95 shrink-0 whitespace-nowrap self-stretch sm:self-center cursor-pointer"
-          >
-            <RotateCcw className="w-4 h-4 shrink-0" />
-            <span>Xem Lại Khảo Sát Khẩu Vị (Onboarding)</span>
-          </button>
+            <button
+              type="button"
+              onClick={resetOnboarding}
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-95 shrink-0 whitespace-nowrap self-stretch sm:self-center cursor-pointer"
+            >
+              <RotateCcw className="w-4 h-4 shrink-0" />
+              <span>Xem Lại Khảo Sát Khẩu Vị (Onboarding)</span>
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Support Developer & Ad-Free Reward Hub */}
       <div className="p-5 sm:p-6 rounded-3xl glass-card border border-amber-500/25 dark:border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-ceramic-50 to-orange-500/5 dark:from-stone-900 dark:via-stone-900 dark:to-amber-950/30 shadow-sm space-y-4">
