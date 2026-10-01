@@ -16,11 +16,16 @@ import {
   ArrowRight,
   ArrowLeft,
   Plus,
-  Minus
+  Minus,
+  ChevronDown,
+  ChevronUp,
+  Eye,
+  Wine
 } from 'lucide-react';
 import { PartyRecurrenceType, ScheduledPartyEvent, Recipe } from '../types';
 import { CORPORATE_PARTY_PRESETS } from '../data/corporatePartyPresets';
 import { formatDateISO, formatVietnameseDate, parseDateISO } from '../utils/partyCalendarUtils';
+import { SafeImage } from './SafeImage';
 
 interface SchedulePartyModalProps {
   isOpen: boolean;
@@ -84,6 +89,9 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
   const [menuSource, setMenuSource] = useState<'current_builder' | 'preset'>('current_builder');
   const [selectedPresetId, setSelectedPresetId] = useState<string>(
     CORPORATE_PARTY_PRESETS[0]?.id || ''
+  );
+  const [previewPresetId, setPreviewPresetId] = useState<string | null>(
+    CORPORATE_PARTY_PRESETS[0]?.id || null
   );
 
   // Sync state whenever editingEvent or initialDate changes
@@ -529,83 +537,187 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
 
                 {/* Source A: Current Builder Summary */}
                 {menuSource === 'current_builder' && (
-                  <div className="p-3 rounded-xl bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-800 space-y-2">
-                    <div className="flex items-center justify-between text-xs font-bold">
-                      <span className="text-stone-700 dark:text-stone-300">
+                  <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-800 space-y-2.5">
+                    <div className="flex items-center justify-between text-xs font-bold border-b border-stone-100 dark:border-stone-800 pb-2">
+                      <span className="text-stone-800 dark:text-stone-200">
                         {partyPlan.dishes.length > 0 ? `Đang có ${partyPlan.dishes.length} món trong mâm` : 'Chưa có món nào trong mâm'}
                       </span>
-                      <span className="text-amber-800 dark:text-amber-300 font-extrabold">
+                      <span className="text-amber-800 dark:text-amber-300 font-extrabold bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/25">
                         ~{Math.round(currentDishesCost).toLocaleString('vi-VN')} đ
                       </span>
                     </div>
 
                     {partyPlan.dishes.length > 0 ? (
-                      <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto pr-1">
+                      <div className="space-y-1.5 max-h-52 overflow-y-auto pr-0.5 scrollbar-thin">
                         {partyPlan.dishes.map((item, idx) => {
                           const r = recipes.find(rec => rec.id === item.recipeId);
+                          if (!r) return null;
                           return (
-                            <span 
+                            <div 
                               key={`${item.recipeId}-${idx}`} 
-                              className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#252220] text-stone-800 dark:text-stone-200 border border-stone-200/60 dark:border-stone-700"
+                              className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#161514] border border-stone-200/60 dark:border-stone-800"
                             >
-                              {r?.title || 'Món ăn'}
-                            </span>
+                              <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-stone-200 dark:bg-stone-800">
+                                <SafeImage
+                                  src={r.imageUrl}
+                                  alt={r.title}
+                                  dishTitle={r.title}
+                                  category={r.category}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="text-xs font-extrabold text-stone-900 dark:text-white truncate">
+                                  {r.title}
+                                </div>
+                                <div className="text-[10px] text-stone-500 dark:text-stone-400 flex items-center gap-2 mt-0.5">
+                                  <span className="font-semibold text-amber-700 dark:text-amber-400">{r.category || 'Món tiệc'}</span>
+                                  <span>•</span>
+                                  <span>~{((r.estimatedCostVnd || 40000) * (guestCount / (r.servings || 4))).toLocaleString('vi-VN')} đ</span>
+                                </div>
+                              </div>
+                            </div>
                           );
                         })}
                       </div>
                     ) : (
-                      <p className="text-[11px] text-stone-500 dark:text-stone-400 italic">
-                        Mâm tiệc chưa có món ăn. Bạn có thể chọn mẫu tiệc sẵn bên cạnh hoặc thêm món từ Sổ Tay Công Thức sau.
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400 italic py-2 text-center">
+                        Mâm tiệc chưa có món ăn. Bạn có thể chọn "Thư Viện Mẫu Chuẩn" bên cạnh để chọn thực đơn có sẵn hoặc thêm món từ Sổ Tay Công Thức sau.
                       </p>
                     )}
                   </div>
                 )}
 
-                {/* Source B: Custom Styled Preset Cards */}
+                {/* Source B: Custom Styled Preset Cards with Expandable Dish Details */}
                 {menuSource === 'preset' && (
-                  <div className="space-y-2 max-h-56 overflow-y-auto pr-0.5 scrollbar-thin">
+                  <div className="space-y-2.5 max-h-72 overflow-y-auto pr-0.5 scrollbar-thin">
                     {CORPORATE_PARTY_PRESETS.map(preset => {
                       const isSelected = selectedPresetId === preset.id;
+                      const isExpanded = previewPresetId === preset.id;
+
                       return (
                         <div
                           key={preset.id}
-                          role="button"
-                          tabIndex={0}
-                          onClick={() => setSelectedPresetId(preset.id)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              setSelectedPresetId(preset.id);
-                            }
-                          }}
-                          className={`p-3 rounded-2xl border transition-all text-left flex items-center justify-between gap-3 cursor-pointer min-h-[48px] active:scale-[0.99] ${
+                          className={`p-3 rounded-2xl border transition-all text-left space-y-2.5 ${
                             isSelected
                               ? 'bg-amber-500/10 dark:bg-amber-950/30 border-amber-500 ring-1 ring-amber-500/80 shadow-2xs'
                               : 'bg-white dark:bg-[#1A1918] border-stone-200/90 dark:border-stone-800 hover:border-amber-400'
                           }`}
                         >
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs font-black text-stone-900 dark:text-white leading-snug line-clamp-2">
-                              {preset.title}
+                          {/* Card Header Row (Click to select & auto-expand) */}
+                          <div 
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => {
+                              setSelectedPresetId(preset.id);
+                              setPreviewPresetId(preset.id);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setSelectedPresetId(preset.id);
+                                setPreviewPresetId(preset.id);
+                              }
+                            }}
+                            className="flex items-start justify-between gap-2.5 cursor-pointer"
+                          >
+                            <div className="min-w-0 flex-1">
+                              <div className="text-xs font-black text-stone-900 dark:text-white leading-snug">
+                                {preset.title}
+                              </div>
+                              <div className="flex items-center gap-2 mt-1 text-[11px] text-stone-500 dark:text-stone-400 flex-wrap">
+                                <span className="font-extrabold text-amber-800 dark:text-amber-400 bg-amber-500/15 dark:bg-amber-950/50 px-2 py-0.5 rounded-md border border-amber-500/25">
+                                  ~{preset.suggestedPerHeadBudgetVnd.toLocaleString('vi-VN')} đ/khách
+                                </span>
+                                <span>•</span>
+                                <span className="font-medium text-stone-600 dark:text-stone-300">
+                                  {preset.menuRecipes.length} món tiệc chuẩn
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2 mt-1 text-[11px] text-stone-500 dark:text-stone-400 flex-wrap">
-                              <span className="font-extrabold text-amber-800 dark:text-amber-400 bg-amber-500/15 dark:bg-amber-950/50 px-2 py-0.5 rounded-md border border-amber-500/25">
-                                ~{preset.suggestedPerHeadBudgetVnd.toLocaleString('vi-VN')} đ/khách
-                              </span>
-                              <span>•</span>
-                              <span className="font-medium text-stone-600 dark:text-stone-300">
-                                {preset.menuRecipes.length} món chuẩn
-                              </span>
+
+                            <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+                              isSelected
+                                ? 'bg-amber-500 text-stone-950 shadow-2xs'
+                                : 'border-2 border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800'
+                            }`}>
+                              {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                             </div>
                           </div>
 
-                          <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${
-                            isSelected
-                              ? 'bg-amber-500 text-stone-950 shadow-2xs'
-                              : 'border-2 border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800'
-                          }`}>
-                            {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                          {/* Quick Actions Row: Toggle View Details */}
+                          <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800/80">
+                            <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
+                              {isSelected ? 'Đang chọn mẫu này' : 'Chạm để chọn mẫu'}
+                            </span>
+
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setPreviewPresetId(prev => (prev === preset.id ? null : preset.id));
+                              }}
+                              className="text-[11px] font-bold text-amber-800 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-200 flex items-center gap-1 py-1 px-2.5 rounded-lg bg-amber-500/15 dark:bg-amber-950/40 hover:bg-amber-500/25 transition-colors cursor-pointer"
+                            >
+                              <Eye className="w-3 h-3" />
+                              <span>{isExpanded ? 'Thu gọn' : `Xem món (${preset.menuRecipes.length})`}</span>
+                              {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                            </button>
                           </div>
+
+                          {/* Expandable Dish Breakdown */}
+                          {isExpanded && (
+                            <div className="pt-2 border-t border-stone-200/80 dark:border-stone-800/80 space-y-2.5 animate-fade-in">
+                              {preset.description && (
+                                <p className="text-[11px] text-stone-600 dark:text-stone-300 leading-relaxed italic bg-stone-50 dark:bg-[#161514] p-2.5 rounded-xl border border-stone-200/60 dark:border-stone-800">
+                                  {preset.description}
+                                </p>
+                              )}
+
+                              <div className="space-y-1.5">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-stone-500 dark:text-stone-400 block">
+                                  Danh sách món trong thực đơn ({preset.menuRecipes.length} món):
+                                </span>
+                                <div className="space-y-1.5">
+                                  {preset.menuRecipes.map((recipe, rIdx) => (
+                                    <div 
+                                      key={`${recipe.id}-${rIdx}`}
+                                      className="flex items-center gap-2.5 p-2 rounded-xl bg-stone-50 dark:bg-[#161514] border border-stone-200/60 dark:border-stone-800"
+                                    >
+                                      <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-stone-200 dark:bg-stone-800">
+                                        <SafeImage
+                                          src={recipe.imageUrl}
+                                          alt={recipe.title}
+                                          dishTitle={recipe.title}
+                                          category={recipe.category}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      </div>
+                                      <div className="min-w-0 flex-1">
+                                        <div className="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">
+                                          {recipe.title}
+                                        </div>
+                                        <div className="text-[10px] text-stone-500 dark:text-stone-400 flex items-center gap-2 mt-0.5">
+                                          <span className="font-semibold text-amber-700 dark:text-amber-400">{recipe.category || 'Món chính'}</span>
+                                          {recipe.servings && <span>• {recipe.servings} phần</span>}
+                                          {recipe.cookTimeMinutes && <span>• ~{recipe.cookTimeMinutes}p</span>}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {preset.recommendedDrinks && preset.recommendedDrinks.length > 0 && (
+                                <div className="pt-1 flex items-start gap-1.5 text-[10px] text-stone-500 dark:text-stone-400">
+                                  <Wine className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                                  <span className="leading-snug">
+                                    <strong className="text-stone-700 dark:text-stone-300">Đồ uống gợi ý:</strong> {preset.recommendedDrinks.join(', ')}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       );
                     })}
