@@ -49,8 +49,6 @@ export default defineConfig({
       ignored: ['**/*.apk', '**/MealWise-Portable-PC/**', '**/tools/**']
     },
     hmr: {
-      protocol: 'ws',
-      host: 'localhost',
       port: 5173
     }
   },

@@ -1,5 +1,5 @@
 // MealWise Progressive Web App Service Worker (100% Offline Mode Support)
-const CACHE_NAME = 'mealwise-offline-v6';
+const CACHE_NAME = 'mealwise-offline-v7';
 
 const PRECACHE_URLS = [
   '/',
@@ -35,6 +35,17 @@ self.addEventListener('fetch', (event) => {
 
   // Never intercept API endpoints (SSE, Collab sync, etc.)
   if (url.pathname.startsWith('/api/')) return;
+
+  // Never intercept Vite development source files, modules, or dev query strings
+  if (
+    url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/@') ||
+    url.pathname.includes('node_modules') ||
+    url.search.includes('import') ||
+    url.search.includes('v=')
+  ) {
+    return;
+  }
 
   // Network-first for navigation & index.html (always get fresh HTML when online, fallback to cache offline)
   if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {

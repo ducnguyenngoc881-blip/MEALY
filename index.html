@@ -28,7 +28,13 @@
       })();
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          var isDev = location.port === '5173' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+          var isDev = location.port === '5173' || 
+                      location.hostname === 'localhost' || 
+                      location.hostname === '127.0.0.1' || 
+                      location.hostname.includes('ngrok') || 
+                      location.hostname.includes('loca.lt') || 
+                      location.hostname.includes('trycloudflare.com') ||
+                      location.search.includes('force_refresh=true');
           if (isDev) {
             navigator.serviceWorker.getRegistrations().then(function(regs) {
               for (var reg of regs) {
