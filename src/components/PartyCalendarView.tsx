@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
   Calendar as CalendarIcon, 
+  CalendarDays,
+  ChefHat,
   ChevronLeft, 
   ChevronRight, 
   Plus, 
