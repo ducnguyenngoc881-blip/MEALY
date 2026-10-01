@@ -12,6 +12,7 @@ import {
   PartyDishItem,
   PartyEquipmentItem,
   SavedPartyPreset,
+  ScheduledPartyEvent,
   PantryItem,
   ConfirmDialogState,
   CollabRoom,
@@ -145,6 +146,14 @@ interface MealWiseContextType {
   saveCurrentPlanAsPreset: (title: string, description?: string) => SavedPartyPreset;
   deleteUserPartyPlan: (id: string) => void;
   loadUserPartyPlan: (preset: SavedPartyPreset) => void;
+
+  // Scheduled Party Calendar Events
+  scheduledPartyEvents: ScheduledPartyEvent[];
+  schedulePartyEvent: (event: Omit<ScheduledPartyEvent, 'id' | 'createdAt'>) => ScheduledPartyEvent;
+  updateScheduledPartyEvent: (id: string, updates: Partial<ScheduledPartyEvent>) => void;
+  deleteScheduledPartyEvent: (id: string) => void;
+  togglePartyEventNotification: (id: string) => void;
+  loadEventIntoPartyPlan: (event: ScheduledPartyEvent) => void;
 
   // Extra grocery items
   extraGroceryItems: ExtraGroceryItem[];
@@ -588,6 +597,20 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem('mealwise_custom_party_plans', JSON.stringify(userPartyPlans));
   }, [userPartyPlans]);
 
+  // Scheduled Party Calendar Events
+  const [scheduledPartyEvents, setScheduledPartyEvents] = useState<ScheduledPartyEvent[]>(() => {
+    try {
+      const saved = localStorage.getItem('mealwise_scheduled_party_events');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('mealwise_scheduled_party_events', JSON.stringify(scheduledPartyEvents));
+  }, [scheduledPartyEvents]);
+
   // Pantry / Fridge state (leftover & in-fridge ingredients)
   const [pantryItems, setPantryItems] = useState<PantryItem[]>(() => {
     try {
@@ -918,6 +941,55 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       staffNotes: preset.staffNotes || `Áp dụng mẫu tiệc của tôi: ${preset.title}`
     });
     showToast(`✨ Đã áp dụng mẫu "${preset.title}" vào kế hoạch tiệc!`);
+  };
+
+  const schedulePartyEvent = (event: Omit<ScheduledPartyEvent, 'id' | 'createdAt'>): ScheduledPartyEvent => {
+    const newEvent: ScheduledPartyEvent = {
+      ...event,
+      id: `party-evt-${Date.now()}`,
+      createdAt: new Date().toISOString()
+    };
+    setScheduledPartyEvents(prev => [newEvent, ...prev]);
+    showToast(`📅 Đã lưu lịch tiệc "${newEvent.title}" vào Lịch Tiệc!`);
+    return newEvent;
+  };
+
+  const updateScheduledPartyEvent = (id: string, updates: Partial<ScheduledPartyEvent>) => {
+    setScheduledPartyEvents(prev => prev.map(e => e.id === id ? { ...e, ...updates } : e));
+    showToast('✏️ Đã cập nhật kế hoạch lịch tiệc.');
+  };
+
+  const deleteScheduledPartyEvent = (id: string) => {
+    setScheduledPartyEvents(prev => prev.filter(e => e.id !== id));
+    showToast('🗑️ Đã xóa sự kiện khỏi Lịch Tiệc.');
+  };
+
+  const togglePartyEventNotification = (id: string) => {
+    setScheduledPartyEvents(prev => prev.map(e => {
+      if (e.id === id) {
+        const nextState = !e.enableNotifications;
+        showToast(nextState ? `🔔 Đã bật nhắc nhở cho "${e.title}"!` : `🔕 Đã tắt nhắc nhở cho "${e.title}".`);
+        return { ...e, enableNotifications: nextState };
+      }
+      return e;
+    }));
+  };
+
+  const loadEventIntoPartyPlan = (event: ScheduledPartyEvent) => {
+    setPartyPlan({
+      id: `party-${Date.now()}`,
+      title: event.title,
+      clientName: 'Khách Hàng Đặt Tiệc',
+      eventType: event.eventType,
+      guestCount: event.guestCount,
+      tableSize: event.tableSize,
+      budgetPerHeadVnd: Math.max(50000, Math.round(event.totalEstimateVnd / Math.max(1, event.guestCount))),
+      dishes: event.attachedDishes ? event.attachedDishes.map(d => ({ ...d })) : [],
+      recommendedDrinks: [],
+      equipmentChecklist: [],
+      staffNotes: event.notes || `Kế hoạch theo lịch: ${event.title} (${event.targetDate})`
+    });
+    showToast(`✨ Đã nạp thực đơn của "${event.title}" vào Bếp!`);
   };
 
   // Helper to build default weekly plan with authentic preset Mâm Cơm sets
@@ -2493,6 +2565,12 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         saveCurrentPlanAsPreset,
         deleteUserPartyPlan,
         loadUserPartyPlan,
+        scheduledPartyEvents,
+        schedulePartyEvent,
+        updateScheduledPartyEvent,
+        deleteScheduledPartyEvent,
+        togglePartyEventNotification,
+        loadEventIntoPartyPlan,
         extraGroceryItems,
         addExtraGroceryItems,
         removeExtraGroceryItem,
@@ -2657,6 +2735,26 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     }),
     deleteUserPartyPlan: () => {},
     loadUserPartyPlan: () => {},
+    scheduledPartyEvents: [],
+    schedulePartyEvent: () => ({
+      id: 'fallback-evt',
+      title: 'Tiệc Mặc Định',
+      eventType: 'family',
+      targetDate: '2026-10-15',
+      recurrence: 'none',
+      guestCount: 10,
+      tableSize: 10,
+      dishesCount: 0,
+      totalFoodCostVnd: 0,
+      totalEstimateVnd: 0,
+      attachedDishes: [],
+      enableNotifications: true,
+      createdAt: new Date().toISOString()
+    }),
+    updateScheduledPartyEvent: () => {},
+    deleteScheduledPartyEvent: () => {},
+    togglePartyEventNotification: () => {},
+    loadEventIntoPartyPlan: () => {},
     extraGroceryItems: [],
     addExtraGroceryItems: () => {},
     removeExtraGroceryItem: () => {},

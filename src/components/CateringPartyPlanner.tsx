@@ -37,13 +37,16 @@ import {
   Timer,
   Lock,
   Receipt,
-  ShieldAlert
+  ShieldAlert,
+  Calendar as CalendarIcon
 } from 'lucide-react';
-import { PartyDishItem, Recipe, SavedPartyPreset } from '../types';
+import { PartyDishItem, Recipe, SavedPartyPreset, ScheduledPartyEvent } from '../types';
 import { CORPORATE_PARTY_PRESETS } from '../data/corporatePartyPresets';
 import { matchesRecipeSearch } from '../utils/textUtils';
 import { calculatePartyKitchenTime, DishTimingInput } from '../utils/cateringTimeMath';
 import { SafeImage } from './SafeImage';
+import { PartyCalendarView } from './PartyCalendarView';
+import { SchedulePartyModal } from './SchedulePartyModal';
 
 interface ConfirmDialogState {
   title: string;
@@ -353,13 +356,17 @@ export const CateringPartyPlanner: React.FC = () => {
     saveCurrentPlanAsPreset,
     deleteUserPartyPlan,
     loadUserPartyPlan,
+    scheduledPartyEvents,
     setSelectedRecipe, 
     showToast,
     isRegistered,
     openAuthModal
   } = useMealWise();
 
-  const [activeMode, setActiveMode] = useState<'builder' | 'presets'>('builder');
+  const [activeMode, setActiveMode] = useState<'builder' | 'calendar' | 'presets'>('builder');
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState<boolean>(false);
+  const [scheduleInitialDate, setScheduleInitialDate] = useState<string | undefined>(undefined);
+  const [editingScheduleEvent, setEditingScheduleEvent] = useState<ScheduledPartyEvent | null>(null);
   const [presetSubTab, setPresetSubTab] = useState<'catalog' | 'my_presets'>('catalog');
   const [showSavePresetModal, setShowSavePresetModal] = useState<boolean>(false);
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState | null>(null);
@@ -796,6 +803,18 @@ export const CateringPartyPlanner: React.FC = () => {
           </button>
           <button
             type="button"
+            onClick={() => setActiveMode('calendar')}
+            className={`flex-1 sm:flex-initial px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              activeMode === 'calendar'
+                ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 font-semibold'
+            }`}
+          >
+            <CalendarIcon className="w-3.5 h-3.5" />
+            <span>Lịch Tiệc ({scheduledPartyEvents.length})</span>
+          </button>
+          <button
+            type="button"
             onClick={() => setActiveMode('presets')}
             className={`flex-1 sm:flex-initial px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
               activeMode === 'presets'
@@ -826,15 +845,29 @@ export const CateringPartyPlanner: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => {
+                      setScheduleInitialDate(undefined);
+                      setEditingScheduleEvent(null);
+                      setIsScheduleModalOpen(true);
+                    }}
+                    className="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-xs flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+                    title="Đặt lịch tiệc cho thực đơn này"
+                  >
+                    <CalendarIcon className="w-3.5 h-3.5" />
+                    <span>Lên Lịch Tiệc</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
                       setSavePlanTitle(partyPlan.title || 'Mâm Tiệc Gia Đình');
                       setSavePlanDesc(partyPlan.staffNotes || '');
                       setShowSavePresetModal(true);
                     }}
-                    className="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-xs flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+                    className="px-2 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
                     title="Lưu kế hoạch hiện tại thành mẫu tiệc riêng của bạn"
                   >
                     <Save className="w-3.5 h-3.5" />
-                    <span>Lưu Mẫu Tiệc</span>
+                    <span>Lưu Mẫu</span>
                   </button>
 
                   <button
@@ -1768,7 +1801,23 @@ export const CateringPartyPlanner: React.FC = () => {
         </div>
       )}
 
-      {/* MODE 2: PRESET LIBRARY */}
+      {/* MODE 2: PARTY CALENDAR VIEW */}
+      {activeMode === 'calendar' && (
+        <PartyCalendarView
+          onOpenScheduleModal={(date) => {
+            setScheduleInitialDate(date);
+            setEditingScheduleEvent(null);
+            setIsScheduleModalOpen(true);
+          }}
+          onEditEvent={(event) => {
+            setEditingScheduleEvent(event);
+            setIsScheduleModalOpen(true);
+          }}
+          onSwitchToBuilder={() => setActiveMode('builder')}
+        />
+      )}
+
+      {/* MODE 3: PRESET LIBRARY */}
       {activeMode === 'presets' && (
         <div className="space-y-6">
           {/* Sub-tabs Header */}
@@ -2068,6 +2117,20 @@ export const CateringPartyPlanner: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            type="button"
+            onClick={() => {
+              setScheduleInitialDate(undefined);
+              setEditingScheduleEvent(null);
+              setIsScheduleModalOpen(true);
+            }}
+            className="p-2.5 rounded-xl bg-white hover:bg-stone-100 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] transition-colors shrink-0 cursor-pointer"
+            title="Đặt lịch tiệc cho thực đơn này"
+            aria-label="Đặt lịch tiệc cho thực đơn này"
+          >
+            <CalendarIcon className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+          </button>
+
           <button
             type="button"
             onClick={() => {
@@ -2571,6 +2634,17 @@ export const CateringPartyPlanner: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* SCHEDULE PARTY EVENT MODAL */}
+      <SchedulePartyModal
+        isOpen={isScheduleModalOpen}
+        onClose={() => {
+          setIsScheduleModalOpen(false);
+          setEditingScheduleEvent(null);
+        }}
+        initialDate={scheduleInitialDate}
+        editingEvent={editingScheduleEvent}
+      />
 
     </div>
   );

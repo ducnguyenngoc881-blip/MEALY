@@ -34,6 +34,7 @@ import './unit/multiUserTelemetry.test';
 import './unit/screenTimeAndAdFilters.test';
 import './unit/userDatabase.test';
 import './unit/groceryAggregationConsolidated.test';
+import './unit/partyCalendar.test';
 
 // 2. Comprehensive 1000+ Scenario Matrices (Screens 1 to 9)
 import './unit/scenarioMatrixScreens1to3.test';

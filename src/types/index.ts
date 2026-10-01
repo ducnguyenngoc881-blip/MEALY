@@ -217,6 +217,39 @@ export interface SavedPartyPreset {
   createdAt: string;
 }
 
+export type PartyRecurrenceType = 'none' | 'monthly' | 'yearly';
+
+export interface ScheduledPartyEvent {
+  id: string;
+  title: string;
+  eventType: string; // 'family' | 'corporate' | 'birthday' | 'bbq' | 'wedding'
+  targetDate: string; // ISO date 'YYYY-MM-DD'
+  recurrence: PartyRecurrenceType; // 'none' | 'monthly' | 'yearly'
+  guestCount: number;
+  tableSize: 6 | 8 | 10;
+  dishesCount: number;
+  totalFoodCostVnd: number;
+  totalEstimateVnd: number;
+  presetId?: string; // Optional linked preset ID
+  attachedDishes: PartyDishItem[]; // Full snapshot of dishes for loading into kitchen
+  enableNotifications: boolean;
+  notes?: string;
+  createdAt: string;
+}
+
+export type PartyCalendarNotificationTier = 'none' | '30_days' | 'weekly' | 'daily' | 'today';
+
+export interface PartyEventNotification {
+  eventId: string;
+  eventTitle: string;
+  daysRemaining: number;
+  tier: PartyCalendarNotificationTier;
+  message: string;
+  targetDateFormatted: string;
+  recurrence: PartyRecurrenceType;
+  enableNotifications: boolean;
+}
+
 export interface ConfirmDialogState {
   title: string;
   message: string;
