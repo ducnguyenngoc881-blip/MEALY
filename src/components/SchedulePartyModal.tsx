@@ -403,17 +403,60 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
             </div>
 
             {menuSource === 'preset' && (
-              <select
-                value={selectedPresetId}
-                onChange={(e) => setSelectedPresetId(e.target.value)}
-                className="w-full bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-xs font-bold text-stone-900 dark:text-white focus:outline-none focus:border-amber-500"
-              >
-                {CORPORATE_PARTY_PRESETS.map(p => (
-                  <option key={p.id} value={p.id}>
-                    {p.title} (~{p.suggestedPerHeadBudgetVnd.toLocaleString('vi-VN')} đ/khách)
-                  </option>
-                ))}
-              </select>
+              <div className="space-y-2 pt-1.5">
+                <div className="flex items-center justify-between text-[10px] font-bold text-stone-600 dark:text-stone-400 uppercase tracking-wider">
+                  <span>Chọn Mẫu Thực Đơn Gợi Ý:</span>
+                  <span className="text-amber-800 dark:text-amber-400 font-extrabold">{CORPORATE_PARTY_PRESETS.length} mẫu có sẵn</span>
+                </div>
+                
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-0.5 scrollbar-thin">
+                  {CORPORATE_PARTY_PRESETS.map(preset => {
+                    const isSelected = selectedPresetId === preset.id;
+                    return (
+                      <div
+                        key={preset.id}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => setSelectedPresetId(preset.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setSelectedPresetId(preset.id);
+                          }
+                        }}
+                        className={`p-3 rounded-2xl border transition-all text-left flex items-center justify-between gap-3 cursor-pointer min-h-[48px] active:scale-[0.99] ${
+                          isSelected
+                            ? 'bg-amber-500/10 dark:bg-amber-950/30 border-amber-500 ring-1 ring-amber-500/80 shadow-2xs'
+                            : 'bg-white dark:bg-[#1A1918] border-stone-200/90 dark:border-stone-800 hover:border-amber-400'
+                        }`}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-black text-stone-900 dark:text-white leading-snug line-clamp-2">
+                            {preset.title}
+                          </div>
+                          <div className="flex items-center gap-2 mt-1 text-[11px] text-stone-500 dark:text-stone-400 flex-wrap">
+                            <span className="font-extrabold text-amber-800 dark:text-amber-400 bg-amber-500/15 dark:bg-amber-950/50 px-2 py-0.5 rounded-md border border-amber-500/25">
+                              ~{preset.suggestedPerHeadBudgetVnd.toLocaleString('vi-VN')} đ/khách
+                            </span>
+                            <span>•</span>
+                            <span className="font-medium text-stone-600 dark:text-stone-300">
+                              {preset.menuRecipes.length} món tiệc chuẩn
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${
+                          isSelected
+                            ? 'bg-amber-500 text-stone-950 shadow-2xs'
+                            : 'border-2 border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800'
+                        }`}>
+                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             )}
           </div>
 
