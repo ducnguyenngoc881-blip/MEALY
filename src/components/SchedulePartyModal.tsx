@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
   Calendar as CalendarIcon, 
@@ -12,7 +12,11 @@ import {
   Users, 
   Utensils, 
   ChefHat, 
-  AlertCircle 
+  AlertCircle,
+  ArrowRight,
+  ArrowLeft,
+  Plus,
+  Minus
 } from 'lucide-react';
 import { PartyRecurrenceType, ScheduledPartyEvent, Recipe } from '../types';
 import { CORPORATE_PARTY_PRESETS } from '../data/corporatePartyPresets';
@@ -26,11 +30,11 @@ interface SchedulePartyModalProps {
 }
 
 const EVENT_TYPES = [
-  { id: 'family', label: 'Gia Đình', icon: '👨‍👩‍👧‍👦' },
-  { id: 'birthday', label: 'Sinh Nhật', icon: '🎂' },
-  { id: 'corporate', label: 'Công Ty', icon: '🏢' },
-  { id: 'bbq', label: 'Dã Ngoại BBQ', icon: '🍖' },
-  { id: 'wedding', label: 'Cưới Hỏi', icon: '💍' },
+  { id: 'family', label: 'Gia Đình', icon: '👨‍👩‍👧‍👦', defaultTitle: 'Tiệc Họp Mặt Gia Đình' },
+  { id: 'birthday', label: 'Sinh Nhật', icon: '🎂', defaultTitle: 'Tiệc Sinh Nhật Ấm Cúng' },
+  { id: 'corporate', label: 'Công Ty', icon: '🏢', defaultTitle: 'Tiệc Liên Hoan Công Ty' },
+  { id: 'bbq', label: 'Dã Ngoại BBQ', icon: '🍖', defaultTitle: 'Tiệc Nướng BBQ Ngoài Trời' },
+  { id: 'wedding', label: 'Cưới Hỏi', icon: '💍', defaultTitle: 'Tiệc Đám Cưới & Kỷ Niệm' },
 ];
 
 export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
@@ -44,13 +48,13 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
     partyPlan, 
     schedulePartyEvent, 
     updateScheduledPartyEvent, 
-    userPartyPlans,
     showToast 
   } = useMealWise();
 
   const todayStr = formatDateISO(new Date());
 
-  // Form states
+  // Form states - React hooks MUST be declared unconditionally at top
+  const [step, setStep] = useState<1 | 2>(1);
   const [targetDate, setTargetDate] = useState<string>(
     editingEvent ? editingEvent.targetDate : (initialDate || todayStr)
   );
@@ -82,6 +86,30 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
     CORPORATE_PARTY_PRESETS[0]?.id || ''
   );
 
+  // Sync state whenever editingEvent or initialDate changes
+  useEffect(() => {
+    if (editingEvent) {
+      setTargetDate(editingEvent.targetDate);
+      setRecurrence(editingEvent.recurrence);
+      setTitle(editingEvent.title);
+      setEventType(editingEvent.eventType);
+      setGuestCount(editingEvent.guestCount);
+      setTableSize(editingEvent.tableSize);
+      setEnableNotifications(editingEvent.enableNotifications);
+      setNotes(editingEvent.notes || '');
+      if (editingEvent.presetId) {
+        setMenuSource('preset');
+        setSelectedPresetId(editingEvent.presetId);
+      } else {
+        setMenuSource('current_builder');
+      }
+    } else {
+      setTargetDate(initialDate || todayStr);
+      setStep(1);
+    }
+  }, [editingEvent, initialDate, isOpen]);
+
+  // Hook invariant: return null strictly AFTER all hooks
   if (!isOpen) return null;
 
   // Calculate scaled food cost of active builder dishes
@@ -92,7 +120,21 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
     return sum + ((r.estimatedCostVnd || 40000) * (guestCount / s));
   }, 0);
 
-  const handleSave = () => {
+  const numTables = Math.ceil(guestCount / tableSize);
+
+  const handleEventTypeSelect = (typeId: string) => {
+    setEventType(typeId);
+    const matched = EVENT_TYPES.find(t => t.id === typeId);
+    if (matched && (!title.trim() || EVENT_TYPES.some(t => t.defaultTitle === title.trim()))) {
+      setTitle(matched.defaultTitle);
+    }
+  };
+
+  const handleStepGuestCount = (delta: number) => {
+    setGuestCount(prev => Math.max(1, Math.min(500, prev + delta)));
+  };
+
+  const goToStep2 = () => {
     const trimmedTitle = title.trim();
     if (!trimmedTitle) {
       showToast('⚠️ Vui lòng nhập tên cho sự kiện tiệc!');
@@ -100,6 +142,21 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
     }
     if (!targetDate) {
       showToast('⚠️ Vui lòng chọn ngày diễn ra sự kiện!');
+      return;
+    }
+    setStep(2);
+  };
+
+  const handleSave = () => {
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle) {
+      showToast('⚠️ Vui lòng nhập tên cho sự kiện tiệc!');
+      setStep(1);
+      return;
+    }
+    if (!targetDate) {
+      showToast('⚠️ Vui lòng chọn ngày diễn ra sự kiện!');
+      setStep(1);
       return;
     }
 
@@ -140,6 +197,7 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
         enableNotifications,
         notes: notes.trim() || undefined
       });
+      showToast('✅ Đã cập nhật kế hoạch tiệc thành công!');
     } else {
       schedulePartyEvent({
         title: trimmedTitle,
@@ -156,8 +214,10 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
         enableNotifications,
         notes: notes.trim() || undefined
       });
+      showToast('🎉 Đã thêm tiệc mới vào Lịch Tiệc thành công!');
     }
 
+    setStep(1);
     onClose();
   };
 
@@ -171,17 +231,17 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
         onClick={e => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="px-5 py-4 border-b border-[#E8E2D8] dark:border-[#252220] flex items-center justify-between shrink-0 bg-[#FAF8F5] dark:bg-[#121110]">
+        <div className="px-5 py-3.5 border-b border-[#E8E2D8] dark:border-[#252220] flex items-center justify-between shrink-0 bg-[#FAF8F5] dark:bg-[#121110]">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
               <CalendarIcon className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-black text-stone-900 dark:text-white leading-tight">
-                {editingEvent ? 'Chỉnh Sửa Lịch Tiệc' : 'Lên Kế Hoạch & Đặt Lịch Tiệc'}
+              <h3 className="text-sm sm:text-base font-black text-stone-900 dark:text-white leading-tight">
+                {editingEvent ? 'Chỉnh Sửa Lịch Tiệc' : 'Lên Kế Hoạch Đặt Tiệc'}
               </h3>
-              <p className="text-[11px] text-stone-500 dark:text-stone-400">
-                Đặt lịch ngày tiệc, cài đặt lặp lại hàng năm/tháng và nhắc nhở
+              <p className="text-[10px] sm:text-[11px] text-stone-500 dark:text-stone-400">
+                {step === 1 ? 'Bước 1/2: Thời gian, loại tiệc & số lượng khách' : 'Bước 2/2: Thực đơn món ăn & nhắc nhở thông minh'}
               </p>
             </div>
           </div>
@@ -196,338 +256,458 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
           </button>
         </div>
 
+        {/* 2-Step Modern Flow Progress Indicator */}
+        <div className="px-5 py-2.5 bg-stone-50/70 dark:bg-[#161514] border-b border-[#E8E2D8] dark:border-[#252220] flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setStep(1)}
+            className={`flex-1 py-1.5 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              step === 1
+                ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                : 'bg-white dark:bg-[#1A1918] text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
+            }`}
+          >
+            <span className={`w-4 h-4 rounded-full text-[10px] font-black flex items-center justify-center ${
+              step === 1 ? 'bg-stone-950 text-white' : 'bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200'
+            }`}>
+              1
+            </span>
+            <span>Thời Gian & Khách</span>
+          </button>
+
+          <ArrowRight className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+
+          <button
+            type="button"
+            onClick={goToStep2}
+            className={`flex-1 py-1.5 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              step === 2
+                ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                : 'bg-white dark:bg-[#1A1918] text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
+            }`}
+          >
+            <span className={`w-4 h-4 rounded-full text-[10px] font-black flex items-center justify-center ${
+              step === 2 ? 'bg-stone-950 text-white' : 'bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200'
+            }`}>
+              2
+            </span>
+            <span>Thực Đơn & Nhắc Nhở</span>
+          </button>
+        </div>
+
         {/* Modal Scrollable Body */}
-        <div className="p-5 overflow-y-auto space-y-4 flex-1">
+        <div className="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
           
-          {/* 1. Recurrence Selector (Top Highlight) */}
-          <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black uppercase tracking-wider text-stone-600 dark:text-stone-300 flex items-center gap-1.5">
-                <Repeat className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span>Tính Chất Lặp Lại Của Sự Kiện</span>
-              </span>
-              <span className="text-[10px] text-stone-500 dark:text-stone-400 font-semibold">
-                {recurrence === 'yearly' ? 'Sinh nhật / Kỷ niệm' : recurrence === 'monthly' ? 'Họp mặt định kỳ' : 'Tiệc riêng lẻ'}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-1.5">
-              <button
-                type="button"
-                onClick={() => setRecurrence('none')}
-                className={`py-2 px-2 rounded-xl text-xs font-bold transition-all flex flex-col items-center justify-center text-center gap-0.5 cursor-pointer ${
-                  recurrence === 'none'
-                    ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
-                    : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] hover:border-amber-500/40'
-                }`}
-              >
-                <span>1 Lần</span>
-                <span className="text-[9px] opacity-80 font-normal">Không lặp lại</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setRecurrence('yearly')}
-                className={`py-2 px-2 rounded-xl text-xs font-bold transition-all flex flex-col items-center justify-center text-center gap-0.5 cursor-pointer ${
-                  recurrence === 'yearly'
-                    ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
-                    : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] hover:border-amber-500/40'
-                }`}
-              >
-                <span>🔁 Hàng Năm</span>
-                <span className="text-[9px] opacity-80 font-normal">Sinh nhật, cúng giỗ</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setRecurrence('monthly')}
-                className={`py-2 px-2 rounded-xl text-xs font-bold transition-all flex flex-col items-center justify-center text-center gap-0.5 cursor-pointer ${
-                  recurrence === 'monthly'
-                    ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
-                    : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] hover:border-amber-500/40'
-                }`}
-              >
-                <span>🔄 Hàng Tháng</span>
-                <span className="text-[9px] opacity-80 font-normal">Gặp mặt định kỳ</span>
-              </button>
-            </div>
-          </div>
-
-          {/* 2. Target Date Picker */}
-          <div>
-            <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-              Ngày Diễn Ra Sự Kiện <span className="text-rose-500">*</span>
-            </label>
-            <div className="relative">
-              <input
-                type="date"
-                value={targetDate}
-                onChange={(e) => setTargetDate(e.target.value)}
-                className="w-full bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-900 dark:text-white focus:outline-none focus:border-amber-500 transition-colors"
-              />
-            </div>
-            {targetDate && (
-              <span className="text-[11px] text-amber-800 dark:text-amber-300 font-semibold mt-1 block">
-                🗓️ {formatVietnameseDate(targetDate)}
-                {recurrence === 'yearly' && ' (Sẽ tự động xuất hiện mỗi năm vào ngày này)'}
-                {recurrence === 'monthly' && ' (Sẽ tự động xuất hiện mỗi tháng vào ngày này)'}
-              </span>
-            )}
-          </div>
-
-          {/* 3. Event Title & Event Type */}
-          <div className="space-y-3">
-            <div>
-              <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                Tên Sự Kiện / Tiệc <span className="text-rose-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="VD: Sinh Nhật Mẹ, Tiệc Tất Niên Công Ty, BBQ Cuối Tuần..."
-                className="w-full bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 transition-colors"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                Hình Thức Tiệc
-              </label>
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-                {EVENT_TYPES.map(type => (
-                  <button
-                    key={type.id}
-                    type="button"
-                    onClick={() => setEventType(type.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 shrink-0 cursor-pointer ${
-                      eventType === type.id
-                        ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
-                        : 'bg-stone-100 dark:bg-[#252220] text-stone-700 dark:text-stone-300 hover:text-stone-900 border border-stone-200 dark:border-[#252220]'
-                    }`}
-                  >
-                    <span>{type.icon}</span>
-                    <span>{type.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* 4. Headcount & Table Specs */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
-              <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                Số Lượng Khách
-              </label>
-              <div className="flex items-center gap-1">
-                <input
-                  type="number"
-                  min={1}
-                  max={500}
-                  value={guestCount}
-                  onChange={(e) => setGuestCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-700 rounded-xl px-2.5 py-1.5 text-xs font-black text-center text-stone-900 dark:text-white focus:outline-none focus:border-amber-500"
-                />
-              </div>
-            </div>
-
-            <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
-              <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                Quy Cách Bàn (Khách/Bàn)
-              </label>
-              <div className="flex items-center gap-1">
-                {([6, 8, 10] as const).map(size => (
-                  <button
-                    key={size}
-                    type="button"
-                    onClick={() => setTableSize(size)}
-                    className={`flex-1 py-1.5 rounded-lg text-[11px] font-bold transition-colors cursor-pointer whitespace-nowrap ${
-                      tableSize === size
-                        ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
-                        : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
-                    }`}
-                  >
-                    {size} khách
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Table Count Summary */}
-          <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 text-[11px] font-semibold text-amber-900 dark:text-amber-200 flex items-center justify-between">
-            <span>Bố trí bàn tiệc:</span>
-            <span className="font-extrabold">
-              = {Math.ceil(guestCount / tableSize)} bàn ({tableSize} khách/bàn)
-            </span>
-          </div>
-
-          {/* 5. Menu Attachment Selection */}
-          <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2.5">
-            <span className="text-[10px] font-black uppercase tracking-wider text-stone-600 dark:text-stone-300 flex items-center gap-1.5">
-              <Utensils className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-              <span>Gắn Thực Đơn Món Ăn Cho Tiệc</span>
-            </span>
-
-            <div className="grid grid-cols-2 gap-1.5">
-              <button
-                type="button"
-                onClick={() => setMenuSource('current_builder')}
-                className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-left flex flex-col gap-0.5 cursor-pointer ${
-                  menuSource === 'current_builder'
-                    ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
-                    : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220]'
-                }`}
-              >
-                <span>Mâm Đang Lên Bếp</span>
-                <span className="text-[10px] opacity-80 font-normal">
-                  {partyPlan.dishes.length} món • ~{Math.round(currentDishesCost).toLocaleString('vi-VN')} đ
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setMenuSource('preset')}
-                className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-left flex flex-col gap-0.5 cursor-pointer ${
-                  menuSource === 'preset'
-                    ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
-                    : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220]'
-                }`}
-              >
-                <span>Thư Viện Mẫu Chuẩn</span>
-                <span className="text-[10px] opacity-80 font-normal">
-                  {CORPORATE_PARTY_PRESETS.length} mâm tiệc sẵn
-                </span>
-              </button>
-            </div>
-
-            {menuSource === 'preset' && (
-              <div className="space-y-2 pt-1.5">
-                <div className="flex items-center justify-between text-[10px] font-bold text-stone-600 dark:text-stone-400 uppercase tracking-wider">
-                  <span>Chọn Mẫu Thực Đơn Gợi Ý:</span>
-                  <span className="text-amber-800 dark:text-amber-400 font-extrabold">{CORPORATE_PARTY_PRESETS.length} mẫu có sẵn</span>
+          {/* ================= STEP 1: DATE, OCCASION & GUEST COUNT ================= */}
+          {step === 1 && (
+            <div className="space-y-4 animate-fade-in">
+              
+              {/* 1. Date & Recurrence Unified Card */}
+              <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-stone-600 dark:text-stone-300 flex items-center gap-1.5">
+                    <CalendarDays className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <span>Ngày Diễn Ra Sự Kiện</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-amber-800 dark:text-amber-300">
+                    {targetDate ? formatVietnameseDate(targetDate) : ''}
+                  </span>
                 </div>
-                
-                <div className="space-y-2 max-h-60 overflow-y-auto pr-0.5 scrollbar-thin">
-                  {CORPORATE_PARTY_PRESETS.map(preset => {
-                    const isSelected = selectedPresetId === preset.id;
-                    return (
-                      <div
-                        key={preset.id}
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => setSelectedPresetId(preset.id)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setSelectedPresetId(preset.id);
-                          }
-                        }}
-                        className={`p-3 rounded-2xl border transition-all text-left flex items-center justify-between gap-3 cursor-pointer min-h-[48px] active:scale-[0.99] ${
-                          isSelected
-                            ? 'bg-amber-500/10 dark:bg-amber-950/30 border-amber-500 ring-1 ring-amber-500/80 shadow-2xs'
-                            : 'bg-white dark:bg-[#1A1918] border-stone-200/90 dark:border-stone-800 hover:border-amber-400'
+
+                <input
+                  type="date"
+                  value={targetDate}
+                  onChange={(e) => setTargetDate(e.target.value)}
+                  className="w-full bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-xs font-bold text-stone-900 dark:text-white focus:outline-none focus:border-amber-500 shadow-2xs"
+                />
+
+                {/* Recurrence Segmented Control */}
+                <div className="space-y-1.5 pt-1 border-t border-stone-200/80 dark:border-stone-800">
+                  <span className="text-[10px] font-extrabold text-stone-500 dark:text-stone-400 uppercase tracking-wider block">
+                    Chu Kỳ Lặp Lại
+                  </span>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setRecurrence('none')}
+                      className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
+                        recurrence === 'none'
+                          ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                          : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
+                      }`}
+                    >
+                      1 Lần
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRecurrence('yearly')}
+                      className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
+                        recurrence === 'yearly'
+                          ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                          : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
+                      }`}
+                    >
+                      🔁 Hàng Năm
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRecurrence('monthly')}
+                      className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
+                        recurrence === 'monthly'
+                          ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                          : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
+                      }`}
+                    >
+                      🔄 Hàng Tháng
+                    </button>
+                  </div>
+
+                  <p className="text-[10px] text-stone-500 dark:text-stone-400 italic pt-0.5">
+                    {recurrence === 'yearly' && '🎂 Nhắc lại vào ngày này mỗi năm (thích hợp cho sinh nhật, kỷ niệm, cúng giỗ).'}
+                    {recurrence === 'monthly' && '🔄 Tự động nhắc lại vào ngày này mỗi tháng (thích hợp cho họp mặt định kỳ).'}
+                    {recurrence === 'none' && '🗓️ Sự kiện diễn ra 1 lần duy nhất theo ngày đã chọn.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* 2. Title & Occasion */}
+              <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2.5">
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Tên Sự Kiện / Tiệc <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="VD: Sinh Nhật Bé An, Liên Hoan Cuối Năm..."
+                    className="w-full bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-xs font-bold text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 shadow-2xs"
+                  />
+                </div>
+
+                <div>
+                  <span className="block text-[10px] font-extrabold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1.5">
+                    Hình Thức Tiệc
+                  </span>
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                    {EVENT_TYPES.map(type => (
+                      <button
+                        key={type.id}
+                        type="button"
+                        onClick={() => handleEventTypeSelect(type.id)}
+                        className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 shrink-0 cursor-pointer ${
+                          eventType === type.id
+                            ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                            : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
                         }`}
                       >
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs font-black text-stone-900 dark:text-white leading-snug line-clamp-2">
-                            {preset.title}
-                          </div>
-                          <div className="flex items-center gap-2 mt-1 text-[11px] text-stone-500 dark:text-stone-400 flex-wrap">
-                            <span className="font-extrabold text-amber-800 dark:text-amber-400 bg-amber-500/15 dark:bg-amber-950/50 px-2 py-0.5 rounded-md border border-amber-500/25">
-                              ~{preset.suggestedPerHeadBudgetVnd.toLocaleString('vi-VN')} đ/khách
-                            </span>
-                            <span>•</span>
-                            <span className="font-medium text-stone-600 dark:text-stone-300">
-                              {preset.menuRecipes.length} món tiệc chuẩn
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${
-                          isSelected
-                            ? 'bg-amber-500 text-stone-950 shadow-2xs'
-                            : 'border-2 border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800'
-                        }`}>
-                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
-                        </div>
-                      </div>
-                    );
-                  })}
+                        <span>{type.icon}</span>
+                        <span>{type.label}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* 6. Smart Notification Toggle */}
-          <div className="p-3 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/30 flex items-center justify-between gap-3">
-            <div className="flex items-start gap-2.5 min-w-0">
-              <div className="p-1.5 rounded-xl bg-amber-500/20 text-amber-800 dark:text-amber-300 shrink-0 mt-0.5">
-                {enableNotifications ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
+              {/* 3. Guests & Table Layout */}
+              <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-stone-600 dark:text-stone-300 flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <span>Quy Mô Khách & Bố Trí Bàn</span>
+                  </span>
+                  <span className="text-[11px] font-extrabold text-amber-800 dark:text-amber-300 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/25">
+                    = {numTables} bàn ({tableSize} khách/bàn)
+                  </span>
+                </div>
+
+                {/* Headcount Stepper Row */}
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs font-bold text-stone-700 dark:text-stone-300">
+                    Số Lượng Khách:
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => handleStepGuestCount(-5)}
+                      className="w-8 h-8 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-900 dark:text-white font-black text-sm flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                      title="Giảm 5 khách"
+                      aria-label="Giảm 5 khách"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <input
+                      type="number"
+                      min={1}
+                      max={500}
+                      value={guestCount}
+                      onChange={(e) => setGuestCount(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-16 h-8 text-center font-black text-xs bg-white dark:bg-[#1A1918] text-stone-900 dark:text-white border border-stone-200 dark:border-stone-700 rounded-xl focus:outline-none focus:border-amber-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleStepGuestCount(5)}
+                      className="w-8 h-8 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-900 dark:text-white font-black text-sm flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                      title="Tăng 5 khách"
+                      aria-label="Tăng 5 khách"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Table capacity chips */}
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-stone-200/80 dark:border-stone-800">
+                  <span className="text-[10px] font-extrabold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                    Quy Cách Bàn:
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    {([6, 8, 10] as const).map(size => (
+                      <button
+                        key={size}
+                        type="button"
+                        onClick={() => setTableSize(size)}
+                        className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
+                          tableSize === size
+                            ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                            : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
+                        }`}
+                      >
+                        {size} khách/bàn
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="min-w-0">
-                <h4 className="text-xs font-black text-stone-900 dark:text-white">
-                  Nhắc Nhở Kế Hoạch Thông Minh
-                </h4>
-                <p className="text-[10px] text-stone-600 dark:text-stone-300 leading-snug">
-                  Nhắc trước 30 ngày ➔ Nhắc hàng tuần ➔ Đếm ngược hàng ngày trong tuần tiệc
-                </p>
-              </div>
+
             </div>
+          )}
 
-            {/* Toggle Switch */}
-            <button
-              type="button"
-              onClick={() => setEnableNotifications(!enableNotifications)}
-              className={`w-11 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer ${
-                enableNotifications ? 'bg-amber-500' : 'bg-stone-300 dark:bg-stone-700'
-              }`}
-              role="switch"
-              aria-checked={enableNotifications}
-              aria-label="Bật/Tắt nhắc nhở thông minh"
-            >
-              <span 
-                className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${
-                  enableNotifications ? 'right-1' : 'left-1'
-                }`}
-              />
-            </button>
-          </div>
+          {/* ================= STEP 2: MENU & SMART NOTIFICATIONS ================= */}
+          {step === 2 && (
+            <div className="space-y-4 animate-fade-in">
+              
+              {/* 1. Menu Selection */}
+              <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-3">
+                <span className="text-[10px] font-black uppercase tracking-wider text-stone-600 dark:text-stone-300 flex items-center gap-1.5">
+                  <Utensils className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                  <span>Gắn Thực Đơn Cho Tiệc</span>
+                </span>
 
-          {/* 7. Optional Notes */}
-          <div>
-            <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-              Ghi Chú Riêng (Khách mời, địa điểm, yêu cầu đặc biệt)
-            </label>
-            <textarea
-              rows={2}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="VD: Nhà bác Hai tổ chức, cần chuẩn bị thêm 2 ghế trẻ em..."
-              className="w-full bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 resize-none transition-colors"
-            />
-          </div>
+                {/* Segmented Source Switch */}
+                <div className="grid grid-cols-2 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setMenuSource('current_builder')}
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-left flex flex-col gap-0.5 cursor-pointer ${
+                      menuSource === 'current_builder'
+                        ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                        : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220]'
+                    }`}
+                  >
+                    <span>Mâm Đang Lên Bếp</span>
+                    <span className="text-[10px] opacity-80 font-normal">
+                      {partyPlan.dishes.length} món • ~{Math.round(currentDishesCost).toLocaleString('vi-VN')} đ
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setMenuSource('preset')}
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-left flex flex-col gap-0.5 cursor-pointer ${
+                      menuSource === 'preset'
+                        ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                        : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220]'
+                    }`}
+                  >
+                    <span>Thư Viện Mẫu Chuẩn</span>
+                    <span className="text-[10px] opacity-80 font-normal">
+                      {CORPORATE_PARTY_PRESETS.length} mâm tiệc sẵn
+                    </span>
+                  </button>
+                </div>
+
+                {/* Source A: Current Builder Summary */}
+                {menuSource === 'current_builder' && (
+                  <div className="p-3 rounded-xl bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-800 space-y-2">
+                    <div className="flex items-center justify-between text-xs font-bold">
+                      <span className="text-stone-700 dark:text-stone-300">
+                        {partyPlan.dishes.length > 0 ? `Đang có ${partyPlan.dishes.length} món trong mâm` : 'Chưa có món nào trong mâm'}
+                      </span>
+                      <span className="text-amber-800 dark:text-amber-300 font-extrabold">
+                        ~{Math.round(currentDishesCost).toLocaleString('vi-VN')} đ
+                      </span>
+                    </div>
+
+                    {partyPlan.dishes.length > 0 ? (
+                      <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto pr-1">
+                        {partyPlan.dishes.map((item, idx) => {
+                          const r = recipes.find(rec => rec.id === item.recipeId);
+                          return (
+                            <span 
+                              key={`${item.recipeId}-${idx}`} 
+                              className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#252220] text-stone-800 dark:text-stone-200 border border-stone-200/60 dark:border-stone-700"
+                            >
+                              {r?.title || 'Món ăn'}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400 italic">
+                        Mâm tiệc chưa có món ăn. Bạn có thể chọn mẫu tiệc sẵn bên cạnh hoặc thêm món từ Sổ Tay Công Thức sau.
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* Source B: Custom Styled Preset Cards */}
+                {menuSource === 'preset' && (
+                  <div className="space-y-2 max-h-56 overflow-y-auto pr-0.5 scrollbar-thin">
+                    {CORPORATE_PARTY_PRESETS.map(preset => {
+                      const isSelected = selectedPresetId === preset.id;
+                      return (
+                        <div
+                          key={preset.id}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => setSelectedPresetId(preset.id)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setSelectedPresetId(preset.id);
+                            }
+                          }}
+                          className={`p-3 rounded-2xl border transition-all text-left flex items-center justify-between gap-3 cursor-pointer min-h-[48px] active:scale-[0.99] ${
+                            isSelected
+                              ? 'bg-amber-500/10 dark:bg-amber-950/30 border-amber-500 ring-1 ring-amber-500/80 shadow-2xs'
+                              : 'bg-white dark:bg-[#1A1918] border-stone-200/90 dark:border-stone-800 hover:border-amber-400'
+                          }`}
+                        >
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-black text-stone-900 dark:text-white leading-snug line-clamp-2">
+                              {preset.title}
+                            </div>
+                            <div className="flex items-center gap-2 mt-1 text-[11px] text-stone-500 dark:text-stone-400 flex-wrap">
+                              <span className="font-extrabold text-amber-800 dark:text-amber-400 bg-amber-500/15 dark:bg-amber-950/50 px-2 py-0.5 rounded-md border border-amber-500/25">
+                                ~{preset.suggestedPerHeadBudgetVnd.toLocaleString('vi-VN')} đ/khách
+                              </span>
+                              <span>•</span>
+                              <span className="font-medium text-stone-600 dark:text-stone-300">
+                                {preset.menuRecipes.length} món chuẩn
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${
+                            isSelected
+                              ? 'bg-amber-500 text-stone-950 shadow-2xs'
+                              : 'border-2 border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800'
+                          }`}>
+                            {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* 2. Smart Notification Switch Row */}
+              <div className="p-3.5 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/30 flex items-center justify-between gap-3">
+                <div className="flex items-start gap-2.5 min-w-0">
+                  <div className="p-1.5 rounded-xl bg-amber-500/20 text-amber-800 dark:text-amber-300 shrink-0 mt-0.5">
+                    {enableNotifications ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-black text-stone-900 dark:text-white">
+                      Nhắc Nhở Kế Hoạch Thông Minh
+                    </h4>
+                    <p className="text-[10px] text-stone-600 dark:text-stone-300 leading-snug">
+                      Nhắc trước 30 ngày • Hàng tuần • Đếm ngược mỗi ngày trong tuần tiệc
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setEnableNotifications(!enableNotifications)}
+                  className={`w-11 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer ${
+                    enableNotifications ? 'bg-amber-500' : 'bg-stone-300 dark:bg-stone-700'
+                  }`}
+                  role="switch"
+                  aria-checked={enableNotifications}
+                  aria-label="Bật/Tắt nhắc nhở thông minh"
+                >
+                  <span 
+                    className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${
+                      enableNotifications ? 'right-1' : 'left-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* 3. Optional Notes */}
+              <div>
+                <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                  Ghi Chú Riêng (Khách mời, địa điểm, yêu cầu đặc biệt)
+                </label>
+                <textarea
+                  rows={2}
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="VD: Khách yêu cầu chuẩn bị đồ ăn trước 11:30 trưa. Bố trí bàn tiệc gần cửa sổ..."
+                  className="w-full bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 resize-none transition-colors"
+                />
+              </div>
+
+            </div>
+          )}
 
         </div>
 
         {/* Modal Actions Footer */}
-        <div className="p-4 border-t border-[#E8E2D8] dark:border-[#252220] bg-[#FAF8F5] dark:bg-[#121110] flex items-center justify-end gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs transition-colors cursor-pointer"
-          >
-            Hủy Bỏ
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-md shadow-amber-500/25 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
-          >
-            <Check className="w-4 h-4" />
-            <span>{editingEvent ? 'Cập Nhật Lịch Tiệc' : 'Lưu Vào Lịch Tiệc'}</span>
-          </button>
+        <div className="p-4 border-t border-[#E8E2D8] dark:border-[#252220] bg-[#FAF8F5] dark:bg-[#121110] flex items-center justify-between gap-2 shrink-0">
+          {step === 1 ? (
+            <>
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs transition-colors cursor-pointer"
+              >
+                Hủy Bỏ
+              </button>
+
+              <button
+                type="button"
+                onClick={goToStep2}
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-md shadow-amber-500/25 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+              >
+                <span>Tiếp Theo: Chọn Thực Đơn</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Quay Lại Bước 1</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSave}
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-md shadow-amber-500/25 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+              >
+                <Check className="w-4 h-4" />
+                <span>{editingEvent ? 'Cập Nhật Lịch Tiệc' : 'Lưu Vào Lịch Tiệc'}</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
