@@ -25,6 +25,8 @@ import {
 } from 'lucide-react';
 import { SafeImage } from './SafeImage';
 import { Ingredient, CookingInstruction } from '../types';
+import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
+import { recordAdImpression, recordVolunteerAdWatched } from '../utils/adTrackingService';
 
 interface CategorizedGroup {
   key: 'thit-ca' | 'rau-cu' | 'gia-vi';
@@ -36,7 +38,7 @@ interface CategorizedGroup {
 }
 
 export const RecipeDetailModal: React.FC = () => {
-  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast } = useMealWise();
+  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast, user } = useMealWise();
   const [dragY, setDragY] = useState<number>(0);
   const touchStartY = useRef<number | null>(null);
 
@@ -61,6 +63,9 @@ export const RecipeDetailModal: React.FC = () => {
   const [timerSecondsLeft, setTimerSecondsLeft] = useState<number>(0);
   const [timerIsRunning, setTimerIsRunning] = useState<boolean>(false);
   const [timerLabel, setTimerLabel] = useState<string>('Hẹn giờ nấu');
+
+  // 30s Meal Completion Ad State (Triggers on ticking final step)
+  const [isCompletionAdOpen, setIsCompletionAdOpen] = useState<boolean>(false);
 
   // Play audio alert safely using Web Audio API
   const playTimerAlarm = () => {
@@ -384,10 +389,18 @@ export const RecipeDetailModal: React.FC = () => {
   const toggleStepCompleted = (stepNum: number, e?: React.MouseEvent) => {
     e?.stopPropagation();
     setCompletedSteps(prev => {
-      const next = { ...prev, [stepNum]: !prev[stepNum] };
+      const willBeCompleted = !prev[stepNum];
+      const next = { ...prev, [stepNum]: willBeCompleted };
       try {
         localStorage.setItem(`mealwise_recipe_progress_${selectedRecipe.id}`, JSON.stringify(next));
       } catch {}
+
+      // Trigger 30s Ad when user ticks the final step of the meal
+      const totalSteps = selectedRecipe.instructions.length;
+      if (willBeCompleted && stepNum === totalSteps) {
+        setIsCompletionAdOpen(true);
+      }
+
       return next;
     });
   };
@@ -1325,6 +1338,32 @@ export const RecipeDetailModal: React.FC = () => {
 
         </div>
       </div>
+
+      {/* 30s Meal Completion Ad Modal */}
+      {isCompletionAdOpen && (
+        <VolunteerAdSequenceModal
+          isOpen={isCompletionAdOpen}
+          onClose={() => setIsCompletionAdOpen(false)}
+          onComplete={() => {
+            setIsCompletionAdOpen(false);
+            recordAdImpression(
+              'rewarded_video',
+              `Quảng Cáo Hoàn Thành Món: ${selectedRecipe.title} (30s)`,
+              30,
+              4,
+              user?.name || 'Thành Viên MealWise'
+            );
+            try {
+              recordVolunteerAdWatched(1);
+            } catch {}
+            showToast(`🎉 Tuyệt vời! Bạn đã hoàn thành món ${selectedRecipe.title}! Chúc cả nhà ngon miệng!`);
+          }}
+          singleAdMode={true}
+          title="Quảng Cáo Hoàn Thành Món Ăn"
+          completionTitle="🎉 Món Ăn Đã Hoàn Tất!"
+          completionSubtitle={`Bạn đã hoàn tất tất cả các bước chế biến món "${selectedRecipe.title}" (${servings} người ăn). Chúc cả nhà có một bữa cơm thơm ngon tròn vị!`}
+        />
+      )}
     </div>
   );
 };
