@@ -1118,7 +1118,7 @@ export const GroceryList: React.FC = () => {
                   className="text-[9.5px] text-stone-400 dark:text-stone-500 truncate max-w-[170px] sm:max-w-xs" 
                   title={`Dùng cho: ${item.dishNames.join(', ')}`}
                 >
-                  • {item.dishCount} món ({item.dishNames.slice(0, 2).join(', ')}{item.dishNames.length > 2 ? '...' : ''})
+                  • {item.dishCount} món ({item.dishNames.slice(0, 2).join(', ')})
                 </span>
               )}
 
@@ -1318,17 +1318,18 @@ export const GroceryList: React.FC = () => {
         </div>
 
         {/* Smart Pantry Exemption Reassurance Banner with direct pop-up trigger */}
-        <div className="flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-2xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-[11.5px] text-amber-900 dark:text-amber-200">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-sm shrink-0">✨</span>
-            <p className="leading-snug truncate sm:whitespace-normal">
-              Đã tự động <strong>ẩn gia vị phổ thông có sẵn</strong> trong bếp (mắm, muối, đường, dầu ăn...).
+        <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-900 dark:text-amber-200">
+          <div className="flex items-start sm:items-center gap-2 min-w-0 flex-1">
+            <span className="text-base shrink-0 mt-0.5 sm:mt-0">✨</span>
+            <p className="text-xs leading-snug font-medium text-amber-900 dark:text-amber-200 break-words">
+              Đã tự động <strong className="font-bold">ẩn gia vị phổ thông có sẵn</strong> trong bếp gồm nước mắm, muối, đường và dầu ăn.
             </p>
           </div>
           <button
             type="button"
             onClick={() => setIsQuickAddOpen(true)}
-            className="px-2.5 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-[11px] font-black shrink-0 transition-all active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap"
+            className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black shrink-0 transition-all active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap min-h-[36px] flex items-center justify-center"
+            title="Bổ sung gia vị hoặc món ngoài kế hoạch"
           >
             + Bổ sung
           </button>
@@ -1683,10 +1684,10 @@ export const GroceryList: React.FC = () => {
               <PartyPopper className="w-4 h-4" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-bold text-amber-900 dark:text-amber-300 truncate">
+              <p className="text-xs font-bold text-amber-900 dark:text-amber-300">
                 Gồm {extraGroceryItems.length} nguyên liệu tiệc / catering
               </p>
-              <p className="text-[10px] text-amber-800/80 dark:text-amber-300/80 truncate">
+              <p className="text-[10px] text-amber-800/80 dark:text-amber-300/80">
                 Đã nhân hệ số khách tiệc tự động
               </p>
             </div>
