@@ -29,7 +29,8 @@ import {
   Minus,
   AlertCircle,
   Smartphone,
-  Trash2
+  Trash2,
+  Lock
 } from 'lucide-react';
 import { VietnameseMealSet, Recipe, StoreChannel, CollabCartItem, CollabShopper } from '../types';
 import { scaleCost } from '../utils/currency';
@@ -890,7 +891,8 @@ export const GroceryList: React.FC = () => {
   });
 
   // Effective list: if connected to a collaborative room, use room items (preserves items for User B)
-  const isCollabActive = Boolean(collabRoom?.roomId);
+  // Strictly locked for unregistered guest accounts
+  const isCollabActive = Boolean((isRegistered || isWebGuestViewer) && collabRoom?.roomId);
   const effectiveList: ProcessedGroceryItem[] = (isCollabActive && collabRoom?.items && collabRoom.items.length > 0)
     ? collabRoom.items
         .filter(it => !isItemDeleted(it.name, (it as any).extraOriginalNames))
@@ -2298,10 +2300,15 @@ export const GroceryList: React.FC = () => {
 
         {/* Collaborative Share & Zalo Export Buttons Grid */}
         <div className="grid grid-cols-2 gap-2">
-          {/* Button 1: Collaborative Live Share */}
+          {/* Button 1: Collaborative Live Share (Locked for Guests) */}
           <button
             type="button"
             onClick={async () => {
+              if (!isRegistered) {
+                showToast('🔒 Tính năng Đi Chợ Chung thời gian thực chỉ dành cho Thành Viên! Vui lòng đăng ký tài khoản miễn phí.', 'warning');
+                openAuthModal('register');
+                return;
+              }
               if (collabRoom) {
                 const nextState = !isLobbyOpen;
                 setIsLobbyOpen(nextState);
@@ -2318,20 +2325,37 @@ export const GroceryList: React.FC = () => {
                 }, 50);
               }
             }}
-            className="py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100 text-white dark:text-stone-950 shadow-md font-black"
-            title={collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng mua chung'}
+            className={
+              !isRegistered
+                ? "py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/80 shadow-xs"
+                : "py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100 text-white dark:text-stone-950 shadow-md font-black"
+            }
+            title={
+              !isRegistered
+                ? 'Tính năng đi chợ chung thời gian thực dành cho thành viên (Bấm để đăng ký mở khóa)'
+                : collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng mua chung'
+            }
           >
-            <Users className="w-4 h-4 shrink-0" />
-            <span className="truncate">
-              {collabRoom
-                ? (isLobbyOpen ? 'Đóng Sảnh (Live)' : 'Mua Chung (Live)')
-                : 'Chia Sẻ Mua Chung'}
-            </span>
-            {collabRoom && (
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-              </span>
+            {!isRegistered ? (
+              <>
+                <Lock className="w-4 h-4 shrink-0 text-amber-500" />
+                <span className="truncate font-bold">Đi Chợ Chung 🔒</span>
+              </>
+            ) : (
+              <>
+                <Users className="w-4 h-4 shrink-0" />
+                <span className="truncate">
+                  {collabRoom
+                    ? (isLobbyOpen ? 'Đóng Sảnh (Live)' : 'Mua Chung (Live)')
+                    : 'Chia Sẻ Mua Chung'}
+                </span>
+                {collabRoom && (
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                  </span>
+                )}
+              </>
             )}
           </button>
 

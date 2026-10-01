@@ -1431,9 +1431,23 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {}
   }, [collabCheckedMap]);
 
+  // Guest Account Feature Gating: Unregistered guests cannot maintain a collab room
+  useEffect(() => {
+    if (!isRegistered && !isWebGuestViewer && collabRoom) {
+      setCollabRoom(null);
+      setCollabCheckedMap({});
+      setCollabParticipants({});
+      try {
+        localStorage.removeItem('mealwise_collab_room');
+        localStorage.removeItem('mealwise_collab_checked');
+      } catch {}
+    }
+  }, [isRegistered, isWebGuestViewer, collabRoom]);
+
   // Real-time subscription to room events (SSE + BroadcastChannel + Polling)
   useEffect(() => {
     if (!collabRoom?.roomId) return;
+    if (!isRegistered && !isWebGuestViewer) return;
 
     const unsubscribe = subscribeToCollabRoom(collabRoom.roomId, (event: any) => {
       if (event.type === 'toggle' && event.itemId && event.state) {
@@ -1497,8 +1511,14 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => clearInterval(interval);
   }, [collabRoom, showToast]);
 
-  // Start a new collaborative room (open to both registered members and guests)
+  // Start a new collaborative room (strictly for registered members; locked for guests)
   const startCollabRoom = useCallback(async (items: CollabCartItem[], title?: string): Promise<string> => {
+    if (!isRegistered) {
+      showToast('🔒 Vui lòng đăng ký tài khoản thành viên để mở khóa tính năng Đi Chợ Chung!', 'warning');
+      openAuthModal('register');
+      return '';
+    }
+
     const roomId = generateCollabRoomId();
     const initialChecked: Record<string, CollabCheckState> = {};
 
@@ -1551,7 +1571,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     recordTelemetryEvent('collab', `Tạo phòng mua chung #${roomId} (${items.length} món)`, hostProfile.name);
     showToast(`🎉 Đã tạo phòng mua chung #${roomId}!`);
     return roomId;
-  }, [user?.name, collabUser, groceryCheckedItems, showToast]);
+  }, [isRegistered, openAuthModal, user?.name, collabUser, groceryCheckedItems, showToast]);
 
   // Join an existing collaborative room
   const joinCollabRoom = useCallback(async (roomId: string, initialPayload?: Partial<CollabRoom>): Promise<boolean> => {
