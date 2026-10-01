@@ -35,7 +35,9 @@ import {
   Save,
   FolderHeart,
   Timer,
-  Lock
+  Lock,
+  Receipt,
+  ShieldAlert
 } from 'lucide-react';
 import { PartyDishItem, Recipe, SavedPartyPreset } from '../types';
 import { CORPORATE_PARTY_PRESETS } from '../data/corporatePartyPresets';
@@ -66,35 +68,35 @@ const COURSES: CourseDefinition[] = [
     name: '1. Khai Vị & Món Nhắm', 
     subtitle: 'Kích thích vị giác, gỏi, nem rán, salad đầu tiệc', 
     icon: Utensils,
-    colorClass: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/10'
+    colorClass: 'text-amber-700 dark:text-amber-400 border-amber-500/30 bg-amber-500/10'
   },
   { 
     id: 'main', 
     name: '2. Món Chính Đậm Đà', 
     subtitle: 'Thịt cá, hải sản chế biến đậm đà trung tâm mâm tiệc', 
     icon: Beef,
-    colorClass: 'text-rose-600 dark:text-rose-400 border-rose-500/30 bg-rose-500/10'
+    colorClass: 'text-orange-700 dark:text-orange-400 border-orange-500/30 bg-orange-500/10'
   },
   { 
     id: 'soup_hotpot', 
     name: '3. Lẩu & Canh Nóng', 
     subtitle: 'Húp nước ngọt thanh, giữ ấm nóng suốt bữa tiệc', 
     icon: Soup,
-    colorClass: 'text-emerald-600 dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
+    colorClass: 'text-amber-600 dark:text-amber-300 border-amber-600/30 bg-amber-600/10'
   },
   { 
     id: 'staple', 
     name: '4. Tinh Bột & No Bụng', 
     subtitle: 'Cơm thơm, xôi dẻo nếp cái hoa vàng, bún miến hoặc bánh mì', 
     icon: Layers,
-    colorClass: 'text-blue-600 dark:text-blue-400 border-blue-500/30 bg-blue-500/10'
+    colorClass: 'text-stone-700 dark:text-stone-300 border-stone-500/30 bg-stone-500/10'
   },
   { 
     id: 'dessert_drink', 
     name: '5. Tráng Miệng & Giải Khát', 
     subtitle: 'Chè ngọt thanh, hoa quả bốn mùa hoặc nước mát tráng miệng', 
     icon: Wine,
-    colorClass: 'text-purple-600 dark:text-purple-400 border-purple-500/30 bg-purple-500/10'
+    colorClass: 'text-rose-700 dark:text-rose-400 border-rose-500/30 bg-rose-500/10'
   }
 ];
 
@@ -282,7 +284,6 @@ export const resolveTargetCourse = (
   return openedCourse || 'main';
 };
 
-
 const EVENT_TYPES = [
   { id: 'corporate', label: 'Công Ty', icon: '🏢' },
   { id: 'family', label: 'Gia Đình', icon: '👨‍👩‍👧‍👦' },
@@ -377,6 +378,21 @@ export const CateringPartyPlanner: React.FC = () => {
   const dishModalTouchStartY = useRef<number | null>(null);
   const [visibleDishCount, setVisibleDishCount] = useState<number>(40);
 
+  // Pricing model mode: 'cost_plus' (default: Food cost + seasonings + optional service) or 'fixed_quote' (target budget/head)
+  const isCommercialEvent = partyPlan.eventType === 'corporate' || partyPlan.eventType === 'wedding';
+  const [pricingMode, setPricingMode] = useState<'cost_plus' | 'fixed_quote'>('cost_plus');
+  // Service labor fee per table (default 200k for corporate/wedding, 0 for family/birthday/bbq)
+  const [laborPerTable, setLaborPerTable] = useState<number>(isCommercialEvent ? 200000 : 0);
+
+  // Synchronize default labor fee when event type changes
+  React.useEffect(() => {
+    if (partyPlan.eventType === 'corporate' || partyPlan.eventType === 'wedding') {
+      if (laborPerTable === 0) setLaborPerTable(200000);
+    } else {
+      if (laborPerTable === 200000) setLaborPerTable(0);
+    }
+  }, [partyPlan.eventType]);
+
   // Synchronize modal course filter tab when opening for a specific course
   React.useEffect(() => {
     if (modalCourse) {
@@ -436,13 +452,10 @@ export const CateringPartyPlanner: React.FC = () => {
   const fullTables = guestCount > 0 ? Math.floor(guestCount / tableSize) : 0;
   const remainderGuests = guestCount > 0 ? guestCount % tableSize : 0;
   const hasPartialTable = guestCount > 0 && remainderGuests > 0;
-  const budgetPerHead = partyPlan.budgetPerHeadVnd && partyPlan.budgetPerHeadVnd > 0 ? partyPlan.budgetPerHeadVnd : 200000;
-  const pricePerTable = budgetPerHead * tableSize;
-  const totalRevenue = guestCount * budgetPerHead;
 
   const hasDishes = partyPlan.dishes.length > 0;
 
-  // Calculate scaled food cost with 0% margin when 0 dishes
+  // Calculate scaled raw food cost based directly on selected dishes and headcount
   const rawDishesCost = hasDishes && guestCount > 0
     ? partyPlan.dishes.reduce((sum, item) => {
         const recipe = recipes.find(r => r.id === item.recipeId);
@@ -454,13 +467,34 @@ export const CateringPartyPlanner: React.FC = () => {
     : 0;
 
   const roundedFoodCost = Math.round(rawDishesCost);
-  const grossProfit = hasDishes && guestCount > 0 ? totalRevenue - roundedFoodCost : 0;
-  const profitMarginPercent = hasDishes && totalRevenue > 0
-    ? Math.max(0, Math.round((grossProfit / totalRevenue) * 100))
+  // Seasonings, spices, herbs, cooking oil and energy buffer: 10% of raw food cost
+  const seasoningCost = hasDishes ? Math.round(roundedFoodCost * 0.1) : 0;
+  // Cooking and table service labor cost
+  const totalLaborCost = hasDishes && numTables > 0 ? laborPerTable * numTables : 0;
+
+  // Total Party Cost (Cost-Plus): Strictly counts raw food cost + seasonings + optional labor
+  const totalPartyCost = hasDishes ? roundedFoodCost + seasoningCost + totalLaborCost : 0;
+  const partyCostPerHead = guestCount > 0 && hasDishes ? Math.round(totalPartyCost / guestCount) : 0;
+  const partyCostPerTable = numTables > 0 && hasDishes ? Math.round(totalPartyCost / numTables) : 0;
+
+  // Fixed Quotation calculations (if user selects fixed budget per head)
+  const budgetPerHead = partyPlan.budgetPerHeadVnd && partyPlan.budgetPerHeadVnd > 0 ? partyPlan.budgetPerHeadVnd : 200000;
+  const pricePerTable = budgetPerHead * tableSize;
+  const totalQuotation = guestCount * budgetPerHead;
+  const grossProfit = hasDishes && guestCount > 0 ? totalQuotation - roundedFoodCost : 0;
+  const profitMarginPercent = hasDishes && totalQuotation > 0
+    ? Math.max(0, Math.round((grossProfit / totalQuotation) * 100))
     : 0;
+
+  // Unified displayed total: strictly reflects food cost in default Cost-Plus mode
+  const displayTotal = pricingMode === 'cost_plus' ? totalPartyCost : totalQuotation;
+  const displayPerHead = pricingMode === 'cost_plus' ? partyCostPerHead : budgetPerHead;
+  const displayPerTable = pricingMode === 'cost_plus' ? partyCostPerTable : pricePerTable;
+  const isBudgetWarning = pricingMode === 'fixed_quote' && hasDishes && roundedFoodCost > totalQuotation;
+
   const foodCostPerHead = guestCount > 0 && hasDishes ? Math.round(roundedFoodCost / guestCount) : 0;
   const foodCostPerTable = numTables > 0 && hasDishes ? Math.round(roundedFoodCost / numTables) : 0;
-  const revenuePerTable = numTables > 0 ? Math.round(totalRevenue / numTables) : 0;
+  const revenuePerTable = numTables > 0 ? Math.round(totalQuotation / numTables) : 0;
 
   // Dynamic kitchen workload and cooking time calculation
   const dishTimingInputs: DishTimingInput[] = partyPlan.dishes.map(d => {
@@ -552,7 +586,7 @@ export const CateringPartyPlanner: React.FC = () => {
       .filter(d => d.recipe !== undefined);
   };
 
-  // 1-Click Copy Zalo Quote with unified table & per-head quotation
+  // 1-Click Copy Zalo Quote with transparent food cost, seasonings & total quotation
   const handleCopyZaloQuote = async () => {
     if (!hasDishes) {
       showToast('⚠️ Vui lòng chọn ít nhất một món ăn trước khi xuất báo giá Zalo!');
@@ -571,10 +605,13 @@ export const CateringPartyPlanner: React.FC = () => {
     }
     quote += `👥 QUY MÔ TIỆC: ${guestCount} khách\n`;
     quote += `🍽️ BỐ TRÍ BÀN: ${numTables} bàn (${tableSize} khách/bàn tiêu chuẩn)${hasPartialTable ? ` — gồm ${fullTables} bàn đủ + 1 bàn phụ (${remainderGuests} khách)` : ''}\n`;
-    quote += `💰 ĐƠN GIÁ TRỌN GÓI: ${budgetPerHead.toLocaleString('vi-VN')} đ / khách (~${pricePerTable.toLocaleString('vi-VN')} đ / bàn tiêu chuẩn ${tableSize} người)\n`;
-    quote += `💵 TỔNG DỰ TOÁN QUY MÔ (${guestCount} KHÁCH): ${totalRevenue.toLocaleString('vi-VN')} đ${hasPartialTable ? ` (Tính theo thực tế ${guestCount} suất x ${budgetPerHead.toLocaleString('vi-VN')} đ/suất)` : ''}\n`;
-    quote += `⏱️ THỜI GIAN CHẾ BIẾN DỰ KIẾN: ~${kitchenWorkload.formattedTotalTime} (Sơ chế: ${kitchenWorkload.prepTimeMinutes}p • Bếp song song: ${kitchenWorkload.cookTimeMinutes}p)\n`;
-    quote += `🛒 DỰ TOÁN FOOD COST NGUYÊN LIỆU: ${roundedFoodCost.toLocaleString('vi-VN')} đ (~${foodCostPerHead.toLocaleString('vi-VN')} đ/khách)\n\n`;
+    quote += `🛒 DỰ TOÁN NGUYÊN LIỆU (FOOD COST): ${roundedFoodCost.toLocaleString('vi-VN')} đ (~${foodCostPerHead.toLocaleString('vi-VN')} đ/khách)\n`;
+    quote += `🧂 GIA VỊ & PHỤ LIỆU BẾP (10%): ${seasoningCost.toLocaleString('vi-VN')} đ\n`;
+    if (totalLaborCost > 0) {
+      quote += `👨‍🍳 CÔNG BẾP & PHỤC VỤ (${numTables} BÀN): ${totalLaborCost.toLocaleString('vi-VN')} đ (~${laborPerTable.toLocaleString('vi-VN')} đ/bàn)\n`;
+    }
+    quote += `💵 TỔNG DỰ TOÁN CHI PHÍ TRỌN GÓI: ${displayTotal.toLocaleString('vi-VN')} đ (~${displayPerHead.toLocaleString('vi-VN')} đ / khách, ~${displayPerTable.toLocaleString('vi-VN')} đ / bàn)\n`;
+    quote += `⏱️ THỜI GIAN CHẾ BIẾN DỰ KIẾN: ~${kitchenWorkload.formattedTotalTime} (Sơ chế: ${kitchenWorkload.prepTimeMinutes}p • Bếp song song: ${kitchenWorkload.cookTimeMinutes}p)\n\n`;
 
     quote += `📋 THỰC ĐƠN CHI TIẾT THEO MÂM:\n`;
     COURSES.forEach(c => {
@@ -663,7 +700,7 @@ export const CateringPartyPlanner: React.FC = () => {
   if (!isRegistered) {
     return (
       <div className="space-y-4 max-w-lg mx-auto pb-24 animate-in fade-in duration-300">
-        <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-600/5 dark:from-stone-900 dark:via-amber-950/20 dark:to-stone-900 border border-amber-500/30 text-center shadow-lg relative overflow-hidden">
+        <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-600/5 dark:from-[#1A1918] dark:via-amber-950/20 dark:to-[#1A1918] border border-amber-500/30 text-center shadow-lg relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
           
           <div className="w-16 h-16 mx-auto mb-3.5 rounded-3xl bg-gradient-to-tr from-amber-500 to-amber-400 text-stone-950 flex items-center justify-center shadow-lg shadow-amber-500/30">
@@ -729,29 +766,29 @@ export const CateringPartyPlanner: React.FC = () => {
     <div className="space-y-6 w-full max-w-full overflow-x-hidden pb-36">
       
       {/* Top Banner & Mode Toggle */}
-      <div className="p-3.5 sm:p-5 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="p-3.5 sm:p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 text-[11px] font-bold mb-1">
-            <ChefHat className="w-3.5 h-3.5 text-stone-900 dark:text-white" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[11px] font-bold mb-1">
+            <ChefHat className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             <span>Mâm Cỗ & Dịch Vụ Catering</span>
           </div>
           <h1 className="text-lg sm:text-xl font-black text-stone-900 dark:text-white tracking-tight">
             Quản Lý & Thiết Kế Thực Đơn Tiệc
           </h1>
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-relaxed">
-            Lên mâm cỗ 5 món chuẩn vị, tự động tính food cost và xuất báo giá Zalo 1-chạm.
+            Lên mâm cỗ 5 món chuẩn vị, tự động tính food cost chính xác và xuất báo giá Zalo 1-chạm.
           </p>
         </div>
 
         {/* Mode Switcher Tabs */}
-        <div className="w-full sm:w-auto flex items-center p-1 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shrink-0">
+        <div className="w-full sm:w-auto flex items-center p-1 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] shrink-0">
           <button
             type="button"
             onClick={() => setActiveMode('builder')}
             className={`flex-1 sm:flex-initial px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
               activeMode === 'builder'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 font-semibold'
             }`}
           >
             <Utensils className="w-3.5 h-3.5" />
@@ -762,8 +799,8 @@ export const CateringPartyPlanner: React.FC = () => {
             onClick={() => setActiveMode('presets')}
             className={`flex-1 sm:flex-initial px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
               activeMode === 'presets'
-                ? 'bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-xs font-black border border-stone-200/80 dark:border-stone-700'
-                : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 font-semibold'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -776,7 +813,7 @@ export const CateringPartyPlanner: React.FC = () => {
       {activeMode === 'builder' && (
         <div className="space-y-4">
           
-          {/* Section 1: Compact Event Setup & Headcount Stepper Header */}
+          {/* Section 1: Event Setup & Headcount Stepper Header */}
           <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-3.5">
             {/* Event Type Chips Row & Actions */}
             <div>
@@ -793,7 +830,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       setSavePlanDesc(partyPlan.staffNotes || '');
                       setShowSavePresetModal(true);
                     }}
-                    className="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-sm flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+                    className="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-xs flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
                     title="Lưu kế hoạch hiện tại thành mẫu tiệc riêng của bạn"
                   >
                     <Save className="w-3.5 h-3.5" />
@@ -850,7 +887,7 @@ export const CateringPartyPlanner: React.FC = () => {
                 </div>
               </div>
 
-              {/* Responsive Event Type Chips: smooth horizontal swipe on mobile, wrap on tablet+ */}
+              {/* Responsive Event Type Chips */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none w-full">
                 {EVENT_TYPES.map(type => (
                   <button
@@ -860,7 +897,7 @@ export const CateringPartyPlanner: React.FC = () => {
                     className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 active:scale-95 cursor-pointer ${
                       partyPlan.eventType === type.id
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-black shadow-xs'
-                        : 'bg-stone-100 dark:bg-[#121110] text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white border border-stone-200 dark:border-[#252220]'
+                        : 'bg-[#FAF8F5] dark:bg-[#121110] text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white border border-stone-200 dark:border-[#252220]'
                     }`}
                   >
                     <span>{type.icon}</span>
@@ -874,7 +911,7 @@ export const CateringPartyPlanner: React.FC = () => {
             <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <Users className="w-4 h-4 text-stone-600 dark:text-stone-400 shrink-0" />
+                  <Users className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                   <span className="text-xs font-extrabold text-stone-900 dark:text-white truncate">
                     Số Lượng Khách:
                   </span>
@@ -899,7 +936,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       value={guestInput}
                       onChange={handleGuestInputChange}
                       onBlur={handleGuestInputBlur}
-                      className="w-16 h-8 text-center font-black text-sm bg-white dark:bg-[#1A1918] text-stone-900 dark:text-white border border-stone-300 dark:border-stone-700 rounded-xl focus:outline-none focus:border-stone-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      className="w-16 h-8 text-center font-black text-sm bg-white dark:bg-[#1A1918] text-stone-900 dark:text-white border border-stone-300 dark:border-stone-700 rounded-xl focus:outline-none focus:border-amber-500 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
                   <button
@@ -923,7 +960,7 @@ export const CateringPartyPlanner: React.FC = () => {
                     onClick={() => handleSelectGuestChip(count)}
                     className={`py-1 px-0.5 rounded-lg text-[10px] sm:text-[11px] font-black whitespace-nowrap transition-all flex items-center justify-center min-h-[32px] cursor-pointer ${
                       guestCount === count
-                        ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-2xs'
+                        ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
                         : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-white dark:bg-[#1A1918] border border-stone-200/80 dark:border-[#252220]'
                     }`}
                   >
@@ -932,13 +969,21 @@ export const CateringPartyPlanner: React.FC = () => {
                 ))}
               </div>
 
-              {/* Table count & estimated quote */}
+              {/* Table count & Real Total Forecast */}
               <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] pt-1 text-stone-600 dark:text-stone-300 font-semibold border-t border-[#E8E2D8] dark:border-[#252220]">
-                <span className="text-emerald-700 dark:text-emerald-400 font-extrabold">
+                <span className="text-amber-800 dark:text-amber-300 font-extrabold">
                   = {numTables} bàn {hasPartialTable ? `(${fullTables} bàn đủ + 1 bàn lẻ)` : `(${tableSize} khách/bàn)`}
                 </span>
-                <span className="text-stone-900 dark:text-white font-extrabold">
-                  Dự toán: ~{totalRevenue.toLocaleString('vi-VN')} đ
+                <span className="text-stone-900 dark:text-white font-extrabold flex items-center gap-1">
+                  <span>Dự toán:</span>
+                  <span className="text-amber-700 dark:text-amber-400 font-black text-xs">
+                    ~{displayTotal.toLocaleString('vi-VN')} đ
+                  </span>
+                  {hasDishes && (
+                    <span className="text-[10px] text-stone-500 dark:text-stone-400 font-medium">
+                      (~{displayPerHead.toLocaleString('vi-VN')} đ/k)
+                    </span>
+                  )}
                 </span>
               </div>
             </div>
@@ -947,7 +992,7 @@ export const CateringPartyPlanner: React.FC = () => {
             <div className="p-3 sm:p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-2.5">
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span className="text-[11px] font-black uppercase tracking-wider text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
-                  <Timer className="w-4 h-4 text-stone-700 dark:text-stone-300" />
+                  <Timer className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   <span>Ước Tính Chế Biến & Chi Phí Bữa Tiệc</span>
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-stone-200 dark:bg-[#252220] text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700">
@@ -955,28 +1000,45 @@ export const CateringPartyPlanner: React.FC = () => {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left sm:text-center">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-left sm:text-center">
+                {/* 1. Cooking Time */}
                 <div className="p-2.5 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-center shadow-2xs">
                   <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase">
-                    ⏱️ Thời Gian Chế Biến
+                    ⏱️ Thời Gian Bếp
                   </span>
                   <span className="text-sm sm:text-base font-black text-stone-900 dark:text-white mt-0.5">
                     ~{kitchenWorkload.formattedTotalTime}
                   </span>
                   <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
-                    Sơ chế: {kitchenWorkload.prepTimeMinutes}p • Nấu song song: {kitchenWorkload.cookTimeMinutes}p
+                    Sơ chế: {kitchenWorkload.prepTimeMinutes}p • Bếp song song: {kitchenWorkload.cookTimeMinutes}p
                   </span>
                 </div>
 
+                {/* 2. Raw Food Cost */}
                 <div className="p-2.5 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-center shadow-2xs">
                   <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase">
                     💵 Chi Phí Nguyên Liệu (Food Cost)
                   </span>
-                  <span className="text-sm sm:text-base font-black text-emerald-700 dark:text-emerald-400 mt-0.5">
+                  <span className="text-sm sm:text-base font-black text-amber-700 dark:text-amber-400 mt-0.5">
                     {roundedFoodCost.toLocaleString('vi-VN')} đ
                   </span>
                   <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
                     ~{foodCostPerHead.toLocaleString('vi-VN')} đ/khách ({foodCostPerTable.toLocaleString('vi-VN')} đ/bàn)
+                  </span>
+                </div>
+
+                {/* 3. Total Final Party Cost */}
+                <div className="p-2.5 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-center shadow-2xs">
+                  <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase">
+                    🧾 Tổng Dự Toán Chi Phí
+                  </span>
+                  <span className="text-sm sm:text-base font-black text-stone-900 dark:text-white mt-0.5">
+                    {displayTotal.toLocaleString('vi-VN')} đ
+                  </span>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
+                    {hasDishes 
+                      ? `Đã gồm nguyên liệu + ${seasoningCost.toLocaleString('vi-VN')} đ gia vị` 
+                      : 'Chưa có món nào trong thực đơn'}
                   </span>
                 </div>
               </div>
@@ -989,19 +1051,19 @@ export const CateringPartyPlanner: React.FC = () => {
               className="w-full py-2 px-3 rounded-xl bg-[#FAF8F5] hover:bg-stone-100 dark:bg-[#121110] dark:hover:bg-[#252220] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-300 text-xs font-bold flex items-center justify-between transition-colors cursor-pointer"
             >
               <span className="flex items-center gap-1.5">
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span>Cài đặt báo giá & Hạch toán lợi nhuận</span>
+                <TrendingUp className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span>Cài đặt báo giá, phụ phí & Hạch toán lợi nhuận</span>
               </span>
               {showAdvancedSettings ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
 
             {/* Expandable Body */}
             {showAdvancedSettings && (
-              <div className="space-y-3.5 pt-2 border-t border-slate-100 dark:border-slate-800 animate-fade-in">
+              <div className="space-y-3.5 pt-2 border-t border-stone-200 dark:border-stone-800 animate-fade-in">
                 {/* Title & Client Name */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                    <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
                       Tên Sự Kiện / Tiệc
                     </label>
                     <input
@@ -1026,7 +1088,74 @@ export const CateringPartyPlanner: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Table Size & Budget Per Head */}
+                {/* Pricing Mode Selector & Labor Cost Configuration */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Pricing Model Switch */}
+                  <div className="bg-white dark:bg-[#121110] p-3 rounded-2xl border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-between">
+                    <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                      Mô Hình Tính Giá
+                    </label>
+                    <div className="grid grid-cols-2 gap-1 mt-1">
+                      <button
+                        type="button"
+                        onClick={() => setPricingMode('cost_plus')}
+                        className={`py-1.5 px-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                          pricingMode === 'cost_plus'
+                            ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                            : 'bg-stone-100 dark:bg-[#252220] text-stone-700 dark:text-stone-300 hover:text-stone-900'
+                        }`}
+                      >
+                        Theo Món Thực Tế
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPricingMode('fixed_quote')}
+                        className={`py-1.5 px-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                          pricingMode === 'fixed_quote'
+                            ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                            : 'bg-stone-100 dark:bg-[#252220] text-stone-700 dark:text-stone-300 hover:text-stone-900'
+                        }`}
+                      >
+                        Khoán Theo Khách
+                      </button>
+                    </div>
+                    <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-1 block">
+                      {pricingMode === 'cost_plus'
+                        ? '✓ Tổng giá tự cập nhật chính xác khi thêm/bớt món'
+                        : '✓ Đặt đơn giá khoán cố định theo suất ăn'}
+                    </span>
+                  </div>
+
+                  {/* Labor / Cooking fee per table */}
+                  <div className="bg-white dark:bg-[#121110] p-3 rounded-2xl border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-between">
+                    <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                      Công Nấu & Phục Vụ / Bàn
+                    </label>
+                    <div className="grid grid-cols-4 gap-1 mt-1">
+                      {[0, 150000, 200000, 250000].map(fee => (
+                        <button
+                          key={fee}
+                          type="button"
+                          onClick={() => setLaborPerTable(fee)}
+                          className={`py-1 px-1 rounded-lg text-[10px] font-black transition-colors cursor-pointer ${
+                            laborPerTable === fee
+                              ? 'bg-amber-500 text-stone-950 font-black shadow-2xs'
+                              : 'bg-stone-100 dark:bg-[#252220] text-stone-700 dark:text-stone-300 hover:text-stone-900'
+                          }`}
+                        >
+                          {fee === 0 ? 'Tự nấu' : `${fee / 1000}k`}
+                        </button>
+                      ))}
+                    </div>
+                    <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-1 block">
+                      {totalLaborCost > 0
+                        ? `Tổng công: ${totalLaborCost.toLocaleString('vi-VN')} đ (${numTables} bàn)`
+                        : 'Gia đình tự chuẩn bị (0 đ)'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Table Size & Budget Per Head (Fixed Quote Mode) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="bg-white dark:bg-[#121110] p-3 rounded-2xl border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-between">
                     <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
@@ -1038,9 +1167,9 @@ export const CateringPartyPlanner: React.FC = () => {
                           key={size}
                           type="button"
                           onClick={() => updatePartyPlan({ tableSize: size })}
-                          className={`flex-1 py-1.5 rounded-lg text-xs font-extrabold transition-colors ${
+                          className={`flex-1 py-1.5 rounded-lg text-xs font-extrabold transition-colors cursor-pointer ${
                             tableSize === size
-                              ? 'bg-amber-500 text-stone-950 shadow font-black'
+                              ? 'bg-amber-500 text-stone-950 shadow-2xs font-black'
                               : 'bg-stone-100 dark:bg-[#252220] text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                           }`}
                         >
@@ -1052,7 +1181,7 @@ export const CateringPartyPlanner: React.FC = () => {
 
                   <div className="bg-white dark:bg-[#121110] p-3 rounded-2xl border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-between">
                     <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                      Báo Giá / Khách (VND)
+                      Đơn Giá Khoán / Khách (VND)
                     </label>
                     <input
                       type="number"
@@ -1075,9 +1204,9 @@ export const CateringPartyPlanner: React.FC = () => {
                           key={val}
                           type="button"
                           onClick={() => updatePartyPlan({ budgetPerHeadVnd: val })}
-                          className={`px-1 py-0.5 rounded text-[9px] font-bold transition-colors ${
+                          className={`px-1 py-0.5 rounded text-[9px] font-bold transition-colors cursor-pointer ${
                             budgetPerHead === val
-                              ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40'
+                              ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/40'
                               : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-[#252220]'
                           }`}
                         >
@@ -1090,66 +1219,76 @@ export const CateringPartyPlanner: React.FC = () => {
 
                 {/* Operational Staff Notes */}
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1">
-                    Ghi Chú Khách Hàng / Hướng Dẫn Nấu Bếp
+                  <label className="block text-[10px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
+                    Ghi Chú Khách Hàng / Hướng Dẫn Bếp
                   </label>
                   <textarea
                     rows={2}
                     value={partyPlan.staffNotes || ''}
                     onChange={(e) => updatePartyPlan({ staffNotes: e.target.value })}
                     placeholder="Ghi chú về thời gian dọn cỗ, trẻ nhỏ, dị ứng thức ăn..."
-                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-emerald-500 resize-none transition-colors"
+                    className="w-full bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-white focus:outline-none focus:border-amber-500 resize-none transition-colors"
                   />
                 </div>
 
                 {/* Profit Margin & Financial Breakdown Card */}
-                <div className="p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/40 border border-emerald-500/30 space-y-2.5">
+                <div className="p-3.5 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/30 space-y-2.5">
                   <div className="grid grid-cols-2 gap-2 text-center">
-                    <div className="p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                      <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 block uppercase">
+                    <div className="p-2 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
+                      <span className="text-[10px] font-bold text-stone-600 dark:text-stone-400 block uppercase">
                         Food Cost (Nguyên liệu)
                       </span>
                       <span className="text-sm font-black text-rose-600 dark:text-rose-400 block mt-0.5">
                         {roundedFoodCost.toLocaleString('vi-VN')} đ
                       </span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                      <span className="text-[10px] text-stone-500 dark:text-stone-400">
                         ~{foodCostPerTable.toLocaleString('vi-VN')} đ/bàn
                       </span>
                     </div>
-                    <div className="p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                      <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 block uppercase">
-                        Doanh Thu (Báo giá)
+
+                    <div className="p-2 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
+                      <span className="text-[10px] font-bold text-stone-600 dark:text-stone-400 block uppercase">
+                        Tổng Dự Toán ({pricingMode === 'cost_plus' ? 'Thực tế' : 'Báo giá'})
                       </span>
-                      <span className="text-sm font-black text-emerald-600 dark:text-emerald-400 block mt-0.5">
-                        {totalRevenue.toLocaleString('vi-VN')} đ
+                      <span className="text-sm font-black text-amber-700 dark:text-amber-400 block mt-0.5">
+                        {displayTotal.toLocaleString('vi-VN')} đ
                       </span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                        ~{revenuePerTable.toLocaleString('vi-VN')} đ/bàn
+                      <span className="text-[10px] text-stone-500 dark:text-stone-400">
+                        ~{displayPerTable.toLocaleString('vi-VN')} đ/bàn
                       </span>
                     </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-extrabold text-slate-900 dark:text-white">
-                        Lợi Nhuận Gộp Ước Tính:
-                      </span>
-                      <span className={`font-black text-xs ${grossProfit >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-                        {grossProfit.toLocaleString('vi-VN')} đ ({profitMarginPercent}%)
-                      </span>
+                  {pricingMode === 'fixed_quote' && (
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-extrabold text-stone-900 dark:text-white">
+                          Lợi Nhuận Gộp Ước Tính:
+                        </span>
+                        <span className={`font-black text-xs ${grossProfit >= 0 ? 'text-amber-700 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'}`}>
+                          {grossProfit.toLocaleString('vi-VN')} đ ({profitMarginPercent}%)
+                        </span>
+                      </div>
+                      <div className="w-full bg-stone-200 dark:bg-stone-800 h-2 rounded-full overflow-hidden flex">
+                        <div className="bg-rose-500 h-full" style={{ width: `${hasDishes ? Math.min(100, Math.max(0, 100 - Math.max(0, profitMarginPercent))) : 0}%` }} />
+                        <div className="bg-amber-500 h-full" style={{ width: `${hasDishes ? Math.min(100, Math.max(0, profitMarginPercent)) : 0}%` }} />
+                      </div>
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden flex">
-                      <div className="bg-rose-500 h-full" style={{ width: `${hasDishes ? Math.min(100, Math.max(0, 100 - Math.max(0, profitMarginPercent))) : 0}%` }} />
-                      <div className="bg-emerald-500 h-full" style={{ width: `${hasDishes ? Math.min(100, Math.max(0, profitMarginPercent)) : 0}%` }} />
+                  )}
+
+                  {isBudgetWarning && (
+                    <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 flex items-center gap-2 text-rose-700 dark:text-rose-300 text-xs font-bold">
+                      <ShieldAlert className="w-4 h-4 shrink-0 text-rose-500" />
+                      <span>Cảnh báo: Chi phí nguyên liệu thực phẩm ({roundedFoodCost.toLocaleString('vi-VN')} đ) đang vượt quá mức báo giá ({totalQuotation.toLocaleString('vi-VN')} đ)!</span>
                     </div>
-                  </div>
+                  )}
 
                   {/* Actions in Settings */}
                   <div className="grid grid-cols-2 gap-2 pt-1">
                     <button
                       type="button"
                       onClick={handleCopyZaloQuote}
-                      className="py-2 px-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-sm flex items-center justify-center gap-1 active:scale-95 transition-all"
+                      className="py-2 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
                     >
                       {copiedQuote ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedQuote ? 'Đã Chép' : 'Copy Báo Giá'}</span>
@@ -1157,9 +1296,9 @@ export const CateringPartyPlanner: React.FC = () => {
                     <button
                       type="button"
                       onClick={handleSyncToGrocery}
-                      className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all"
+                      className="py-2 px-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-800 dark:text-white font-extrabold text-xs border border-stone-200 dark:border-[#252220] flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
                     >
-                      <ShoppingCart className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <ShoppingCart className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                       <span>Đẩy Đi Chợ</span>
                     </button>
                   </div>
@@ -1172,11 +1311,11 @@ export const CateringPartyPlanner: React.FC = () => {
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h2 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-                  <Utensils className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <h2 className="text-lg font-black text-stone-900 dark:text-white flex items-center gap-2">
+                  <Utensils className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                   <span>Thực Đơn Mâm Cỗ Theo Từng Món ({partyPlan.dishes.length} món)</span>
                 </h2>
-                <p className="text-xs text-slate-600 dark:text-slate-300">
+                <p className="text-xs text-stone-600 dark:text-stone-300">
                   Thực đơn chuẩn phong vị cỗ Việt: đủ đầy Khai vị, Đạm mặn, Lẩu ấm nóng, Tinh bột no bụng và Tráng miệng.
                 </p>
               </div>
@@ -1195,7 +1334,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       }
                     });
                   }}
-                  className="text-xs text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 font-semibold transition-colors self-start sm:self-center"
+                  className="text-xs text-stone-600 dark:text-stone-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 font-semibold transition-colors self-start sm:self-center cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Dọn trống thực đơn</span>
@@ -1205,16 +1344,16 @@ export const CateringPartyPlanner: React.FC = () => {
 
             {/* Empty state card when 0 dishes */}
             {!hasDishes && (
-              <div className="p-6 sm:p-8 rounded-3xl border-2 border-dashed border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20 text-center space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+              <div className="p-6 sm:p-8 rounded-3xl border-2 border-dashed border-amber-500/30 bg-amber-500/5 dark:bg-amber-950/15 text-center space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto">
                   <Utensils className="w-6 h-6" />
                 </div>
                 <div className="max-w-md mx-auto space-y-1">
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
+                  <h3 className="text-base font-extrabold text-stone-900 dark:text-white">
                     Thực Đơn Tiệc Đang Trống
                   </h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-300">
-                    Hãy bấm nút <span className="font-bold text-emerald-600 dark:text-emerald-400">+ Thêm Món</span> ở từng nhóm bên dưới để lên mâm cỗ 5 món chuẩn vị, hoặc khám phá ngay các mâm tiệc mẫu định sẵn.
+                  <p className="text-xs text-stone-600 dark:text-stone-300">
+                    Hãy bấm nút <span className="font-bold text-amber-700 dark:text-amber-400">+ Thêm Món</span> ở từng nhóm bên dưới để lên mâm cỗ 5 món chuẩn vị, hoặc khám phá ngay các mâm tiệc mẫu định sẵn.
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
@@ -1225,7 +1364,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       setRecipeSearch('');
                       setSelectedFilterCategory('all');
                     }}
-                    className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black shadow-sm flex items-center gap-1.5 transition-all"
+                    className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Bắt Đầu Thêm Món Khai Vị</span>
@@ -1233,7 +1372,7 @@ export const CateringPartyPlanner: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setActiveMode('presets')}
-                    className="px-4 py-2 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 text-xs font-bold flex items-center gap-1.5 transition-all"
+                    className="px-4 py-2 rounded-xl bg-white dark:bg-[#1A1918] hover:bg-stone-100 dark:hover:bg-[#252220] text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-[#252220] text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                     <span>Xem Mâm Tiệc Mẫu</span>
@@ -1261,7 +1400,7 @@ export const CateringPartyPlanner: React.FC = () => {
                 return (
                   <div 
                     key={course.id}
-                    className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 transition-all shadow-xs space-y-3"
+                    className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] transition-all shadow-xs space-y-3"
                   >
                     {/* Course Header */}
                     <div className="flex items-center justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
@@ -1278,14 +1417,14 @@ export const CateringPartyPlanner: React.FC = () => {
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className="text-sm font-black text-stone-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                            <h3 className="text-sm font-black text-stone-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                               {course.name}
                             </h3>
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-[#252220] text-stone-700 dark:text-stone-300">
                               {items.length} món
                             </span>
                             {items.length > 0 && (
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-white border border-stone-200 dark:border-stone-700">
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30">
                                 ~{courseTotalCost.toLocaleString('vi-VN')} đ
                               </span>
                             )}
@@ -1303,7 +1442,7 @@ export const CateringPartyPlanner: React.FC = () => {
                             setRecipeSearch('');
                             setSelectedFilterCategory('all');
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shadow-2xs cursor-pointer"
+                          className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shadow-2xs cursor-pointer"
                         >
                           <Plus className="w-3.5 h-3.5" />
                           <span className="hidden sm:inline">Thêm Món</span>
@@ -1313,7 +1452,7 @@ export const CateringPartyPlanner: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => toggleCourseExpanded(course.id)}
-                          className="p-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-colors border border-stone-200 dark:border-stone-700 cursor-pointer"
+                          className="p-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-colors border border-stone-200 dark:border-stone-700 cursor-pointer"
                           aria-label={isExpanded ? `Thu gọn ${course.name}` : `Mở rộng ${course.name}`}
                         >
                           {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -1325,7 +1464,7 @@ export const CateringPartyPlanner: React.FC = () => {
                     {isExpanded && (
                       <>
                         {items.length === 0 ? (
-                          <div className="py-5 text-center rounded-2xl border border-dashed border-stone-200 dark:border-stone-800 text-stone-500 dark:text-stone-400 text-xs">
+                          <div className="py-5 text-center rounded-2xl border border-dashed border-[#E8E2D8] dark:border-[#252220] text-stone-500 dark:text-stone-400 text-xs">
                             Chưa có món nào cho {course.name}. Nhấn <span className="text-stone-900 dark:text-white font-bold">+ Thêm Món</span> để chọn từ kho công thức.
                           </div>
                         ) : (
@@ -1341,7 +1480,7 @@ export const CateringPartyPlanner: React.FC = () => {
                               return (
                                 <div 
                                   key={dish.recipeId}
-                                  className="group relative p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col justify-between space-y-2.5"
+                                  className="group relative p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-2.5"
                                 >
                                   <div className="flex items-start gap-3">
                                     <SafeImage
@@ -1355,18 +1494,18 @@ export const CateringPartyPlanner: React.FC = () => {
                                     <div className="flex-1 min-w-0">
                                       <h4 
                                         onClick={() => setSelectedRecipe(r)}
-                                        className="text-xs font-extrabold text-slate-900 dark:text-white truncate cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                        className="text-xs font-extrabold text-stone-900 dark:text-white truncate cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
                                       >
                                         {r.title}
                                       </h4>
-                                      <p className="text-[10px] text-slate-600 dark:text-slate-300 truncate mt-0.5">
+                                      <p className="text-[10px] text-stone-600 dark:text-stone-300 truncate mt-0.5">
                                         {r.description}
                                       </p>
                                       <div className="flex items-center gap-2 mt-1.5 text-[10px] flex-wrap">
-                                        <span className="font-bold text-emerald-700 dark:text-emerald-400 bg-white dark:bg-slate-950 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-800">
+                                        <span className="font-bold text-amber-800 dark:text-amber-300 bg-white dark:bg-[#1A1918] px-2 py-0.5 rounded-md border border-[#E8E2D8] dark:border-[#252220]">
                                           ~{costPerTableForDish.toLocaleString('vi-VN')} đ/bàn
                                         </span>
-                                        <span className="text-slate-600 dark:text-slate-300 font-medium">
+                                        <span className="text-stone-600 dark:text-stone-300 font-medium">
                                           Tổng: {scaledDishCost.toLocaleString('vi-VN')} đ
                                         </span>
                                       </div>
@@ -1376,7 +1515,7 @@ export const CateringPartyPlanner: React.FC = () => {
                                     <button
                                       type="button"
                                       onClick={() => removeDishFromParty(dish.recipeId)}
-                                      className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 border border-rose-200/60 dark:border-rose-800/60 transition-colors shrink-0 active:scale-95"
+                                      className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 border border-rose-200/60 dark:border-rose-800/60 transition-colors shrink-0 active:scale-95 cursor-pointer"
                                       title="Bỏ món này khỏi thực đơn"
                                       aria-label={`Bỏ món ${r.title}`}
                                     >
@@ -1385,7 +1524,7 @@ export const CateringPartyPlanner: React.FC = () => {
                                   </div>
 
                                   {/* Custom kitchen / dish note */}
-                                  <div className="pt-1.5 border-t border-slate-200 dark:border-slate-800/80">
+                                  <div className="pt-1.5 border-t border-[#E8E2D8] dark:border-[#252220]">
                                     {isEditingNote ? (
                                       <div className="flex items-center gap-1.5">
                                         <input
@@ -1405,21 +1544,21 @@ export const CateringPartyPlanner: React.FC = () => {
                                             }
                                           }}
                                           placeholder="Lưu ý bếp (VD: ít cay, dọn đầu)..."
-                                          className="flex-1 bg-white dark:bg-slate-950 border border-emerald-500/50 rounded-lg px-2 py-1 text-[11px] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none"
+                                          className="flex-1 bg-white dark:bg-[#1A1918] border border-amber-500/50 rounded-lg px-2 py-1 text-[11px] text-stone-900 dark:text-white placeholder:text-stone-400 focus:outline-none"
                                         />
                                       </div>
                                     ) : (
                                       <div 
                                         onClick={() => setEditingNoteDishId(dish.recipeId)}
-                                        className="flex items-center gap-1.5 text-[10px] text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 cursor-pointer transition-colors min-w-0"
+                                        className="flex items-center gap-1.5 text-[10px] text-stone-600 hover:text-stone-900 dark:text-stone-300 dark:hover:text-stone-100 cursor-pointer transition-colors min-w-0"
                                         title="Nhấp để thêm hoặc sửa ghi chú bếp cho món này"
                                       >
-                                        <MessageSquare className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                                        <MessageSquare className="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0" />
                                         <span className="truncate min-w-0 flex-1">
                                           {dish.customNotes ? (
-                                            <span className="text-emerald-700 dark:text-emerald-300 font-medium italic">"{dish.customNotes}"</span>
+                                            <span className="text-amber-700 dark:text-amber-300 font-medium italic">"{dish.customNotes}"</span>
                                           ) : (
-                                            <span className="text-slate-500 dark:text-slate-400 italic">+ Thêm ghi chú bếp...</span>
+                                            <span className="text-stone-500 dark:text-stone-400 italic">+ Thêm ghi chú bếp...</span>
                                           )}
                                         </span>
                                       </div>
@@ -1445,7 +1584,7 @@ export const CateringPartyPlanner: React.FC = () => {
             <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b border-stone-100 dark:border-stone-800 pb-3">
                 <div className="flex items-center gap-2">
-                  <Wine className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <Wine className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                   <h3 className="text-base font-extrabold text-stone-900 dark:text-white">Đồ Uống Kèm Tiệc</h3>
                 </div>
                 <span className="text-xs font-bold text-stone-600 dark:text-stone-300">
@@ -1458,7 +1597,7 @@ export const CateringPartyPlanner: React.FC = () => {
                 {(partyPlan.recommendedDrinks || []).map((drink, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-[#121110] border border-stone-200 dark:border-[#252220] text-xs font-bold text-stone-800 dark:text-stone-200"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs font-bold text-stone-800 dark:text-stone-200"
                   >
                     <span>{drink}</span>
                     <button
@@ -1500,13 +1639,13 @@ export const CateringPartyPlanner: React.FC = () => {
                   onChange={(e) => setNewDrinkText(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleAddDrink(); }}
                   placeholder="Thêm đồ uống (Rượu vang, Bia, Nước ép...)"
-                  className="flex-1 bg-stone-50 dark:bg-[#121110] border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-white focus:outline-none focus:border-purple-400"
+                  className="flex-1 bg-[#FAF8F5] dark:bg-[#121110] border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-white focus:outline-none focus:border-amber-500"
                   aria-label="Tên đồ uống mới"
                 />
                 <button
                   type="button"
                   onClick={() => handleAddDrink()}
-                  className="px-3.5 py-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 text-purple-700 dark:text-purple-300 border border-purple-500/30 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Thêm</span>
@@ -1516,19 +1655,19 @@ export const CateringPartyPlanner: React.FC = () => {
 
             {/* Logistics & Equipment Checklist Card */}
             <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div className="flex items-center justify-between border-b border-stone-100 dark:border-stone-800 pb-3">
                 <div className="flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white">Dụng Cụ Tiệc & Hậu Cần Catering</h3>
+                  <Truck className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  <h3 className="text-base font-extrabold text-stone-900 dark:text-white">Dụng Cụ Tiệc & Hậu Cần Catering</h3>
                 </div>
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                <span className="text-xs font-bold text-amber-700 dark:text-amber-400">
                   {partyPlan.equipmentChecklist.filter(e => e.done).length} / {partyPlan.equipmentChecklist.length} xong
                 </span>
               </div>
 
               {/* Checklist items */}
               {partyPlan.equipmentChecklist.length === 0 ? (
-                <div className="py-6 text-center text-xs text-slate-600 dark:text-slate-300 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">
+                <div className="py-6 text-center text-xs text-stone-600 dark:text-stone-300 border border-dashed border-[#E8E2D8] dark:border-[#252220] rounded-2xl">
                   Chưa có thiết bị nào trong checklist. Thêm thiết bị cần chuẩn bị bên dưới.
                 </div>
               ) : (
@@ -1548,21 +1687,21 @@ export const CateringPartyPlanner: React.FC = () => {
                       aria-label={`${item.done ? 'Đã chuẩn bị' : 'Chưa chuẩn bị'}: ${item.text}`}
                       className={`p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 ${
                         item.done
-                          ? 'bg-slate-100/60 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800/80 text-slate-500 dark:text-slate-400 line-through'
-                          : 'bg-slate-50 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-900 dark:text-white'
+                          ? 'bg-stone-100/60 dark:bg-[#121110]/60 border-[#E8E2D8] dark:border-[#252220] text-stone-500 dark:text-stone-400 line-through'
+                          : 'bg-[#FAF8F5] dark:bg-[#121110] border-[#E8E2D8] dark:border-[#252220] hover:border-amber-500/40 text-stone-900 dark:text-white'
                       }`}
                     >
                       <div className="flex items-start sm:items-center gap-2.5 min-w-0 flex-1">
                         {item.done ? (
-                          <CheckSquare className="w-4 h-4 text-emerald-600 dark:text-emerald-500 shrink-0 mt-0.5 sm:mt-0" />
+                          <CheckSquare className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
                         ) : (
-                          <Square className="w-4 h-4 text-slate-400 dark:text-slate-600 shrink-0 mt-0.5 sm:mt-0" />
+                          <Square className="w-4 h-4 text-stone-400 dark:text-stone-600 shrink-0 mt-0.5 sm:mt-0" />
                         )}
                         <span className="text-xs font-semibold leading-relaxed break-words flex-1">{item.text}</span>
                       </div>
 
                       <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0 pl-6 sm:pl-0">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white dark:bg-[#1A1918] text-stone-600 dark:text-stone-300 border border-[#E8E2D8] dark:border-[#252220]">
                           {item.category}
                         </span>
                         <button
@@ -1571,7 +1710,7 @@ export const CateringPartyPlanner: React.FC = () => {
                             e.stopPropagation();
                             removePartyEquipment(item.id);
                           }}
-                          className="p-1 rounded text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                          className="p-1 rounded text-stone-400 hover:text-rose-500 hover:bg-stone-200 dark:hover:bg-stone-800 transition-colors"
                           title="Xóa thiết bị này"
                           aria-label={`Xóa ${item.text}`}
                         >
@@ -1596,14 +1735,14 @@ export const CateringPartyPlanner: React.FC = () => {
                     }
                   }}
                   placeholder="Thêm thiết bị (Bếp gas, Ly vang, Khăn bàn...)"
-                  className="flex-1 min-w-0 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                  className="flex-1 min-w-0 bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-white focus:outline-none focus:border-amber-500"
                   aria-label="Tên trang thiết bị mới"
                 />
                 <div className="flex items-center gap-2 shrink-0">
                   <select
                     value={newEquipmentCategory}
                     onChange={(e) => setNewEquipmentCategory(e.target.value)}
-                    className="flex-1 sm:flex-initial bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-2 text-xs text-slate-700 dark:text-slate-300 focus:outline-none"
+                    className="flex-1 sm:flex-initial bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] rounded-xl px-2 py-2 text-xs text-stone-700 dark:text-stone-300 focus:outline-none"
                     aria-label="Danh mục thiết bị"
                   >
                     <option value="Dụng cụ tiệc">Dụng cụ tiệc</option>
@@ -1614,7 +1753,7 @@ export const CateringPartyPlanner: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleAddEquipment}
-                    className="px-3.5 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-bold flex items-center gap-1 transition-colors shrink-0 active:scale-95"
+                    className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-bold flex items-center gap-1 transition-colors shrink-0 active:scale-95 shadow-2xs cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Thêm</span>
@@ -1635,23 +1774,23 @@ export const CateringPartyPlanner: React.FC = () => {
           {/* Sub-tabs Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <h2 className="text-lg font-black text-stone-900 dark:text-white flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 <span>Thư Viện Mẫu Tiệc & Thực Đơn Của Tôi</span>
               </h2>
-              <p className="text-xs text-slate-600 dark:text-slate-300">
+              <p className="text-xs text-stone-600 dark:text-stone-300">
                 Chọn mẫu tiệc tối ưu sẵn hoặc xem và áp dụng lại các mẫu tiệc bạn đã tự lên và lưu lại.
               </p>
             </div>
 
-            <div className="flex items-center p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 self-start sm:self-auto shrink-0">
+            <div className="flex items-center p-1 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] self-start sm:self-auto shrink-0">
               <button
                 type="button"
                 onClick={() => setPresetSubTab('catalog')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                   presetSubTab === 'catalog'
-                    ? 'bg-emerald-500 text-slate-950 shadow-sm font-black'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
@@ -1660,10 +1799,10 @@ export const CateringPartyPlanner: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPresetSubTab('my_presets')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                   presetSubTab === 'my_presets'
-                    ? 'bg-emerald-500 text-slate-950 shadow-sm font-black'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
                 }`}
               >
                 <FolderHeart className="w-3.5 h-3.5" />
@@ -1678,7 +1817,7 @@ export const CateringPartyPlanner: React.FC = () => {
               {CORPORATE_PARTY_PRESETS.map(preset => (
                 <div
                   key={preset.id}
-                  className="group rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] hover:border-emerald-500/40 overflow-hidden flex flex-col justify-between transition-all shadow-sm"
+                  className="group rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] hover:border-amber-500/40 overflow-hidden flex flex-col justify-between transition-all shadow-sm"
                 >
                   <div>
                     {/* Preset Image & Tags */}
@@ -1690,19 +1829,19 @@ export const CateringPartyPlanner: React.FC = () => {
                         category="Món Tiệc"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
                       
                       <div className="absolute top-3 left-3">
-                        <span className="px-3 py-1 rounded-full bg-slate-900/90 text-emerald-300 border border-emerald-500/30 text-xs font-extrabold backdrop-blur-md">
+                        <span className="px-3 py-1 rounded-full bg-stone-900/90 text-amber-300 border border-amber-500/30 text-xs font-extrabold backdrop-blur-md">
                           {preset.categoryTag}
                         </span>
                       </div>
 
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white">
-                        <span className="font-extrabold bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
+                        <span className="font-extrabold bg-stone-950/80 px-2.5 py-1 rounded-lg border border-stone-800">
                           👥 Mặc định: {preset.defaultGuestCount} khách
                         </span>
-                        <span className="font-black text-emerald-400 bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
+                        <span className="font-black text-amber-400 bg-stone-950/80 px-2.5 py-1 rounded-lg border border-stone-800">
                           ~{preset.suggestedPerHeadBudgetVnd.toLocaleString('vi-VN')} đ/khách
                         </span>
                       </div>
@@ -1710,23 +1849,23 @@ export const CateringPartyPlanner: React.FC = () => {
 
                     {/* Body Info */}
                     <div className="p-5 space-y-3">
-                      <h3 className="text-base font-black text-slate-900 dark:text-white leading-tight">
+                      <h3 className="text-base font-black text-stone-900 dark:text-white leading-tight">
                         {preset.title}
                       </h3>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                      <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-2">
                         {preset.description}
                       </p>
 
                       {/* Included recipes chips */}
                       <div className="space-y-1.5 pt-1">
-                        <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">
+                        <span className="text-[10px] font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider block">
                           Các món tiêu biểu trong set:
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {preset.menuRecipes.map((r, i) => (
                             <span
                               key={i}
-                              className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-xs font-semibold border border-slate-200 dark:border-slate-800"
+                              className="px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121110] text-stone-700 dark:text-stone-200 text-xs font-semibold border border-[#E8E2D8] dark:border-[#252220]"
                             >
                               🍽️ {r.title}
                             </span>
@@ -1746,7 +1885,7 @@ export const CateringPartyPlanner: React.FC = () => {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         showToast(`🎉 Đã áp dụng mẫu "${preset.title}"!`);
                       }}
-                      className="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-95"
+                      className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
                     >
                       <span>Áp Dụng & Tùy Biến Mẫu Này</span>
                       <ArrowRight className="w-4 h-4" />
@@ -1761,22 +1900,22 @@ export const CateringPartyPlanner: React.FC = () => {
           {presetSubTab === 'my_presets' && (
             <div>
               {userPartyPlans.length === 0 ? (
-                <div className="p-8 sm:p-12 rounded-3xl border-2 border-dashed border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-3xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
+                <div className="p-8 sm:p-12 rounded-3xl border-2 border-dashed border-amber-500/30 bg-amber-500/5 dark:bg-amber-950/20 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-3xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto shadow-sm">
                     <FolderHeart className="w-8 h-8" />
                   </div>
                   <div className="max-w-md mx-auto space-y-1.5">
-                    <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
+                    <h3 className="text-base font-extrabold text-stone-900 dark:text-white">
                       Chưa Có Mẫu Tiệc Tự Tạo Nào
                     </h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-300">
+                    <p className="text-xs text-stone-600 dark:text-stone-300">
                       Bạn có thể chọn món, chỉnh số khách, tính thời gian nấu và bấm nút <strong>"Lưu Mẫu Tiệc"</strong> trong tab "Tự Lên Mâm" để lưu lại vào đây.
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setActiveMode('builder')}
-                    className="px-5 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black shadow-md shadow-emerald-500/25 inline-flex items-center gap-2 transition-all active:scale-95"
+                    className="px-5 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black shadow-md shadow-amber-500/25 inline-flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Tự Thiết Kế Mẫu Tiệc Đầu Tiên</span>
@@ -1794,12 +1933,12 @@ export const CateringPartyPlanner: React.FC = () => {
                     return (
                       <div
                         key={preset.id}
-                        className="rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] hover:border-emerald-500/40 p-5 flex flex-col justify-between space-y-4 transition-all shadow-sm"
+                        className="rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] hover:border-amber-500/40 p-5 flex flex-col justify-between space-y-4 transition-all shadow-sm"
                       >
                         <div className="space-y-3">
                           {/* Top Tag & Delete */}
                           <div className="flex items-center justify-between">
-                            <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-[11px] font-black flex items-center gap-1.5">
+                            <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[11px] font-black flex items-center gap-1.5">
                               <BookmarkCheck className="w-3.5 h-3.5" />
                               <span>Mẫu Tiệc Của Tôi</span>
                             </span>
@@ -1816,7 +1955,7 @@ export const CateringPartyPlanner: React.FC = () => {
                                   }
                                 });
                               }}
-                              className="p-1.5 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
+                              className="p-1.5 rounded-xl text-stone-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
                               title="Xóa mẫu tiệc này"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -1825,11 +1964,11 @@ export const CateringPartyPlanner: React.FC = () => {
 
                           {/* Title & Description */}
                           <div>
-                            <h3 className="text-base font-black text-slate-900 dark:text-white leading-snug">
+                            <h3 className="text-base font-black text-stone-900 dark:text-white leading-snug">
                               {preset.title}
                             </h3>
                             {preset.description && (
-                              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                              <p className="text-xs text-stone-600 dark:text-stone-300 mt-1">
                                 {preset.description}
                               </p>
                             )}
@@ -1837,17 +1976,17 @@ export const CateringPartyPlanner: React.FC = () => {
 
                           {/* Stats Grid */}
                           <div className="grid grid-cols-3 gap-2 text-center pt-1">
-                            <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block uppercase">
+                            <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
+                              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 block uppercase">
                                 Quy Mô
                               </span>
-                              <span className="text-xs font-black text-slate-900 dark:text-white block mt-0.5">
+                              <span className="text-xs font-black text-stone-900 dark:text-white block mt-0.5">
                                 {preset.guestCount} khách
                               </span>
                             </div>
 
-                            <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block uppercase">
+                            <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
+                              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 block uppercase">
                                 Nấu Nướng
                               </span>
                               <span className="text-xs font-black text-amber-600 dark:text-amber-400 block mt-0.5">
@@ -1855,11 +1994,11 @@ export const CateringPartyPlanner: React.FC = () => {
                               </span>
                             </div>
 
-                            <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block uppercase">
+                            <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
+                              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 block uppercase">
                                 Food Cost
                               </span>
-                              <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mt-0.5">
+                              <span className="text-xs font-black text-amber-700 dark:text-amber-400 block mt-0.5">
                                 {preset.totalFoodCostVnd ? `${Math.round(preset.totalFoodCostVnd / 1000).toLocaleString('vi-VN')}k` : '0đ'}
                               </span>
                             </div>
@@ -1867,7 +2006,7 @@ export const CateringPartyPlanner: React.FC = () => {
 
                           {/* Included dishes chips */}
                           <div className="space-y-1 pt-1">
-                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">
+                            <span className="text-[10px] font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider block">
                               Món ăn trong thực đơn ({preset.dishes.length} món):
                             </span>
                             <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
@@ -1876,7 +2015,7 @@ export const CateringPartyPlanner: React.FC = () => {
                                 return (
                                   <span
                                     key={i}
-                                    className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-xs font-semibold border border-slate-200 dark:border-slate-800"
+                                    className="px-2.5 py-1 rounded-lg bg-[#FAF8F5] dark:bg-[#121110] text-stone-700 dark:text-stone-200 text-xs font-semibold border border-[#E8E2D8] dark:border-[#252220]"
                                   >
                                     🍽️ {recipe?.title || dish.recipeId}
                                   </span>
@@ -1895,7 +2034,7 @@ export const CateringPartyPlanner: React.FC = () => {
                               setActiveMode('builder');
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
-                            className="w-full py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition-all active:scale-95"
+                            className="w-full py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
                           >
                             <span>Áp Dụng & Tùy Biến Mẫu Này</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -1918,8 +2057,13 @@ export const CateringPartyPlanner: React.FC = () => {
             <span className="hidden sm:inline">{guestCount} khách • {numTables} bàn • ⏱️ ~{kitchenWorkload.formattedTotalTime}</span>
             <span className="sm:hidden">{guestCount}k • {numTables} bàn • ~{kitchenWorkload.formattedTotalTime}</span>
           </span>
-          <p className="text-sm font-black text-emerald-600 dark:text-emerald-400 truncate">
-            {totalRevenue.toLocaleString('vi-VN')} đ
+          <p className="text-sm font-black text-stone-900 dark:text-white truncate">
+            {displayTotal.toLocaleString('vi-VN')} đ
+            {hasDishes && (
+              <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 ml-1.5">
+                (Food Cost: {roundedFoodCost.toLocaleString('vi-VN')} đ)
+              </span>
+            )}
           </p>
         </div>
 
@@ -1931,17 +2075,17 @@ export const CateringPartyPlanner: React.FC = () => {
               setSavePlanDesc(partyPlan.staffNotes || '');
               setShowSavePresetModal(true);
             }}
-            className="p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] transition-colors shrink-0 cursor-pointer"
+            className="p-2.5 rounded-xl bg-white hover:bg-stone-100 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] transition-colors shrink-0 cursor-pointer"
             title="Lưu thành mẫu tiệc riêng"
             aria-label="Lưu thành mẫu tiệc riêng"
           >
-            <Save className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <Save className="w-4 h-4 text-stone-700 dark:text-stone-300" />
           </button>
 
           <button
             type="button"
             onClick={handleCopyZaloQuote}
-            className="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+            className="py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-md shadow-amber-500/25 flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
           >
             {copiedQuote ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             <span>{copiedQuote ? 'Đã Chép' : 'Báo Giá'}</span>
@@ -1950,11 +2094,11 @@ export const CateringPartyPlanner: React.FC = () => {
           <button
             type="button"
             onClick={handleSyncToGrocery}
-            className="p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] transition-colors shrink-0 cursor-pointer"
+            className="p-2.5 rounded-xl bg-white hover:bg-stone-100 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-[#252220] transition-colors shrink-0 cursor-pointer"
             title="Chuyển nguyên liệu tiệc sang Đi Chợ"
             aria-label="Chuyển nguyên liệu tiệc sang Đi Chợ"
           >
-            <ShoppingCart className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <ShoppingCart className="w-4 h-4 text-amber-600 dark:text-amber-400" />
           </button>
         </div>
       </div>
@@ -1962,24 +2106,24 @@ export const CateringPartyPlanner: React.FC = () => {
       {/* SAVE CUSTOM PARTY PLAN MODAL */}
       {showSavePresetModal && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm animate-fade-in"
           onClick={() => setShowSavePresetModal(false)}
         >
           <div 
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-scale-up"
+            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-scale-up"
             onClick={e => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div className="flex items-center justify-between border-b border-stone-100 dark:border-stone-800 pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
                   <Save className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-black text-slate-900 dark:text-white">
+                  <h3 className="text-base font-black text-stone-900 dark:text-white">
                     Lưu Thực Đơn Thành Mẫu Tiệc Riêng
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-stone-500 dark:text-stone-400">
                     Lưu vào thư viện "Mẫu Của Tôi" để dễ dàng sử dụng lại bất cứ lúc nào
                   </p>
                 </div>
@@ -1987,7 +2131,7 @@ export const CateringPartyPlanner: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowSavePresetModal(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 flex items-center justify-center transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1996,7 +2140,7 @@ export const CateringPartyPlanner: React.FC = () => {
             {/* Modal Form Inputs */}
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-extrabold text-slate-800 dark:text-slate-200 mb-1">
+                <label className="block text-xs font-extrabold text-stone-800 dark:text-stone-200 mb-1">
                   Tên Mẫu Tiệc <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -2004,13 +2148,13 @@ export const CateringPartyPlanner: React.FC = () => {
                   value={savePlanTitle}
                   onChange={(e) => setSavePlanTitle(e.target.value)}
                   placeholder="VD: Tiệc Tân Gia 30 Khách, Cỗ Giỗ Miền Bắc, BBQ Cuối Tuần..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs font-bold text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 transition-colors"
                   autoFocus
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-extrabold text-slate-800 dark:text-slate-200 mb-1">
+                <label className="block text-xs font-extrabold text-stone-800 dark:text-stone-200 mb-1">
                   Mô Tả / Ghi Chú Riêng (Tùy chọn)
                 </label>
                 <textarea
@@ -2018,51 +2162,51 @@ export const CateringPartyPlanner: React.FC = () => {
                   value={savePlanDesc}
                   onChange={(e) => setSavePlanDesc(e.target.value)}
                   placeholder="Ghi chú về khẩu vị, đối tượng khách hoặc các lưu ý khi nấu..."
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-500 resize-none transition-colors"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-amber-500 resize-none transition-colors"
                 />
               </div>
 
               {/* Real-time calculated specs preview inside modal */}
-              <div className="p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/25 space-y-2 text-xs">
-                <div className="font-extrabold text-slate-900 dark:text-white flex items-center justify-between">
+              <div className="p-3.5 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/25 space-y-2 text-xs">
+                <div className="font-extrabold text-stone-900 dark:text-white flex items-center justify-between">
                   <span>Thông số thực đơn được lưu:</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-black">
+                  <span className="text-amber-700 dark:text-amber-400 font-black">
                     {partyPlan.dishes.length} món
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-emerald-500/20">
-                    <span className="text-slate-500 dark:text-slate-400 block font-semibold">👥 Quy mô tiệc:</span>
-                    <span className="font-black text-slate-900 dark:text-white text-xs">
+                  <div className="p-2 rounded-xl bg-white/80 dark:bg-[#121110]/80 border border-[#E8E2D8] dark:border-[#252220]">
+                    <span className="text-stone-500 dark:text-stone-400 block font-semibold">👥 Quy mô tiệc:</span>
+                    <span className="font-black text-stone-900 dark:text-white text-xs">
                       {guestCount} khách ({numTables} bàn)
                     </span>
                   </div>
 
-                  <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-emerald-500/20">
-                    <span className="text-slate-500 dark:text-slate-400 block font-semibold">⏱️ Thời gian chế biến:</span>
+                  <div className="p-2 rounded-xl bg-white/80 dark:bg-[#121110]/80 border border-[#E8E2D8] dark:border-[#252220]">
+                    <span className="text-stone-500 dark:text-stone-400 block font-semibold">⏱️ Thời gian chế biến:</span>
                     <span className="font-black text-amber-600 dark:text-amber-400 text-xs">
                       ~{kitchenWorkload.formattedTotalTime}
                     </span>
                   </div>
 
-                  <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-emerald-500/20">
-                    <span className="text-slate-500 dark:text-slate-400 block font-semibold">💵 Food Cost dự toán:</span>
+                  <div className="p-2 rounded-xl bg-white/80 dark:bg-[#121110]/80 border border-[#E8E2D8] dark:border-[#252220]">
+                    <span className="text-stone-500 dark:text-stone-400 block font-semibold">💵 Food Cost dự toán:</span>
                     <span className="font-black text-rose-600 dark:text-rose-400 text-xs">
                       {roundedFoodCost.toLocaleString('vi-VN')} đ
                     </span>
                   </div>
 
-                  <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-emerald-500/20">
-                    <span className="text-slate-500 dark:text-slate-400 block font-semibold">💰 Báo giá đề xuất:</span>
-                    <span className="font-black text-emerald-600 dark:text-emerald-400 text-xs">
-                      {totalRevenue.toLocaleString('vi-VN')} đ
+                  <div className="p-2 rounded-xl bg-white/80 dark:bg-[#121110]/80 border border-[#E8E2D8] dark:border-[#252220]">
+                    <span className="text-stone-500 dark:text-stone-400 block font-semibold">💰 Tổng dự toán:</span>
+                    <span className="font-black text-amber-700 dark:text-amber-400 text-xs">
+                      {displayTotal.toLocaleString('vi-VN')} đ
                     </span>
                   </div>
                 </div>
 
                 {/* Dish names summary */}
-                <div className="pt-1 text-[11px] text-slate-600 dark:text-slate-300">
+                <div className="pt-1 text-[11px] text-stone-600 dark:text-stone-300">
                   <span className="font-bold block mb-1">Món ăn trong mâm:</span>
                   <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto pr-1">
                     {partyPlan.dishes.map((item, idx) => {
@@ -2070,7 +2214,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       return (
                         <span 
                           key={idx}
-                          className="px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-[10px] font-medium border border-slate-200 dark:border-slate-700"
+                          className="px-2 py-0.5 rounded-md bg-white dark:bg-[#121110] text-stone-800 dark:text-stone-200 text-[10px] font-medium border border-[#E8E2D8] dark:border-[#252220]"
                         >
                           {recipe?.title || item.recipeId}
                         </span>
@@ -2082,11 +2226,11 @@ export const CateringPartyPlanner: React.FC = () => {
             </div>
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-stone-100 dark:border-stone-800">
               <button
                 type="button"
                 onClick={() => setShowSavePresetModal(false)}
-                className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors"
+                className="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs transition-colors cursor-pointer"
               >
                 Hủy
               </button>
@@ -2100,7 +2244,7 @@ export const CateringPartyPlanner: React.FC = () => {
                   saveCurrentPlanAsPreset(savePlanTitle, savePlanDesc);
                   setShowSavePresetModal(false);
                 }}
-                className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md shadow-emerald-500/25 flex items-center gap-1.5 transition-all active:scale-95"
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-md shadow-amber-500/25 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
               >
                 <Save className="w-4 h-4" />
                 <span>Lưu Thành Mẫu Tiệc</span>
@@ -2113,18 +2257,18 @@ export const CateringPartyPlanner: React.FC = () => {
       {/* IN-APP NATIVE CONFIRMATION MODAL */}
       {confirmDialog && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm animate-fade-in"
           onClick={() => setConfirmDialog(null)}
         >
           <div 
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-scale-up"
+            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-scale-up"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-start gap-3.5">
               <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${
                 confirmDialog.isDanger
                   ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
-                  : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+                  : 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
               }`}>
                 {confirmDialog.isDanger ? (
                   <AlertCircle className="w-5 h-5" />
@@ -2133,20 +2277,20 @@ export const CateringPartyPlanner: React.FC = () => {
                 )}
               </div>
               <div className="space-y-1">
-                <h3 className="text-base font-black text-slate-900 dark:text-white leading-snug">
+                <h3 className="text-base font-black text-stone-900 dark:text-white leading-snug">
                   {confirmDialog.title}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
                   {confirmDialog.message}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-stone-100 dark:border-stone-800">
               <button
                 type="button"
                 onClick={() => setConfirmDialog(null)}
-                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors"
+                className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#252220] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs transition-colors cursor-pointer"
               >
                 {confirmDialog.cancelLabel || 'Hủy bỏ'}
               </button>
@@ -2157,10 +2301,10 @@ export const CateringPartyPlanner: React.FC = () => {
                   setConfirmDialog(null);
                   action();
                 }}
-                className={`px-4 py-2 rounded-xl font-black text-xs shadow-md flex items-center gap-1.5 transition-all active:scale-95 ${
+                className={`px-4 py-2 rounded-xl font-black text-xs shadow-md flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${
                   confirmDialog.isDanger
                     ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/25'
-                    : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/25'
+                    : 'bg-amber-500 hover:bg-amber-400 text-stone-950 shadow-amber-500/25'
                 }`}
               >
                 <span>{confirmDialog.confirmLabel || 'Đồng ý'}</span>
@@ -2173,7 +2317,7 @@ export const CateringPartyPlanner: React.FC = () => {
       {/* DISH SELECTOR NATIVE MOBILE BOTTOM SHEET */}
       {modalCourse && (
         <div 
-          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
           onClick={() => setModalCourse(null)}
         >
           <div 
@@ -2182,7 +2326,7 @@ export const CateringPartyPlanner: React.FC = () => {
               transform: dishModalDragY > 0 ? `translateY(${dishModalDragY}px)` : undefined,
               transition: dishModalDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
             }}
-            className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 rounded-t-3xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-slide-up"
+            className="bg-white dark:bg-[#1A1918] border-t border-[#E8E2D8] dark:border-[#252220] rounded-t-3xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-slide-up"
           >
             {/* Swipe Handle Bar & Drag Zone */}
             <div 
@@ -2199,7 +2343,7 @@ export const CateringPartyPlanner: React.FC = () => {
               }}
               className="w-full py-2.5 cursor-grab active:cursor-grabbing shrink-0 flex items-center justify-center touch-none select-none"
             >
-              <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
+              <div className="w-12 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full" />
             </div>
 
             {/* Modal Header */}
@@ -2215,44 +2359,44 @@ export const CateringPartyPlanner: React.FC = () => {
                 setDishModalDragY(0);
                 dishModalTouchStartY.current = null;
               }}
-              className="px-4 pb-2.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0 touch-none select-none"
+              className="px-4 pb-2.5 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between shrink-0 touch-none select-none"
             >
               <div className="min-w-0 flex-1 pr-2">
-                <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
-                  <Plus className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <h3 className="text-sm font-black text-stone-900 dark:text-white flex items-center gap-1.5 truncate">
+                  <Plus className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                   <span className="truncate">
                     {selectedModalCourseTab === 'all'
                       ? `Chọn món từ Kho dữ liệu (${recipes.length} món Việt)`
                       : `Thêm vào "${COURSES.find(c => c.id === selectedModalCourseTab)?.name}"`}
                   </span>
                 </h3>
-                <p className="text-[10px] text-slate-600 dark:text-slate-300 truncate">
+                <p className="text-[10px] text-stone-600 dark:text-stone-300 truncate">
                   Kho dữ liệu chuẩn {recipes.length} món Việt — Chọn món bổ sung vào thực đơn tiệc.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setModalCourse(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white flex items-center justify-center transition-colors shrink-0"
+                className="w-8 h-8 rounded-full bg-stone-100 dark:bg-[#252220] text-stone-600 hover:text-stone-900 dark:text-stone-300 dark:hover:text-white flex items-center justify-center transition-colors shrink-0 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Modal Search & Filter Tabs */}
-            <div className="p-3 border-b border-slate-100 dark:border-slate-800 space-y-2 bg-slate-50/70 dark:bg-slate-950/50 shrink-0">
+            <div className="p-3 border-b border-stone-100 dark:border-stone-800 space-y-2 bg-[#FAF8F5] dark:bg-[#121110] shrink-0">
               <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={recipeSearch}
                   onChange={(e) => setRecipeSearch(e.target.value)}
                   placeholder={`Tìm kiếm trong ${recipes.length} món (tên món, nguyên liệu...)...`}
-                  className="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-[#1A1918] border border-stone-200 dark:border-stone-700 rounded-xl text-xs text-stone-900 dark:text-white focus:outline-none focus:border-amber-500"
                 />
               </div>
 
-              {/* Course Filter Tabs (Requirement: Course filter tab inside Dish Selector modal) */}
+              {/* Course Filter Tabs */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-bold scrollbar-none">
                 {[
                   { id: 'all' as const, label: `Tất cả (${recipes.length})`, icon: '✨' },
@@ -2266,10 +2410,10 @@ export const CateringPartyPlanner: React.FC = () => {
                     key={tab.id}
                     type="button"
                     onClick={() => setSelectedModalCourseTab(tab.id)}
-                    className={`px-2.5 py-1.5 rounded-xl shrink-0 transition-all text-[11px] flex items-center gap-1.5 ${
+                    className={`px-2.5 py-1.5 rounded-xl shrink-0 transition-all text-[11px] flex items-center gap-1.5 cursor-pointer ${
                       selectedModalCourseTab === tab.id
-                        ? 'bg-emerald-500 text-slate-950 font-black shadow-sm ring-1 ring-emerald-400/50'
-                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-500/50'
+                        ? 'bg-amber-500 text-stone-950 font-black shadow-xs ring-1 ring-amber-400/50'
+                        : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/80 hover:border-amber-500/50'
                     }`}
                   >
                     <span>{tab.icon}</span>
@@ -2293,16 +2437,16 @@ export const CateringPartyPlanner: React.FC = () => {
                     key={cat.id}
                     type="button"
                     onClick={() => setSelectedFilterCategory(cat.id)}
-                    className={`px-2 py-0.5 rounded-lg shrink-0 transition-colors ${
+                    className={`px-2 py-0.5 rounded-lg shrink-0 transition-colors cursor-pointer ${
                       selectedFilterCategory === cat.id
-                        ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900 font-bold'
-                        : 'bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                        ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold'
+                        : 'bg-white dark:bg-[#1A1918] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white border border-stone-200/80 dark:border-stone-800'
                     }`}
                   >
                     {cat.label}
                   </button>
                 ))}
-                <span className="text-[10px] text-slate-400 dark:text-slate-500 ml-auto shrink-0 font-medium">
+                <span className="text-[10px] text-stone-400 dark:text-stone-500 ml-auto shrink-0 font-medium">
                   ({filteredRecipes.length} món)
                 </span>
               </div>
@@ -2311,7 +2455,7 @@ export const CateringPartyPlanner: React.FC = () => {
             {/* Modal Recipe List */}
             <div className="p-3 overflow-y-auto space-y-2 flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
               {filteredRecipes.length === 0 ? (
-                <div className="py-8 text-center text-slate-600 dark:text-slate-300 text-xs space-y-2">
+                <div className="py-8 text-center text-stone-600 dark:text-stone-300 text-xs space-y-2">
                   <p>Không tìm thấy món ăn nào phù hợp với bộ lọc hiện tại.</p>
                   {(selectedModalCourseTab !== 'all' || selectedFilterCategory !== 'all' || recipeSearch) && (
                     <button
@@ -2321,7 +2465,7 @@ export const CateringPartyPlanner: React.FC = () => {
                         setSelectedFilterCategory('all');
                         setRecipeSearch('');
                       }}
-                      className="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-bold hover:bg-emerald-500/30 transition-colors"
+                      className="px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-500/30 transition-colors cursor-pointer"
                     >
                       Xem toàn bộ {recipes.length} món
                     </button>
@@ -2346,7 +2490,7 @@ export const CateringPartyPlanner: React.FC = () => {
                     return (
                       <div
                         key={recipe.id}
-                        className="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 flex flex-col justify-between space-y-2 transition-all"
+                        className="p-2.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-amber-500/50 flex flex-col justify-between space-y-2 transition-all"
                       >
                         <div className="flex items-start gap-2.5">
                           <SafeImage
@@ -2357,14 +2501,14 @@ export const CateringPartyPlanner: React.FC = () => {
                             className="w-12 h-12 rounded-xl object-cover shrink-0"
                           />
                           <div className="min-w-0 flex-1">
-                            <h4 className="text-xs font-black text-slate-900 dark:text-white truncate">
+                            <h4 className="text-xs font-black text-stone-900 dark:text-white truncate">
                               {recipe.title}
                             </h4>
-                            <p className="text-[10px] text-slate-600 dark:text-slate-300 line-clamp-1 mt-0.5">
+                            <p className="text-[10px] text-stone-600 dark:text-stone-300 line-clamp-1 mt-0.5">
                               {recipe.description}
                             </p>
-                            <div className="flex items-center gap-2 mt-1 text-[10px] text-slate-600 dark:text-slate-300 font-semibold">
-                              <span className="text-emerald-700 dark:text-emerald-400 font-bold">
+                            <div className="flex items-center gap-2 mt-1 text-[10px] text-stone-600 dark:text-stone-300 font-semibold">
+                              <span className="text-amber-700 dark:text-amber-400 font-bold">
                                 ~{(recipe.estimatedCostVnd || 40000).toLocaleString('vi-VN')} đ
                               </span>
                               <span>•</span>
@@ -2373,19 +2517,19 @@ export const CateringPartyPlanner: React.FC = () => {
                           </div>
                         </div>
 
-                        <div className="pt-1 border-t border-slate-100 dark:border-slate-800/80">
+                        <div className="pt-1 border-t border-stone-200 dark:border-stone-800">
                           <button
                             type="button"
                             onClick={() => {
                               addDishToParty(recipe.id, effectiveCourse);
                               setModalCourse(null);
                             }}
-                            className={`w-full py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
+                            className={`w-full py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                               isSameCourse
-                                ? 'bg-slate-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-slate-200 dark:border-emerald-500/30'
+                                ? 'bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30'
                                 : isAdded
-                                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700/50 hover:bg-amber-100'
-                                  : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm'
+                                  ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-400 dark:border-amber-700/50 hover:bg-amber-200'
+                                  : 'bg-amber-500 hover:bg-amber-400 text-stone-950 shadow-xs'
                             }`}
                           >
                             {isSameCourse ? (
@@ -2414,7 +2558,7 @@ export const CateringPartyPlanner: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setVisibleDishCount(prev => prev + 40)}
-                        className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition-colors"
+                        className="w-full py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#1A1918] dark:hover:bg-[#252220] text-xs font-bold text-stone-700 dark:text-stone-300 transition-colors cursor-pointer"
                       >
                         Xem thêm {Math.min(40, filteredRecipes.length - visibleDishCount)} món (còn {filteredRecipes.length - visibleDishCount} món)...
                       </button>
