@@ -10,7 +10,7 @@ const getRecipe = (id: string) => {
   return found;
 };
 
-export const mockMealSets: VietnameseMealSet[] = [
+const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalories'> & { totalCostVnd?: number; totalCalories?: number }> = [
   {
     id: 'mam-com-bac-bo',
     title: 'Mâm Cơm Đậm Vị Bắc Bộ',
@@ -86,12 +86,12 @@ export const mockMealSets: VietnameseMealSet[] = [
     title: 'Mâm Cơm Eat Clean Thanh Lành',
     region: 'toan-quoc',
     description: 'Bữa ăn thanh nhẹ ít dầu mỡ, nhiều chất xơ và đạm thực vật từ nấm, đậu và rau củ ngũ sắc cho vóc dáng thon gọn.',
-    mainDish: getRecipe('dau-hu-chien-sa-ot'),
+    mainDish: getRecipe('dau-hu-sot-ca-chua'),
     soupDish: getRecipe('canh-nam-hat-sen'),
-    sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
+    sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Sốt chấm mè rang thanh nhẹ & Chanh tươi',
-    totalCostVnd: 105000,
-    totalCalories: 520,
+    totalCostVnd: 84000,
+    totalCalories: 590,
     imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
     tags: ['Eat Clean', 'Ăn Chay', 'Thanh Tịnh', 'Mâm Cơm 3 Món']
   },
@@ -226,12 +226,12 @@ export const mockMealSets: VietnameseMealSet[] = [
     title: 'Mâm Cơm Đậu Rán Canh Cà Chua Trứng Mây',
     region: 'chay',
     description: 'Bữa cơm thanh nhẹ: Đậu hũ rán giòn chấm mắm tỏi, canh cà chua trứng mây thơm nồng và rau củ luộc ngũ sắc.',
-    mainDish: getRecipe('canh-ca-chua-trung-dau-ran'),
-    soupDish: getRecipe('canh-nam-hat-sen'),
+    mainDish: getRecipe('dau-hu-chien-sa-ot'),
+    soupDish: getRecipe('canh-ca-chua-trung-dau-ran'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Tương bần & Nước tương gừng tỏi',
     totalCostVnd: 72000,
-    totalCalories: 490,
+    totalCalories: 620,
     imageUrl: 'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Tiết Kiệm', 'Thanh Tịnh', 'Mâm Cơm 3 Món']
   },
@@ -573,3 +573,13 @@ export const mockMealSets: VietnameseMealSet[] = [
     tags: ['Món Âu', 'Western Food', 'BBQ Ribs', 'Măng Tây', 'Mâm Cơm 3 Món']
   }
 ];
+
+export const mockMealSets: VietnameseMealSet[] = RAW_MEAL_SETS.map(set => {
+  const totalCost = (set.mainDish?.estimatedCostVnd || 0) + (set.soupDish?.estimatedCostVnd || 0) + (set.sideDish?.estimatedCostVnd || 0);
+  const totalCal = (set.mainDish?.calories || 0) + (set.soupDish?.calories || 0) + (set.sideDish?.calories || 0);
+  return {
+    ...set,
+    totalCostVnd: totalCost,
+    totalCalories: totalCal
+  };
+});

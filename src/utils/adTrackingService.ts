@@ -327,6 +327,18 @@ export function getAdFreeRemainingMs(adFreeUntilTimestamp: number): number {
   return Math.max(0, adFreeUntilTimestamp - now);
 }
 
+export function isUserAdFree(): boolean {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return false;
+  try {
+    const state = loadAdTrackingState();
+    const isTimeActive = typeof state.adFreeUntilTimestamp === 'number' && state.adFreeUntilTimestamp > Date.now();
+    const hasCompletedDailyAds = (state.adsWatchedToday || 0) >= (state.dailyTarget || DEFAULT_DAILY_TARGET);
+    return isTimeActive || hasCompletedDailyAds;
+  } catch {
+    return false;
+  }
+}
+
 export function formatAdFreeTime(remainingMs: number): string {
   if (remainingMs <= 0) {
     return '00:00:00';

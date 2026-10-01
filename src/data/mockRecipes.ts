@@ -599,8 +599,8 @@ export const INITIAL_RECIPES: Recipe[] = [
     prepTimeMinutes: 15,
     cookTimeMinutes: 20,
     servings: 4,
-    calories: 150,
-    estimatedCostVnd: 55000,
+    calories: 160,
+    estimatedCostVnd: 38000,
     imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
@@ -657,8 +657,8 @@ export const INITIAL_RECIPES: Recipe[] = [
     prepTimeMinutes: 15,
     cookTimeMinutes: 15,
     servings: 4,
-    calories: 190,
-    estimatedCostVnd: 40000,
+    calories: 140,
+    estimatedCostVnd: 22000,
     imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [

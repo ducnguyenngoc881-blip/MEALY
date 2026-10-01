@@ -96,6 +96,14 @@ export const MealSetDetailModal: React.FC = () => {
     showToast(`🔄 Đã đổi ${dishLabel} thành "${updated[dishType].title}"!`);
   };
 
+  const calculatedTotalCost = (selectedMealSet.mainDish?.estimatedCostVnd || 0) + 
+                             (selectedMealSet.soupDish?.estimatedCostVnd || 0) + 
+                             (selectedMealSet.sideDish?.estimatedCostVnd || 0);
+
+  const calculatedTotalCalories = (selectedMealSet.mainDish?.calories || 0) + 
+                                 (selectedMealSet.soupDish?.calories || 0) + 
+                                 (selectedMealSet.sideDish?.calories || 0);
+
   return (
     <div 
       className="fixed inset-0 z-50 flex items-end justify-center bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
@@ -166,7 +174,7 @@ export const MealSetDetailModal: React.FC = () => {
           <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] flex flex-wrap items-center justify-between gap-1.5 text-xs">
             <span className="text-stone-700 dark:text-stone-300 font-bold">Tổng chi phí 3 món:</span>
             <span className="text-stone-900 dark:text-white font-black text-sm whitespace-nowrap">
-              {selectedMealSet.totalCostVnd.toLocaleString('vi-VN')} đ • {selectedMealSet.totalCalories} kcal
+              {calculatedTotalCost.toLocaleString('vi-VN')} đ • {calculatedTotalCalories} kcal
             </span>
           </div>
 

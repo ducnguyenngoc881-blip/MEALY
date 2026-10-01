@@ -26,7 +26,7 @@ import {
 import { SafeImage } from './SafeImage';
 import { Ingredient, CookingInstruction } from '../types';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
-import { recordAdImpression, recordVolunteerAdWatched } from '../utils/adTrackingService';
+import { recordAdImpression, recordVolunteerAdWatched, isUserAdFree } from '../utils/adTrackingService';
 
 interface CategorizedGroup {
   key: 'thit-ca' | 'rau-cu' | 'gia-vi';
@@ -395,10 +395,15 @@ export const RecipeDetailModal: React.FC = () => {
         localStorage.setItem(`mealwise_recipe_progress_${selectedRecipe.id}`, JSON.stringify(next));
       } catch {}
 
-      // Trigger 30s Ad when user ticks the final step of the meal
+      // Trigger 30s Ad when user ticks the final step of the meal ONLY if not ad-free
       const totalSteps = selectedRecipe.instructions.length;
       if (willBeCompleted && stepNum === totalSteps) {
-        setIsCompletionAdOpen(true);
+        const adFree = isUserAdFree() || user?.role === 'admin';
+        if (adFree) {
+          showToast(`🎉 Tuyệt vời! Bạn đã hoàn thành món ${selectedRecipe.title}! Chúc cả nhà ngon miệng!`, 'success');
+        } else {
+          setIsCompletionAdOpen(true);
+        }
       }
 
       return next;
