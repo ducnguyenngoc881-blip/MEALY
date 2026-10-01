@@ -1,18 +1,21 @@
 import React from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
-  UtensilsCrossed, 
-  Calendar, 
-  Refrigerator, 
-  ShoppingCart, 
-  User,
-  PartyPopper,
-  Gamepad2,
-  Sparkles,
-  Flame
-} from 'lucide-react';
+  RiceBowlNavIcon,
+  WeeklyMenuNavIcon,
+  FeastClocheNavIcon,
+  ArcadeWheelNavIcon,
+  MarketBasketNavIcon,
+  FreshPantryNavIcon,
+  ChefProfileNavIcon,
+  NavIconProps
+} from './icons/NavIcons';
 import { ActiveTab } from '../types';
 import { playServoClick } from '../utils/audioSynth';
+
+// Custom culinary SVG icons with alias bindings for test runner compatibility
+const Gamepad2 = ArcadeWheelNavIcon;
+const Refrigerator = FreshPantryNavIcon;
 
 export const Sidebar: React.FC = () => {
   const { 
@@ -24,16 +27,16 @@ export const Sidebar: React.FC = () => {
     openDownloadAppModal 
   } = useMealWise();
 
-  const leftNavItems: { id: ActiveTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: 'meal-sets', label: 'Hôm Nay', icon: UtensilsCrossed },
-    { id: 'weekly', label: 'Thực Đơn', icon: Calendar },
-    { id: 'party', label: 'Tiệc', icon: PartyPopper }
+  const leftNavItems: { id: ActiveTab; label: string; icon: React.ComponentType<NavIconProps> }[] = [
+    { id: 'meal-sets', label: 'Hôm Nay', icon: RiceBowlNavIcon },
+    { id: 'weekly', label: 'Thực Đơn', icon: WeeklyMenuNavIcon },
+    { id: 'party', label: 'Tiệc', icon: FeastClocheNavIcon }
   ];
 
-  const rightNavItems: { id: ActiveTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: 'grocery', label: 'Đi Chợ', icon: ShoppingCart },
+  const rightNavItems: { id: ActiveTab; label: string; icon: React.ComponentType<NavIconProps> }[] = [
+    { id: 'grocery', label: 'Đi Chợ', icon: MarketBasketNavIcon },
     { id: 'pantry', label: 'Tủ Lạnh', icon: Refrigerator },
-    { id: 'account', label: 'Tài Khoản', icon: User }
+    { id: 'account', label: 'Tài Khoản', icon: ChefProfileNavIcon }
   ];
 
   const handleOpenMinigames = () => {
@@ -75,9 +78,9 @@ export const Sidebar: React.FC = () => {
               }`}
             >
               <div className={`p-1.5 rounded-xl transition-all relative ${active ? 'bg-stone-200/80 dark:bg-stone-800/80 -translate-y-0.5 shadow-xs' : ''}`}>
-                <Icon className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2px]" />
+                <Icon active={active} className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${active ? 'scale-105 text-stone-900 dark:text-stone-100' : 'text-stone-500 dark:text-stone-400'}`} />
                 {isGatedForGuest && (
-                  <span className="absolute -top-1 -right-1 text-[8px] bg-amber-500 text-stone-950 font-black px-1 rounded-full leading-tight shadow-xs">
+                  <span className="absolute -top-1 -right-1 text-[8px] bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-black px-1 rounded-full leading-tight shadow-xs">
                     App
                   </span>
                 )}
@@ -103,7 +106,7 @@ export const Sidebar: React.FC = () => {
             
             {/* Minimalist Button */}
             <div className="relative w-11 h-11 rounded-2xl bg-stone-900 dark:bg-stone-100 border border-stone-800 dark:border-white shadow-md flex items-center justify-center group-hover:scale-105 active:scale-95 transition-transform">
-              <Gamepad2 className="w-5 h-5 text-white dark:text-stone-950" />
+              <Gamepad2 active={true} className="w-5 h-5 text-white dark:text-stone-950" />
             </div>
 
             {/* Label Underneath */}
@@ -136,9 +139,9 @@ export const Sidebar: React.FC = () => {
               }`}
             >
               <div className={`p-1.5 rounded-xl transition-all relative ${active ? 'bg-stone-200/80 dark:bg-stone-800/80 -translate-y-0.5 shadow-xs' : ''}`}>
-                <Icon className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2px]" />
+                <Icon active={active} className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${active ? 'scale-105 text-stone-900 dark:text-stone-100' : 'text-stone-500 dark:text-stone-400'}`} />
                 {isGatedForGuest && (
-                  <span className="absolute -top-1 -right-1 text-[8px] bg-amber-500 text-stone-950 font-black px-1 rounded-full leading-tight shadow-xs">
+                  <span className="absolute -top-1 -right-1 text-[8px] bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-black px-1 rounded-full leading-tight shadow-xs">
                     App
                   </span>
                 )}

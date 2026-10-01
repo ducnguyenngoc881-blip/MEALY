@@ -75,6 +75,8 @@ export interface ExtraGroceryItem {
   cost: number;
 }
 
+export type ToastType = 'info' | 'success' | 'warning' | 'error';
+
 interface MealWiseContextType {
   guestSession: GuestUserSession | null;
   recipes: Recipe[];
@@ -180,7 +182,8 @@ interface MealWiseContextType {
 
   // Toast
   toastMessage: string | null;
-  showToast: (msg: string) => void;
+  toastType: ToastType;
+  showToast: (msg: string, type?: ToastType) => void;
   hideToast: () => void;
 
   // Pantry / Fridge state
@@ -480,6 +483,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [selectedMealSet, setSelectedMealSet] = useState<VietnameseMealSet | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<ToastType>('info');
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState | null>(null);
   const openConfirmModal = useCallback((state: ConfirmDialogState) => {
     setConfirmDialog(state);
@@ -640,15 +644,27 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setToastMessage(null);
   }, []);
 
-  const showToast = useCallback((msg: string) => {
+  const showToast = useCallback((msg: string, type?: ToastType) => {
     if (toastTimeoutRef.current) {
       clearTimeout(toastTimeoutRef.current);
     }
+    // Smart auto-detection of semantic type if not explicitly provided
+    let resolvedType: ToastType = type || 'info';
+    if (!type) {
+      if (/🔒|⚠️|cảnh báo|hết hạn|khóa|chỉ dành cho|chưa nhập|vui lòng nhập|yêu cầu/i.test(msg)) {
+        resolvedType = 'warning';
+      } else if (/❌|lỗi|thất bại|không thể/i.test(msg)) {
+        resolvedType = 'error';
+      } else if (/✅|🎉|✨|đã lưu|thành công|hoàn tất|áp dụng/i.test(msg)) {
+        resolvedType = 'success';
+      }
+    }
+    setToastType(resolvedType);
     setToastMessage(msg);
     toastTimeoutRef.current = setTimeout(() => {
       setToastMessage(null);
       toastTimeoutRef.current = null;
-    }, 4000);
+    }, 4500);
   }, []);
 
   useEffect(() => {
@@ -659,9 +675,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
     };
     const handleCustomToast = (e: Event) => {
-      const customEvent = e as CustomEvent<string>;
+      const customEvent = e as CustomEvent<string | { message: string; type?: ToastType }>;
       if (customEvent.detail) {
-        showToast(customEvent.detail);
+        if (typeof customEvent.detail === 'string') {
+          showToast(customEvent.detail);
+        } else if (customEvent.detail && typeof customEvent.detail === 'object' && customEvent.detail.message) {
+          showToast(customEvent.detail.message, customEvent.detail.type);
+        }
       }
     };
     window.addEventListener('mealwise:confirm', handleCustomConfirm);
@@ -2596,6 +2616,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         removeExtraGroceryItem,
         clearExtraGrocery,
         toastMessage,
+        toastType,
         showToast,
         hideToast,
         isApexModalOpen,
@@ -2792,6 +2813,7 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     openDrinkRoulette: () => {},
     closeDrinkRoulette: () => {},
     toastMessage: null,
+    toastType: 'info',
     showToast: () => {},
     hideToast: () => {},
     pantryItems: INITIAL_PANTRY_ITEMS,

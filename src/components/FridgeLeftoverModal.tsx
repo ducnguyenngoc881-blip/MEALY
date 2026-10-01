@@ -7,7 +7,8 @@ import {
   ChefHat, 
   ChevronDown,
   ChevronUp,
-  RotateCcw
+  RotateCcw,
+  AlertCircle
 } from 'lucide-react';
 import { useMealWise } from '../context/MealWiseContext';
 import { PantryItem } from '../types';
@@ -61,6 +62,12 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
   const [isLeftover, setIsLeftover] = useState(true);
   const [notes, setNotes] = useState('');
   const [discountVnd, setDiscountVnd] = useState<number>(20000);
+  const [nameError, setNameError] = useState<string | null>(null);
+
+  const modalTotalEligible = useMemo(() => {
+    if (!selectedItemForRecipe) return 0;
+    return findLeftoverRecipeSuggestions(selectedItemForRecipe, recipes, 9999, 0, pantryItems).length;
+  }, [selectedItemForRecipe, recipes, pantryItems]);
 
   if (!isOpen) return null;
 
@@ -79,6 +86,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
 
   const handleApplySuggestion = (sug: typeof QUICK_LEFTOVER_SUGGESTIONS[0]) => {
     setName(sug.name);
+    setNameError(null);
     setCategory(sug.category);
     setQuantity(sug.qty);
     setDaysLeft(sug.days);
@@ -89,7 +97,12 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
 
   const handleSaveItem = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    if (!name.trim()) {
+      setNameError('Vui lòng nhập tên món hoặc đồ ăn thừa để lưu');
+      showToast('⚠️ Vui lòng nhập tên món hoặc đồ ăn thừa!', 'warning');
+      return;
+    }
+    setNameError(null);
 
     const status: PantryItem['status'] = daysLeft <= 1 ? 'warning' : daysLeft <= 2 ? 'warning' : 'fresh';
 
@@ -107,6 +120,7 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
 
     // Reset Form
     setName('');
+    setNameError(null);
     setQuantity('1 phần');
     setDaysLeft(2);
     setNotes('');
@@ -117,11 +131,6 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
   const suggestedRecipes = selectedItemForRecipe 
     ? findLeftoverRecipeSuggestions(selectedItemForRecipe, recipes, 4, modalReloadOffset, pantryItems)
     : [];
-
-  const modalTotalEligible = useMemo(() => {
-    if (!selectedItemForRecipe) return 0;
-    return findLeftoverRecipeSuggestions(selectedItemForRecipe, recipes, 9999, 0, pantryItems).length;
-  }, [selectedItemForRecipe, recipes, pantryItems]);
 
   const handleReloadModalSuggestions = () => {
     if (modalTotalEligible <= 4) return;
@@ -228,21 +237,40 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
             </button>
 
             {isAddingOpen && (
-              <form onSubmit={handleSaveItem} className="p-4 pt-1 space-y-3 border-t border-cyan-500/20 animate-fadeIn">
+              <form onSubmit={handleSaveItem} noValidate className="p-4 pt-1 space-y-3 border-t border-cyan-500/20 animate-fadeIn">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Name */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
-                      Tên món / Đồ thừa <span className="text-rose-500">*</span>
-                    </label>
+                    <div className="flex items-center justify-between">
+                      <label className="text-[11px] font-bold text-stone-700 dark:text-stone-300">
+                        Tên món / Đồ thừa <span className="text-rose-500">*</span>
+                      </label>
+                      {nameError && (
+                        <span className="text-[9px] font-black uppercase tracking-wider text-rose-500 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20 animate-shake">
+                          Bắt buộc
+                        </span>
+                      )}
+                    </div>
                     <input
                       type="text"
-                      required
                       value={name}
-                      onChange={e => setName(e.target.value)}
+                      onChange={e => {
+                        setName(e.target.value);
+                        if (nameError) setNameError(null);
+                      }}
                       placeholder="VD: Cơm nguội, Thịt luộc thừa, Nửa bắp cải..."
-                      className="w-full px-3 py-2 rounded-xl border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className={`w-full px-3 py-2 rounded-xl text-xs font-semibold focus:outline-none transition-all ${
+                        nameError
+                          ? 'border-2 border-rose-500 dark:border-rose-400 ring-3 ring-rose-500/15 bg-rose-50/20 dark:bg-rose-950/20 text-stone-900 dark:text-stone-100'
+                          : 'border border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#121110] text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-cyan-500'
+                      }`}
                     />
+                    {nameError && (
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 text-[11px] font-bold mt-1 animate-shake shadow-2xs">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{nameError}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Quantity */}

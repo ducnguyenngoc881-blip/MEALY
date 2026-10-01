@@ -37,6 +37,7 @@ import { scaleCost } from '../utils/currency';
 import { copyTextToClipboard } from './CateringPartyPlanner';
 import { FridgeLeftoverModal } from './FridgeLeftoverModal';
 import { SHOPPER_PALETTE, getShopperStyle, formatTtlRemaining } from '../services/collabGroceryService';
+import { CollabBasketIcon, GroceryScrollIcon } from './icons/NavIcons';
 
 // Store Channel Configuration for the 4 Vietnamese retail channels
 export interface StoreChannelConfig {
@@ -2338,7 +2339,7 @@ export const GroceryList: React.FC = () => {
           >
             {!isRegistered ? (
               <>
-                <Lock className="w-4 h-4 shrink-0 text-amber-500" />
+                <CollabBasketIcon className="w-4 h-4 shrink-0 text-stone-500 dark:text-stone-400" />
                 <span className="truncate font-bold">Đi Chợ Chung 🔒</span>
               </>
             ) : (
@@ -2366,7 +2367,7 @@ export const GroceryList: React.FC = () => {
             className="py-2.5 px-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer"
             title="Sao chép toàn bộ danh sách dạng văn bản gửi Zalo"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-stone-500" />}
+            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <GroceryScrollIcon className="w-4 h-4 text-stone-600 dark:text-stone-400" />}
             <span className="truncate">
               {copied ? 'Đã Chép Zalo' : (
                 <>

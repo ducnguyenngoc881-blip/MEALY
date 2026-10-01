@@ -10,10 +10,9 @@ import {
   UserCheck, 
   UserPlus, 
   Sparkles, 
-  Lock, 
   PartyPopper, 
   ShoppingCart, 
-  ShieldCheck 
+  AlertCircle
 } from 'lucide-react';
 
 export const AuthModal: React.FC = () => {
@@ -30,32 +29,47 @@ export const AuthModal: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   if (!isAuthModalOpen) return null;
 
+  const handleClose = () => {
+    setEmailError(null);
+    closeAuthModal();
+  };
+
+  const handleModeChange = (mode: 'login' | 'register') => {
+    setEmailError(null);
+    setAuthModalMode(mode);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) {
-      showToast('Vui lòng nhập Email hoặc Số điện thoại!');
+    const cleanEmail = email.trim();
+    if (!cleanEmail) {
+      setEmailError('Vui lòng nhập Email hoặc Số điện thoại của bạn');
+      showToast('⚠️ Vui lòng điền Email hoặc Số điện thoại để tiếp tục!', 'warning');
       return;
     }
 
-    const displayName = name.trim() || email.split('@')[0] || 'Thành Viên MealWise';
+    setEmailError(null);
+    const displayName = name.trim() || cleanEmail.split('@')[0] || 'Thành Viên MealWise';
     loginUser({
       name: displayName,
-      email: email.trim()
+      email: cleanEmail
     }, authModalMode === 'register');
 
     // Reset inputs
     setName('');
     setEmail('');
     setPassword('');
+    setEmailError(null);
   };
 
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={closeAuthModal}
+      onClick={handleClose}
     >
       <div 
         className="w-full max-w-md bg-white dark:bg-[#1A1918] rounded-3xl p-5 sm:p-6 shadow-2xl border border-[#E8E2D8] dark:border-[#252220] space-y-4 relative max-h-[92dvh] overflow-y-auto"
@@ -64,7 +78,7 @@ export const AuthModal: React.FC = () => {
         {/* Close Button */}
         <button
           type="button"
-          onClick={closeAuthModal}
+          onClick={handleClose}
           className="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer"
           aria-label="Đóng"
         >
@@ -107,7 +121,7 @@ export const AuthModal: React.FC = () => {
         <div className="flex rounded-2xl bg-stone-100 dark:bg-[#121110] p-1 border border-[#E8E2D8] dark:border-[#252220] shadow-inner">
           <button
             type="button"
-            onClick={() => setAuthModalMode('register')}
+            onClick={() => handleModeChange('register')}
             className={`flex-1 py-2 text-xs font-black rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
               authModalMode === 'register'
                 ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm'
@@ -119,7 +133,7 @@ export const AuthModal: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={() => setAuthModalMode('login')}
+            onClick={() => handleModeChange('login')}
             className={`flex-1 py-2 text-xs font-black rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
               authModalMode === 'login'
                 ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm'
@@ -131,8 +145,8 @@ export const AuthModal: React.FC = () => {
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-3.5">
+        {/* Form without HTML5 default validation tooltips */}
+        <form onSubmit={handleSubmit} noValidate className="space-y-3.5">
           {authModalMode === 'register' && (
             <div>
               <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">
@@ -154,22 +168,53 @@ export const AuthModal: React.FC = () => {
           )}
 
           <div>
-            <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">
-              Email hoặc Số điện thoại <span className="text-rose-500">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
+                Email hoặc Số điện thoại <span className="text-rose-500">*</span>
+              </label>
+              {emailError && (
+                <span className="text-[10px] font-black uppercase tracking-wider text-rose-500 dark:text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md border border-rose-500/20 animate-shake">
+                  Bắt buộc
+                </span>
+              )}
+            </div>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+              <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors ${
+                emailError ? 'text-rose-500' : 'text-stone-400'
+              }`}>
                 <Mail className="w-4 h-4" />
               </div>
               <input
                 type="text"
-                required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailError) setEmailError(null);
+                }}
                 placeholder="email@example.com hoặc 0912..."
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20"
+                className={`w-full pl-10 pr-9 py-2.5 rounded-2xl bg-white dark:bg-[#121110] text-stone-900 dark:text-white text-xs sm:text-sm transition-all focus:outline-none ${
+                  emailError
+                    ? 'border-2 border-rose-500 dark:border-rose-400 ring-4 ring-rose-500/15 bg-rose-50/20 dark:bg-rose-950/20'
+                    : 'border border-[#E8E2D8] dark:border-[#252220] focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20'
+                }`}
               />
+              {emailError && (
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-rose-500">
+                  <AlertCircle className="w-4 h-4 animate-pulse" />
+                </div>
+              )}
             </div>
+
+            {/* Native Mobile Warning Tag */}
+            {emailError && (
+              <div 
+                role="alert"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 text-[11px] font-bold mt-1.5 animate-shake shadow-2xs"
+              >
+                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                <span>{emailError}</span>
+              </div>
+            )}
           </div>
 
           <div>

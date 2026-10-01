@@ -1,7 +1,6 @@
 import React from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
-  UtensilsCrossed, 
   RotateCcw,
   Sun,
   Moon,
@@ -9,6 +8,7 @@ import {
   Sparkles,
   Smartphone
 } from 'lucide-react';
+import { RiceBowlNavIcon } from './icons/NavIcons';
 import { ActiveTab } from '../types';
 
 export const Navbar: React.FC = () => {
@@ -76,7 +76,7 @@ export const Navbar: React.FC = () => {
           aria-label="MealWise - Về trang Hôm Nay"
         >
           <div className="w-8 h-8 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-stone-200 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs">
-            <UtensilsCrossed className="w-4 h-4 stroke-[2.2px]" />
+            <RiceBowlNavIcon active={true} className="w-4 h-4" />
           </div>
           <div className="leading-tight">
             <span className="text-sm font-black text-stone-900 dark:text-white tracking-tight block whitespace-nowrap">
