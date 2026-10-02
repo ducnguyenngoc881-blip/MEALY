@@ -65,7 +65,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 120000,
     totalCalories: 620,
     imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
-    tags: ['Ăn Chay', 'Mâm Cơm 3 Món', 'Thanh Tịnh', 'Bổ Dưỡng', '1 Người', 'Eat Clean', 'Bán Chạy', 'Đồng Quê']
+    tags: ['Ăn Chay', 'Món Chay', 'Mâm Cơm 3 Món', 'Thanh Tịnh', 'Bổ Dưỡng', '1 Người', 'Eat Clean', 'Bán Chạy', 'Đồng Quê']
   },
   {
     id: 'mam-com-gymer-giau-dam',
@@ -93,7 +93,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 84000,
     totalCalories: 590,
     imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
-    tags: ['Eat Clean', 'Ăn Chay', 'Thanh Tịnh', 'Mâm Cơm 3 Món']
+    tags: ['Eat Clean', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Mâm Cơm 3 Món']
   },
   {
     id: 'mam-com-doc-than-nhanh-gon',
@@ -631,3 +631,270 @@ export const mockMealSets: VietnameseMealSet[] = RAW_MEAL_SETS.map(set => {
     totalCalories: totalCal
   };
 });
+
+const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalories'> & { totalCostVnd?: number; totalCalories?: number }> = [
+  // 1. MIỀN BẮC - THANH TỊNH / ĂN CHAY (4 sets)
+  {
+    id: 'mam-com-bac-chay-tinh-tam',
+    title: 'Mâm Cơm Chay Tịnh Tâm Bắc Bộ',
+    region: 'bac',
+    description: 'Thực đơn chay thanh tịnh đậm chất Hà Thành với cà tím om đậu phụ nấm tía tô thơm lừng, canh nấm hạt sen thanh ngọt và rau muống luộc dầm sấu chua dịu.',
+    mainDish: getRecipe('mam-com-chay-4-ca-tim-om--au-phu-nam-tia'),
+    soupDish: getRecipe('canh-nam-hat-sen'),
+    sideDish: getRecipe('rau-muong-luoc-sau'),
+    condimentNote: 'Nước tương gừng ớt tỏi & Cà pháo muối giòn',
+    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Đồng Quê', '1 Người', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-bac-chay-dau-sot-ca',
+    title: 'Mâm Cơm Chay Đậu Sốt Cà Phố Cổ',
+    region: 'bac',
+    description: 'Mâm cơm chay giản dị mộc mạc phố cổ với đậu hũ non sốt cà chua hành hoa, canh cà chua trứng mây đậu rán và rau muống luộc dầm sấu mát lành.',
+    mainDish: getRecipe('dau-hu-sot-ca-chua'),
+    soupDish: getRecipe('canh-ca-chua-trung-dau-ran'),
+    sideDish: getRecipe('rau-muong-luoc-sau'),
+    condimentNote: 'Muối vừng mè rang & Nước tương ớt tươi',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Bán Chạy', '1 Người', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-bac-chay-cu-sen-kho',
+    title: 'Mâm Cơm Chay Củ Sen Om Nước Dừa Bắc Bộ',
+    region: 'bac',
+    description: 'Bữa ăn chay bồi bổ cơ thể với củ sen kho tiêu bùi dẻo đậm đà, canh nấm hạt sen tươi bùi béo và rau củ luộc chấm kho quẹt nấm chay.',
+    mainDish: getRecipe('mam-com-chay-10-cu-sen-kho-tieu-nuoc-dua-'),
+    soupDish: getRecipe('canh-nam-hat-sen'),
+    sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
+    condimentNote: 'Kho quẹt chay tóp mỡ bánh mì & Chao môn',
+    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Đổi Vị', '1 Người', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-bac-chay-nam-dui-ga',
+    title: 'Mâm Cơm Chay Nấm Đùi Gà Xào Sả Bắc Bộ',
+    region: 'bac',
+    description: 'Hương vị chay thanh tao: Nấm đùi gà xào sả ớt giòn thơm, canh nấm hạt sen thanh ngọt tự nhiên và rau muống luộc dầm sấu tươi ngon miệng.',
+    mainDish: getRecipe('mam-com-chay-3-nam--ui-ga-xao-sa-ot-dai-'),
+    soupDish: getRecipe('canh-nam-hat-sen'),
+    sideDish: getRecipe('rau-muong-luoc-sau'),
+    condimentNote: 'Nước tương tỏi ớt ít muối & Vừng rang',
+    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Bán Chạy', '1 Người', 'Mâm Cơm 3 Món']
+  },
+
+  // 2. MIỀN TRUNG - CAY NỒNG / ĐẬM ĐÀ / CÁ BIỂN (4 sets)
+  {
+    id: 'mam-com-trung-ca-bong-kho-tieu',
+    title: 'Mâm Cơm Miền Trung Cá Bống Kho Tiêu Cay Nồng',
+    region: 'trung',
+    description: 'Cơm gia đình miền Trung ấm nồng với cá bống kho tiêu ớt hiểm cay xé lưỡi, canh ngao nấu chua thì là thanh mát giải nhiệt và rau lang xào tỏi thơm nức.',
+    mainDish: getRecipe('mam-com-trung-33-ca-bong-kho-tieu-ot-cay-n'),
+    soupDish: getRecipe('canh-ngao-nau-chua'),
+    sideDish: getRecipe('rau-lang-xao-toi'),
+    condimentNote: 'Ớt hiểm dầm nước mắm cá cơm & Cà pháo muối',
+    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', '1 Người', 'Bán Chạy', 'Đồng Quê', 'Tiết Kiệm', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-trung-ca-nuc-mang-chua',
+    title: 'Mâm Cơm Miền Trung Cá Nục Kho Măng Chua',
+    region: 'trung',
+    description: 'Đặc sản xứ biển miền Trung với cá nục kho ớt hiểm măng chua cay nồng đậm vị, canh cà chua trứng mây đậu rán và rau lang xào tỏi giòn ngọt.',
+    mainDish: getRecipe('mam-com-trung-37-ca-nuc-kho-ot-hiem-mang-c'),
+    soupDish: getRecipe('canh-ca-chua-trung-dau-ran'),
+    sideDish: getRecipe('rau-lang-xao-toi'),
+    condimentNote: 'Nước mắm tỏi ớt giã nhuyễn & Măng chua ngâm',
+    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', '1 Người', 'Đổi Vị', 'Đồng Quê', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-trung-muc-xao-sa-te',
+    title: 'Mâm Cơm Miền Trung Mực Xào Sa Tế Cay Thơm',
+    region: 'trung',
+    description: 'Mâm cơm đậm đà miền Trung với mực tươi xào sả ớt sa tế cay nồng giòn sần sật, canh ngao nấu chua ngọt thì là và rau lang xào tỏi Lý Sơn.',
+    mainDish: getRecipe('mam-com-trung-39-muc-la-xao-sa-ot-sa-te'),
+    soupDish: getRecipe('canh-ngao-nau-chua'),
+    sideDish: getRecipe('rau-lang-xao-toi'),
+    condimentNote: 'Sa tế tôm rim & Muối ớt chanh miền Trung',
+    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', 'Giàu Đạm', '1 Người', 'Đổi Vị', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-trung-thit-xao-mam-ruoc',
+    title: 'Mâm Cơm Miền Trung Ba Chỉ Xào Mắm Ruốc Huế',
+    region: 'trung',
+    description: 'Đậm vị Cố Đô: Thịt ba chỉ rang mắm ruốc sả ớt cay nồng đưa cơm, canh ngao dứa thì là thanh mát và dưa giá bóp xổi ngâm chua giòn.',
+    mainDish: getRecipe('mam-com-trung-34-thit-ba-chi-xao-mam-ruoc-'),
+    soupDish: getRecipe('canh-ngao-nau-chua'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Mắm ruốc sả ớt cay xé & Dưa leo thái mỏng',
+    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', '1 Người', 'Bán Chạy', 'Đồng Quê', 'Giàu Đạm', 'Mâm Cơm 3 Món']
+  },
+
+  // 3. MIỀN NAM - ĐỒNG QUÊ / ĐỔI VỊ / EAT CLEAN (4 sets)
+  {
+    id: 'mam-com-nam-ca-loc-kho-to',
+    title: 'Mâm Cơm Nam Bộ Cá Lóc Đồng Kho Tộ',
+    region: 'nam',
+    description: 'Đậm đà hương đồng gió nội miền Tây với cá lóc kho tộ sánh kẹo tiêu đen, canh chua cá hú thanh mát thơm ngon và dưa giá bóp xổi ngâm chua.',
+    mainDish: getRecipe('mam-com-nam-2-ca-loc--ong-kho-to-sanh-k'),
+    soupDish: getRecipe('canh-chua-ca-hu'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Nước mắm nhĩ tỏi ớt & Rau thơm ngò om',
+    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Nam', 'Đồng Quê', 'Đổi Vị', 'Eat Clean', '1 Người', 'Đậm Đà', 'Bán Chạy', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-nam-ga-roti-nuoc-dua',
+    title: 'Mâm Cơm Nam Bộ Đùi Gà Roti Nước Dừa',
+    region: 'nam',
+    description: 'Bữa cơm miền Nam ngọt bùi: Đùi gà roti rim nước dừa tươi ngũ vị óng ả, canh chua cá hú thanh nhẹ và dưa giá bóp chua xổi giòn tan.',
+    mainDish: getRecipe('mam-com-nam-4--ui-ga-roti-nuoc-dua-ngu-'),
+    soupDish: getRecipe('canh-chua-ca-hu'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Muối tiêu chanh & Dưa leo giòn mát',
+    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Nam', 'Đồng Quê', 'Đổi Vị', 'Eat Clean', '1 Người', 'Giàu Đạm', 'Bán Chạy', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-nam-ca-dieu-hong-chien-xu',
+    title: 'Mâm Cơm Nam Bộ Cá Diêu Hồng Chiên Giòn Mắm Me',
+    region: 'nam',
+    description: 'Hương vị sông nước Cửu Long: Cá diêu hồng chiên xù giòn rụm chấm nước mắm me chua ngọt cay nồng, canh chua thanh mát và dưa giá chua giòn.',
+    mainDish: getRecipe('mam-com-nam-6-ca-dieu-hong-chien-gion-r'),
+    soupDish: getRecipe('canh-chua-ca-hu'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Nước sốt mắm me kẹo dẻo ớt băm & Rau thơm',
+    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Nam', 'Đồng Quê', 'Đổi Vị', 'Eat Clean', '1 Người', 'Cay Nồng', 'Bán Chạy', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-nam-bo-xao-bong-he',
+    title: 'Mâm Cơm Nam Bộ Bò Xào Bông Hẹ & Canh Chua',
+    region: 'nam',
+    description: 'Thực đơn healthy miền Nam: Thịt bò mềm xào bông hẹ tươi ngọt thanh nhẹ, canh chua cá hú thanh mát nhiều rau và dưa giá xổi chua giải ngấy.',
+    mainDish: getRecipe('mam-com-nam-9-bo-xao-bong-he-tuoi-gion-'),
+    soupDish: getRecipe('canh-chua-ca-hu'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Nước tương tỏi ớt băm tươi & Tiêu Phú Quốc',
+    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Nam', 'Đồng Quê', 'Đổi Vị', 'Eat Clean', '1 Người', 'Giàu Đạm', 'Tiết Kiệm', 'Mâm Cơm 3 Món']
+  },
+
+  // 4. MÓN ÂU - ĐỔI VỊ / EAT CLEAN / GIÀU ĐẠM / CAY NỒNG (4 sets)
+  {
+    id: 'mam-com-au-steak-chimichurri',
+    title: 'Mâm Cơm Âu: Bít Tết Thăn Bò Sốt Chimichurri Cay Thơm',
+    region: 'toan-quoc',
+    description: 'Phong cách Nam Mỹ phóng khoáng: Bít tết thăn nội bò áp chảo bơ tỏi ăn kèm sốt thảo mộc Chimichurri cay dịu thơm nồng, súp cà chua húng quế và salad Địa Trung Hải.',
+    mainDish: getRecipe('western-main-6-steak'),
+    soupDish: getRecipe('sup-ca-chua-hung-que-y'),
+    sideDish: getRecipe('salad-dia-trung-hai-feta-dau-oliu'),
+    condimentNote: 'Sốt Chimichurri ớt đỏ rau mùi & Muối hồng Himalaya',
+    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+    tags: ['Món Âu', 'Western Food', 'Đổi Vị', 'Eat Clean', 'Cay Nồng', 'Giàu Đạm', 'Bán Chạy', '1 Người', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-au-ca-hoi-dia-trung-hai',
+    title: 'Mâm Cơm Âu: Cá Hồi Áp Chảo Bơ Chanh & Súp Cà Chua Basil',
+    region: 'toan-quoc',
+    description: 'Bữa ăn Eat Clean phong cách Địa Trung Hải: Cá hồi Nauy áp chảo da giòn thịt mọng sốt bơ chanh thơm ngát, súp cà chua húng quế Ý và salad xà lách sốt dầu ô liu.',
+    mainDish: getRecipe('ca-hoi-ap-chao-sot-bo-chanh'),
+    soupDish: getRecipe('sup-ca-chua-hung-que-y'),
+    sideDish: getRecipe('salad-dia-trung-hai-feta-dau-oliu'),
+    condimentNote: 'Dầu ô liu nguyên chất & Hạt tiêu đen xay vỡ',
+    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    tags: ['Món Âu', 'Western Food', 'Đổi Vị', 'Eat Clean', 'Giàu Đạm', 'Bán Chạy', '1 Người', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-au-bo-luc-lac-khoai-nghien',
+    title: 'Mâm Cơm Âu: Bò Lúc Lắc Bơ Tỏi Tiêu Cay & Súp Kem Bắp',
+    region: 'toan-quoc',
+    description: 'Sự giao thoa ẩm thực tuyệt hảo: Bò phi lê lúc lắc áp chảo tiêu đen bơ tỏi thơm nức mũi hơi the cay, súp kem bắp gà xé mịn ngậy và khoai tây nghiền bơ thơm.',
+    mainDish: getRecipe('mon-au-fastfood-55-b--l-c-l-c-x-o-b--t-i--n-'),
+    soupDish: getRecipe('sup-kem-bap-ngot-ga-xe'),
+    sideDish: getRecipe('khoai-tay-nghien-bo-toi-thao-moc'),
+    condimentNote: 'Muối tiêu chanh tươi & Bơ lạt thảo mộc',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    tags: ['Món Âu', 'Western Food', 'Đổi Vị', 'Cay Nồng', 'Giàu Đạm', 'Đậm Đà', '1 Người', 'Bán Chạy', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-au-ga-parmigiana-mang-tay',
+    title: 'Mâm Cơm Âu: Gà Nướng Phô Mai Parmigiana & Măng Tây Áp Chảo',
+    region: 'toan-quoc',
+    description: 'Thực đơn chuẩn Ý cho người mê đạm và healthy: Ức gà nướng phô mai sốt cà chua đút lò vàng ruộm, súp kem nấm thảo mộc và măng tây áp chảo bơ tỏi ngọt giòn.',
+    mainDish: getRecipe('ga-nuong-parmigiana-pho-mai'),
+    soupDish: getRecipe('sup-kem-nam-tuoi-thao-moc'),
+    sideDish: getRecipe('mang-tay-ap-chao-bo-toi'),
+    condimentNote: 'Bột ớt Paprika cay ngọt & Phô mai Parmesan bột',
+    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+    tags: ['Món Âu', 'Western Food', 'Đổi Vị', 'Eat Clean', 'Giàu Đạm', 'Cay Nồng', '1 Người', 'Mâm Cơm 3 Món']
+  },
+
+  // 5. TOÀN QUỐC - CƠM NHÀ ĐA NĂNG / TIẾT KIỆM / GIÀU ĐẠM (4 sets)
+  {
+    id: 'mam-com-toan-quoc-thit-rang-ngao-chua',
+    title: 'Mâm Cơm Cơm Nhà: Thịt Ba Chỉ Rang Giòn & Canh Ngao Thì Là',
+    region: 'toan-quoc',
+    description: 'Bữa cơm quốc dân tròn đầy tình thân: Thịt ba chỉ rang cháy cạnh giòn ngon dậy mùi hành tỏi, canh ngao nấu chua ngọt thanh mát và rau muống luộc dầm sấu.',
+    mainDish: getRecipe('thit-rang-chay-canh'),
+    soupDish: getRecipe('canh-ngao-nau-chua'),
+    sideDish: getRecipe('rau-muong-luoc-sau'),
+    condimentNote: 'Nước mắm tỏi ớt chanh & Cà pháo muối giòn',
+    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
+    tags: ['Bán Chạy', '1 Người', 'Tiết Kiệm', 'Giàu Đạm', 'Đậm Đà', 'Đồng Quê', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-toan-quoc-uc-ga-canh-cua',
+    title: 'Mâm Cơm Dinh Dưỡng: Ức Gà Xào Bắp Cải & Canh Cua Mồng Tơi',
+    region: 'toan-quoc',
+    description: 'Bữa ăn cân bằng dinh dưỡng: Ức gà xào bắp cải giòn ngọt ít dầu mỡ, canh cua đồng mồng tơi ngọt rêu và rau lang xào tỏi thơm lừng.',
+    mainDish: getRecipe('uc-ga-xao-bap-cai'),
+    soupDish: getRecipe('canh-cua-mong-toi'),
+    sideDish: getRecipe('rau-lang-xao-toi'),
+    condimentNote: 'Nước tương gừng ớt & Tiêu xay mịn',
+    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    tags: ['Bán Chạy', '1 Người', 'Tiết Kiệm', 'Giàu Đạm', 'Eat Clean', 'Đổi Vị', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-toan-quoc-bo-xao-canh-chua',
+    title: 'Mâm Cơm Năng Lượng: Bò Xào Muống & Canh Chua Cá Hú',
+    region: 'toan-quoc',
+    description: 'Thực đơn giàu năng lượng và tươi mát: Thịt bò mềm xào rau muống tỏi thơm nức, canh chua cá hú bạc hà thơm mát và dưa giá xổi chua ngọt giải ngấy.',
+    mainDish: getRecipe('thit-bo-xao-rau-muong'),
+    soupDish: getRecipe('canh-chua-ca-hu'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Nước mắm Phú Quốc ớt xiêm xanh & Chanh',
+    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    tags: ['Bán Chạy', '1 Người', 'Giàu Đạm', 'Đậm Đà', 'Đổi Vị', 'Cay Nồng', 'Mâm Cơm 3 Món']
+  },
+  {
+    id: 'mam-com-toan-quoc-trung-chien-canh-ngao',
+    title: 'Mâm Cơm Sinh Viên: Trứng Chiên Thịt Băm & Canh Ngao Thì Là',
+    region: 'toan-quoc',
+    description: 'Mâm cơm nhanh gọn tiết kiệm: Trứng đúc thịt băm nấm hương vàng ruộm xốp mềm, canh ngao nấu chua thì là ngọt lịm và rau muống luộc dầm sấu mát lành.',
+    mainDish: getRecipe('trung-chien-thit-bam-hanh'),
+    soupDish: getRecipe('canh-ngao-nau-chua'),
+    sideDish: getRecipe('rau-muong-luoc-sau'),
+    condimentNote: 'Nước mắm cốt chanh ớt & Tương ớt Chin-Su',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    tags: ['Bán Chạy', '1 Người', 'Tiết Kiệm', 'Đậm Đà', 'Đồng Quê', 'Cơm Gia Đình', 'Mâm Cơm 3 Món']
+  }
+];
+
+export const newMealSets: VietnameseMealSet[] = RAW_NEW_MEAL_SETS.map(set => {
+  const totalCost = (set.mainDish?.estimatedCostVnd || 0) + (set.soupDish?.estimatedCostVnd || 0) + (set.sideDish?.estimatedCostVnd || 0);
+  const totalCal = (set.mainDish?.calories || 0) + (set.soupDish?.calories || 0) + (set.sideDish?.calories || 0);
+  return {
+    ...set,
+    totalCostVnd: totalCost,
+    totalCalories: totalCal
+  };
+});
+
+export const extendedMealSets: VietnameseMealSet[] = [
+  ...mockMealSets,
+  ...newMealSets
+];

@@ -51,7 +51,7 @@ import {
   ROOM_TTL_MS
 } from '../services/collabGroceryService';
 import { mockRecipes } from '../data/mockRecipes';
-import { mockMealSets } from '../data/mockMealSets';
+import { mockMealSets, extendedMealSets } from '../data/mockMealSets';
 import { CORPORATE_PARTY_PRESETS } from '../data/corporatePartyPresets';
 import { INITIAL_PANTRY_ITEMS } from '../data/pantryItems';
 import { calculatePartyKitchenTime } from '../utils/cateringTimeMath';
@@ -341,7 +341,7 @@ const DEFAULT_PARTY_PLAN: CustomPartyPlan = {
 
 export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [recipes] = useState<Recipe[]>(mockRecipes);
-  const [mealSets] = useState<VietnameseMealSet[]>(mockMealSets);
+  const [mealSets, setMealSets] = useState<VietnameseMealSet[]>(extendedMealSets);
 
   // Web Guest Viewer Mode: accessed via shared grocery link (?collab_cart=...) or web guest parameter
   const [isWebGuestViewer, setIsWebGuestViewerState] = useState<boolean>(() => {
