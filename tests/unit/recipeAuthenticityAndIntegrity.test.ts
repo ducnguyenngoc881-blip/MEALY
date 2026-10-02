@@ -604,8 +604,8 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
     const resolvedOmelette = getDishImageUrl(omeletteDish!.title, omeletteDish!.category, omeletteDish!.imageUrl);
     expect(resolvedOmelette).toContain('photo-1584776296944-ab6fb57b0bdd');
 
-    // 4. Also assert across all 40 meal sets in mockMealSets
-    expect(mockMealSets.length).toBe(40);
+    // 4. Also assert across all 44 meal sets in mockMealSets
+    expect(mockMealSets.length).toBe(44);
     const mealSetViolations: string[] = [];
     mockMealSets.forEach(ms => {
       if (!ms.imageUrl) {

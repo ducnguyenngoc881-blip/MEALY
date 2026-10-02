@@ -23,7 +23,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 140000,
     totalCalories: 710,
     imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
-    tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Đồng Quê', 'Bán Chạy']
+    tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Đồng Quê', 'Bán Chạy', '1 Người', 'Đậm Đà']
   },
   {
     id: 'mam-com-nam-bo',
@@ -37,7 +37,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 177000,
     totalCalories: 785,
     imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
-    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà', 'Mứt Ngọt']
+    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà', 'Mứt Ngọt', '1 Người', 'Bán Chạy', 'Đồng Quê']
   },
   {
     id: 'mam-com-mien-trung',
@@ -51,7 +51,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 128000,
     totalCalories: 650,
     imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
-    tags: ['Miền Trung', 'Mâm Cơm 3 Món', 'Cay Nồng', 'Cá Biển']
+    tags: ['Miền Trung', 'Mâm Cơm 3 Món', 'Cay Nồng', 'Cá Biển', '1 Người', 'Đậm Đà', 'Tiết Kiệm', 'Bán Chạy', 'Đồng Quê']
   },
   {
     id: 'mam-com-chay-thanh-tinh',
@@ -65,7 +65,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 120000,
     totalCalories: 620,
     imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
-    tags: ['Ăn Chay', 'Mâm Cơm 3 Món', 'Thanh Tịnh', 'Bổ Dưỡng']
+    tags: ['Ăn Chay', 'Mâm Cơm 3 Món', 'Thanh Tịnh', 'Bổ Dưỡng', '1 Người', 'Eat Clean', 'Bán Chạy', 'Đồng Quê']
   },
   {
     id: 'mam-com-gymer-giau-dam',
@@ -121,7 +121,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 135000,
     totalCalories: 680,
     imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
-    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà']
+    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà', '1 Người', 'Bán Chạy', 'Giàu Đạm']
   },
   {
     id: 'mam-com-bo-xao-muong',
@@ -135,7 +135,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 155000,
     totalCalories: 720,
     imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
-    tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Giàu Đạm']
+    tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Giàu Đạm', '1 Người', 'Bán Chạy', 'Đậm Đà']
   },
   {
     id: 'mam-com-dau-sot-ca-tiet-kiem',
@@ -177,7 +177,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 92000,
     totalCalories: 590,
     imageUrl: 'https://images.unsplash.com/photo-1504973960431-1c467e159aa4?auto=format&fit=crop&w=600&q=80',
-    tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Tiết Kiệm']
+    tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Tiết Kiệm', '1 Người', 'Eat Clean']
   },
   {
     id: 'mam-com-trung-op-la-chay-ria',
@@ -205,7 +205,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 145000,
     totalCalories: 710,
     imageUrl: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80',
-    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà']
+    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà', '1 Người', 'Đồng Quê', 'Giàu Đạm']
   },
   {
     id: 'mam-com-thit-kho-trung-nha-lam',
@@ -219,7 +219,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 130000,
     totalCalories: 690,
     imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
-    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Cơm Nhà']
+    tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Cơm Nhà', '1 Người', 'Bán Chạy', 'Đậm Đà', 'Tiết Kiệm']
   },
   {
     id: 'mam-com-dau-ran-trung-may',
@@ -233,7 +233,55 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 72000,
     totalCalories: 620,
     imageUrl: 'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
-    tags: ['Ăn Chay', 'Tiết Kiệm', 'Thanh Tịnh', 'Mâm Cơm 3 Món']
+    tags: ['Ăn Chay', 'Tiết Kiệm', 'Thanh Tịnh', 'Mâm Cơm 3 Món', '1 Người', 'Eat Clean']
+  },
+  {
+    id: 'mam-com-nam-ca-basa-kho-thom',
+    title: 'Mâm Cơm Nam Bộ Cá Basa Kho Thơm',
+    region: 'nam',
+    description: 'Cơm trưa Nam Bộ chuẩn vị mẹ nấu: Cá basa kho thơm đậm đà chua ngọt, canh chua cá thanh mát và dưa giá giòn rụm chống ngấy.',
+    mainDish: getRecipe('mam-com-nam-10-ca-basa-kho-thom-chua-cay'),
+    soupDish: getRecipe('canh-chua-ca-hu'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Nước mắm ớt hiểm & Dưa giá giòn',
+    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
+    tags: ['Miền Nam', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm', 'Bán Chạy', 'Đậm Đà']
+  },
+  {
+    id: 'mam-com-nam-trung-chien-canh-chua',
+    title: 'Mâm Cơm Nam Bộ Trứng Chiên Canh Chua',
+    region: 'nam',
+    description: 'Bữa cơm nhanh gọn bình dân miền Nam: Trứng chiên thịt băm hành hoa thơm nức, canh chua cá hú giải nhiệt và dưa giá bóp xổi.',
+    mainDish: getRecipe('trung-chien-thit-bam-hanh'),
+    soupDish: getRecipe('canh-chua-ca-hu'),
+    sideDish: getRecipe('dua-gia-bop-xoi'),
+    condimentNote: 'Nước mắm cá cơm ớt sừng',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    tags: ['Miền Nam', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm', 'Bán Chạy', 'Đậm Đà']
+  },
+  {
+    id: 'mam-com-trung-ca-nuc-kho-keo',
+    title: 'Mâm Cơm Miền Trung Cá Nục Kho Keo',
+    region: 'trung',
+    description: 'Đặc sản miền Trung đậm đà nắng gió: Cá nục kho keo tiêu ớt cay nồng, canh ngao nấu chua thì là và đọt rau lang xào tỏi giòn mát.',
+    mainDish: getRecipe('ca-nuc-kho-tieu'),
+    soupDish: getRecipe('canh-ngao-nau-chua'),
+    sideDish: getRecipe('rau-lang-xao-toi'),
+    condimentNote: 'Nước mắm gừng ớt hiểm',
+    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
+    tags: ['Miền Trung', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', 'Bán Chạy']
+  },
+  {
+    id: 'mam-com-chay-nam-bo-thanh-lanh',
+    title: 'Mâm Cơm Chay Nam Bộ Thanh Lành',
+    region: 'chay',
+    description: 'Thực đơn thuần chay thanh tịnh đậm đà: Đậu hũ sốt cà chua hành hoa thơm dịu, canh nấm hạt sen bùi béo và rau củ ngũ sắc kho quẹt chay.',
+    mainDish: getRecipe('dau-hu-sot-ca-chua'),
+    soupDish: getRecipe('canh-nam-hat-sen'),
+    sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
+    condimentNote: 'Nước tương tỏi ớt chay & Chanh tươi',
+    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    tags: ['Ăn Chay', 'Mâm Cơm 3 Món', 'Thanh Tịnh', '1 Người', 'Eat Clean', 'Tiết Kiệm', 'Bán Chạy', 'Đồng Quê']
   },
   {
     id: 'mam-com-au-steakhouse-bo-bit-tet',
@@ -247,7 +295,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 165000,
     totalCalories: 760,
     imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Steakhouse', 'Đổi Vị', 'Mâm Cơm 3 Món', 'Bán Chạy']
+    tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Steakhouse', 'Đổi Vị', 'Mâm Cơm 3 Món', 'Bán Chạy', '1 Người', 'Giàu Đạm']
   },
   {
     id: 'mam-com-au-mi-y-bolognese',
@@ -261,7 +309,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 135000,
     totalCalories: 710,
     imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Bolognese', 'Ý Gia Đình', 'Mâm Cơm 3 Món']
+    tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Bolognese', 'Ý Gia Đình', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm']
   },
   {
     id: 'mam-com-au-mi-y-carbonara',
@@ -303,7 +351,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 155000,
     totalCalories: 770,
     imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'BBQ', 'American Feast', 'Đổi Vị', 'Mâm Cơm 3 Món']
+    tags: ['Món Âu', 'Western Food', 'BBQ', 'American Feast', 'Đổi Vị', 'Mâm Cơm 3 Món', 'Giàu Đạm']
   },
   {
     id: 'mam-com-au-bistro-bo-ham-vang',
@@ -331,7 +379,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 145000,
     totalCalories: 730,
     imageUrl: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'Chicken Parmigiana', 'Đút Lò', 'Mâm Cơm 3 Món']
+    tags: ['Món Âu', 'Western Food', 'Chicken Parmigiana', 'Đút Lò', 'Mâm Cơm 3 Món', 'Giàu Đạm']
   },
   {
     id: 'mam-com-au-mi-y-pesto-hai-san',
@@ -360,7 +408,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 150000,
     totalCalories: 760,
     imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'Burger', 'Bữa Trưa', 'Mâm Cơm 3 Món']
+    tags: ['Món Âu', 'Western Food', 'Burger', 'Bữa Trưa', 'Mâm Cơm 3 Món', '1 Người']
   },
   {
     id: 'mam-com-au-steak-ribeye-sot-nam',
@@ -374,7 +422,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 175000,
     totalCalories: 770,
     imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Steakhouse', 'Mâm Cơm 3 Món']
+    tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Steakhouse', 'Mâm Cơm 3 Món', 'Giàu Đạm']
   },
   {
     id: 'mam-com-au-mi-y-aglio-olio-tom',
@@ -430,7 +478,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 135000,
     totalCalories: 720,
     imageUrl: 'https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'Xúc Xích Đức', 'Nhanh Gọn', 'Mâm Cơm 3 Món']
+    tags: ['Món Âu', 'Western Food', 'Xúc Xích Đức', 'Nhanh Gọn', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm']
   },
   {
     id: 'mam-com-au-bo-luc-lac-mang-tay',
@@ -458,7 +506,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     totalCostVnd: 140000,
     totalCalories: 720,
     imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80',
-    tags: ['Món Âu', 'Western Food', 'Burger Gà', 'Bữa Trưa', 'Mâm Cơm 3 Món']
+    tags: ['Món Âu', 'Western Food', 'Burger Gà', 'Bữa Trưa', 'Mâm Cơm 3 Món', '1 Người']
   },
   {
     id: 'mam-com-au-khoai-tay-nghien-bo-bam',

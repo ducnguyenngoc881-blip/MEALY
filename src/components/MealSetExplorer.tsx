@@ -17,7 +17,7 @@ import { VietnameseMealSet, MealSlot } from '../types';
 import { matchesMealSetSearch } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
 
-const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Bán Chạy', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
+const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Bán Chạy', 'Tiết Kiệm', 'Đổi Vị', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
 
 const cleanDishTitle = (title: string) => {
   if (!title) return '';
@@ -53,6 +53,18 @@ export const MealSetExplorer: React.FC = () => {
             set.id.startsWith('mam-com-au') || 
             (set.tags && set.tags.some(t => t.toLowerCase().includes('âu') || t.toLowerCase().includes('western')));
           if (!isWestern) return false;
+        } else if (regionFilter === 'chay') {
+          const isChay = set.region === 'chay' || (set.tags && set.tags.some(t => /chay|thanh tịnh/i.test(t)));
+          if (!isChay) return false;
+        } else if (regionFilter === 'bac') {
+          const isBac = set.region === 'bac' || (set.tags && set.tags.some(t => /miền bắc/i.test(t)));
+          if (!isBac) return false;
+        } else if (regionFilter === 'nam') {
+          const isNam = set.region === 'nam' || (set.tags && set.tags.some(t => /miền nam/i.test(t)));
+          if (!isNam) return false;
+        } else if (regionFilter === 'trung') {
+          const isTrung = set.region === 'trung' || (set.tags && set.tags.some(t => /miền trung/i.test(t)));
+          if (!isTrung) return false;
         } else if (set.region !== regionFilter) {
           return false;
         }

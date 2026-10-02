@@ -86,6 +86,40 @@ describe('Tier 1: Feature Coverage — Domain 1 (MealSetExplorer: Mâm Cơm 3 M�
       s.tags.some(tag => matchesSearchTerm(tag, 'bán chạy') || matchesSearchTerm(tag, 'ban chay'))
     );
     expect(banChaySets.length).toBeGreaterThan(0);
+
+    // Verify '1 Người' filtering across regions (especially Miền Nam + 1 Người)
+    const nam1PersonSets = mockMealSets.filter(s =>
+      (s.region === 'nam' || (s.tags && s.tags.some(t => /miền nam/i.test(t)))) &&
+      s.tags.some(t => t.toLowerCase() === '1 người')
+    );
+    expect(nam1PersonSets.length).toBeGreaterThanOrEqual(4);
+
+    const bac1PersonSets = mockMealSets.filter(s =>
+      (s.region === 'bac' || (s.tags && s.tags.some(t => /miền bắc/i.test(t)))) &&
+      s.tags.some(t => t.toLowerCase() === '1 người')
+    );
+    expect(bac1PersonSets.length).toBeGreaterThanOrEqual(1);
+
+    const trung1PersonSets = mockMealSets.filter(s =>
+      (s.region === 'trung' || (s.tags && s.tags.some(t => /miền trung/i.test(t)))) &&
+      s.tags.some(t => t.toLowerCase() === '1 người')
+    );
+    expect(trung1PersonSets.length).toBeGreaterThanOrEqual(1);
+
+    const chay1PersonSets = mockMealSets.filter(s =>
+      (s.region === 'chay' || (s.tags && s.tags.some(t => /chay|thanh tịnh/i.test(t)))) &&
+      s.tags.some(t => t.toLowerCase() === '1 người')
+    );
+    expect(chay1PersonSets.length).toBeGreaterThanOrEqual(1);
+
+    const western1PersonSets = mockMealSets.filter(s =>
+      ((s.region as string) === 'western' ||
+       (s.region as string) === 'au' ||
+       s.id.startsWith('mam-com-au') ||
+       (s.tags && s.tags.some(t => t.toLowerCase().includes('âu') || t.toLowerCase().includes('western')))) &&
+      s.tags.some(t => t.toLowerCase() === '1 người')
+    );
+    expect(western1PersonSets.length).toBeGreaterThanOrEqual(5);
   });
 
   it('T1-D1-04: Meal set structure integrity must include mainDish, soupDish, sideDish, and notes', () => {
@@ -880,11 +914,11 @@ describe('Tier 1: Feature Coverage — Domain 6 (AccountView & Onboarding: Tài 
     expect(sundayLunch.id).not.toBe(sundayDinner.id);
   });
 
-  it('T1-D6-18: Mock meal sets library contains diverse authentic meal sets (16 Vietnamese + 24 Western)', () => {
-    expect(mockMealSets.length).toBe(40);
+  it('T1-D6-18: Mock meal sets library contains diverse authentic meal sets (20 Vietnamese + 24 Western)', () => {
+    expect(mockMealSets.length).toBe(44);
     const setIds = new Set(mockMealSets.map(s => s.id));
-    // All 40 meal sets have unique IDs
-    expect(setIds.size).toBe(40);
+    // All 44 meal sets have unique IDs
+    expect(setIds.size).toBe(44);
   });
 
   it('T1-D6-19: Recalibration produces realistic, healthy, substantial daily meals (avoiding unrealistic <$1 rock-bottom prices & sweet soups)', () => {
