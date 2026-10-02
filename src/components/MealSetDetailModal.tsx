@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
-import { X, Sparkles, Utensils, DollarSign, Flame, ChevronRight, Calendar, PlusCircle, Check, RefreshCw } from 'lucide-react';
+import { X, Sparkles, Utensils, DollarSign, Flame, Calendar, PlusCircle, Check, RefreshCw } from 'lucide-react';
 import { MealSlot, isMealSet } from '../types';
 import { SafeImage } from './SafeImage';
 import { isHotpotOrFeast } from '../utils/textUtils';
@@ -184,10 +184,14 @@ export const MealSetDetailModal: React.FC = () => {
 
           {/* 3 Dishes List (Clickable to view detail) */}
           <div className="space-y-2">
-            <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center justify-between">
-              <span>Chi Tiết 3 Món Trong Mâm Cơm</span>
-              <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">Chạm để xem công thức</span>
-            </h3>
+            <div>
+              <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider">
+                Chi Tiết 3 Món Trong Mâm Cơm
+              </h3>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400 font-medium mt-0.5">
+                Chạm để xem công thức
+              </p>
+            </div>
 
             {/* Món Mặn */}
             <div 
@@ -196,19 +200,18 @@ export const MealSetDetailModal: React.FC = () => {
               }}
               className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400 dark:hover:border-stone-600 cursor-pointer transition-all space-y-2 group"
             >
-              <div className="flex items-start justify-between gap-2.5">
-                <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
-                  <span className="w-[72px] py-1 rounded-md bg-rose-500/15 text-rose-700 dark:text-rose-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
-                    MÓN MẶN
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
-                    {cleanDishTitle(selectedMealSet.mainDish.title)}
-                  </h4>
-                </div>
-                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums pt-0.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="w-[72px] py-1 rounded-md bg-rose-500/15 text-rose-700 dark:text-rose-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
+                  MÓN MẶN
+                </span>
+                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums">
                   {selectedMealSet.mainDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                 </span>
               </div>
+
+              <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
+                {cleanDishTitle(selectedMealSet.mainDish.title)}
+              </h4>
 
               {selectedMealSet.mainDish.description && (
                 <p className="text-[11.5px] text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-2">
@@ -216,7 +219,7 @@ export const MealSetDetailModal: React.FC = () => {
                 </p>
               )}
 
-              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800">
+              <div className="flex items-center justify-end pt-1 border-t border-stone-200/60 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={(e) => handleSwapSpecificDish('mainDish', e)}
@@ -226,10 +229,6 @@ export const MealSetDetailModal: React.FC = () => {
                   <RefreshCw className="w-3 h-3 shrink-0" />
                   <span>Đổi món</span>
                 </button>
-                <div className="flex items-center gap-1 text-[11px] text-stone-400 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
-                  <span>Chạm xem công thức</span>
-                  <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                </div>
               </div>
             </div>
 
@@ -240,19 +239,18 @@ export const MealSetDetailModal: React.FC = () => {
               }}
               className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400 dark:hover:border-stone-600 cursor-pointer transition-all space-y-2 group"
             >
-              <div className="flex items-start justify-between gap-2.5">
-                <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
-                  <span className="w-[72px] py-1 rounded-md bg-sky-500/15 text-sky-700 dark:text-sky-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
-                    MÓN CANH
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
-                    {cleanDishTitle(selectedMealSet.soupDish.title)}
-                  </h4>
-                </div>
-                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums pt-0.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="w-[72px] py-1 rounded-md bg-sky-500/15 text-sky-700 dark:text-sky-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
+                  MÓN CANH
+                </span>
+                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums">
                   {selectedMealSet.soupDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                 </span>
               </div>
+
+              <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
+                {cleanDishTitle(selectedMealSet.soupDish.title)}
+              </h4>
 
               {selectedMealSet.soupDish.description && (
                 <p className="text-[11.5px] text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-2">
@@ -260,7 +258,7 @@ export const MealSetDetailModal: React.FC = () => {
                 </p>
               )}
 
-              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800">
+              <div className="flex items-center justify-end pt-1 border-t border-stone-200/60 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={(e) => handleSwapSpecificDish('soupDish', e)}
@@ -270,10 +268,6 @@ export const MealSetDetailModal: React.FC = () => {
                   <RefreshCw className="w-3 h-3 shrink-0" />
                   <span>Đổi món</span>
                 </button>
-                <div className="flex items-center gap-1 text-[11px] text-stone-400 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
-                  <span>Chạm xem công thức</span>
-                  <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                </div>
               </div>
             </div>
 
@@ -284,19 +278,18 @@ export const MealSetDetailModal: React.FC = () => {
               }}
               className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400 dark:hover:border-stone-600 cursor-pointer transition-all space-y-2 group"
             >
-              <div className="flex items-start justify-between gap-2.5">
-                <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
-                  <span className="w-[72px] py-1 rounded-md bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
-                    MÓN RAU
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
-                    {cleanDishTitle(selectedMealSet.sideDish.title)}
-                  </h4>
-                </div>
-                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums pt-0.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="w-[72px] py-1 rounded-md bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 text-[10px] font-black shrink-0 whitespace-nowrap inline-flex items-center justify-center text-center tracking-wide">
+                  MÓN RAU
+                </span>
+                <span className="text-[12px] font-extrabold text-stone-900 dark:text-white whitespace-nowrap shrink-0 tabular-nums">
                   {selectedMealSet.sideDish.estimatedCostVnd.toLocaleString('vi-VN')} đ
                 </span>
               </div>
+
+              <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white leading-snug break-words">
+                {cleanDishTitle(selectedMealSet.sideDish.title)}
+              </h4>
 
               {selectedMealSet.sideDish.description && (
                 <p className="text-[11.5px] text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-2">
@@ -304,7 +297,7 @@ export const MealSetDetailModal: React.FC = () => {
                 </p>
               )}
 
-              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800">
+              <div className="flex items-center justify-end pt-1 border-t border-stone-200/60 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={(e) => handleSwapSpecificDish('sideDish', e)}
@@ -314,10 +307,6 @@ export const MealSetDetailModal: React.FC = () => {
                   <RefreshCw className="w-3 h-3 shrink-0" />
                   <span>Đổi món</span>
                 </button>
-                <div className="flex items-center gap-1 text-[11px] text-stone-400 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
-                  <span>Chạm xem công thức</span>
-                  <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                </div>
               </div>
             </div>
           </div>
@@ -330,8 +319,8 @@ export const MealSetDetailModal: React.FC = () => {
             <p className="font-semibold">{selectedMealSet.condimentNote}</p>
           </div>
 
-          {/* Consolidated 3-Course Ingredient Checklist */}
-          <div className="space-y-2 pt-1 border-t border-stone-200 dark:border-stone-800">
+          {/* Consolidated 3-Course Ingredient Checklist (Hidden universally per user request) */}
+          <div className="hidden space-y-2 pt-1 border-t border-stone-200 dark:border-stone-800">
             <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Utensils className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />

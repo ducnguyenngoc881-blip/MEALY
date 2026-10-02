@@ -69,7 +69,7 @@ export const APEX_TIERS: Record<ApexCaseTier, TierConfig> = {
     bgGradient: 'from-amber-400 via-amber-500 to-yellow-600',
     description: 'Bữa trưa thịnh soạn tự thưởng sau chuỗi ngày cày deadline căng thẳng.',
     vibeQuote: 'Deadline đã chốt, ví tiền rủng rỉnh, hôm nay phải ăn sang!',
-    dropRateText: 'Thực đơn thượng hạng: Bò Mỹ, Lẩu mini, Sashimi, Nước ép cao cấp'
+    dropRateText: 'Thực đơn thượng hạng: Phở Thố Đá, Bún Bò Huế Đặc Biệt, Cua Bể, Nước ép cao cấp'
   }
 };
 
@@ -106,7 +106,7 @@ export const PREFERENCE_MODES: Record<FastMealPreferenceMode, PreferenceModeConf
     icon: '⚡',
     badge: '10–15 PHÚT',
     tagline: 'Gọn lẹ • Kịp ngủ trưa 30p',
-    description: 'Bánh mì, phở, kebab, xôi... ăn gọn 10-15 phút để kịp ngủ trưa.',
+    description: 'Bún, miến, phở, hủ tiếu, bánh mì, cơm tấm... ăn gọn 10-15 phút để kịp ngủ trưa 30p.',
     accentColor: '#06b6d4',
     borderClass: 'border-cyan-500/50',
     bgGlow: 'rgba(6, 182, 212, 0.35)'
@@ -281,9 +281,9 @@ const BLUE_DRINKS: OfficeDrink[] = [
 // ---------------- POOL PURPLE (BÌNH DÂN) ----------------
 const PURPLE_MAINS: FastDishItem[] = [
   {
-    id: 'purple-com-nieu-bo-tieu',
-    title: 'Cơm Niêu Singapore Bò Sốt Tiêu Đen',
-    description: 'Cơm cháy đáy niêu giòn rụm, thịt bò xào sốt tiêu đen sôi sùng sục thơm nức mũi.',
+    id: 'purple-com-bo-xao-can-toi',
+    title: 'Cơm Bò Xào Cần Tỏi Sốt Tiêu Đen',
+    description: 'Thịt bò xào chín tới cùng cần tây tỏi tây thơm phức, sốt tiêu đen đậm đà kèm cơm trắng dẻo thơm.',
     estimatedCostVnd: 48000,
     calories: 590,
     imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80'
@@ -407,12 +407,12 @@ const GOLD_MAINS: FastDishItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80'
   },
   {
-    id: 'gold-mini-lau-haidilao',
-    title: 'Set Mini Lẩu Haidilao Thăn Bò Mỹ & Tôm Sú',
-    description: 'Nước lẩu cà chua trứ danh hoặc cốt xương thảo mộc, đĩa thăn bò Mỹ cuộn nấm và tôm sú tươi.',
+    id: 'gold-pho-bo-tho-da-dac-biet',
+    title: 'Set Phở Bò Thố Đá Tái Lăn Gầu Giòn Thượng Hạng',
+    description: 'Thố đá 300°C sôi bốc khói ngập thịt thăn bò tái lăn, gầu giòn, quẩy nóng và nước dùng thanh ngọt đậm đà.',
     estimatedCostVnd: 88000,
     calories: 640,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'gold-sashimi-ca-hoi-unagi',
@@ -423,9 +423,9 @@ const GOLD_MAINS: FastDishItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
   },
   {
-    id: 'gold-com-nieu-bo-luc-lac',
-    title: 'Cơm Niêu Bò Lúc Lắc Trứng Lòng Đào Tiêu Xanh',
-    description: 'Bò lúc lắc xào thơm bơ tỏi hạt tiêu xanh cay dịu ăn cùng cơm niêu cháy giòn rụm và trứng lòng đào.',
+    id: 'gold-com-tam-suon-cong-dac-biet',
+    title: 'Cơm Tấm Sườn Cọng Nướng Than Hoa 2 Trứng Ốp La',
+    description: 'Sườn cọng heo nướng than hoa thơm lừng mỡ hành, chả trứng hấp béo ngậy và 2 trứng ốp la lòng đào.',
     estimatedCostVnd: 75000,
     calories: 620,
     imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80'
@@ -553,14 +553,14 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80'
   },
   {
-    id: 'exp-blue-onigiri-ca-hoi-xuc-xich',
-    title: 'Cơm Nắm Onigiri Cá Hồi Cay & Xúc Xích Đức',
-    description: 'Set 2 nắm cơm bọc rong biển giòn kèm xúc xích nướng tiêu, tiện lợi vừa ăn vừa chuẩn bị ngủ.',
-    estimatedCostVnd: 28000,
-    calories: 410,
+    id: 'exp-blue-mi-tom-chanh-bo-kho',
+    title: 'Mì Tôm Chanh Bò Khô Trứng Chần Xúc Xích Tỏi Phi',
+    description: 'Mì chua cay nấu trứng chần béo ngậy, bò khô xé cay tê, xúc xích và hành phi giòn tan chuẩn vị ăn vội sinh viên & văn phòng.',
+    estimatedCostVnd: 25000,
+    calories: 420,
     speedMinutes: 8,
-    napBuff: '💤 Siêu gọn gàng, dư hẳn 40 phút chợp mắt!',
-    imageUrl: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80'
+    napBuff: '💤 Siêu gọn gàng 8 phút, dư hẳn 40 phút chợp mắt!',
+    imageUrl: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-blue-banh-mi-opla-pate',
@@ -577,14 +577,14 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
 // Tier Purple: Vừa Vặn (30k – 45k)
 export const EXPRESS_PURPLE_MAINS: FastDishItem[] = [
   {
-    id: 'exp-pur-doner-kebab-tho-nhi-ky',
-    title: 'Doner Kebab Bánh Mì Thổ Nhĩ Kỳ Đẫm Sốt Tỏi',
-    description: 'Bánh mì tam giác nướng giòn kẹp thịt nướng xiên quay đẫm sốt tỏi mayonnaise và bắp cải tím.',
-    estimatedCostVnd: 38000,
+    id: 'exp-pur-mien-luon-hang-dieu',
+    title: 'Miến Lươn Giòn Phố Cổ Nước Dùng Xương Ngọt Thanh',
+    description: 'Miến dong dai mềm chan nước dùng xương hầm ngọt đậm đà, lươn đồng chiên giòn tan rụm, hành hoa rau răm thơm phức.',
+    estimatedCostVnd: 45000,
     calories: 460,
     speedMinutes: 12,
-    napBuff: '💤 Ăn vèo 10 phút, dành trọn 30 phút ngủ trưa!',
-    imageUrl: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80'
+    napBuff: '💤 Nạp đạm thanh nhẹ dễ tiêu, kịp chợp mắt trưa 30 phút!',
+    imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-pur-mi-xao-bo-rau-cai',
@@ -661,14 +661,14 @@ export const EXPRESS_GOLD_MAINS: FastDishItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
   },
   {
-    id: 'exp-gold-burger-bo-wagyu',
-    title: 'Burger Bò Nướng Phô Mai Tan Chảy & Khoai Giòn Tan',
-    description: 'Bò băm nướng medium rare đẫm sốt phô mai cheddar tan chảy, hành tây caramen và bánh brioche bơ.',
-    estimatedCostVnd: 65000,
-    calories: 630,
-    speedMinutes: 12,
-    napBuff: '👑 Tiện lợi bốc tay ăn siêu tốc 10 phút, ngủ trưa 35p!',
-    imageUrl: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80'
+    id: 'exp-gold-bun-bo-hue-tho-da',
+    title: 'Bún Bò Huế Thố Đá Đặc Biệt Nạm Gầu Bắp Hoa Chả Cua',
+    description: 'Thố đá 300°C sôi sùng sục giữ nhiệt cực lâu, nước dùng sả ruốc cay nồng, bắp bò hoa gầu giòn và chả cua khổng lồ béo ngậy.',
+    estimatedCostVnd: 75000,
+    calories: 660,
+    speedMinutes: 15,
+    napBuff: '👑 Bữa trưa cung đình thượng hạng, ăn xong ngủ một giấc mơ đẹp!',
+    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-gold-com-ca-hoi-ap-chao',

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
   Sparkles, 
@@ -11,13 +11,31 @@ import {
   Shuffle,
   Gamepad2,
   Calendar,
-  Utensils
+  Utensils,
+  ChevronDown,
+  ChevronUp,
+  Check
 } from 'lucide-react';
 import { VietnameseMealSet, MealSlot } from '../types';
 import { matchesMealSetSearch } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
 
-const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Bán Chạy', 'Tiết Kiệm', 'Đổi Vị', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
+export const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Bán Chạy', 'Tiết Kiệm', 'Đổi Vị', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
+
+export const TAG_DETAILS: Record<string, { icon: string; desc: string }> = {
+  'Tất Cả': { icon: '🍽️', desc: 'Toàn bộ mâm cơm tuyển chọn' },
+  'Giàu Đạm': { icon: '💪', desc: 'Nhiều thịt cá, năng lượng cao' },
+  'Eat Clean': { icon: '🥗', desc: 'Ít dầu mỡ, thanh lành nhẹ bụng' },
+  '1 Người': { icon: '👤', desc: 'Khẩu phần nhanh gọn, tiết kiệm' },
+  'Bán Chạy': { icon: '🔥', desc: 'Mâm cơm được yêu thích nhất' },
+  'Tiết Kiệm': { icon: '💰', desc: 'Chi phí bình dân, hợp túi tiền' },
+  'Đổi Vị': { icon: '🌟', desc: 'Món mới lạ miệng, không ngấy' },
+  'Đồng Quê': { icon: '🌾', desc: 'Chuẩn vị cơm nhà dân dã' },
+  'Ăn Chay': { icon: '🌱', desc: 'Thực đơn thuần chay thanh khiết' },
+  'Thanh Tịnh': { icon: '🍵', desc: 'Hương vị nhẹ nhàng, thư thái' },
+  'Đậm Đà': { icon: '🍲', desc: 'Kho rim chuẩn vị đưa cơm' },
+  'Cay Nồng': { icon: '🌶️', desc: 'Đậm vị ớt tiêu, cay ấm nồng' },
+};
 
 const cleanDishTitle = (title: string) => {
   if (!title) return '';
@@ -77,7 +95,41 @@ export const MealSetExplorer: React.FC = () => {
   const [targetSlot, setTargetSlot] = useState<MealSlot>('lunch');
   const [featuredIndex, setFeaturedIndex] = useState<number>(0);
   const [assignDragY, setAssignDragY] = useState<number>(0);
+  const [isHeroCollapsed, setIsHeroCollapsed] = useState<boolean>(false);
+  const [isTagDropdownOpen, setIsTagDropdownOpen] = useState<boolean>(false);
   const assignTouchStartY = useRef<number | null>(null);
+  const tagDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (tagDropdownRef.current && !tagDropdownRef.current.contains(e.target as Node)) {
+        setIsTagDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsTagDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const tagCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const tag of POPULAR_TAGS) {
+      if (tag === 'Tất Cả') {
+        counts[tag] = mealSets.filter(s => matchesRegionFilter(s, regionFilter)).length;
+      } else {
+        counts[tag] = mealSets.filter(s => matchesRegionFilter(s, regionFilter) && matchesTagFilter(s, tag)).length;
+      }
+    }
+    return counts;
+  }, [mealSets, regionFilter]);
 
   const { strictMatches, fallbackMatches, displayedSets } = useMemo(() => {
     // 1. Strict filter
@@ -114,21 +166,10 @@ export const MealSetExplorer: React.FC = () => {
     const seenIds = new Set(strict.map(s => s.id));
     const fallbacks: VietnameseMealSet[] = [];
 
-    // Step 1: Same tag across other regions / nationwide
-    if (selectedTag !== 'Tất Cả') {
-      for (const set of mealSets) {
-        if (strict.length + fallbacks.length >= 5) break;
-        if (seenIds.has(set.id)) continue;
-        if (isVegetarianQuery && !matchesRegionFilter(set, 'chay')) continue;
-        if (matchesTagFilter(set, selectedTag)) {
-          seenIds.add(set.id);
-          fallbacks.push(set);
-        }
-      }
-    }
-
-    // Step 2: Same region with other related tags
     if (regionFilter !== 'all') {
+      // STRICT REGIONAL ISOLATION:
+      // When a specific region is filtered, NEVER cross into other regions under any circumstances!
+      // Fallbacks MUST come from the SAME region only!
       for (const set of mealSets) {
         if (strict.length + fallbacks.length >= 5) break;
         if (seenIds.has(set.id)) continue;
@@ -138,25 +179,39 @@ export const MealSetExplorer: React.FC = () => {
           fallbacks.push(set);
         }
       }
-    }
+    } else {
+      // When regionFilter === 'all':
+      // Step 1: Same tag across regions / nationwide
+      if (selectedTag !== 'Tất Cả') {
+        for (const set of mealSets) {
+          if (strict.length + fallbacks.length >= 5) break;
+          if (seenIds.has(set.id)) continue;
+          if (isVegetarianQuery && !matchesRegionFilter(set, 'chay')) continue;
+          if (matchesTagFilter(set, selectedTag)) {
+            seenIds.add(set.id);
+            fallbacks.push(set);
+          }
+        }
+      }
 
-    // Step 3: Popular nationwide / fallback sets
-    for (const set of mealSets) {
-      if (strict.length + fallbacks.length >= 5) break;
-      if (seenIds.has(set.id)) continue;
-      if (isVegetarianQuery && !matchesRegionFilter(set, 'chay')) continue;
-      if (isWesternQuery && !matchesRegionFilter(set, 'western')) continue;
-      seenIds.add(set.id);
-      fallbacks.push(set);
-    }
-
-    // Final safety: if somehow still < 5 and not vegetarian query, pad from remaining sets
-    if (strict.length + fallbacks.length < 5 && !isVegetarianQuery) {
+      // Step 2: Popular nationwide / fallback sets
       for (const set of mealSets) {
         if (strict.length + fallbacks.length >= 5) break;
-        if (!seenIds.has(set.id)) {
-          seenIds.add(set.id);
-          fallbacks.push(set);
+        if (seenIds.has(set.id)) continue;
+        if (isVegetarianQuery && !matchesRegionFilter(set, 'chay')) continue;
+        if (isWesternQuery && !matchesRegionFilter(set, 'western')) continue;
+        seenIds.add(set.id);
+        fallbacks.push(set);
+      }
+
+      // Final safety: if somehow still < 5 and not vegetarian query, pad from remaining sets
+      if (strict.length + fallbacks.length < 5 && !isVegetarianQuery) {
+        for (const set of mealSets) {
+          if (strict.length + fallbacks.length >= 5) break;
+          if (!seenIds.has(set.id)) {
+            seenIds.add(set.id);
+            fallbacks.push(set);
+          }
         }
       }
     }
@@ -190,95 +245,59 @@ export const MealSetExplorer: React.FC = () => {
   const renderMealSetCard = (set: VietnameseMealSet, isFallback: boolean = false) => (
     <div 
       key={set.id}
-      className="bg-white dark:bg-[#1A1918] rounded-2xl border border-[#E8E2D8] dark:border-[#252220] overflow-hidden shadow-xs hover:shadow-sm transition-all"
+      className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all cursor-pointer group border border-[#E8E2D8] dark:border-[#252220] select-none"
+      onClick={() => setSelectedMealSet(set)}
+      title="Xem Chi Tiết Mâm"
+      aria-label={`Xem Chi Tiết Mâm: ${set.title}`}
     >
-      {/* Card Header with Image */}
-      <div className="relative h-40 sm:h-44 overflow-hidden cursor-pointer" onClick={() => setSelectedMealSet(set)}>
-        <SafeImage 
-          src={set.imageUrl} 
-          alt={set.title} 
-          fallbackTitle={set.title}
-          category="Mâm Cơm"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-        
-        <div className="absolute top-2.5 left-3 px-2 py-0.5 rounded-full bg-stone-950/60 backdrop-blur-md text-white text-[10px] font-bold border border-white/10">
+      <SafeImage 
+        src={set.imageUrl} 
+        alt={set.title} 
+        fallbackTitle={set.title}
+        category="Mâm Cơm"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+      {/* High-contrast gradient overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-transparent pointer-events-none" />
+      
+      {/* Top Left: Region Badge & Optional Fallback Pill */}
+      <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10 pointer-events-none">
+        <span className="px-2.5 py-0.5 rounded-full bg-stone-950/60 backdrop-blur-md text-white text-[10px] font-bold border border-white/10 shadow-xs">
           {getRegionBadgeLabel(set)}
-        </div>
-
+        </span>
         {isFallback && (
-          <div className="absolute top-2.5 right-3 px-2 py-0.5 rounded-full bg-amber-500/90 backdrop-blur-md text-white text-[10px] font-extrabold flex items-center gap-1 shadow-xs border border-white/20">
+          <span className="px-2 py-0.5 rounded-full bg-amber-500/90 backdrop-blur-md text-white text-[10px] font-extrabold flex items-center gap-1 shadow-xs border border-white/20">
             <Sparkles className="w-3 h-3" />
             <span>Gợi ý thêm</span>
-          </div>
+          </span>
         )}
-
-        <div className="absolute bottom-2.5 left-3 right-3 text-white flex items-end justify-between">
-          <div>
-            <h4 className="text-base font-extrabold leading-tight">
-              {set.title}
-            </h4>
-            <div className="flex items-center gap-2 text-xs text-stone-300 mt-0.5">
-              <span className="text-white font-black">{set.totalCostVnd.toLocaleString('vi-VN')} đ</span>
-              <span>•</span>
-              <span>{set.totalCalories} kcal</span>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedMealSet(set);
-            }}
-            className="px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-md text-white text-xs font-bold hover:bg-white/30"
-          >
-            Xem Mâm
-          </button>
-        </div>
       </div>
 
-      {/* 3 Dish Breakdown */}
-      <div className="p-3 sm:p-4 space-y-2">
-        <div className="grid grid-cols-3 gap-2">
-          <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110]">
-            <span className="text-[9px] font-extrabold text-rose-600 dark:text-rose-400 block uppercase">Mặn</span>
-            <span className="text-[11px] font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={set.mainDish.title}>
-              {cleanDishTitle(set.mainDish.title)}
-            </span>
-          </div>
-          <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110]">
-            <span className="text-[9px] font-extrabold text-sky-600 dark:text-sky-400 block uppercase">Canh</span>
-            <span className="text-[11px] font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={set.soupDish.title}>
-              {cleanDishTitle(set.soupDish.title)}
-            </span>
-          </div>
-          <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110]">
-            <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 block uppercase">Rau</span>
-            <span className="text-[11px] font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={set.sideDish.title}>
-              {cleanDishTitle(set.sideDish.title)}
-            </span>
-          </div>
-        </div>
+      {/* Top Right: Plus Button to choose/assign this meal set */}
+      <div className="absolute top-3 right-3 z-10">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setAssigningMealSet(set);
+          }}
+          className="w-10 h-10 rounded-2xl bg-stone-950/60 hover:bg-stone-900/80 active:scale-90 backdrop-blur-md text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation group/btn"
+          title="Chọn Mâm Này"
+          aria-label={`Chọn Mâm Này: ${set.title}`}
+        >
+          <PlusCircle className="w-5 h-5 text-white/90 group-hover/btn:text-white group-hover/btn:scale-110 transition-transform" />
+        </button>
+      </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2 pt-1">
-          <button
-            type="button"
-            onClick={() => setSelectedMealSet(set)}
-            className="flex-1 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs text-center transition-all"
-          >
-            Xem Chi Tiết Mâm
-          </button>
-          <button
-            type="button"
-            onClick={() => setAssigningMealSet(set)}
-            className="flex-1 py-2 px-3 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
-          >
-            <PlusCircle className="w-3.5 h-3.5" />
-            <span>Chọn Mâm Này</span>
-          </button>
+      {/* Bottom Content: Title and Price / Calories */}
+      <div className="absolute bottom-3 left-3.5 right-3.5 text-white z-10 pointer-events-none">
+        <h4 className="text-base sm:text-lg font-extrabold leading-tight tracking-tight text-white drop-shadow-xs">
+          {set.title}
+        </h4>
+        <div className="flex items-center gap-2 text-xs text-stone-200 mt-0.5 font-semibold">
+          <span className="text-white font-black">{set.totalCostVnd.toLocaleString('vi-VN')} đ</span>
+          <span>•</span>
+          <span>{set.totalCalories} kcal</span>
         </div>
       </div>
     </div>
@@ -287,34 +306,31 @@ export const MealSetExplorer: React.FC = () => {
   return (
     <div className="space-y-5 max-w-lg mx-auto">
       
-      {/* 1. HERO CARD: "HÔM NAY ĂN GÌ?" */}
-      {featuredSet && (
+      {/* 1. HERO CARD: "HÔM NAY ĂN GÌ?" (WITH COLLAPSIBLE ACCORDION / TOGGLE) */}
+      {featuredSet && !searchQuery.trim() && (
         <div className="bg-white dark:bg-[#1A1918] rounded-3xl border border-[#E8E2D8] dark:border-[#252220] overflow-hidden shadow-xs hover:shadow-sm transition-all">
-          <div className="p-4 sm:p-5 pb-3">
-            <div className="flex items-center justify-between mb-2">
-              <div>
-                <span className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider block">
+          {/* Header Bar with Title */}
+          <div className="p-3.5 sm:p-4 pb-2.5 flex items-center justify-between gap-2 border-b border-stone-100 dark:border-stone-800/80">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
+              <div className="min-w-0">
+                <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider block leading-tight">
                   Gợi Ý Cho Bạn
                 </span>
-                <h2 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white tracking-tight">
+                <h2 className="text-base sm:text-lg font-black text-stone-900 dark:text-white tracking-tight leading-tight truncate">
                   Hôm nay ăn gì?
                 </h2>
               </div>
-
-              {/* Minigame roulette trigger button */}
-              <button
-                type="button"
-                onClick={openMinigameHub}
-                className="px-3 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95"
-                title="Vòng quay ẩm thực giải trí"
-              >
-                <Gamepad2 className="w-3.5 h-3.5" />
-                <span>Quay ngẫu nhiên</span>
-              </button>
             </div>
+          </div>
 
+          {/* Full View of Featured Set */}
+          <div className="p-3.5 sm:p-4 pt-2.5">
             {/* Featured Image */}
-            <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden mt-3 group cursor-pointer" onClick={() => setSelectedMealSet(featuredSet)}>
+            <div 
+              className="relative aspect-video w-full rounded-2xl overflow-hidden group cursor-pointer" 
+              onClick={() => setSelectedMealSet(featuredSet)}
+            >
               <SafeImage 
                 src={featuredSet.imageUrl} 
                 alt={featuredSet.title} 
@@ -322,17 +338,17 @@ export const MealSetExplorer: React.FC = () => {
                 category="Mâm Cơm"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-black/20 to-transparent" />
 
-              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-stone-950/70 backdrop-blur-md text-white text-[11px] font-bold border border-white/10">
+              <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-stone-950/70 backdrop-blur-md text-white text-[10px] font-extrabold border border-white/10">
                 {getRegionBadgeLabel(featuredSet)}
               </div>
 
-              <div className="absolute bottom-3 left-3 right-3 text-white">
-                <h3 className="text-lg sm:text-xl font-black tracking-tight leading-tight">
+              <div className="absolute bottom-2.5 left-3 right-3 text-white">
+                <h3 className="text-base sm:text-lg font-black tracking-tight leading-tight">
                   {featuredSet.title}
                 </h3>
-                <div className="flex items-center gap-2 text-xs font-semibold text-stone-200 mt-1">
+                <div className="flex items-center gap-2 text-xs font-semibold text-stone-200 mt-0.5">
                   <span className="text-white font-black tracking-tight">{featuredSet.totalCostVnd.toLocaleString('vi-VN')} đ</span>
                   <span>•</span>
                   <span>{featuredSet.totalCalories} kcal</span>
@@ -340,34 +356,12 @@ export const MealSetExplorer: React.FC = () => {
               </div>
             </div>
 
-            {/* 3 Dishes Mini Bar */}
-            <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-stone-100 dark:border-stone-800">
-              <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] text-center">
-                <span className="text-[9px] font-extrabold text-rose-600 dark:text-rose-400 block uppercase">Món Mặn</span>
-                <span className="text-xs font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={featuredSet.mainDish.title}>
-                  {cleanDishTitle(featuredSet.mainDish.title)}
-                </span>
-              </div>
-              <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] text-center">
-                <span className="text-[9px] font-extrabold text-sky-600 dark:text-sky-400 block uppercase">Món Canh</span>
-                <span className="text-xs font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={featuredSet.soupDish.title}>
-                  {cleanDishTitle(featuredSet.soupDish.title)}
-                </span>
-              </div>
-              <div className="p-2 rounded-xl bg-[#FAF8F5] dark:bg-[#121110] text-center">
-                <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 block uppercase">Món Rau</span>
-                <span className="text-xs font-bold text-stone-800 dark:text-stone-200 truncate block mt-0.5" title={featuredSet.sideDish.title}>
-                  {cleanDishTitle(featuredSet.sideDish.title)}
-                </span>
-              </div>
-            </div>
-
             {/* Hero Action Buttons */}
-            <div className="flex items-center gap-2 mt-3">
+            <div className="flex items-center gap-2 mt-2.5">
               <button
                 type="button"
                 onClick={handleShuffleHero}
-                className="py-2.5 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
+                className="py-2.5 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer min-h-[44px]"
                 title="Đổi sang mâm cơm khác"
               >
                 <Shuffle className="w-3.5 h-3.5" />
@@ -377,7 +371,7 @@ export const MealSetExplorer: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setAssigningMealSet(featuredSet)}
-                className="flex-1 py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
+                className="flex-1 py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer min-h-[44px]"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Chọn Mâm Này</span>
@@ -387,28 +381,8 @@ export const MealSetExplorer: React.FC = () => {
         </div>
       )}
 
-      {/* 2. MINIMALIST SEARCH & FILTER BAR */}
-      <div className="space-y-3">
-        {/* Search Input */}
-        <div className="relative">
-          <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Tìm mâm cơm, món mặn, canh, rau..."
-            className="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-white dark:bg-[#1A1918] text-stone-900 dark:text-white placeholder-stone-400 text-xs font-medium border border-[#E8E2D8] dark:border-[#252220] focus:outline-none focus:border-stone-500 dark:focus:border-stone-400 transition-all shadow-xs"
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 flex items-center justify-center"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          )}
-        </div>
+      {/* 2. MINIMALIST FILTER BAR */}
+      <div className="space-y-2.5">
 
         {/* Region Tabs (flex flex-wrap gap-2) */}
         <div className="flex flex-wrap gap-2">
@@ -425,7 +399,7 @@ export const MealSetExplorer: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setRegionFilter(tab.id as any)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 whitespace-nowrap cursor-pointer min-h-[36px] ${
                   active
                     ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-950 font-extrabold shadow-xs'
                     : 'bg-white dark:bg-[#1A1918] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white border border-[#E8E2D8] dark:border-[#252220]'
@@ -437,27 +411,114 @@ export const MealSetExplorer: React.FC = () => {
           })}
         </div>
 
-        {/* Tag Filter Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-          <span className="text-[11px] font-bold text-stone-400 flex items-center gap-1 mr-1 shrink-0">
-            <Tag className="w-3 h-3" />
-          </span>
-          {POPULAR_TAGS.map(tag => {
-            const active = selectedTag === tag;
-            return (
+        {/* 3. FLAVOR / TAG DROP DOWN BAR (Optimized for Mobile Ergonomics - No horizontal scrollbar cutoff) */}
+        <div className="relative" ref={tagDropdownRef}>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsTagDropdownOpen(prev => !prev)}
+              aria-expanded={isTagDropdownOpen}
+              className={`flex-1 flex items-center justify-between px-3.5 py-2.5 rounded-2xl border text-xs font-bold transition-all shadow-xs min-h-[44px] cursor-pointer ${
+                selectedTag !== 'Tất Cả'
+                  ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 border-stone-900 dark:border-white font-extrabold'
+                  : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400'
+              }`}
+            >
+              <div className="flex items-center gap-2 truncate">
+                <span className="text-sm shrink-0">
+                  {selectedTag !== 'Tất Cả' ? TAG_DETAILS[selectedTag]?.icon || '🏷️' : '🏷️'}
+                </span>
+                <span className="text-stone-400 dark:text-stone-500 text-[11px] font-semibold shrink-0">
+                  Khẩu vị:
+                </span>
+                <span className="font-extrabold truncate">
+                  {selectedTag}
+                </span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold shrink-0 ${
+                  selectedTag !== 'Tất Cả'
+                    ? 'bg-white/20 text-white dark:bg-stone-950/20 dark:text-stone-900'
+                    : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+                }`}>
+                  {tagCounts[selectedTag] || 0} mâm
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1 shrink-0 ml-2">
+                <span className="text-[10px] text-stone-400 dark:text-stone-500 hidden min-[360px]:inline">
+                  {isTagDropdownOpen ? 'Đóng' : 'Đổi vị'}
+                </span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isTagDropdownOpen ? 'rotate-180' : ''}`} />
+              </div>
+            </button>
+
+            {/* Quick 1-tap Clear Filter Button if a specific tag is active */}
+            {selectedTag !== 'Tất Cả' && (
               <button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 whitespace-nowrap ${
-                  active
-                    ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-black shadow-xs'
-                    : 'bg-stone-200/50 dark:bg-stone-800/50 text-stone-600 dark:text-stone-400 hover:bg-stone-200/80 dark:hover:bg-stone-800/80'
-                }`}
+                type="button"
+                onClick={() => setSelectedTag('Tất Cả')}
+                className="px-3 py-2 rounded-2xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 text-xs font-bold flex items-center gap-1 border border-stone-200 dark:border-stone-700 min-h-[44px] transition-all shrink-0 cursor-pointer active:scale-95"
+                title="Xóa lọc khẩu vị"
               >
-                {tag}
+                <X className="w-3.5 h-3.5" />
+                <span className="hidden min-[360px]:inline">Tất cả</span>
               </button>
-            );
-          })}
+            )}
+          </div>
+
+          {/* Dropdown Menu Panel */}
+          {isTagDropdownOpen && (
+            <div className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white dark:bg-[#1A1918] rounded-2xl border border-[#E8E2D8] dark:border-[#252220] shadow-xl p-2.5 space-y-1 animate-fade-in max-h-72 overflow-y-auto">
+              <div className="px-2 py-1 flex items-center justify-between text-[11px] font-bold text-stone-400 border-b border-stone-100 dark:border-stone-800 mb-1">
+                <span>Chọn khẩu vị & chủ đề mâm cơm</span>
+                <span>{mealSets.filter(s => matchesRegionFilter(s, regionFilter)).length} mâm có sẵn</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-1.5">
+                {POPULAR_TAGS.map(tag => {
+                  const active = selectedTag === tag;
+                  const count = tagCounts[tag] || 0;
+                  const detail = TAG_DETAILS[tag];
+                  return (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => {
+                        setSelectedTag(tag);
+                        setIsTagDropdownOpen(false);
+                      }}
+                      className={`flex items-center justify-between p-2 rounded-xl text-left transition-all min-h-[44px] cursor-pointer ${
+                        active
+                          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-black shadow-xs'
+                          : 'bg-stone-50 dark:bg-stone-800/60 text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 min-w-0 pr-1">
+                        <span className="text-sm shrink-0">{detail?.icon || '🏷️'}</span>
+                        <div className="min-w-0">
+                          <span className="text-xs font-bold block truncate">{tag}</span>
+                          <span className={`text-[9px] block truncate ${active ? 'text-white/80 dark:text-stone-800' : 'text-stone-400 dark:text-stone-500'}`}>
+                            {detail?.desc}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0 ml-1">
+                        <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${
+                          active
+                            ? 'bg-white/20 text-white dark:bg-stone-950/20 dark:text-stone-900'
+                            : count > 0 
+                              ? 'bg-stone-200/70 dark:bg-stone-700/70 text-stone-600 dark:text-stone-300'
+                              : 'bg-transparent text-stone-400 opacity-50'
+                        }`}>
+                          {count}
+                        </span>
+                        {active && <Check className="w-3.5 h-3.5 shrink-0" />}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -467,7 +528,9 @@ export const MealSetExplorer: React.FC = () => {
         {strictMatches.length === 0 && fallbackMatches.length > 0 && !searchQuery.trim() && (
           <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 text-amber-900 dark:text-amber-200 text-xs font-semibold animate-fade-in">
             <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-            <span>Gợi ý mâm cơm phong vị tương tự {selectedTag !== 'Tất Cả' ? `(${selectedTag})` : ''} dành riêng cho bạn</span>
+            <span>
+              Gợi ý mâm cơm {regionFilter !== 'all' ? (regionFilter === 'bac' ? 'Miền Bắc ' : regionFilter === 'nam' ? 'Miền Nam ' : regionFilter === 'trung' ? 'Miền Trung ' : regionFilter === 'chay' ? 'Chay ' : 'Âu ') : ''}phong vị tương tự {selectedTag !== 'Tất Cả' ? `(${selectedTag})` : ''} dành riêng cho bạn
+            </span>
           </div>
         )}
 

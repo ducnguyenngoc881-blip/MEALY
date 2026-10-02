@@ -709,7 +709,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
                   accentColor: '#00d4ff',
                   bgGradient: 'from-cyan-500/15 via-sky-500/5 to-transparent',
                   borderColor: 'hover:border-cyan-400/80',
-                  sample: 'Bánh mì, phở, bún chả, kebab, xôi'
+                  sample: 'Bún, miến, phở, hủ tiếu, bánh mì, cơm tấm'
                 },
                 {
                   id: 'snack-genz' as FastMealPreferenceMode,
@@ -867,7 +867,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
               let titleLabel = t === 'blue' ? 'Tiết Kiệm' : t === 'purple' ? 'Bình Dân' : 'Ăn Sang';
 
               if (selectedMode === 'express-1dish') {
-                subText = t === 'blue' ? 'Bánh mì, xôi' : t === 'purple' ? 'Phở, kebab' : 'Bò bít tết';
+                subText = t === 'blue' ? 'Bánh mì, xôi' : t === 'purple' ? 'Bún, miến, phở' : 'Thố đá, bít tết';
                 priceDisplay = t === 'blue' ? '18k – 35k' : t === 'purple' ? '35k – 65k' : '65k – 120k+';
                 titleLabel = t === 'blue' ? 'Nhanh Rẻ' : t === 'purple' ? 'Vừa Vặn' : 'Đặc Biệt';
               } else if (selectedMode === 'snack-genz') {

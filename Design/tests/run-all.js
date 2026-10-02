@@ -34,6 +34,8 @@ const SUITES = [
   { name: 'Guidelines Codex & Mathematical Rules', path: './test-guidelines-codex.js' },
   { name: 'SVG Clean-Code & Vector Standards', path: './test-svg-standards.js' },
   { name: 'Remotion Motion Physics & Safe Zones', path: './test-remotion-motion.js' },
+  { name: 'UI/UX Mobile Flow & Interaction Codex', path: './test-ui-ux-flow.js' },
+  { name: 'UI/UX Quality Audit Rubric & Hard Veto Engine', path: './test-ui-ux-audit.js' },
   { name: 'Cross-Feature & E2E Integration', path: './test-e2e-integration.js' }
 ];
 
@@ -111,8 +113,15 @@ async function main() {
     { label: 'Visual Hierarchy Codex', path: 'guidelines/gestalt-hierarchy.md' },
     { label: 'Typography Codex', path: 'guidelines/typography.md' },
     { label: 'Color & Contrast Codex', path: 'guidelines/color-contrast.md' },
+    { label: 'Flow States Codex (M1)', path: 'guidelines/flow-states.md' },
+    { label: 'Mobile Ergonomics Codex (M1)', path: 'guidelines/mobile-ergonomics.md' },
+    { label: 'Component Hierarchy Codex (M1)', path: 'guidelines/component-hierarchy.md' },
+    { label: 'Visual Balance Codex (M1)', path: 'guidelines/visual-balance.md' },
     { label: 'Master Workflow Handbook', path: 'WORKFLOW.md' },
-    { label: 'Quality Audit Rubric', path: 'DESIGN_AUDIT_RUBRIC.md' }
+    { label: 'Quality Audit Rubric', path: 'DESIGN_AUDIT_RUBRIC.md' },
+    { label: 'UI/UX Audit Rubric (M4)', path: 'UI_UX_AUDIT_RUBRIC.md' },
+    { label: 'Antigravity Skill Package (M3)', path: 'skills/ui-ux-pro-max/SKILL.md' },
+    { label: 'Pattern Search Utility (M3)', path: 'skills/ui-ux-pro-max/scripts/search-patterns.js' }
   ];
 
   for (const item of liveFiles) {

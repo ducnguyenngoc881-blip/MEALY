@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
-import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock, LayoutDashboard, ArrowRight } from 'lucide-react';
+import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock, LayoutDashboard, ArrowRight, Gamepad2 } from 'lucide-react';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
 import { getDailyBudgetTarget } from '../utils/currency';
 import { 
@@ -217,7 +217,9 @@ export const AccountView: React.FC = () => {
     isRegistered,
     logoutUser,
     openAuthModal,
-    guestSession
+    guestSession,
+    setActiveTab,
+    openMinigameHub
   } = useMealWise();
   const [isAdSequenceOpen, setIsAdSequenceOpen] = useState(false);
   const isLight = theme === 'light';
@@ -337,6 +339,39 @@ export const AccountView: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* Minigame Arcade Hub (Moved from navbar to Account settings per user request) */}
+      <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5 min-w-0 flex-1">
+            <div className="w-12 h-12 rounded-2xl bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-stone-200 flex items-center justify-center shrink-0 shadow-xs">
+              <Gamepad2 className="w-6 h-6" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-base font-extrabold text-stone-900 dark:text-white">
+                  Khu Vực Minigame & Giải Trí
+                </h2>
+                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                  Arcade Hub
+                </span>
+              </div>
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-relaxed">
+                Gợi ý món nhanh bằng hòm may mắn, vòng quay bàn nhậu và trò chơi tiệc tùng vui nhộn.
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={openMinigameHub}
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-md shadow-stone-900/10 flex items-center justify-center gap-2 transition-all active:scale-95 shrink-0 whitespace-nowrap self-stretch sm:self-center cursor-pointer"
+          >
+            <Gamepad2 className="w-4 h-4 shrink-0" />
+            <span>Chơi Minigame</span>
+          </button>
+        </div>
+      </div>
 
       {/* Theme Mode Preference: Sleek Interactive Toggle Switch */}
       <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-4">

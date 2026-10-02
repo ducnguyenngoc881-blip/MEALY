@@ -82,6 +82,84 @@ export interface EasingToken extends BaseToken<string> {
   readonly $type: 'cubicBezier';
 }
 
+export interface TouchTargetToken extends BaseToken<string> {
+  readonly $type: 'dimension';
+  readonly px: number;
+}
+
+export interface SafeAreaToken extends BaseToken<string> {
+  readonly $type: 'dimension';
+  readonly px: number;
+  readonly env?: string;
+}
+
+export interface ThumbZoneToken {
+  readonly $value: number;
+  readonly ratio: number;
+  readonly percentage: string;
+  readonly $type: 'number';
+  readonly $description?: string;
+}
+
+export interface ZIndexToken extends BaseToken<number> {
+  readonly $type: 'number';
+}
+
+export interface FlowStateToken extends BaseToken<string> {
+  readonly id?: string;
+  readonly name?: string;
+  readonly actionAffordance?: string;
+}
+
+export interface LuxuryStoneModeTokens {
+  readonly canvas: ColorToken;
+  readonly card: ColorToken;
+  readonly border: ColorToken;
+  readonly text: ColorToken;
+}
+
+export interface LuxuryStoneTokens {
+  readonly light: LuxuryStoneModeTokens;
+  readonly dark: LuxuryStoneModeTokens;
+}
+
+export interface TouchTargetTokens {
+  readonly minTouchTarget: TouchTargetToken;
+  readonly minTarget: TouchTargetToken;
+  readonly androidTouchTarget: TouchTargetToken;
+  readonly compactTarget: TouchTargetToken;
+}
+
+export interface SafeAreaTokens {
+  readonly insetTop: SafeAreaToken;
+  readonly insetBottom: SafeAreaToken;
+  readonly insetLeft: SafeAreaToken;
+  readonly insetRight: SafeAreaToken;
+  readonly top: SafeAreaToken;
+  readonly bottom: SafeAreaToken;
+}
+
+export interface ThumbZoneTokens {
+  readonly natural: ThumbZoneToken;
+  readonly reach: ThumbZoneToken;
+  readonly hard: ThumbZoneToken;
+}
+
+export interface ZIndexTokens {
+  readonly modal: ZIndexToken;
+  readonly drawer: ZIndexToken;
+  readonly sticky: ZIndexToken;
+  readonly header: ZIndexToken;
+}
+
+export interface FlowStateTokens {
+  readonly empty: FlowStateToken;
+  readonly loading: FlowStateToken;
+  readonly active: FlowStateToken;
+  readonly error: FlowStateToken;
+  readonly partial: FlowStateToken;
+}
+
 // ----------------------------------------------------------------------------
 // 2. Authoritative Canonical Tokens Definition (as const)
 // ----------------------------------------------------------------------------
@@ -194,6 +272,20 @@ export const tokens = {
         secondary: { $value: '#94a3b8', $type: 'color', $description: 'Secondary body copy and labels in dark mode' },
         tertiary:  { $value: '#64748b', $type: 'color', $description: 'Muted tertiary copy and meta captions in dark mode' },
         inverse:   { $value: '#020617', $type: 'color', $description: 'Inverse text for light accents in dark mode' }
+      }
+    },
+    stone: {
+      light: {
+        canvas: { $value: '#FAF8F5', $type: 'color', $description: 'Luxury Editorial light canvas background' },
+        card:   { $value: '#FFFFFF', $type: 'color', $description: 'Luxury Editorial light card surface' },
+        border: { $value: '#E8E2D8', $type: 'color', $description: 'Luxury Editorial light container border' },
+        text:   { $value: '#1C1917', $type: 'color', $description: 'Luxury Editorial light high-contrast primary text' }
+      },
+      dark: {
+        canvas: { $value: '#121110', $type: 'color', $description: 'Luxury Editorial dark canvas background' },
+        card:   { $value: '#1A1918', $type: 'color', $description: 'Luxury Editorial dark card surface' },
+        border: { $value: '#252220', $type: 'color', $description: 'Luxury Editorial dark container border' },
+        text:   { $value: '#FAF8F5', $type: 'color', $description: 'Luxury Editorial dark high-contrast primary text' }
       }
     }
   },
@@ -385,6 +477,158 @@ export const tokens = {
         spring:     { $value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', $type: 'cubicBezier', $description: 'CSS curve approximating spring overshoot' }
       }
     }
+  },
+  touch: {
+    minTouchTarget: {
+      $value: '44px',
+      px: 44,
+      $type: 'dimension',
+      $description: 'Minimum iOS touch target bounding box (44x44px)'
+    },
+    minTarget: {
+      $value: '44px',
+      px: 44,
+      $type: 'dimension',
+      $description: 'Canonical minimum touch target alias'
+    },
+    androidTouchTarget: {
+      $value: '48px',
+      px: 48,
+      $type: 'dimension',
+      $description: 'Minimum Android Material touch target bounding box (48x48px)'
+    },
+    compactTarget: {
+      $value: '36px',
+      px: 36,
+      $type: 'dimension',
+      $description: 'Compact touch target with padding shield (36x36px)'
+    }
+  },
+  safeArea: {
+    insetTop: {
+      $value: '47px',
+      px: 47,
+      env: 'env(safe-area-inset-top, 0px)',
+      $type: 'dimension',
+      $description: 'Safe area top inset for notches and Dynamic Island'
+    },
+    insetBottom: {
+      $value: '34px',
+      px: 34,
+      env: 'env(safe-area-inset-bottom, 0px)',
+      $type: 'dimension',
+      $description: 'Safe area bottom inset for home gesture swipe indicators'
+    },
+    insetLeft: {
+      $value: '0px',
+      px: 0,
+      env: 'env(safe-area-inset-left, 0px)',
+      $type: 'dimension',
+      $description: 'Safe area left inset for landscape mode orientation'
+    },
+    insetRight: {
+      $value: '0px',
+      px: 0,
+      env: 'env(safe-area-inset-right, 0px)',
+      $type: 'dimension',
+      $description: 'Safe area right inset for landscape mode orientation'
+    },
+    top: {
+      $value: '47px',
+      px: 47,
+      env: 'env(safe-area-inset-top, 0px)',
+      $type: 'dimension',
+      $description: 'Top safe area inset alias'
+    },
+    bottom: {
+      $value: '34px',
+      px: 34,
+      env: 'env(safe-area-inset-bottom, 0px)',
+      $type: 'dimension',
+      $description: 'Bottom safe area inset alias'
+    }
+  },
+  thumbZone: {
+    natural: {
+      $value: 40,
+      ratio: 0.40,
+      percentage: '40%',
+      $type: 'number',
+      $description: 'Natural thumb zone occupying bottom 40% of viewport'
+    },
+    reach: {
+      $value: 35,
+      ratio: 0.35,
+      percentage: '35%',
+      $type: 'number',
+      $description: 'Reach thumb zone occupying middle 35% of viewport'
+    },
+    hard: {
+      $value: 25,
+      ratio: 0.25,
+      percentage: '25%',
+      $type: 'number',
+      $description: 'Hard thumb zone occupying top 25% of viewport'
+    }
+  },
+  zIndex: {
+    modal: {
+      $value: 1000,
+      $type: 'number',
+      $description: 'High-altitude modal overlays and dialog shields'
+    },
+    drawer: {
+      $value: 900,
+      $type: 'number',
+      $description: 'Draggable bottom sheets and flyout drawers'
+    },
+    sticky: {
+      $value: 500,
+      $type: 'number',
+      $description: 'Sticky bottom action bars and floating CTAs'
+    },
+    header: {
+      $value: 100,
+      $type: 'number',
+      $description: 'Fixed/sticky top navigation bar and headers'
+    }
+  },
+  flowState: {
+    empty: {
+      $value: 'empty',
+      id: 'empty',
+      name: 'Initial / Empty State',
+      $description: 'Zero-data screen with friendly guidance and primary Call-to-Action',
+      actionAffordance: 'primary_cta'
+    },
+    loading: {
+      $value: 'loading',
+      id: 'loading',
+      name: 'Loading / Skeleton State',
+      $description: 'Shimmer card skeleton matching exact layout dimensions to prevent CLS',
+      actionAffordance: 'shimmer_skeleton'
+    },
+    active: {
+      $value: 'active',
+      id: 'active',
+      name: 'Active / Populated State',
+      $description: 'Standard populated view with optimal visual hierarchy and scannable cards',
+      actionAffordance: 'interactive_view'
+    },
+    error: {
+      $value: 'error',
+      id: 'error',
+      name: 'Error / Retry State',
+      $description: 'Error banner with human-readable cause and prominent retry recovery CTA',
+      actionAffordance: 'retry_button'
+    },
+    partial: {
+      $value: 'partial',
+      id: 'partial',
+      name: 'Partial / Filtered State',
+      $description: 'Active filter tags with 1-tap clear filter action when zero matches occur',
+      actionAffordance: 'clear_filters_button'
+    }
   }
 } as const;
 
@@ -401,6 +645,17 @@ export type AccentPalette = typeof tokens.color.rose;
 export type SemanticStatusTokens = typeof tokens.color.semantic;
 export type SurfaceTokens = typeof tokens.color.surface;
 export type TextTokens = typeof tokens.color.text;
+export type LuxuryStonePalette = typeof tokens.color.stone;
+export type TouchTokens = typeof tokens.touch;
+export type TouchTargetStep = keyof typeof tokens.touch;
+export type SafeAreaTokenGroup = typeof tokens.safeArea;
+export type SafeAreaStep = keyof typeof tokens.safeArea;
+export type ThumbZoneTokenGroup = typeof tokens.thumbZone;
+export type ThumbZoneStep = keyof typeof tokens.thumbZone;
+export type ZIndexTokenGroup = typeof tokens.zIndex;
+export type ZIndexStep = keyof typeof tokens.zIndex;
+export type FlowStateTokenGroup = typeof tokens.flowState;
+export type FlowStateStep = keyof typeof tokens.flowState;
 
 export type SpacingTokens = typeof tokens.spacing;
 export type SpacingStep = keyof typeof tokens.spacing;
@@ -649,8 +904,63 @@ export function generateCSSVariables(): Record<string, string> {
     vars[`--line-height-${name}`] = obj.lineHeight;
     vars[`--letter-spacing-${name}`] = obj.letterSpacing;
   }
+  for (const [mode, stones] of Object.entries(tokens.color.stone)) {
+    for (const [name, obj] of Object.entries(stones)) {
+      vars[`--color-stone-${mode}-${name}`] = obj.$value;
+      vars[`--color-stone-${name}-${mode}`] = obj.$value;
+    }
+  }
+  vars['--color-stone-canvas'] = tokens.color.stone.light.canvas.$value;
+  vars['--color-stone-card'] = tokens.color.stone.light.card.$value;
+  vars['--color-stone-border'] = tokens.color.stone.light.border.$value;
+  vars['--color-stone-text'] = tokens.color.stone.light.text.$value;
+
+  for (const [key, obj] of Object.entries(tokens.touch)) {
+    const kebab = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+    vars[`--touch-${kebab}`] = obj.$value;
+    vars[`--touch-${key}`] = obj.$value;
+  }
+
+  for (const [key, obj] of Object.entries(tokens.safeArea)) {
+    const kebab = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+    vars[`--safe-area-${kebab}`] = obj.$value;
+    vars[`--safe-area-${key}`] = obj.$value;
+  }
+
+  for (const [key, obj] of Object.entries(tokens.zIndex)) {
+    vars[`--z-index-${key}`] = String(obj.$value);
+  }
+
+  for (const [key, obj] of Object.entries(tokens.thumbZone)) {
+    vars[`--thumb-zone-${key}`] = typeof obj.$value === 'number' ? `${obj.$value}%` : String(obj.$value);
+  }
+
+  for (const [key, obj] of Object.entries(tokens.flowState)) {
+    vars[`--flow-state-${key}`] = obj.$value;
+  }
 
   return vars;
+}
+
+/**
+ * Retrieves pixel dimension for a touch target standard.
+ */
+export function getTouchTarget(target: keyof typeof tokens.touch): number {
+  return tokens.touch[target].px;
+}
+
+/**
+ * Retrieves safe area inset pixel dimension.
+ */
+export function getSafeAreaInset(inset: keyof typeof tokens.safeArea): number {
+  return tokens.safeArea[inset].px;
+}
+
+/**
+ * Retrieves z-index integer value for a stacking layer.
+ */
+export function getZIndex(layer: keyof typeof tokens.zIndex): number {
+  return tokens.zIndex[layer].$value;
 }
 
 // CommonJS compatibility bridge
@@ -670,5 +980,8 @@ if (typeof module !== 'undefined' && module.exports) {
     remToPx,
     pxToRem,
     generateCSSVariables,
+    getTouchTarget,
+    getSafeAreaInset,
+    getZIndex,
   };
 }

@@ -745,14 +745,14 @@ export const EXPRESS_POOL_BLUE: FastDishItem[] = [
   },
   {
     "id": "exp-blue-67",
-    "title": "Cháo ếch Singapore niêu đất sốt cay",
-    "description": "Cháo ếch Singapore niêu đất sốt cay ăn gọn lẹ trong 9 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Miến xào măng tươi lòng gà giá đỗ giòn ngọt",
+    "description": "Miến xào măng tươi lòng gà giá đỗ giòn ngọt ăn gọn lẹ trong 9 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 22000,
     "calories": 400,
     "speedMinutes": 9,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "exp-blue-68",
@@ -1023,8 +1023,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-21",
-    "title": "Mì Quảng ếch đồng niêu đất nước sốt nghệ đậm vị",
-    "description": "Mì Quảng ếch đồng niêu đất nước sốt nghệ đậm vị ăn gọn lẹ trong 11 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Miến lươn giòn Phố Cổ Hàng Điếu nước dùng thanh ngọt",
+    "description": "Miến lươn giòn Phố Cổ Hàng Điếu nước dùng thanh ngọt ăn gọn lẹ trong 11 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 44000,
     "calories": 580,
     "speedMinutes": 11,
@@ -1122,11 +1122,11 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-30",
-    "title": "Doner Kebab thịt nướng sốt bắp cải trắng ngập thịt",
-    "description": "Doner Kebab thịt nướng sốt bắp cải trắng ngập thịt ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Phở cuốn Hà Nội thịt bò xào lăn rau thơm mắm tỏi",
+    "description": "Phở cuốn Hà Nội thịt bò xào lăn rau thơm mắm tỏi ăn gọn lẹ trong 10 phút, mát lành thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 46000,
-    "calories": 605,
-    "speedMinutes": 15,
+    "calories": 480,
+    "speedMinutes": 10,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "purple",
     "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
@@ -1298,8 +1298,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-46",
-    "title": "Mì gà tần thuốc bắc ngải cứu ấm bụng bồi bổ",
-    "description": "Mì gà tần thuốc bắc ngải cứu ấm bụng bồi bổ ăn gọn lẹ trong 11 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Miến gà ta đùi xé măng tươi nấm hương ngọt lịm",
+    "description": "Miến gà ta đùi xé măng tươi nấm hương ngọt lịm ăn gọn lẹ trong 11 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 46000,
     "calories": 605,
     "speedMinutes": 11,
@@ -1309,8 +1309,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-47",
-    "title": "Mì vịt tiềm đùi góc tư nấm đông cô nước ngọt lịm",
-    "description": "Mì vịt tiềm đùi góc tư nấm đông cô nước ngọt lịm ăn gọn lẹ trong 12 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bún ngan cháy tỏi Hàng Thiếc nước dùng măng tiết ngọt thanh",
+    "description": "Bún ngan cháy tỏi Hàng Thiếc nước dùng măng tiết ngọt thanh ăn gọn lẹ trong 12 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 48000,
     "calories": 630,
     "speedMinutes": 12,
@@ -1320,8 +1320,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-48",
-    "title": "Cơm niêu sườn que nướng mật ong cơm cháy giòn rụm",
-    "description": "Cơm niêu sườn que nướng mật ong cơm cháy giòn rụm ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bún sườn chua dọc mùng mọc viên thanh mát giải nhiệt",
+    "description": "Bún sườn chua dọc mùng mọc viên thanh mát giải nhiệt ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 50000,
     "calories": 655,
     "speedMinutes": 13,
@@ -1386,8 +1386,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-54",
-    "title": "Bánh xèo miền Tây tôm thịt giá đỗ cuốn rau rừng bánh tráng",
-    "description": "Bánh xèo miền Tây tôm thịt giá đỗ cuốn rau rừng bánh tráng ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bánh đa cua đỏ Hải Phòng chả lá lốt tôm bề bề ngọt lịm",
+    "description": "Bánh đa cua đỏ Hải Phòng chả lá lốt tôm bề bề ngọt lịm ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 46000,
     "calories": 605,
     "speedMinutes": 14,
@@ -1419,8 +1419,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-57",
-    "title": "Cháo bồ câu non hạt sen đỗ xanh bồi bổ nguyên khí",
-    "description": "Cháo bồ câu non hạt sen đỗ xanh bồi bổ nguyên khí ăn gọn lẹ trong 12 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Miến mọc sườn non nấm đông cô nước dùng trong vắt",
+    "description": "Miến mọc sườn non nấm đông cô nước dùng trong vắt ăn gọn lẹ trong 12 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 36000,
     "calories": 480,
     "speedMinutes": 12,
@@ -1452,11 +1452,11 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-60",
-    "title": "Lẩu mì tomyum 1 người tôm mực chua cay bùng nổ",
-    "description": "Lẩu mì tomyum 1 người tôm mực chua cay bùng nổ ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Mì tôm chua cay bắp bò chanh ớt trứng lòng đào",
+    "description": "Mì tôm chua cay bắp bò chanh ớt trứng lòng đào ăn gọn lẹ trong 10 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 42000,
-    "calories": 555,
-    "speedMinutes": 15,
+    "calories": 520,
+    "speedMinutes": 10,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "purple",
     "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
@@ -1474,8 +1474,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-62",
-    "title": "Cơm sườn non kho tộ mặn ngọt đưa cơm hết sẩy",
-    "description": "Cơm sườn non kho tộ mặn ngọt đưa cơm hết sẩy ăn gọn lẹ trong 12 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Miến xào lòng gà mề nấm hương mộc nhĩ giá đỗ",
+    "description": "Miến xào lòng gà mề nấm hương mộc nhĩ giá đỗ ăn gọn lẹ trong 12 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 46000,
     "calories": 605,
     "speedMinutes": 12,
@@ -1595,8 +1595,8 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-73",
-    "title": "Cháo cá chép đậu xanh thì là giải độc cơ thể",
-    "description": "Cháo cá chép đậu xanh thì là giải độc cơ thể ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bún dọc mùng sườn non thịt băm viên nấm hương",
+    "description": "Bún dọc mùng sườn non thịt băm viên nấm hương ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 36000,
     "calories": 480,
     "speedMinutes": 13,
@@ -1672,14 +1672,14 @@ export const EXPRESS_POOL_PURPLE: FastDishItem[] = [
   },
   {
     "id": "exp-pur-80",
-    "title": "Doner Kebab bò sốt tiêu đen phô mai nướng giòn rụm",
-    "description": "Doner Kebab bò sốt tiêu đen phô mai nướng giòn rụm ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bún chả que tre phố cổ chả miếng chả băm nướng than hoa",
+    "description": "Bún chả que tre phố cổ chả miếng chả băm nướng than hoa ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 50000,
-    "calories": 655,
-    "speedMinutes": 15,
+    "calories": 580,
+    "speedMinutes": 14,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1504973960431-1c467e159aa4?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
@@ -1697,8 +1697,8 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-2",
-    "title": "Cơm niêu sườn non cháy cạnh sốt tiêu đen Phú Quốc",
-    "description": "Cơm niêu sườn non cháy cạnh sốt tiêu đen Phú Quốc ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Phở thăn bò Wagyu sốt vang quẩy giòn thượng hạng",
+    "description": "Phở thăn bò Wagyu sốt vang quẩy giòn thượng hạng ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 70000,
     "calories": 630,
     "speedMinutes": 14,
@@ -1708,8 +1708,8 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-3",
-    "title": "Cơm niêu cá kho tộ ba chỉ rút sườn thơm nức",
-    "description": "Cơm niêu cá kho tộ ba chỉ rút sườn thơm nức ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bún bò Huế bắp hoa gầu giòn chả cua khổng lồ thố đá",
+    "description": "Bún bò Huế bắp hoa gầu giòn chả cua khổng lồ thố đá ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 74000,
     "calories": 660,
     "speedMinutes": 15,
@@ -1719,8 +1719,8 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-4",
-    "title": "Cơm đùi vịt tiềm nấm đông cô thảo mộc nước trong",
-    "description": "Cơm đùi vịt tiềm nấm đông cô thảo mộc nước trong ăn gọn lẹ trong 16 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Miến xào cua bể Cà Mau thịt tôm tích nguyên con ngập tràn",
+    "description": "Miến xào cua bể Cà Mau thịt tôm tích nguyên con ngập tràn ăn gọn lẹ trong 16 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 78000,
     "calories": 690,
     "speedMinutes": 16,
@@ -1807,8 +1807,8 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-12",
-    "title": "Lẩu mì cay hải sản 1 người tôm mực nấm kim châm xúc xích",
-    "description": "Lẩu mì cay hải sản 1 người tôm mực nấm kim châm xúc xích ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Mì vằn thắn sủi cảo tôm tươi xá xíu thượng hạng đùi vịt quay",
+    "description": "Mì vằn thắn sủi cảo tôm tươi xá xíu thượng hạng đùi vịt quay ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 78000,
     "calories": 690,
     "speedMinutes": 14,
@@ -1917,8 +1917,8 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-22",
-    "title": "Cơm niêu gà nướng nấm hương hạt sen thơm phức",
-    "description": "Cơm niêu gà nướng nấm hương hạt sen thơm phức ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Phở bò tái gầu giòn nước béo hành hoa thố đá nóng hổi",
+    "description": "Phở bò tái gầu giòn nước béo hành hoa thố đá nóng hổi ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 86000,
     "calories": 750,
     "speedMinutes": 14,
@@ -1983,19 +1983,19 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-28",
-    "title": "Cơm niêu sườn que nướng sốt mật ong cháy cạnh giòn thơm",
-    "description": "Cơm niêu sườn que nướng sốt mật ong cháy cạnh giòn thơm ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bún chả que tre nướng than hoa cổ truyền thịt ba chỉ kẹp lá chuối",
+    "description": "Bún chả que tre nướng than hoa cổ truyền thịt ba chỉ kẹp lá chuối ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 78000,
     "calories": 690,
     "speedMinutes": 15,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "exp-gold-29",
-    "title": "Mì tiềm bồ câu nguyên con hạt sen thảo mộc đại bổ",
-    "description": "Mì tiềm bồ câu nguyên con hạt sen thảo mộc đại bổ ăn gọn lẹ trong 16 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Miến lươn giòn đặc biệt Hàng Điếu mọc nấm nước dùng ngọt lịm",
+    "description": "Miến lươn giòn đặc biệt Hàng Điếu mọc nấm nước dùng ngọt lịm ăn gọn lẹ trong 16 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 82000,
     "calories": 720,
     "speedMinutes": 16,
@@ -2016,14 +2016,14 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-31",
-    "title": "Cơm cá lăng kho tộ nước dừa ớt hiểm thơm nức mũi",
-    "description": "Cơm cá lăng kho tộ nước dừa ớt hiểm thơm nức mũi ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Cơm tấm sườn cọng nướng than hoa chả trứng muối ốp la 2 trứng",
+    "description": "Cơm tấm sườn cọng nướng than hoa chả trứng muối ốp la 2 trứng ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 90000,
     "calories": 780,
     "speedMinutes": 13,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "exp-gold-32",
@@ -2049,11 +2049,11 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-34",
-    "title": "Lẩu tomyum hải sản 1 người tôm sú mực ống nấm tươi giòn",
-    "description": "Lẩu tomyum hải sản 1 người tôm sú mực ống nấm tươi giòn ăn gọn lẹ trong 16 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bánh canh ghẹ nguyên con nước lèo ngọt thanh đậm đà miền biển",
+    "description": "Bánh canh ghẹ nguyên con nước lèo ngọt thanh đậm đà miền biển ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 70000,
     "calories": 630,
-    "speedMinutes": 16,
+    "speedMinutes": 14,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "gold",
     "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
@@ -2115,19 +2115,19 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-40",
-    "title": "Cơm niêu thịt ba chỉ kho măng tươi trứng cút rục mềm",
-    "description": "Cơm niêu thịt ba chỉ kho măng tươi trứng cút rục mềm ăn gọn lẹ trong 17 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bún ốc sườn sụn riêu cua thập cẩm bắp bò hoa giấm bỗng",
+    "description": "Bún ốc sườn sụn riêu cua thập cẩm bắp bò hoa giấm bỗng ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 94000,
     "calories": 810,
-    "speedMinutes": 17,
+    "speedMinutes": 15,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "gold",
     "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "exp-gold-41",
-    "title": "Cơm chiên cá mặn gà xé thố đất niêu đất cháy giòn rụm",
-    "description": "Cơm chiên cá mặn gà xé thố đất niêu đất cháy giòn rụm ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Cơm rang hải sản tôm sú mực ống trứng muối giòn tan",
+    "description": "Cơm rang hải sản tôm sú mực ống trứng muối giòn tan ăn gọn lẹ trong 13 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 66000,
     "calories": 600,
     "speedMinutes": 13,
@@ -2170,11 +2170,11 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-45",
-    "title": "Bò tơ Củ Chi xào hoa thiên lý cơm trắng dẻo thơm",
-    "description": "Bò tơ Củ Chi xào hoa thiên lý cơm trắng dẻo thơm ăn gọn lẹ trong 17 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Hủ tiếu mì sườn cây khổng lồ tôm càng xanh sốt khô béo ngậy",
+    "description": "Hủ tiếu mì sườn cây khổng lồ tôm càng xanh sốt khô béo ngậy ăn gọn lẹ trong 15 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 82000,
     "calories": 720,
-    "speedMinutes": 17,
+    "speedMinutes": 15,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "gold",
     "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
@@ -2214,11 +2214,11 @@ export const EXPRESS_POOL_GOLD: FastDishItem[] = [
   },
   {
     "id": "exp-gold-49",
-    "title": "Cơm niêu sườn non rim nước mắm tỏi ớt đường phèn",
-    "description": "Cơm niêu sườn non rim nước mắm tỏi ớt đường phèn ăn gọn lẹ trong 16 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
+    "title": "Bánh đa đỏ bề bề cua bể Hải Phòng sườn sụn chả lá lốt",
+    "description": "Bánh đa đỏ bề bề cua bể Hải Phòng sườn sụn chả lá lốt ăn gọn lẹ trong 14 phút, nóng hổi thơm ngon, nạp năng lượng kịp giờ chợp mắt trưa.",
     "estimatedCostVnd": 66000,
     "calories": 600,
-    "speedMinutes": 16,
+    "speedMinutes": 14,
     "napBuff": "💤 Tiết kiệm 30-40 phút ngủ trưa say giấc, chiều làm việc tỉnh táo 100%!",
     "tier": "gold",
     "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80"

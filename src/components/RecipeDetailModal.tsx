@@ -21,12 +21,29 @@ import {
   Pause,
   Bell,
   CheckCircle2,
-  Volume2
+  Volume2,
+  FileText
 } from 'lucide-react';
 import { SafeImage } from './SafeImage';
 import { Ingredient, CookingInstruction } from '../types';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
 import { recordAdImpression, recordVolunteerAdWatched, isUserAdFree } from '../utils/adTrackingService';
+
+// Gen Z Easter Egg Funny Quotes for "Nấu rảnh tay"
+const GEN_Z_HANDS_FREE_QUOTES = [
+  "Rảnh tay lướt TikTok đê mà vẫn nấu được ngon ơ! 📱✨",
+  "Bật mode chill: Tay lướt Threads hóng biến, nồi cơm vẫn tự sôi thơm phức 🍲💅",
+  "Đầu bếp hệ Gen Z: Nấu ăn bằng tâm linh, canh giờ bằng thuật toán Tóp Tóp 🔮🧑‍🍳",
+  "Nấu ăn không quạu: Tay lướt video, mắt liếc nồi canh, 10 điểm không có nhưng! 💯😎",
+  "Bận chữa lành trên Reels nhưng bếp núc vẫn keo lỳ tái châu nha mí bà 💖🥗",
+  "Rảnh tay chốt đơn Shopee, nồi thịt kho vẫn lên màu chuẩn cánh gián cực mượt 🛒🍳",
+  "Flex nhẹ khả năng đa nhiệm: Vừa hóng drama vừa luộc rau xanh mướt không bị úa 🥬🔥",
+  "Hệ tư tưởng nấu ăn mới: Thong dong như idol Kpop, món ngon ra lò xịn đét 🎤🥘",
+  "Ủa alo, rảnh tay thế này làm một con nhảy biến hình xong là đồ ăn chín vừa đẹp! 💃🍲",
+  "Bật mood thảnh thơi: Việc gì khó có MealWise lo, việc bạn là slay và măm măm ✨😋",
+  "Trạng thái hiện tại: Đầu óc trên mây, tay bấm điện thoại, mâm cơm vẫn chuẩn cơm mẹ nấu! 🚀🍛",
+  "Không áp lực, chỉ có ẩm thực! Vừa nghe lofi vừa nấu ăn đỉnh chóp hết nấc 🎧🍳"
+];
 
 interface CategorizedGroup {
   key: 'thit-ca' | 'rau-cu' | 'gia-vi';
@@ -48,6 +65,9 @@ export const RecipeDetailModal: React.FC = () => {
   // Interactive Ingredient Checklist State
   const [checkedIngredients, setCheckedIngredients] = useState<Record<string, boolean>>({});
 
+  // 2-Step Recipe Navigation: Step 1 (Ingredients) -> Step 2 (Cooking Instructions)
+  const [cookingPhase, setCookingPhase] = useState<1 | 2>(1);
+
   // Cooking Steps Accordion & Progress State
   const [expandedSteps, setExpandedSteps] = useState<Record<number, boolean>>({});
   const [completedSteps, setCompletedSteps] = useState<Record<number, boolean>>({});
@@ -56,6 +76,9 @@ export const RecipeDetailModal: React.FC = () => {
   const [isHandsFreeMode, setIsHandsFreeMode] = useState<boolean>(false);
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
   const [showHandsFreeIngredients, setShowHandsFreeIngredients] = useState<boolean>(false);
+
+  // Gen Z Easter Egg Quote Popup State
+  const [easterEggQuote, setEasterEggQuote] = useState<string | null>(null);
 
   // Actionable Countdown Timer State
   const [isTimerOpen, setIsTimerOpen] = useState<boolean>(false);
@@ -66,6 +89,13 @@ export const RecipeDetailModal: React.FC = () => {
 
   // 30s Meal Completion Ad State (Triggers on ticking final step)
   const [isCompletionAdOpen, setIsCompletionAdOpen] = useState<boolean>(false);
+
+  // Roll a funny randomized Gen Z Easter Egg Quote
+  const rollNewEasterEggQuote = () => {
+    const available = GEN_Z_HANDS_FREE_QUOTES.filter(q => q !== easterEggQuote);
+    const randomQuote = available[Math.floor(Math.random() * available.length)] || GEN_Z_HANDS_FREE_QUOTES[0];
+    setEasterEggQuote(randomQuote);
+  };
 
   // Play audio alert safely using Web Audio API
   const playTimerAlarm = () => {
@@ -93,6 +123,7 @@ export const RecipeDetailModal: React.FC = () => {
   useEffect(() => {
     if (selectedRecipe) {
       setServings(selectedRecipe.servings || 4);
+      setCookingPhase(1);
       setIsHandsFreeMode(false);
       setActiveStepIndex(0);
       setShowHandsFreeIngredients(false);
@@ -717,29 +748,39 @@ export const RecipeDetailModal: React.FC = () => {
           {isHandsFreeMode ? (
             <div className="space-y-4 animate-fade-in">
               {/* Step Mode Header & Switcher */}
-              <div className="p-4 rounded-3xl bg-[#FAF8F5] dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] space-y-3">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="p-2 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-950">
-                      <ChefHat className="w-4 h-4" />
-                    </span>
-                    <div>
-                      <h3 className="text-xs font-black uppercase tracking-wider text-stone-900 dark:text-stone-200">
-                        Chế Độ Nấu Từng Bước (Hands-Free)
-                      </h3>
-                      <p className="text-[11px] text-stone-600 dark:text-stone-400">
-                        Theo dõi công đoạn nấu dễ dàng trong gian bếp
-                      </p>
-                    </div>
+              <div className="p-3.5 sm:p-4 rounded-3xl bg-[#FAF8F5] dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] space-y-2.5">
+                {/* Centered Mode Toggle: Công thức vs Thực hành */}
+                <div className="flex justify-center">
+                  <div className="inline-flex items-center p-0.5 rounded-xl bg-stone-200/60 dark:bg-stone-800 border border-stone-300/60 dark:border-stone-700/80 shadow-xs select-none">
+                    <button
+                      type="button"
+                      onClick={() => setIsHandsFreeMode(false)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[30px] ${
+                        !isHandsFreeMode
+                          ? 'bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-xs'
+                          : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                      }`}
+                    >
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>Công thức</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => enterHandsFreeMode(activeStepIndex >= 0 ? activeStepIndex : 0)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[30px] ${
+                        isHandsFreeMode
+                          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-xs'
+                          : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                      }`}
+                    >
+                      <ChefHat className="w-3.5 h-3.5" />
+                      <span>Thực hành</span>
+                    </button>
                   </div>
-
-                  <span className="px-3 py-1 rounded-full bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs font-black text-stone-800 dark:text-stone-200 shadow-xs">
-                    Bước {activeStepIndex + 1} / {totalSteps}
-                  </span>
                 </div>
 
-                {/* Step Dots Progress Strip */}
-                <div className="flex items-center gap-1.5 pt-1">
+                {/* Step Dots Progress Strip - Slimmed Down */}
+                <div className="flex items-center gap-1.5 py-1">
                   {selectedRecipe.instructions.map((inst, idx) => {
                     const isStepDone = !!completedSteps[inst.step];
                     const isStepActive = idx === activeStepIndex;
@@ -748,9 +789,9 @@ export const RecipeDetailModal: React.FC = () => {
                         key={inst.step}
                         type="button"
                         onClick={() => setActiveStepIndex(idx)}
-                        className={`h-2.5 rounded-full transition-all cursor-pointer flex-1 min-h-[24px] ${
+                        className={`h-1.5 rounded-full transition-all cursor-pointer flex-1 ${
                           isStepActive 
-                            ? 'bg-stone-900 dark:bg-white ring-2 ring-stone-400/50 shadow-sm' 
+                            ? 'bg-stone-900 dark:bg-white ring-1 ring-stone-400/50 shadow-xs' 
                             : isStepDone 
                             ? 'bg-emerald-600/80 hover:bg-emerald-600' 
                             : 'bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600'
@@ -881,149 +922,241 @@ export const RecipeDetailModal: React.FC = () => {
             /* STANDARD OVERVIEW MODE                                       */
             /* ============================================================ */
             <>
-              {/* Hero Image & Title */}
-              <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden shadow-md shrink-0">
-                <SafeImage 
-                  src={selectedRecipe.imageUrl} 
-                  alt={selectedRecipe.title} 
-                  fallbackTitle={selectedRecipe.title}
-                  category={selectedRecipe.category}
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
-                <div className="absolute bottom-3 left-4 right-4">
-                  <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-                    <span className="px-2.5 py-0.5 rounded-full bg-stone-900/80 text-white border border-stone-700/60 text-[10px] font-extrabold inline-block backdrop-blur-sm">
-                      {selectedRecipe.region === 'bac' ? 'Vị Bắc' : selectedRecipe.region === 'nam' ? 'Vị Nam' : selectedRecipe.region === 'trung' ? 'Vị Trung' : 'Toàn Quốc'}
-                    </span>
-                    {selectedRecipe.tags && selectedRecipe.tags.map(tag => (
-                      <span key={tag} className="px-2 py-0.5 rounded-full bg-stone-900/70 text-stone-200 text-[10px] font-semibold backdrop-blur-sm border border-stone-700/60">
-                        #{tag}
-                      </span>
-                    ))}
+              {/* Hero Image, Metrics, and Description (Shown in Step 1, Hidden in Step 2 per user request) */}
+              {cookingPhase === 1 ? (
+                <>
+                  {/* Hero Image & Title */}
+                  <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden shadow-md shrink-0">
+                    <SafeImage 
+                      src={selectedRecipe.imageUrl} 
+                      alt={selectedRecipe.title} 
+                      fallbackTitle={selectedRecipe.title}
+                      category={selectedRecipe.category}
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
+                    <div className="absolute bottom-3 left-4 right-4">
+                      <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                        <span className="px-2.5 py-0.5 rounded-full bg-stone-900/80 text-white border border-stone-700/60 text-[10px] font-extrabold inline-block backdrop-blur-sm">
+                          {selectedRecipe.region === 'bac' ? 'Vị Bắc' : selectedRecipe.region === 'nam' ? 'Vị Nam' : selectedRecipe.region === 'trung' ? 'Vị Trung' : 'Toàn Quốc'}
+                        </span>
+                        {selectedRecipe.tags && selectedRecipe.tags.map(tag => (
+                          <span key={tag} className="px-2 py-0.5 rounded-full bg-stone-900/70 text-stone-200 text-[10px] font-semibold backdrop-blur-sm border border-stone-700/60">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                        {selectedRecipe.title}
+                      </h2>
+                    </div>
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                    {selectedRecipe.title}
-                  </h2>
-                </div>
-              </div>
 
-              {/* Metrics & Servings Stepper Grid (Preserving exact grid class for layout tests) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-center">
-                
-                {/* Metric 1: Time */}
-                <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
-                    THỜI GIAN
-                  </span>
-                  <span className="text-xs font-black text-stone-900 dark:text-white flex items-center justify-center gap-1 mt-1">
-                    <Clock className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
-                    {selectedRecipe.cookTimeMinutes} phút
-                  </span>
-                  <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
-                    Chuẩn bị: {selectedRecipe.prepTimeMinutes}p
-                  </span>
-                </div>
-
-                {/* Metric 2: Interactive Servings Stepper */}
-                <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
-                    KHẨU PHẦN
-                  </span>
-                  <div className="flex items-center gap-1 mt-1 justify-center">
-                    <button
-                      type="button"
-                      onClick={() => setServings(s => Math.max(1, s - 1))}
-                      disabled={servings <= 1}
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
-                      aria-label="Giảm khẩu phần"
-                    >
-                      -
-                    </button>
-                    <div className="flex items-center bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-lg px-1.5 py-0.5 shadow-xs">
-                      <input
-                        type="number"
-                        min={1}
-                        max={20}
-                        value={servings}
-                        onChange={(e) => {
-                          const val = parseInt(e.target.value, 10);
-                          if (!isNaN(val)) {
-                            setServings(Math.max(1, Math.min(20, val)));
-                          } else if (e.target.value === '') {
-                            setServings(1);
-                          }
-                        }}
-                        className="w-7 text-center text-xs font-black text-stone-900 dark:text-white bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        aria-label="Số người ăn"
-                      />
-                      <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 select-none">
-                        người
+                  {/* Metrics & Servings Stepper Grid (Preserving exact grid class for layout tests) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-center">
+                    
+                    {/* Metric 1: Time */}
+                    <div className="flex flex-col items-center justify-center p-1">
+                      <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
+                        THỜI GIAN
+                      </span>
+                      <span className="text-xs font-black text-stone-900 dark:text-white flex items-center justify-center gap-1 mt-1">
+                        <Clock className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
+                        {selectedRecipe.cookTimeMinutes} phút
                       </span>
                     </div>
+
+                    {/* Metric 2: Interactive Servings Stepper */}
+                    <div className="flex flex-col items-center justify-center p-1">
+                      <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
+                        KHẨU PHẦN
+                      </span>
+                      <div className="flex items-center gap-1 mt-1 justify-center">
+                        <button
+                          type="button"
+                          onClick={() => setServings(s => Math.max(1, s - 1))}
+                          disabled={servings <= 1}
+                          className="w-7 h-7 rounded-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
+                          aria-label="Giảm khẩu phần"
+                        >
+                          -
+                        </button>
+                        <div className="flex items-center bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-lg px-1.5 py-0.5 shadow-xs">
+                          <input
+                            type="number"
+                            min={1}
+                            max={20}
+                            value={servings}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value, 10);
+                              if (!isNaN(val)) {
+                                setServings(Math.max(1, Math.min(20, val)));
+                              } else if (e.target.value === '') {
+                                setServings(1);
+                              }
+                            }}
+                            className="w-7 text-center text-xs font-black text-stone-900 dark:text-white bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            aria-label="Số người ăn"
+                          />
+                          <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 select-none">
+                            người
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setServings(s => Math.min(20, s + 1))}
+                          disabled={servings >= 20}
+                          className="w-7 h-7 rounded-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
+                          aria-label="Tăng khẩu phần"
+                        >
+                          +
+                        </button>
+                      </div>
+                      {servings !== selectedRecipe.servings && (
+                        <button
+                          type="button"
+                          onClick={() => setServings(selectedRecipe.servings)}
+                          className="text-[10px] text-stone-700 dark:text-stone-300 font-bold hover:underline mt-0.5 truncate cursor-pointer"
+                        >
+                          Gốc: {selectedRecipe.servings} người
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Metric 3: Scaled Cost */}
+                    <div className="flex flex-col items-center justify-center p-1">
+                      <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
+                        CHI PHÍ DỰ KIẾN
+                      </span>
+                      <span className="text-xs font-black text-stone-900 dark:text-white block mt-1">
+                        {scaledCost.toLocaleString('vi-VN')} đ
+                      </span>
+                      <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
+                        ~{Math.round(scaledCost / servings).toLocaleString('vi-VN')} đ/người
+                      </span>
+                    </div>
+
+                    {/* Metric 4: Scaled Calories */}
+                    <div className="flex flex-col items-center justify-center p-1">
+                      <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
+                        CALO
+                      </span>
+                      <span className="text-xs font-black text-stone-900 dark:text-white flex items-center justify-center gap-0.5 mt-1">
+                        <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                        {scaledCalories} kcal
+                      </span>
+                      <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
+                        ~{Math.round(scaledCalories / servings)} kcal/người
+                      </span>
+                    </div>
+
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    {selectedRecipe.description}
+                  </p>
+                </>
+              ) : (
+                /* Centered Mode Toggle pushed to the top in Step 2 */
+                <div className="flex justify-center animate-fade-in py-0.5">
+                  <div className="inline-flex items-center p-0.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200/80 dark:border-stone-700/80 shadow-xs select-none">
                     <button
                       type="button"
-                      onClick={() => setServings(s => Math.min(20, s + 1))}
-                      disabled={servings >= 20}
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-200 flex items-center justify-center font-extrabold text-xs disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-xs cursor-pointer min-h-[36px] min-w-[36px]"
-                      aria-label="Tăng khẩu phần"
+                      onClick={() => setIsHandsFreeMode(false)}
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[32px] ${
+                        !isHandsFreeMode
+                          ? 'bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-xs'
+                          : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                      }`}
                     >
-                      +
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>Công thức</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => enterHandsFreeMode(activeStepIndex >= 0 ? activeStepIndex : 0)}
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[32px] ${
+                        isHandsFreeMode
+                          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-xs'
+                          : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                      }`}
+                    >
+                      <ChefHat className="w-3.5 h-3.5" />
+                      <span>Thực hành</span>
                     </button>
                   </div>
-                  {servings !== selectedRecipe.servings ? (
-                    <button
-                      type="button"
-                      onClick={() => setServings(selectedRecipe.servings)}
-                      className="text-[10px] text-stone-700 dark:text-stone-300 font-bold hover:underline mt-0.5 truncate cursor-pointer"
-                    >
-                      Gốc: {selectedRecipe.servings} người
-                    </button>
-                  ) : (
-                    <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5 truncate">Chuẩn vị gốc</span>
-                  )}
                 </div>
+              )}
 
-                {/* Metric 3: Scaled Cost */}
-                <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
-                    CHI PHÍ DỰ KIẾN
-                  </span>
-                  <span className="text-xs font-black text-stone-900 dark:text-white block mt-1">
-                    {scaledCost.toLocaleString('vi-VN')} đ
-                  </span>
-                  <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
-                    ~{Math.round(scaledCost / servings).toLocaleString('vi-VN')} đ/người
-                  </span>
+              {/* Connected Stepper Wizard Header (Step 1: Nguyên liệu -> Step 2: Chế biến) */}
+              <div className="py-3 px-6 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
+                <div className="relative flex items-center justify-between max-w-xs mx-auto">
+                  {/* Background connecting track line */}
+                  <div className="absolute left-[36px] right-[36px] top-4 h-0.5 bg-stone-200 dark:bg-stone-800 -z-0" />
+                  {/* Active filled connecting track line */}
+                  <div 
+                    className="absolute left-[36px] top-4 h-0.5 bg-emerald-500 transition-all duration-300 -z-0" 
+                    style={{ width: cookingPhase === 2 ? 'calc(100% - 72px)' : '0%' }}
+                  />
+
+                  {/* Step 1 Node */}
+                  <button
+                    type="button"
+                    onClick={() => setCookingPhase(1)}
+                    className="relative z-10 flex flex-col items-center gap-1.5 group cursor-pointer focus:outline-none"
+                  >
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all shadow-xs ${
+                      cookingPhase === 1
+                        ? 'bg-emerald-600 text-white ring-4 ring-emerald-500/20'
+                        : 'bg-emerald-600 text-white'
+                    }`}>
+                      {cookingPhase === 2 ? (
+                        <Check className="w-4 h-4 stroke-[3]" />
+                      ) : (
+                        <span>1</span>
+                      )}
+                    </div>
+                    <span className={`text-[11px] font-black tracking-tight transition-colors whitespace-nowrap ${
+                      cookingPhase === 1
+                        ? 'text-emerald-700 dark:text-emerald-400'
+                        : 'text-stone-700 dark:text-stone-300'
+                    }`}>
+                      Chuẩn Bị Nguyên Liệu
+                    </span>
+                  </button>
+
+                  {/* Step 2 Node */}
+                  <button
+                    type="button"
+                    onClick={() => setCookingPhase(2)}
+                    className="relative z-10 flex flex-col items-center gap-1.5 group cursor-pointer focus:outline-none"
+                  >
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all shadow-xs ${
+                      cookingPhase === 2
+                        ? 'bg-emerald-600 text-white ring-4 ring-emerald-500/20'
+                        : 'bg-stone-100 dark:bg-stone-800 border-2 border-stone-300 dark:border-stone-700 text-stone-400 dark:text-stone-500'
+                    }`}>
+                      <span>2</span>
+                    </div>
+                    <span className={`text-[11px] font-black tracking-tight transition-colors whitespace-nowrap ${
+                      cookingPhase === 2
+                        ? 'text-emerald-700 dark:text-emerald-400'
+                        : 'text-stone-400 dark:text-stone-500'
+                    }`}>
+                      Chế Biến Món Ăn
+                    </span>
+                  </button>
                 </div>
-
-                {/* Metric 4: Scaled Calories */}
-                <div className="flex flex-col items-center justify-center p-1">
-                  <span className="text-[10px] font-extrabold text-stone-600 dark:text-stone-400 block uppercase">
-                    CALO
-                  </span>
-                  <span className="text-xs font-black text-stone-900 dark:text-white flex items-center justify-center gap-0.5 mt-1">
-                    <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                    {scaledCalories} kcal
-                  </span>
-                  <span className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
-                    ~{Math.round(scaledCalories / servings)} kcal/người
-                  </span>
-                </div>
-
               </div>
 
-              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                {selectedRecipe.description}
-              </p>
-
               {/* ============================================================ */}
-              {/* CATEGORIZED INGREDIENT CHECKLIST SECTION                     */}
+              {/* STEP 1: CATEGORIZED INGREDIENT CHECKLIST SECTION             */}
               {/* ============================================================ */}
-              <div className="space-y-3 pt-1">
-                {/* Header (Preserving exact flex string for layout tests) */}
-                <div className="flex items-center justify-between flex-wrap gap-2">
+              {cookingPhase === 1 && (
+                <div className="space-y-3 pt-1 animate-fade-in">
+                  {/* Header (Preserving exact flex string for layout tests) */}
+                  <div className="flex items-center justify-between flex-wrap gap-2">
                   <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                     <Utensils className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
                     Nguyên Liệu Cần Chuẩn Bị
@@ -1123,67 +1256,44 @@ export const RecipeDetailModal: React.FC = () => {
                   ))}
                 </div>
 
+                {/* Step 1 Primary Confirmation CTA: User confirms having all ingredients -> Proceed to Step 2 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    checkAllIngredients();
+                    setCookingPhase(2);
+                    showToast('✨ Đã chuẩn bị đủ nguyên liệu! Bắt đầu chế biến món ăn.');
+                  }}
+                  className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-black text-xs shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer transition-all min-h-[46px]"
+                >
+                  <Check className="w-4 h-4 stroke-[3]" />
+                  <span>Tôi Đã Chuẩn Bị Đủ Nguyên Liệu — Bắt Đầu Nấu ➔</span>
+                </button>
+
                 {/* 1-Click Push to Grocery List (min 44px tap target) */}
                 <button
                   type="button"
                   onClick={handlePushToGrocery}
-                  className="w-full py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-md shadow-stone-900/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2 min-h-[44px]"
+                  className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[40px]"
                 >
-                  <ShoppingCart className="w-4 h-4 text-white dark:text-stone-950 shrink-0" />
+                  <ShoppingCart className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300 shrink-0" />
                   <span>🛒 Đi Chợ Món Này ({servings} người • {selectedRecipe.ingredients.length} nguyên liệu)</span>
                 </button>
               </div>
+            )}
 
-              {/* ============================================================ */}
-              {/* COOKING STEPS ACCORDION WITH PROGRESS TRACKING               */}
-              {/* ============================================================ */}
-              <div className="space-y-3 pt-3 border-t border-[#E8E2D8] dark:border-[#252220]">
+            {/* ============================================================ */}
+            {/* STEP 2: COOKING STEPS ACCORDION WITH PROGRESS TRACKING       */}
+            {/* ============================================================ */}
+            {cookingPhase === 2 && (
+              <div className="space-y-3 pt-1 animate-fade-in">
                 
-                {/* Header with Title & Action Controls */}
-                <div className="flex items-center justify-between flex-wrap gap-2">
+                {/* Header with Title */}
+                <div className="flex items-center justify-between">
                   <h3 className="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                     <ChefHat className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
                     Các Bước Chế Biến & Tiến Độ
                   </h3>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => enterHandsFreeMode(0)}
-                      className="px-2.5 py-1 rounded-lg bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-black text-[11px] flex items-center gap-1 shadow-xs hover:bg-stone-800 dark:hover:bg-stone-100 transition-colors min-h-[32px] cursor-pointer"
-                    >
-                      <ChefHat className="w-3 h-3" />
-                      <span>Chế Độ Nấu Từng Bước</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={expandAllSteps}
-                      className="text-[10px] font-bold text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white transition-colors cursor-pointer"
-                    >
-                      Mở tất cả
-                    </button>
-                    <span className="text-stone-300 dark:text-stone-700">•</span>
-                    <button
-                      type="button"
-                      onClick={collapseAllSteps}
-                      className="text-[10px] font-bold text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white transition-colors cursor-pointer"
-                    >
-                      Thu gọn
-                    </button>
-                    {completedCount > 0 && (
-                      <>
-                        <span className="text-stone-300 dark:text-stone-700">•</span>
-                        <button
-                          type="button"
-                          onClick={resetCookingProgress}
-                          className="text-[10px] font-bold text-stone-700 dark:text-stone-300 hover:underline flex items-center gap-0.5 cursor-pointer"
-                        >
-                          <RotateCcw className="w-2.5 h-2.5" />
-                          Đặt lại
-                        </button>
-                      </>
-                    )}
-                  </div>
                 </div>
 
                 {/* Progress Bar & Status */}
@@ -1298,9 +1408,9 @@ export const RecipeDetailModal: React.FC = () => {
                               )}
                               <button
                                 type="button"
-                                onClick={() => enterHandsFreeMode(inst.step - 1)}
+                                onClick={() => rollNewEasterEggQuote()}
                                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer min-h-[28px]"
-                                title="Bật chế độ rảnh tay cho bước này"
+                                title="Bí kíp rảnh tay lướt Tóp Tóp ✨"
                               >
                                 <ChefHat className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                                 <span>Nấu rảnh tay</span>
@@ -1337,9 +1447,18 @@ export const RecipeDetailModal: React.FC = () => {
                     </p>
                   </div>
                 )}
+                {/* Return to Step 1 Ingredients */}
+                <button
+                  type="button"
+                  onClick={() => setCookingPhase(1)}
+                  className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-h-[40px] mt-2"
+                >
+                  <span>⟵ Xem lại danh sách nguyên liệu (Bước 1)</span>
+                </button>
               </div>
-            </>
-          )}
+            )}
+          </>
+        )}
 
         </div>
       </div>
@@ -1368,6 +1487,57 @@ export const RecipeDetailModal: React.FC = () => {
           completionTitle="🎉 Món Ăn Đã Hoàn Tất!"
           completionSubtitle={`Bạn đã hoàn tất tất cả các bước chế biến món "${selectedRecipe.title}" (${servings} người ăn). Chúc cả nhà có một bữa cơm thơm ngon tròn vị!`}
         />
+      )}
+
+      {/* Gen Z Cooking Easter Egg Popup Modal */}
+      {easterEggQuote && (
+        <div 
+          className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in"
+          onClick={() => setEasterEggQuote(null)}
+        >
+          <div 
+            className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-[#1A1918] border border-amber-300/80 dark:border-amber-700/60 p-5 shadow-2xl space-y-4 text-center animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header Badge */}
+            <div className="flex items-center justify-center gap-1.5">
+              <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white shadow-xs flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Gen Z Bếp Mode · Easter Egg</span>
+              </span>
+            </div>
+
+            {/* Funny Quote Box */}
+            <div className="p-4 rounded-2xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/40 relative">
+              <div className="text-3xl mb-2 select-none animate-bounce">📱✨</div>
+              <p className="text-sm sm:text-base font-extrabold text-stone-900 dark:text-stone-100 leading-snug">
+                "{easterEggQuote}"
+              </p>
+              <div className="mt-2.5 flex items-center justify-center gap-1.5 flex-wrap">
+                <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-100/80 dark:bg-amber-900/40 px-2 py-0.5 rounded-full">
+                  #RảnhTayLướtTópTóp
+                </span>
+                <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-100/80 dark:bg-amber-900/40 px-2 py-0.5 rounded-full">
+                  #VẫnNấuNgon
+                </span>
+                <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-100/80 dark:bg-amber-900/40 px-2 py-0.5 rounded-full">
+                  #MealWiseGenZ
+                </span>
+              </div>
+            </div>
+
+            {/* Action Button */}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => setEasterEggQuote(null)}
+                className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-extrabold text-xs transition-colors cursor-pointer min-h-[40px] flex items-center justify-center gap-1.5 shadow-xs"
+              >
+                <span>😂 Quá chuẩn / Đóng</span>
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

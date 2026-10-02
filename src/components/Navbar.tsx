@@ -88,9 +88,9 @@ export const Navbar: React.FC = () => {
           </div>
         </button>
 
-        {/* Center: Active Screen Badge Pill */}
+        {/* Center: Active Screen Badge Pill (hidden on clean mobile feed) */}
         <div 
-          className="px-2.5 min-[360px]:px-3 py-1 rounded-full bg-stone-100/90 dark:bg-stone-850/90 text-[10.5px] min-[360px]:text-[11px] sm:text-xs font-black text-stone-800 dark:text-stone-200 max-w-[115px] min-[360px]:max-w-[150px] min-[390px]:max-w-[185px] sm:max-w-[240px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis border border-stone-200/80 dark:border-stone-700/60 shadow-2xs"
+          className="hidden px-2.5 min-[360px]:px-3 py-1 rounded-full bg-stone-100/90 dark:bg-stone-850/90 text-[10.5px] min-[360px]:text-[11px] sm:text-xs font-black text-stone-800 dark:text-stone-200 max-w-[115px] min-[360px]:max-w-[150px] min-[390px]:max-w-[185px] sm:max-w-[240px] text-center min-w-0 shrink whitespace-nowrap overflow-hidden text-ellipsis border border-stone-200/80 dark:border-stone-700/60 shadow-2xs"
           title={currentTitle.full}
         >
           <span className="sm:hidden">{currentTitle.short}</span>
@@ -150,7 +150,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="w-8 h-8 rounded-full bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-850/90 dark:hover:bg-stone-800 border border-stone-200/70 dark:border-stone-700/60 text-stone-700 dark:text-stone-200 transition-all flex items-center justify-center active:scale-95 focus:outline-none shadow-2xs"
+            className="hidden w-8 h-8 rounded-full bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-850/90 dark:hover:bg-stone-800 border border-stone-200/70 dark:border-stone-700/60 text-stone-700 dark:text-stone-200 transition-all items-center justify-center active:scale-95 focus:outline-none shadow-2xs"
             title={theme === 'light' ? 'Chuyển sang Chế độ Tối' : 'Chuyển sang Chế độ Sáng'}
             aria-label="Chuyển đổi giao diện Sáng / Tối"
           >
@@ -165,7 +165,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={resetOnboarding}
-            className="w-8 h-8 rounded-full bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-850/90 dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:text-stone-500 dark:hover:text-stone-200 border border-stone-200/70 dark:border-stone-700/60 transition-all flex items-center justify-center active:scale-95 focus:outline-none shadow-2xs"
+            className="hidden w-8 h-8 rounded-full bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-850/90 dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:text-stone-500 dark:hover:text-stone-200 border border-stone-200/70 dark:border-stone-700/60 transition-all items-center justify-center active:scale-95 focus:outline-none shadow-2xs"
             title="Cài đặt lại khẩu vị"
             aria-label="Cài đặt lại khẩu vị"
           >

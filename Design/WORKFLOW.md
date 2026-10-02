@@ -756,3 +756,255 @@ The formulas, presets, and safe zone calculators defined in this handbook are fu
 
 ---
 *Codified and approved for production use across all visual asset creation and Remotion motion pipelines.*
+
+---
+
+## 7. UI/UX Mobile Flow Scaffolding & Design Intelligence Engine
+
+### 7.1 Executive Overview & Architectural Foundation
+
+Section 7 operationalizes the **`ui-ux-pro-max`** design intelligence skill directly within the MealWise mobile engineering workflow. Modern mobile product creation requires an end-to-end disciplined bridge between design tokens, human hand biomechanics, finite state machines, and accessible React/Tailwind implementations.
+
+Rather than authoring ad-hoc views that fail under edge conditions, every mobile feature in MealWise is scaffolded using the **5-Step Rapid Flow Scaffolding Protocol** and anchored in the **5 Invariant View States Architecture**.
+
+```
++---------------------------------------------------------------------------------------------------+
+|                     5-STEP RAPID FLOW SCAFFOLDING & DESIGN INTELLIGENCE ENGINE                    |
++-------------------+-------------------+-------------------+-------------------+-------------------+
+| Step 1: Domain    | Step 2: Spatial   | Step 3: 5-State   | Step 4: Token     | Step 5: Ergonomic |
+| Analysis &        | Mapping & Thumb-  | Invariant State   | Binding & Luxury  | Hardening & UX    |
+| Invariant Rules   | Zone Partitioning | Machine Modeling  | Stone Theming     | Audit Validation  |
++-------------------+-------------------+-------------------+-------------------+-------------------+
+```
+
+---
+
+### 7.2 The 5-Step Rapid Flow Scaffolding Protocol
+
+#### Step 1: Domain Analysis & Behavioral Invariants
+Before generating JSX markup or styling:
+1. **Culinary Psychology**:
+   - Establish high food photography purity: dish visuals depict appetizing food, produce, or kitchenware; never human faces.
+   - Maintain bilingual cleanliness: never place tautological/redundant English and Vietnamese words together (e.g. no "Salad Xà Lách", no "Canh súp"; use parentheses for recognized Western titles like `Bánh Mì Nướng Kiểu Pháp (French Toast)`).
+2. **Account Context & Gating**:
+   - Determine if the feature requires authentication.
+   - If unregistered guest (`!isRegistered`), feature gating must enforce lock badges (`Đi Chợ Chung 🔒`) with graceful registration prompts.
+   - Ensure onboarding completion is account-scoped (`mealwise_onboarding_completed_${emailLower}`).
+
+#### Step 2: Spatial Mapping & Thumb-Zone Partitioning
+Partition the viewport into the 3 biomechanical reach zones:
+- **Natural Zone (Bottom 40%)**:
+  - Place all primary conversion buttons (`min-h-[44px]`), tabs, bottom sheet confirmation triggers, and sticky bottom action bars.
+  - Ensures single-handed completion of $\ge 90\%$ of frequent kitchen/shopping interactions.
+- **Reach Zone (Middle 35%)**:
+  - Place scrollable feed cards, filter pills, recipe search inputs, and quantity steppers (`-` / `+`).
+- **Hard Zone (Top 25%)**:
+  - Reserve for passive screen headers, step indicators, and secondary navigation back arrows.
+  - NEVER place primary conversion buttons in this zone.
+
+#### Step 3: 5-State Invariant Architecture Modeling
+Every mobile screen, modal sheet, and drawer container must explicitly model all 5 states:
+1. `STATE_EMPTY`: Render empathetic title, app-themed icon, and thumb-zone primary CTA button. Never render a blank screen.
+2. `STATE_LOADING`: Render pulse shimmering skeleton cards replicating exact geometry ($\text{CLS} = 0$). Never use an isolated spinning wheel.
+3. `STATE_ACTIVE`: Render scannable populated cards with $\ge 44\text{px}$ touch targets and 60fps virtualization for lists $> 50$ items.
+4. `STATE_ERROR`: Render human-readable diagnostic copy with an immediate, prominent "Thử lại" (Retry) recovery CTA wired to an idempotent callback.
+5. `STATE_PARTIAL`: Render active filter pills with match counter and a 1-tap "Xóa bộ lọc" (Clear filters) CTA when zero items match.
+
+#### Step 4: Design Token Binding & Luxury Stone Theming
+Bind all UI elements directly to the W3C DTCG tokens defined in `tokens.json` and `tokens.ts`:
+- **Surfaces**:
+  - Light Canvas: `#FAF8F5` | Dark Canvas: `#121110` (WCAG Contrast $\ge 16.48:1$, AAA)
+  - Light Card: `#FFFFFF` | Dark Card: `#1A1918` (WCAG Contrast $\ge 17.06:1$, AAA)
+  - Light Border: `#E8E2D8` | Dark Border: `#252220` (1px subtle divider)
+- **Primary Text**:
+  - Light: `#1C1917` | Dark: `#FAF8F5`
+- **Primary Brand Indigo**:
+  - `#4F46E5` (CTA), `#4338CA` (Hover), `#3730A3` (Active)
+- **Semantic Accents**:
+  - Success: `#064E3B` text on `#ECFDF5` | Warning: `#78350F` on `#FFFBEB` | Error: `#881337` on `#FFF1F2`
+
+#### Step 5: Ergonomic Hardening & Accessibility Audit
+1. **Touch Targets**: All clickable surfaces meet $\ge 44 \times 44\text{px}$ (or $\ge 48 \times 48\text{px}$ on Android) with $\ge 8\text{px}$ inter-target clearance.
+2. **Safe Area Insets**: Top notch `padding-top: max(16px, env(safe-area-inset-top))` and bottom home bar `padding-bottom: max(16px, env(safe-area-inset-bottom))`.
+3. **Zero Horizontal Overflow**: Apply `min-w-0` and `truncate` to all flex text containers to ensure $W_{\text{scroll}} \le W_{\text{viewport}}$.
+4. **React Rules of Hooks Invariant**: Hooks (`useState`, `useMemo`, `useCallback`, `useEffect`, `useRef`) placed unconditionally at top of component body.
+
+---
+
+### 7.3 The 5 Core Mobile Flow Blueprints
+
+#### Blueprint 1: Onboarding 4-Step Wizard Flow
+- **Purpose**: Rapid personalization without cognitive fatigue.
+- **Steps**:
+  1. *Region Selection*: Bắc, Trung, Nam culinary taste profiles.
+  2. *Family Composition*: Household size stepper (1 to 10+ persons).
+  3. *Budget Target*: Daily / weekly grocery target in VND (Standard vs Western tier).
+  4. *Dietary Preferences*: Balanced, Low-carb, Vegetarian, Seafood focus.
+- **Plan Retention Protection**:
+  - When an unregistered guest who created custom weekly meal plans registers, provide an explicit option: "Giữ lại thực đơn tuần hiện tại" (Retain current weekly plan) vs "Tạo mới hoàn toàn" (Create fresh). Never silently overwrite unsaved guest plans.
+- **Component Blueprint**: `skills/ui-ux-pro-max/templates/wizard-stepper.tsx`.
+
+#### Blueprint 2: Exploratory Catalog Browsing Flow
+- **Purpose**: High-velocity culinary discovery with instant visual feedback.
+- **Features**:
+  - Diacritics-insensitive Vietnamese search (e.g. searching "thit kho" matches "Thịt Kho Tàu").
+  - Multi-tag category pill row in Reach Zone.
+  - Active filter counter with 1-tap "Xóa bộ lọc" (`STATE_PARTIAL`).
+  - Shimmer skeleton grid (`STATE_LOADING`) with zero CLS.
+- **Component Blueprints**: `skills/ui-ux-pro-max/templates/skeleton-card.tsx`, `empty-state-card.tsx`.
+
+#### Blueprint 3: Recipe & Meal Detail Flow
+- **Purpose**: Step-by-step culinary execution in kitchen contexts.
+- **Features**:
+  - Touch-draggable bottom sheet modal with $>75\text{px}$ drag-to-dismiss threshold.
+  - Servings scaler with proportional ingredient quantity math ($Q_{\text{scaled}} = Q_{\text{base}} \times \frac{S_{\text{target}}}{S_{\text{base}}}$).
+  - 1-Click "Đẩy vào giỏ đi chợ" (Push to grocery list) primary action button in Natural Zone.
+- **Component Blueprint**: `skills/ui-ux-pro-max/templates/mobile-drawer-sheet.tsx`.
+
+#### Blueprint 4: Grocery List & Channel Checkout Flow
+- **Purpose**: Efficient in-store grocery shopping with real-time price intelligence.
+- **Features**:
+  - Supermarket aisle categorization (Rau củ, Thịt cá, Gia vị, Đồ khô).
+  - Store channel price multipliers:
+    - Chợ truyền thống (Local Wet Market): $1.00\times$ (baseline)
+    - Siêu thị phổ thông (Standard Supermarket - Co.opmart/WinMart): $1.08\times$
+    - Siêu thị cao cấp (Premium Gourmet - Annam Gourmet): $1.15\times$
+  - Natural-zone sticky bottom bar displaying aggregate estimated cost and primary "Hoàn tất đi chợ" CTA.
+- **Component Blueprint**: `skills/ui-ux-pro-max/templates/sticky-bottom-bar.tsx`.
+
+#### Blueprint 5: Collaborative Grocery Sharing Flow
+- **Purpose**: Real-time multi-person shopping synchronization with room codes.
+- **Features**:
+  - 6-character alphanumeric room codes with 1-hour Time-To-Live (TTL).
+  - WebRTC / WebSocket synchronization of checked-off ingredients.
+  - **Guest Account Feature Gating**: If user is an unregistered guest (`!isRegistered`), Collaborative Sharing is locked. The UI button displays `Đi Chợ Chung 🔒` and opens the registration modal when tapped.
+- **Component Blueprints**: `skills/ui-ux-pro-max/templates/sticky-bottom-bar.tsx`, `mobile-drawer-sheet.tsx`.
+
+---
+
+### 7.4 Tailwind CSS Implementation Recipes
+
+#### Recipe 1: Luxury Stone Screen Container with Safe Area Padding
+```tsx
+export const MobileScreenContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="w-full min-h-screen bg-[#FAF8F5] dark:bg-[#121110] text-[#1C1917] dark:text-[#FAF8F5] pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] px-4 box-border">
+      <div className="w-full max-w-lg mx-auto flex flex-col min-w-0">
+        {children}
+      </div>
+    </div>
+  );
+};
+```
+
+#### Recipe 2: Ergonomic Card with Accessible Tap Target & Zero Overflow
+```tsx
+export const ScannableMealCard: React.FC<{
+  title: string;
+  category: string;
+  cookTime: string;
+  onSelect: () => void;
+}> = ({ title, category, cookTime, onSelect }) => {
+  return (
+    <article
+      onClick={onSelect}
+      className="flex items-center justify-between p-4 mb-3 rounded-2xl bg-[#FFFFFF] dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm hover:shadow-md transition-shadow cursor-pointer min-h-[56px] min-w-0 w-full"
+    >
+      <div className="min-w-0 pr-3 flex-1">
+        <span className="text-[11px] font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider block mb-0.5">
+          {category}
+        </span>
+        <h3 className="text-base font-semibold text-[#1C1917] dark:text-[#FAF8F5] truncate">
+          {title}
+        </h3>
+        <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
+          Thời gian nấu: {cookTime}
+        </p>
+      </div>
+      <button
+        type="button"
+        aria-label={`Xem chi tiết ${title}`}
+        className="shrink-0 flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-[#4F46E5] hover:text-white transition-colors"
+      >
+        →
+      </button>
+    </article>
+  );
+};
+```
+
+#### Recipe 3: State Machine Controlled View Container
+```tsx
+export const MasterFlowView: React.FC<{
+  state: 'empty' | 'loading' | 'active' | 'error' | 'partial';
+  onRetry: () => void;
+  onClearFilters: () => void;
+}> = ({ state, onRetry, onClearFilters }) => {
+  // REACT RULES OF HOOKS INVARIANT: Placed unconditionally at top
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  if (state === 'loading') {
+    return (
+      <div className="space-y-3">
+        <SkeletonCard lines={2} showBadge showAction />
+        <SkeletonCard lines={2} showBadge showAction />
+      </div>
+    );
+  }
+
+  if (state === 'error') {
+    return (
+      <div className="p-6 text-center rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 my-4">
+        <h4 className="font-semibold text-rose-900 dark:text-rose-200 mb-1">
+          Không thể tải dữ liệu
+        </h4>
+        <p className="text-xs text-rose-700 dark:text-rose-300 mb-4">
+          Vui lòng kiểm tra lại kết nối mạng của bạn.
+        </p>
+        <button
+          onClick={onRetry}
+          className="px-6 py-3 min-h-[44px] bg-rose-600 text-white rounded-xl font-medium text-sm shadow-sm"
+        >
+          Thử lại
+        </button>
+      </div>
+    );
+  }
+
+  if (state === 'empty') {
+    return (
+      <EmptyStateCard
+        title="Chưa Có Món Nào Trong Thực Đơn"
+        description="Chọn các món ngon gợi ý để bắt đầu lên thực đơn cho tuần mới."
+        actionLabel="+ Khám Phá Món Ngay"
+      />
+    );
+  }
+
+  if (state === 'partial') {
+    return (
+      <div className="p-6 text-center rounded-2xl bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 my-4">
+        <h4 className="font-semibold text-stone-900 dark:text-stone-100 mb-1">
+          Không tìm thấy món ăn phù hợp
+        </h4>
+        <p className="text-xs text-stone-500 dark:text-stone-400 mb-4">
+          Hãy thử xóa bớt bộ lọc hoặc tìm kiếm với từ khóa khác.
+        </p>
+        <button
+          onClick={onClearFilters}
+          className="px-6 py-3 min-h-[44px] bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 rounded-xl font-medium text-sm"
+        >
+          Xóa bộ lọc
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {/* Active Populated List */}
+    </div>
+  );
+};
+```
+
