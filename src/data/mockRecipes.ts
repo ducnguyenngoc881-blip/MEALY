@@ -2363,7 +2363,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { step: 2, title: 'Rán nem 2 lửa giòn rụm', durationMinutes: 15, heatLevel: 'lửa vừa', content: 'Rán ngập dầu lửa vừa cho chín tới lần 1. Khi ăn rán lại lần 2 lửa lớn cho vỏ ngoài vàng ruộm giòn tan.', tip: 'Kỹ thuật rán 2 lửa giúp nem giòn rụm hàng giờ không ỉu.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Quết chút giấm ăn pha bia lên mặt bánh đa nem trước khi gói giúp vỏ nem khi rán có màu vàng cánh gián óng ả và giòn tan suốt cả buổi.',
-    tags: ['Miền Bắc', 'Món Mặn', 'Nem Rán', 'Đặc Sản', 'Bán Chạy']
+    tags: ['Miền Bắc', 'Món Mặn', 'Nem Rán', 'Đặc Sản', 'Yêu Thích']
   },
   {
     id: 'ca-kho-rieng-tieu-ot',

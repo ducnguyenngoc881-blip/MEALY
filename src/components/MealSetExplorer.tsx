@@ -20,14 +20,15 @@ import { VietnameseMealSet, MealSlot } from '../types';
 import { matchesMealSetSearch } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
 
-export const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Bán Chạy', 'Tiết Kiệm', 'Đổi Vị', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
+export const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Yêu Thích', 'Tiết Kiệm', 'Đổi Vị', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
 
 export const TAG_DETAILS: Record<string, { icon: string; desc: string }> = {
   'Tất Cả': { icon: '🍽️', desc: 'Toàn bộ mâm cơm tuyển chọn' },
   'Giàu Đạm': { icon: '💪', desc: 'Nhiều thịt cá, năng lượng cao' },
   'Eat Clean': { icon: '🥗', desc: 'Ít dầu mỡ, thanh lành nhẹ bụng' },
   '1 Người': { icon: '👤', desc: 'Khẩu phần nhanh gọn, tiết kiệm' },
-  'Bán Chạy': { icon: '🔥', desc: 'Mâm cơm được yêu thích nhất' },
+  'Yêu Thích': { icon: '❤️', desc: 'Mâm cơm gia đình yêu thích nhất' },
+  'Bán Chạy': { icon: '❤️', desc: 'Mâm cơm gia đình yêu thích nhất' },
   'Tiết Kiệm': { icon: '💰', desc: 'Chi phí bình dân, hợp túi tiền' },
   'Đổi Vị': { icon: '🌟', desc: 'Món mới lạ miệng, không ngấy' },
   'Đồng Quê': { icon: '🌾', desc: 'Chuẩn vị cơm nhà dân dã' },
@@ -66,6 +67,21 @@ export const matchesRegionFilter = (
 
 export const matchesTagFilter = (set: VietnameseMealSet, tag: string): boolean => {
   if (tag === 'Tất Cả') return true;
+  if (tag === 'Yêu Thích' || tag === 'Bán Chạy') {
+    return Boolean(
+      set.tags &&
+        set.tags.some(t => {
+          const lower = t.toLowerCase();
+          return (
+            lower === 'yêu thích' ||
+            lower === 'yeu thich' ||
+            lower === 'bán chạy' ||
+            lower === 'ban chay' ||
+            lower === 'phổ biến'
+          );
+        })
+    );
+  }
   return Boolean(set.tags && set.tags.some(t => t.toLowerCase() === tag.toLowerCase()));
 };
 

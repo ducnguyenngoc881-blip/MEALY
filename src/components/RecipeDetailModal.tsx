@@ -22,7 +22,9 @@ import {
   Bell,
   CheckCircle2,
   Volume2,
-  FileText
+  FileText,
+  Gamepad2,
+  Dices
 } from 'lucide-react';
 import { SafeImage } from './SafeImage';
 import { Ingredient, CookingInstruction } from '../types';
@@ -86,6 +88,9 @@ export const RecipeDetailModal: React.FC = () => {
   const [timerSecondsLeft, setTimerSecondsLeft] = useState<number>(0);
   const [timerIsRunning, setTimerIsRunning] = useState<boolean>(false);
   const [timerLabel, setTimerLabel] = useState<string>('Hẹn giờ nấu');
+
+  // Gaming Loading-Screen Tips & Food Easter Eggs State
+  const [timerTipIndex, setTimerTipIndex] = useState<number>(0);
 
   // 30s Meal Completion Ad State (Triggers on ticking final step)
   const [isCompletionAdOpen, setIsCompletionAdOpen] = useState<boolean>(false);
@@ -321,6 +326,120 @@ export const RecipeDetailModal: React.FC = () => {
     return result;
   }, [selectedRecipe?.ingredients]);
 
+  // Generate contextual food tips + gaming loading-screen easter eggs
+  const loadingScreenTips = useMemo(() => {
+    if (!selectedRecipe) return [];
+    const tips: { text: string; tag: string; isEasterEgg?: boolean }[] = [];
+
+    // 1. Chef's secret if available
+    if (selectedRecipe.chefTip) {
+      tips.push({
+        text: `Bí quyết đầu bếp: ${selectedRecipe.chefTip}`,
+        tag: 'Bí Kíp Độc Quyền'
+      });
+    }
+
+    // 2. Food-specific techniques based on recipe name / ingredients
+    const titleLower = (selectedRecipe.title || '').toLowerCase();
+    if (titleLower.includes('kho') || titleLower.includes('rim') || titleLower.includes('ram')) {
+      tips.push({
+        text: 'Nấu kho lửa nhỏ: Để lửa liu riu giúp gia vị ngấm sâu vào từng thớ thịt mà nước sốt không bị cạn khét.',
+        tag: 'Mẹo Kho Rim'
+      });
+      tips.push({
+        text: 'Nước dừa tươi giúp món kho mềm bở tự nhiên và lên màu cánh gián óng ả cực đẹp mắt.',
+        tag: 'Mẹo Kho Rim'
+      });
+    }
+
+    if (titleLower.includes('canh') || titleLower.includes('súp') || titleLower.includes('lẩu')) {
+      tips.push({
+        text: 'Bí kíp nước dùng: Khi nước canh bắt đầu sôi, vặn nhỏ lửa và hớt sạch bọt để nước canh luôn trong veo thanh ngọt.',
+        tag: 'Mẹo Nấu Canh'
+      });
+      tips.push({
+        text: 'Nêm rau thơm (ngò rí, hành hoa, thì là) vào nồi canh ngay sau khi tắt bếp để giữ trọn hương thơm thanh khiết.',
+        tag: 'Mẹo Nấu Canh'
+      });
+    }
+
+    if (titleLower.includes('xào') || titleLower.includes('chiên') || titleLower.includes('rán')) {
+      tips.push({
+        text: 'Nhiệt độ chảo: Đợi dầu thật nóng già mới cho nguyên liệu vào để mặt ngoài giòn rụm mà bên trong vẫn mọng nước.',
+        tag: 'Kỹ Thuật Xào'
+      });
+      tips.push({
+        text: 'Kích hoạt khiên chống bắn mỡ: Rắc một nhúm muối nhỏ vào chảo dầu trước khi chiên rán để giảm 80% văng dầu!',
+        tag: 'Mẹo Chiên Rán'
+      });
+    }
+
+    if (titleLower.includes('rau') || titleLower.includes('luộc')) {
+      tips.push({
+        text: 'Luộc rau xanh ngọc: Cho chút muối hạt vào nồi nước sôi sùng sục và KHÔNG đậy nắp nồi để rau giữ nguyên sắc xanh.',
+        tag: 'Mẹo Luộc Rau'
+      });
+    }
+
+    // 3. Gaming Loading-Screen Food Easter Eggs
+    tips.push({
+      text: `🎂 "The cake is a lie!" Nhưng món "${selectedRecipe.title}" thơm lừng trước mặt bạn thì 100% là hàng thật giá thật!`,
+      tag: 'Easter Egg',
+      isEasterEgg: true
+    });
+    tips.push({
+      text: '🛡️ Buff kỹ năng: Giữ lửa nhỏ liu riu tăng +50% tỉ lệ thịt mềm tan ngấm trọn gia vị và đạt trạng thái "Cực Phẩm".',
+      tag: 'Loading Tip',
+      isEasterEgg: true
+    });
+    tips.push({
+      text: '🍄 Mẹo game thủ: Món này tuy không biến bạn thành Super Mario, nhưng bổ sung vitamin và năng lượng cực đỉnh!',
+      tag: 'Easter Egg',
+      isEasterEgg: true
+    });
+    tips.push({
+      text: '⚡ Combo sát thương khứu giác: Hành tỏi phi vàng + 1 thìa nước mắm ngon = Gây tương tư cho cả xóm trọ!',
+      tag: 'Loading Tip',
+      isEasterEgg: true
+    });
+    tips.push({
+      text: '🧙‍♂️ Lời nguyền nhà bếp: Đừng bao giờ rời mắt khỏi chảo thắng đường quá 15 giây nếu không muốn quay xe từ cánh gián sang bóng đêm!',
+      tag: 'Loading Tip',
+      isEasterEgg: true
+    });
+    tips.push({
+      text: '🏆 Achievement Unlocked: Nấu cơm chuẩn nước, hạt dẻo thơm không khô không nhão, phụ huynh chấm 10 điểm!',
+      tag: 'Achievement',
+      isEasterEgg: true
+    });
+    tips.push({
+      text: '🧀 "It\'s dangerous to go alone! Take this." Hãy luôn nếm thử một muỗng nhỏ trước khi bày ra mâm ăn nhé!',
+      tag: 'Easter Egg',
+      isEasterEgg: true
+    });
+    tips.push({
+      text: '🎮 Press [F] to pay respect cho những ai từng hì hục cắm cơm nhưng quên bấm nút "Cook".',
+      tag: 'Easter Egg',
+      isEasterEgg: true
+    });
+
+    return tips;
+  }, [selectedRecipe]);
+
+  // Auto-cycle tips when timer is running and timer drawer is open
+  useEffect(() => {
+    if (!isTimerOpen || !timerIsRunning || loadingScreenTips.length <= 1) return;
+    const interval = setInterval(() => {
+      setTimerTipIndex(prev => (prev + 1) % loadingScreenTips.length);
+    }, 7000);
+    return () => clearInterval(interval);
+  }, [isTimerOpen, timerIsRunning, loadingScreenTips.length]);
+
+  const nextLoadingTip = () => {
+    if (loadingScreenTips.length <= 1) return;
+    setTimerTipIndex(prev => (prev + 1) % loadingScreenTips.length);
+  };
+
   if (!selectedRecipe) return null;
 
   const scaledCost = Math.round(((selectedRecipe.estimatedCostVnd || 30000) * servings) / (selectedRecipe.servings || 4));
@@ -544,20 +663,15 @@ export const RecipeDetailModal: React.FC = () => {
           className="px-4 pt-2 sm:pt-4 pb-2 flex items-center justify-between shrink-0 select-none border-b border-stone-100 dark:border-stone-800/80 gap-2"
         >
           <div className="flex items-center gap-2 min-w-0 flex-1">
-            {isHandsFreeMode ? (
+            {selectedMealSet ? (
               <button
                 type="button"
-                onClick={() => setIsHandsFreeMode(false)}
-                className="flex items-center gap-1.5 text-xs font-black text-stone-900 dark:text-white hover:text-stone-700 transition-colors truncate min-h-[36px]"
-              >
-                <ChevronLeft className="w-4 h-4 shrink-0" />
-                <span className="truncate">Thoát chế độ nấu từng bước</span>
-              </button>
-            ) : selectedMealSet ? (
-              <button
-                type="button"
-                onClick={() => setSelectedRecipe(null)}
-                className="flex items-center gap-1.5 text-xs font-black text-stone-900 dark:text-white hover:text-stone-700 dark:hover:text-stone-300 transition-colors truncate group min-h-[36px]"
+                onClick={() => {
+                  setSelectedRecipe(null);
+                  setIsHandsFreeMode(false);
+                  setIsTimerOpen(false);
+                }}
+                className="flex items-center gap-1.5 text-xs font-black text-stone-900 dark:text-white hover:text-stone-700 dark:hover:text-stone-300 transition-colors truncate group min-h-[36px] cursor-pointer"
                 title={`Trở lại mâm ${selectedMealSet.title}`}
               >
                 <ChevronLeft className="w-4 h-4 shrink-0 transition-transform group-hover:-translate-x-0.5" />
@@ -565,12 +679,26 @@ export const RecipeDetailModal: React.FC = () => {
               </button>
             ) : (
               <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedRecipe(null);
+                    setIsHandsFreeMode(false);
+                    setIsTimerOpen(false);
+                  }}
+                  className="flex items-center gap-1 text-xs font-black text-stone-900 dark:text-white hover:text-stone-700 dark:hover:text-stone-300 transition-colors shrink-0 group min-h-[36px] cursor-pointer"
+                  title="Trở về danh sách công thức"
+                >
+                  <ChevronLeft className="w-4 h-4 shrink-0 transition-transform group-hover:-translate-x-0.5" />
+                  <span>Trở về</span>
+                </button>
+                <span className="text-stone-300 dark:text-stone-700 shrink-0">•</span>
                 <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500 dark:text-stone-400 truncate">
-                  {selectedRecipe.category === 'mon-man' && 'Món Mặn Gia Đình'}
-                  {selectedRecipe.category === 'mon-canh' && 'Món Canh Thanh Mát'}
-                  {selectedRecipe.category === 'mon-rau' && 'Món Rau Xào / Luộc'}
-                  {selectedRecipe.category === 'mon-chay' && 'Món Chay Thanh Đạm'}
-                  {selectedRecipe.category === 'an-sang' && 'Bữa Sáng Năng Lượng'}
+                  {selectedRecipe.category === 'mon-man' && 'Món Mặn'}
+                  {selectedRecipe.category === 'mon-canh' && 'Món Canh'}
+                  {selectedRecipe.category === 'mon-rau' && 'Món Rau'}
+                  {selectedRecipe.category === 'mon-chay' && 'Món Chay'}
+                  {selectedRecipe.category === 'an-sang' && 'Bữa Sáng'}
                 </span>
                 <span className="text-stone-300 dark:text-stone-700 shrink-0">•</span>
                 <span className="text-xs font-bold text-stone-600 dark:text-stone-400 shrink-0">
@@ -719,6 +847,52 @@ export const RecipeDetailModal: React.FC = () => {
                 </button>
               )}
             </div>
+
+            {/* Gaming Loading Screen Tip & Easter Egg Banner */}
+            {loadingScreenTips.length > 0 && (
+              <div className="relative mt-2 p-3 rounded-2xl bg-amber-50/70 dark:bg-stone-900/80 border border-amber-200/80 dark:border-amber-900/50 shadow-xs animate-fade-in">
+                {/* Header with Game Loading Indicator & Roll Button */}
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <Gamepad2 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 animate-pulse shrink-0" />
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-900 dark:text-amber-300 flex items-center gap-1 truncate">
+                      <span>Mẹo Màn Hình Chờ</span>
+                      <span className="opacity-60">•</span>
+                      <span className="text-amber-700 dark:text-amber-400 font-extrabold truncate">
+                        {loadingScreenTips[timerTipIndex % loadingScreenTips.length]?.tag}
+                      </span>
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={nextLoadingTip}
+                    className="flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold text-amber-900 dark:text-amber-200 bg-amber-200/60 hover:bg-amber-200 dark:bg-amber-950/70 dark:hover:bg-amber-900 transition-colors cursor-pointer shrink-0"
+                    title="Đổi mẹo khác"
+                  >
+                    <Dices className="w-3 h-3 text-amber-700 dark:text-amber-300" />
+                    <span>Đổi mẹo</span>
+                  </button>
+                </div>
+
+                {/* Tip Content */}
+                <p className="text-xs font-semibold text-stone-800 dark:text-stone-200 leading-relaxed italic">
+                  "{loadingScreenTips[timerTipIndex % loadingScreenTips.length]?.text}"
+                </p>
+
+                {/* Subtle Game Loading Bar Accent */}
+                {timerIsRunning && (
+                  <div className="mt-2 h-1 rounded-full bg-amber-200/60 dark:bg-stone-800 overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-1000 ease-linear"
+                      style={{ 
+                        width: `${timerTotalDuration > 0 ? Math.min(100, Math.round(((timerTotalDuration - timerSecondsLeft) / timerTotalDuration) * 100)) : 100}%` 
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
@@ -801,6 +975,50 @@ export const RecipeDetailModal: React.FC = () => {
                       />
                     );
                   })}
+                </div>
+              </div>
+
+              {/* Connected Stepper Wizard Header (Step 1: Nguyên liệu -> Step 2: Chế biến) */}
+              <div className="py-3 px-6 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
+                <div className="relative flex items-center justify-between max-w-xs mx-auto">
+                  {/* Background connecting track line */}
+                  <div className="absolute left-[36px] right-[36px] top-4 h-0.5 bg-stone-200 dark:bg-stone-800 -z-0" />
+                  {/* Active filled connecting track line */}
+                  <div 
+                    className="absolute left-[36px] top-4 h-0.5 bg-emerald-500 transition-all duration-300 -z-0" 
+                    style={{ width: 'calc(100% - 72px)' }}
+                  />
+
+                  {/* Step 1 Node */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsHandsFreeMode(false);
+                      setCookingPhase(1);
+                    }}
+                    className="relative z-10 flex flex-col items-center gap-1.5 group cursor-pointer focus:outline-none"
+                  >
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all shadow-xs bg-emerald-600 text-white">
+                      <Check className="w-4 h-4 stroke-[3]" />
+                    </div>
+                    <span className="text-[11px] font-black tracking-tight transition-colors whitespace-nowrap text-stone-700 dark:text-stone-300">
+                      Chuẩn Bị Nguyên Liệu
+                    </span>
+                  </button>
+
+                  {/* Step 2 Node */}
+                  <button
+                    type="button"
+                    onClick={() => setCookingPhase(2)}
+                    className="relative z-10 flex flex-col items-center gap-1.5 group cursor-pointer focus:outline-none"
+                  >
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all shadow-xs bg-emerald-600 text-white ring-4 ring-emerald-500/20">
+                      <span>2</span>
+                    </div>
+                    <span className="text-[11px] font-black tracking-tight transition-colors whitespace-nowrap text-emerald-700 dark:text-emerald-400">
+                      Chế Biến Món Ăn
+                    </span>
+                  </button>
                 </div>
               </div>
 
@@ -1058,33 +1276,63 @@ export const RecipeDetailModal: React.FC = () => {
                   </p>
                 </>
               ) : (
-                /* Centered Mode Toggle pushed to the top in Step 2 */
-                <div className="flex justify-center animate-fade-in py-0.5">
-                  <div className="inline-flex items-center p-0.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200/80 dark:border-stone-700/80 shadow-xs select-none">
-                    <button
-                      type="button"
-                      onClick={() => setIsHandsFreeMode(false)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[32px] ${
-                        !isHandsFreeMode
-                          ? 'bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-xs'
-                          : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
-                      }`}
-                    >
-                      <FileText className="w-3.5 h-3.5" />
-                      <span>Công thức</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => enterHandsFreeMode(activeStepIndex >= 0 ? activeStepIndex : 0)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[32px] ${
-                        isHandsFreeMode
-                          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-xs'
-                          : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
-                      }`}
-                    >
-                      <ChefHat className="w-3.5 h-3.5" />
-                      <span>Thực hành</span>
-                    </button>
+                /* Uniform Mode Header & Switcher (Step 2: Công thức vs Thực hành) */
+                <div className="p-3.5 sm:p-4 rounded-3xl bg-[#FAF8F5] dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] space-y-2.5 animate-fade-in">
+                  {/* Centered Mode Toggle: Công thức vs Thực hành */}
+                  <div className="flex justify-center">
+                    <div className="inline-flex items-center p-0.5 rounded-xl bg-stone-200/60 dark:bg-stone-800 border border-stone-300/60 dark:border-stone-700/80 shadow-xs select-none">
+                      <button
+                        type="button"
+                        onClick={() => setIsHandsFreeMode(false)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[30px] ${
+                          !isHandsFreeMode
+                            ? 'bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-xs'
+                            : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                        }`}
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        <span>Công thức</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => enterHandsFreeMode(activeStepIndex >= 0 ? activeStepIndex : 0)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer min-h-[30px] ${
+                          isHandsFreeMode
+                            ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-xs'
+                            : 'text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold'
+                        }`}
+                      >
+                        <ChefHat className="w-3.5 h-3.5" />
+                        <span>Thực hành</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Step Dots Progress Strip - Slimmed Down */}
+                  <div className="flex items-center gap-1.5 py-1">
+                    {selectedRecipe.instructions.map((inst, idx) => {
+                      const isStepDone = !!completedSteps[inst.step];
+                      const isStepActive = idx === activeStepIndex;
+                      return (
+                        <button
+                          key={inst.step}
+                          type="button"
+                          onClick={() => {
+                            setActiveStepIndex(idx);
+                            toggleStepExpanded(inst.step);
+                          }}
+                          className={`h-1.5 rounded-full transition-all cursor-pointer flex-1 ${
+                            isStepActive 
+                              ? 'bg-stone-900 dark:bg-white ring-1 ring-stone-400/50 shadow-xs' 
+                              : isStepDone 
+                              ? 'bg-emerald-600/80 hover:bg-emerald-600' 
+                              : 'bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600'
+                          }`}
+                          title={`Bước ${inst.step}: ${inst.title}`}
+                          aria-label={`Chuyển tới bước ${inst.step}`}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               )}

@@ -82,10 +82,10 @@ describe('Tier 1: Feature Coverage — Domain 1 (MealSetExplorer: Mâm Cơm 3 M�
     );
     expect(dongQueSets.length).toBeGreaterThan(0);
 
-    const banChaySets = mockMealSets.filter(s =>
-      s.tags.some(tag => matchesSearchTerm(tag, 'bán chạy') || matchesSearchTerm(tag, 'ban chay'))
+    const yeuThichSets = mockMealSets.filter(s =>
+      s.tags.some(tag => matchesSearchTerm(tag, 'yêu thích') || matchesSearchTerm(tag, 'yeu thich') || matchesSearchTerm(tag, 'bán chạy'))
     );
-    expect(banChaySets.length).toBeGreaterThan(0);
+    expect(yeuThichSets.length).toBeGreaterThan(0);
 
     // Verify '1 Người' filtering across regions (especially Miền Nam + 1 Người)
     const nam1PersonSets = mockMealSets.filter(s =>
