@@ -326,16 +326,16 @@ export const RecipeDetailModal: React.FC = () => {
     return result;
   }, [selectedRecipe?.ingredients]);
 
-  // Generate contextual food tips + gaming loading-screen easter eggs
+  // Generate contextual food tips and cooking loading-screen tips
   const loadingScreenTips = useMemo(() => {
     if (!selectedRecipe) return [];
-    const tips: { text: string; tag: string; isEasterEgg?: boolean }[] = [];
+    const tips: { text: string; tag: string }[] = [];
 
     // 1. Chef's secret if available
     if (selectedRecipe.chefTip) {
       tips.push({
-        text: `Bí quyết đầu bếp: ${selectedRecipe.chefTip}`,
-        tag: 'Bí Kíp Độc Quyền'
+        text: selectedRecipe.chefTip,
+        tag: 'Bí Kíp Đầu Bếp'
       });
     }
 
@@ -343,7 +343,7 @@ export const RecipeDetailModal: React.FC = () => {
     const titleLower = (selectedRecipe.title || '').toLowerCase();
     if (titleLower.includes('kho') || titleLower.includes('rim') || titleLower.includes('ram')) {
       tips.push({
-        text: 'Nấu kho lửa nhỏ: Để lửa liu riu giúp gia vị ngấm sâu vào từng thớ thịt mà nước sốt không bị cạn khét.',
+        text: 'Nấu lửa liu riu giúp gia vị ngấm sâu vào từng thớ thịt mà nước sốt không bị cạn khét.',
         tag: 'Mẹo Kho Rim'
       });
       tips.push({
@@ -354,7 +354,7 @@ export const RecipeDetailModal: React.FC = () => {
 
     if (titleLower.includes('canh') || titleLower.includes('súp') || titleLower.includes('lẩu')) {
       tips.push({
-        text: 'Bí kíp nước dùng: Khi nước canh bắt đầu sôi, vặn nhỏ lửa và hớt sạch bọt để nước canh luôn trong veo thanh ngọt.',
+        text: 'Khi nước canh bắt đầu sôi, vặn nhỏ lửa và hớt sạch bọt để nước canh luôn trong veo thanh ngọt.',
         tag: 'Mẹo Nấu Canh'
       });
       tips.push({
@@ -365,62 +365,54 @@ export const RecipeDetailModal: React.FC = () => {
 
     if (titleLower.includes('xào') || titleLower.includes('chiên') || titleLower.includes('rán')) {
       tips.push({
-        text: 'Nhiệt độ chảo: Đợi dầu thật nóng già mới cho nguyên liệu vào để mặt ngoài giòn rụm mà bên trong vẫn mọng nước.',
+        text: 'Đợi dầu thật nóng già mới cho nguyên liệu vào để mặt ngoài giòn rụm mà bên trong vẫn mọng nước.',
         tag: 'Kỹ Thuật Xào'
       });
       tips.push({
-        text: 'Kích hoạt khiên chống bắn mỡ: Rắc một nhúm muối nhỏ vào chảo dầu trước khi chiên rán để giảm 80% văng dầu!',
+        text: 'Rắc một nhúm muối nhỏ vào chảo dầu trước khi chiên rán để giảm đến 80% tình trạng văng dầu.',
         tag: 'Mẹo Chiên Rán'
       });
     }
 
     if (titleLower.includes('rau') || titleLower.includes('luộc')) {
       tips.push({
-        text: 'Luộc rau xanh ngọc: Cho chút muối hạt vào nồi nước sôi sùng sục và KHÔNG đậy nắp nồi để rau giữ nguyên sắc xanh.',
+        text: 'Cho chút muối hạt vào nồi nước sôi sùng sục và không đậy nắp nồi để rau giữ nguyên sắc xanh tươi mát.',
         tag: 'Mẹo Luộc Rau'
       });
     }
 
-    // 3. Gaming Loading-Screen Food Easter Eggs
+    // 3. Witty cooking loading-screen tips (pure food context, no awkward game starter lines)
     tips.push({
-      text: `🎂 "The cake is a lie!" Nhưng món "${selectedRecipe.title}" thơm lừng trước mặt bạn thì 100% là hàng thật giá thật!`,
-      tag: 'Easter Egg',
-      isEasterEgg: true
+      text: `Món "${selectedRecipe.title}" trên bếp hoàn toàn là hàng thật 100%, hãy kiên nhẫn đợi chín tới nhé!`,
+      tag: 'Gợi Ý Món Ăn'
     });
     tips.push({
-      text: '🛡️ Buff kỹ năng: Giữ lửa nhỏ liu riu tăng +50% tỉ lệ thịt mềm tan ngấm trọn gia vị và đạt trạng thái "Cực Phẩm".',
-      tag: 'Loading Tip',
-      isEasterEgg: true
+      text: 'Giữ lửa nhỏ liu riu tăng tỉ lệ thịt chín mềm đều và ngấm trọn vị đậm đà.',
+      tag: 'Kỹ Thuật Bếp'
     });
     tips.push({
-      text: '🍄 Mẹo game thủ: Món này tuy không biến bạn thành Super Mario, nhưng bổ sung vitamin và năng lượng cực đỉnh!',
-      tag: 'Easter Egg',
-      isEasterEgg: true
+      text: 'Hành tỏi phi vàng kết hợp cùng một thìa nước mắm ngon là bí quyết dậy mùi của mọi bữa cơm nhà.',
+      tag: 'Bí Quyết Vị Ngon'
     });
     tips.push({
-      text: '⚡ Combo sát thương khứu giác: Hành tỏi phi vàng + 1 thìa nước mắm ngon = Gây tương tư cho cả xóm trọ!',
-      tag: 'Loading Tip',
-      isEasterEgg: true
+      text: 'Đừng bao giờ rời mắt khỏi chảo thắng nước màu quá 15 giây nếu không muốn quay xe từ cánh gián sang bóng đêm.',
+      tag: 'Mẹo Bếp Nhanh'
     });
     tips.push({
-      text: '🧙‍♂️ Lời nguyền nhà bếp: Đừng bao giờ rời mắt khỏi chảo thắng đường quá 15 giây nếu không muốn quay xe từ cánh gián sang bóng đêm!',
-      tag: 'Loading Tip',
-      isEasterEgg: true
+      text: 'Nồi cơm điện sẽ không tự động nấu chín nếu bạn quên gạt sang nút "Cook" trước khi cắm dây!',
+      tag: 'Nhắc Nhở Nấu Nướng'
     });
     tips.push({
-      text: '🏆 Achievement Unlocked: Nấu cơm chuẩn nước, hạt dẻo thơm không khô không nhão, phụ huynh chấm 10 điểm!',
-      tag: 'Achievement',
-      isEasterEgg: true
+      text: 'Luôn nếm thử một muỗng nhỏ canh hoặc nước sốt ở nhiệt độ vừa phải trước khi bày ra mâm ăn.',
+      tag: 'Kỹ Thuật Nếm Vị'
     });
     tips.push({
-      text: '🧀 "It\'s dangerous to go alone! Take this." Hãy luôn nếm thử một muỗng nhỏ trước khi bày ra mâm ăn nhé!',
-      tag: 'Easter Egg',
-      isEasterEgg: true
+      text: 'Thịt sau khi chiên hoặc nướng xong nên để nghỉ 2-3 phút trước khi thái để giữ trọn độ mọng nước.',
+      tag: 'Bí Kíp Đầu Bếp'
     });
     tips.push({
-      text: '🎮 Press [F] to pay respect cho những ai từng hì hục cắm cơm nhưng quên bấm nút "Cook".',
-      tag: 'Easter Egg',
-      isEasterEgg: true
+      text: 'Rau xanh sau khi luộc vớt ra ngâm ngay vào âu nước đá lạnh sẽ giữ được độ giòn sần sật cực lâu.',
+      tag: 'Mẹo Luộc Giòn'
     });
 
     return tips;
@@ -431,7 +423,7 @@ export const RecipeDetailModal: React.FC = () => {
     if (!isTimerOpen || !timerIsRunning || loadingScreenTips.length <= 1) return;
     const interval = setInterval(() => {
       setTimerTipIndex(prev => (prev + 1) % loadingScreenTips.length);
-    }, 7000);
+    }, 6000);
     return () => clearInterval(interval);
   }, [isTimerOpen, timerIsRunning, loadingScreenTips.length]);
 
@@ -491,6 +483,20 @@ export const RecipeDetailModal: React.FC = () => {
     setTimerTotalDuration(seconds);
     setTimerSecondsLeft(seconds);
     setTimerLabel(label);
+    setTimerIsRunning(true);
+    setIsTimerOpen(true);
+  };
+
+  const addTimerSeconds = (additionalSeconds: number, label: string = 'Hẹn giờ') => {
+    setTimerSecondsLeft(prevLeft => {
+      const newLeft = prevLeft > 0 ? prevLeft + additionalSeconds : additionalSeconds;
+      setTimerTotalDuration(prevTotal => (prevLeft > 0 ? prevTotal + additionalSeconds : additionalSeconds));
+      return newLeft;
+    });
+    setTimerLabel(prevLabel => {
+      if (!prevLabel || timerSecondsLeft === 0) return label;
+      return prevLabel;
+    });
     setTimerIsRunning(true);
     setIsTimerOpen(true);
   };
@@ -831,7 +837,7 @@ export const RecipeDetailModal: React.FC = () => {
                 <button
                   key={p.sec}
                   type="button"
-                  onClick={() => startTimerWithDuration(p.sec, `Hẹn giờ ${p.label}`)}
+                  onClick={() => addTimerSeconds(p.sec, `Hẹn giờ ${p.label}`)}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-stone-800 border border-[#E8E2D8] dark:border-[#252220] text-stone-700 dark:text-stone-300 hover:border-stone-900 dark:hover:border-stone-400 hover:text-stone-950 dark:hover:text-white text-xs font-bold transition-all shadow-xs min-h-[36px] cursor-pointer"
                 >
                   +{p.label}
@@ -840,7 +846,7 @@ export const RecipeDetailModal: React.FC = () => {
               {selectedRecipe.cookTimeMinutes > 0 && (
                 <button
                   type="button"
-                  onClick={() => startTimerWithDuration(selectedRecipe.cookTimeMinutes * 60, `Nấu ${selectedRecipe.title}`)}
+                  onClick={() => addTimerSeconds(selectedRecipe.cookTimeMinutes * 60, `Nấu ${selectedRecipe.title}`)}
                   className="px-2.5 py-1.5 rounded-lg bg-stone-200/70 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-200 hover:bg-stone-300 dark:hover:bg-stone-700 text-xs font-black transition-all shadow-xs min-h-[36px] cursor-pointer"
                 >
                   +{selectedRecipe.cookTimeMinutes}p (Tổng nấu)
@@ -848,8 +854,8 @@ export const RecipeDetailModal: React.FC = () => {
               )}
             </div>
 
-            {/* Gaming Loading Screen Tip & Easter Egg Banner */}
-            {loadingScreenTips.length > 0 && (
+            {/* Gaming Loading Screen Tip Banner (Only visible while timer is actively running) */}
+            {timerIsRunning && timerSecondsLeft > 0 && loadingScreenTips.length > 0 && (
               <div className="relative mt-2 p-3 rounded-2xl bg-amber-50/70 dark:bg-stone-900/80 border border-amber-200/80 dark:border-amber-900/50 shadow-xs animate-fade-in">
                 {/* Header with Game Loading Indicator & Roll Button */}
                 <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -875,22 +881,23 @@ export const RecipeDetailModal: React.FC = () => {
                   </button>
                 </div>
 
-                {/* Tip Content */}
-                <p className="text-xs font-semibold text-stone-800 dark:text-stone-200 leading-relaxed italic">
+                {/* Tip Content with smooth key transition */}
+                <p 
+                  key={timerTipIndex}
+                  className="text-xs font-semibold text-stone-800 dark:text-stone-200 leading-relaxed italic animate-fade-in"
+                >
                   "{loadingScreenTips[timerTipIndex % loadingScreenTips.length]?.text}"
                 </p>
 
                 {/* Subtle Game Loading Bar Accent */}
-                {timerIsRunning && (
-                  <div className="mt-2 h-1 rounded-full bg-amber-200/60 dark:bg-stone-800 overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-1000 ease-linear"
-                      style={{ 
-                        width: `${timerTotalDuration > 0 ? Math.min(100, Math.round(((timerTotalDuration - timerSecondsLeft) / timerTotalDuration) * 100)) : 100}%` 
-                      }}
-                    />
-                  </div>
-                )}
+                <div className="mt-2 h-1 rounded-full bg-amber-200/60 dark:bg-stone-800 overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-1000 ease-linear"
+                    style={{ 
+                      width: `${timerTotalDuration > 0 ? Math.min(100, Math.round(((timerTotalDuration - timerSecondsLeft) / timerTotalDuration) * 100)) : 100}%` 
+                    }}
+                  />
+                </div>
               </div>
             )}
           </div>
