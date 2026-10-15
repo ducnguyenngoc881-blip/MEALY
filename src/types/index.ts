@@ -36,7 +36,11 @@ export interface Recipe {
   instructions: CookingInstruction[];
   tags: string[];
   chefTip?: string;
+  authorNote?: string;
+  authorVoiceUrl?: string;
+  authorVoiceDurationSec?: number;
   difficulty?: 'Dễ' | 'Trung bình' | 'Cầu kỳ';
+  isCustom?: boolean;
 }
 
 export interface VietnameseMealSet {
@@ -65,6 +69,18 @@ export interface DailyMealPlan {
     dinner: Recipe | VietnameseMealSet | null;
     snack?: Recipe | VietnameseMealSet | null;
   };
+  skippedSlots?: {
+    breakfast?: boolean;
+    lunch?: boolean;
+    dinner?: boolean;
+    snack?: boolean;
+  };
+  slotNotes?: {
+    breakfast?: string;
+    lunch?: string;
+    dinner?: string;
+    snack?: string;
+  };
   totalCalories?: number;
   totalCost?: number;
 }
@@ -79,11 +95,13 @@ export interface StoreChannelInfo {
   description: string;
 }
 
+export type WeekdayLunchRoutine = 'ban-tru-di-lam' | 'nau-ca-ngay' | 'hop-com-van-phong';
 
 export interface OnboardingData {
   regionPreference: 'bac' | 'trung' | 'nam' | 'toan-quoc';
   familySize: number; // 1, 2, 4, 6
   singleMealFormat?: 'single-dish' | 'meal-set'; // When familySize === 1: 'single-dish' vs 'meal-set'
+  weekdayLunchRoutine?: WeekdayLunchRoutine; // 'ban-tru-di-lam' | 'nau-ca-ngay' | 'hop-com-van-phong'
   budgetLevel: 'tiet-kiem' | 'vua-phai' | 'thoai-mai';
   specialNeeds: string[]; // 'gym-protein', 'eat-clean', 'western-food', 'single-prep', 'nhieu-rau', 'it-cay', 'chay', 'nhanh-gon'
   completed: boolean;
@@ -156,6 +174,7 @@ export interface PantryItem {
   isLeftover?: boolean;
   notes?: string;
   addedAt?: string;
+  compartment?: 'freezer' | 'fridge' | 'crisper';
 }
 
 export interface CorporatePartyPreset {

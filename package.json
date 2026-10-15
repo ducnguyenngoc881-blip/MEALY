@@ -11,7 +11,11 @@
     "sync:showcase": "node scripts/sync-showcase.js",
     "serve:mobile": "node scripts/mobile-server.js",
     "tunnel:ngrok": "node scripts/start-ngrok.js",
-    "tunnel:cloudflare": "npx cloudflared tunnel --url http://localhost:5173"
+    "tunnel:cloudflare": "npx cloudflared tunnel --url http://localhost:5173",
+    "video:studio": "npm --prefix NexsVideo run studio",
+    "video:render": "npm --prefix NexsVideo run render",
+    "video:render:fast": "npm --prefix NexsVideo run render:fast",
+    "video:verify": "npm --prefix NexsVideo run verify"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",

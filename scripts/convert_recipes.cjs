@@ -34,20 +34,36 @@ function detectCategory(r) {
   const titleLower = (r.title || '').toLowerCase();
   const tags = r.dietaryTags || [];
 
-  if (tags.includes('chay-thanh-dam') || idLower.includes('chay') || titleLower.includes('chay')) {
+  if (titleLower.includes('chè ') || titleLower.startsWith('chè') || titleLower.includes('tráng miệng') || titleLower.includes('hoa quả') || titleLower.includes('sinh tố') || titleLower.includes('sữa chua') || titleLower.includes('thạch')) {
+    return 'trang-mieng';
+  }
+  if (titleLower.includes('canh') || titleLower.includes('lẩu') || titleLower.includes('súp') || titleLower.includes('soup') || idLower.startsWith('canh-') || idLower.startsWith('lau-')) {
+    return 'mon-canh';
+  }
+  const isActuallyChay =
+    (tags.includes('chay-thanh-dam') || titleLower.includes('chay') || idLower.includes('mam-com-chay')) &&
+    !titleLower.includes('cháy') &&
+    !titleLower.includes('chảy');
+  if (isActuallyChay) {
     return 'mon-chay';
+  }
+  const hasSavoryProtein =
+    /(gà|bò|heo|lợn|sườn|cá |cá hồi|cá kèo|cá nục|cá rô|chả cá|tôm|mực|cua|vịt|thịt|xúc xích|lạp xưởng|hải sản|chả lụa|chả giò|xíu mại|pate|ba chỉ|ba rọi|chân giò|ốp la|trứng|hến|lươn|pizza|burger|tokbokki|bít tết|steak)/i.test(titleLower) &&
+    !titleLower.includes('nấm đùi gà') &&
+    !titleLower.includes('muối tôm') &&
+    !titleLower.includes('rau càng cua') &&
+    !titleLower.includes('trứng cuốc') &&
+    !titleLower.includes('bánh da lợn') &&
+    !titleLower.includes('bánh bông lan') &&
+    !titleLower.includes('bánh pía');
+  if (hasSavoryProtein) {
+    return 'mon-man';
+  }
+  if (titleLower.includes('rau ') || titleLower.includes('gỏi') || titleLower.includes('nộm') || titleLower.includes('salad') || titleLower.includes('dưa ') || titleLower.includes('xào rau') || titleLower.includes('luộc') || titleLower.includes('khoai tây chiên') || titleLower.includes('khoai tây cọng')) {
+    return 'mon-rau';
   }
   if (r.mealTypes && r.mealTypes.includes('snack')) {
     return 'trang-mieng';
-  }
-  if (titleLower.includes('chè') || titleLower.includes('tráng miệng') || titleLower.includes('hoa quả') || titleLower.includes('sinh tố') || titleLower.includes('sữa chua') || titleLower.includes('thạch')) {
-    return 'trang-mieng';
-  }
-  if (titleLower.includes('canh') || titleLower.includes('lẩu') || titleLower.includes('súp') || titleLower.includes('soup') || idLower.includes('canh') || idLower.includes('lau')) {
-    return 'mon-canh';
-  }
-  if (titleLower.includes('rau ') || titleLower.includes('gỏi') || titleLower.includes('nộm') || titleLower.includes('salad') || titleLower.includes('dưa ') || titleLower.includes('xào rau') || titleLower.includes('luộc')) {
-    return 'mon-rau';
   }
   if (r.mealTypes && r.mealTypes.length === 1 && r.mealTypes[0] === 'breakfast') {
     return 'an-sang';

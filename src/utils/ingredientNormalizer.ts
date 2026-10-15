@@ -110,8 +110,8 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('bột ngọt') || lower.includes('mì chính')) return 'Bột ngọt';
 
   // 2. Pasta / Spaghetti / Noodles (e.g., Mì Ý sợi dài Spaghetti, Spaghetti lúa mì cứng -> unified)
-  if (lower.includes('spaghetti') || lower.includes('mì ý')) return 'Mì Ý (Spaghetti)';
-  if (lower.includes('penne') || lower.includes('nui') || lower.includes('pasta') || lower.includes('fusilli')) return 'Nui (Pasta)';
+  if (lower.includes('spaghetti') || lower.includes('mì ý')) return 'Mì Ý';
+  if (lower.includes('penne') || lower.includes('nui') || lower.includes('pasta') || lower.includes('fusilli')) return 'Nui';
   if (lower.includes('mì trứng')) return 'Mì trứng';
   if (lower.includes('bún tươi') || lower === 'bún') return 'Bún tươi';
   if (lower.includes('bánh phở') || lower === 'phở') return 'Bánh phở tươi';
@@ -119,11 +119,11 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('bánh đa')) return 'Bánh đa đỏ';
 
   // 3. Dairy / Butter / Cheese / Cream
-  if (lower.includes('bơ sáp') || lower.includes('bơ 034') || lower.includes('bơ đắk lắk')) return 'Trái bơ sáp (Avocado)';
+  if (lower.includes('bơ sáp') || lower.includes('bơ 034') || lower.includes('bơ đắk lắk')) return 'Trái bơ sáp';
   if (lower.includes('mozzarella')) return 'Phô mai Mozzarella';
   if (lower.includes('parmesan')) return 'Phô mai Parmesan';
   if (lower.includes('cheddar')) return 'Phô mai Cheddar';
-  if (lower.includes('whipping') || lower.includes('cooking cream') || lower.includes('kem béo') || lower.includes('kem tươi')) return 'Kem tươi (Whipping cream)';
+  if (lower.includes('whipping') || lower.includes('cooking cream') || lower.includes('kem béo') || lower.includes('kem tươi')) return 'Kem tươi';
   if (lower.includes('bơ lạt') || lower.includes('bơ anchor') || (lower.includes('bơ') && !lower.includes('bánh mì') && !lower.includes('bơ tỏi') && !lower.includes('sốt bơ'))) return 'Bơ lạt';
   if (lower.includes('sữa đặc')) return 'Sữa đặc';
   if (lower.includes('sữa tươi')) return 'Sữa tươi';
@@ -136,9 +136,9 @@ export function canonicalizeIngredientName(rawName: string): string {
 
   // 5. Western Herbs
   if (lower.includes('oregano')) return 'Lá Oregano khô';
-  if (lower.includes('rosemary') || lower.includes('hương thảo')) return 'Lá hương thảo (Rosemary)';
-  if (lower.includes('thyme') || lower.includes('xạ hương')) return 'Lá xạ hương (Thyme)';
-  if (lower.includes('basil') || lower.includes('húng tây') || lower.includes('húng quế ý')) return 'Húng tây (Basil)';
+  if (lower.includes('rosemary') || lower.includes('hương thảo')) return 'Lá hương thảo';
+  if (lower.includes('thyme') || lower.includes('xạ hương')) return 'Lá xạ hương';
+  if (lower.includes('basil') || lower.includes('húng tây') || lower.includes('húng quế ý')) return 'Húng tây';
 
   // 6. Beef
   if (lower.includes('bắp bò')) return 'Bắp bò';

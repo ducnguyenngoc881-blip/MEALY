@@ -15,7 +15,16 @@ import { OnboardingData } from '../types';
 import { getDailyBudgetTarget } from '../utils/currency';
 
 export const OnboardingModal: React.FC = () => {
-  const { showOnboarding, completeOnboarding, setShowOnboarding, onboardingData, weeklyPlan } = useMealWise();
+  const { 
+    showOnboarding, 
+    completeOnboarding, 
+    setShowOnboarding, 
+    onboardingData, 
+    weeklyPlan, 
+    isRegistered,
+    setIsTutorialOpen,
+    user 
+  } = useMealWise();
   const [step, setStep] = useState<number>(1);
   const [regeneratePlan, setRegeneratePlan] = useState<boolean>(true);
 
@@ -29,6 +38,7 @@ export const OnboardingModal: React.FC = () => {
     return onboardingData || {
       regionPreference: 'bac',
       familySize: 4,
+      weekdayLunchRoutine: 'ban-tru-di-lam',
       budgetLevel: 'vua-phai',
       specialNeeds: ['nhieu-rau'],
       completed: false
@@ -42,7 +52,7 @@ export const OnboardingModal: React.FC = () => {
     }
   }, [showOnboarding, onboardingData]);
 
-  if (!showOnboarding) return null;
+  if (!showOnboarding || !isRegistered) return null;
 
   const totalSteps = 4;
 
@@ -100,7 +110,25 @@ export const OnboardingModal: React.FC = () => {
 
           {/* High-contrast "Bỏ qua" button (WCAG AA >= 4.5:1) */}
           <button
-            onClick={() => setShowOnboarding(false)}
+            onClick={() => {
+              setShowOnboarding(false);
+              try {
+                // If user was already onboarded and was just editing/reviewing config, never launch tutorial
+                if (onboardingData?.completed || user?.onboardingCompleted) {
+                  return;
+                }
+                let emailLower = user?.email?.toLowerCase().trim();
+                const userTutorialKey = emailLower ? `mealwise_tutorial_completed_${emailLower}` : null;
+                const isUserTutorialDone = userTutorialKey
+                  ? localStorage.getItem(userTutorialKey) === 'true'
+                  : localStorage.getItem('mealwise_tutorial_completed') === 'true';
+                if (!isUserTutorialDone) {
+                  setTimeout(() => {
+                    setIsTutorialOpen(true);
+                  }, 500);
+                }
+              } catch {}
+            }}
             className="text-xs font-bold text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 transition-colors border border-stone-200 dark:border-stone-700"
           >
             Bỏ qua
@@ -189,7 +217,7 @@ export const OnboardingModal: React.FC = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start pt-1">
                 {[
                   { size: 1, label: '1 Người', desc: 'Độc thân / Sống một mình / Sinh viên' },
                   { size: 2, label: '2 Người', desc: 'Vợ chồng trẻ / Bạn ở ghép' },
@@ -198,110 +226,202 @@ export const OnboardingModal: React.FC = () => {
                 ].map((opt) => {
                   const isSelected = tempData.familySize === opt.size;
                   return (
-                    <button
+                    <div
                       key={opt.size}
-                      type="button"
-                      onClick={() => setTempData({ 
-                        ...tempData, 
-                        familySize: opt.size,
-                        singleMealFormat: opt.size === 1 ? (tempData.singleMealFormat || 'single-dish') : undefined
-                      })}
-                      className={`p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[110px] ${
+                      className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                         isSelected
                           ? 'border-stone-900 bg-[#FAF8F5] dark:bg-[#121110] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-md'
                           : 'border-[#E8E2D8] dark:border-[#252220] bg-white dark:bg-[#1A1918] hover:bg-stone-50 dark:hover:bg-[#252220] hover:border-stone-300 dark:hover:border-stone-700'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="text-lg font-extrabold text-stone-900 dark:text-white">{opt.label}</span>
-                        <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                          isSelected ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black' : 'border-stone-300 dark:border-stone-600'
-                        }`}>
-                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      <button
+                        type="button"
+                        onClick={() => setTempData({ 
+                          ...tempData, 
+                          familySize: opt.size,
+                          singleMealFormat: opt.size === 1 ? (tempData.singleMealFormat || 'single-dish') : undefined
+                        })}
+                        className="w-full p-4 sm:p-5 text-left flex flex-col justify-between cursor-pointer"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-lg font-extrabold text-stone-900 dark:text-white">{opt.label}</span>
+                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
+                            isSelected ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black' : 'border-stone-300 dark:border-stone-600'
+                          }`}>
+                            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-2.5">{opt.desc}</p>
-                    </button>
+                        <p className="text-xs text-stone-600 dark:text-stone-400 mt-2.5">{opt.desc}</p>
+                      </button>
+
+                      {/* Dropdown Box for 4 Người (and 6+ Người): Weekday Lunch Routine */}
+                      {isSelected && (opt.size === 4 || opt.size === 6) && (
+                        <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 animate-fade-in">
+                          <div className="pt-3 border-t border-stone-200/80 dark:border-stone-800 space-y-2.5">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <span className="text-base shrink-0">🏫</span>
+                              <div className="min-w-0">
+                                <h4 className="text-xs font-black text-stone-900 dark:text-white truncate">
+                                  Lịch Nấu Bữa Trưa Ngày Thường (T2 - T6)
+                                </h4>
+                                <p className="text-[10.5px] text-stone-500 dark:text-stone-400 truncate">
+                                  Bỏ bữa trưa đi làm/bán trú để ngân sách chuẩn 100%
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-2 pt-0.5">
+                              {[
+                                {
+                                  id: 'ban-tru-di-lam',
+                                  title: '🏫 Bán Trú & Đi Làm (Khuyên dùng)',
+                                  badge: 'Phổ biến nhất',
+                                  desc: 'Con ăn bán trú ở trường, bố mẹ ăn trưa công sở. Chỉ lên món bữa tối ngày thường; cuối tuần (T7, CN) lên đủ trưa + tối.'
+                                },
+                                {
+                                  id: 'nau-ca-ngay',
+                                  title: '🏠 Nấu Đủ Cả Ngày (Trưa & Tối)',
+                                  badge: 'Ở nhà / WFH',
+                                  desc: 'Gia đình có người ở nhà nấu cơm hoặc làm việc từ xa. Lên thực đơn trưa và tối cho tất cả các ngày trong tuần.'
+                                },
+                                {
+                                  id: 'hop-com-van-phong',
+                                  title: '🍱 Nấu Dư Mang Cơm Hộp Đi Làm',
+                                  badge: 'Cơm trưa hộp',
+                                  desc: 'Bữa tối nấu thêm phần để bố mẹ mang cơm trưa đi làm ngày hôm sau, không cần lên món trưa mới.'
+                                }
+                              ].map((routine) => {
+                                const isRoutineSelected = (tempData.weekdayLunchRoutine || 'ban-tru-di-lam') === routine.id;
+                                return (
+                                  <button
+                                    key={routine.id}
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setTempData({ ...tempData, weekdayLunchRoutine: routine.id as any });
+                                    }}
+                                    className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                                      isRoutineSelected
+                                        ? 'border-stone-900 bg-white dark:bg-[#1A1918] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-xs'
+                                        : 'border-[#E8E2D8] dark:border-[#252220] bg-white/70 dark:bg-[#1A1918]/60 hover:bg-white dark:hover:bg-[#1A1918]'
+                                    }`}
+                                  >
+                                    <div className="flex items-center justify-between gap-1.5">
+                                      <span className="text-xs font-black text-stone-900 dark:text-white flex items-center gap-1.5 flex-wrap">
+                                        <span>{routine.title}</span>
+                                        {routine.badge && (
+                                          <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                                            {routine.badge}
+                                          </span>
+                                        )}
+                                      </span>
+                                      <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                                        isRoutineSelected
+                                          ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black'
+                                          : 'border-stone-300 dark:border-stone-700'
+                                      }`}>
+                                        {isRoutineSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                                      </div>
+                                    </div>
+                                    <p className="text-[10.5px] text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
+                                      {routine.desc}
+                                    </p>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Dropdown Box for 1 Người: Single Dish vs 3-Dish Set */}
+                      {isSelected && opt.size === 1 && (
+                        <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 animate-fade-in">
+                          <div className="pt-3 border-t border-stone-200/80 dark:border-stone-800 space-y-2.5">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-base shrink-0">🍳</span>
+                              <div>
+                                <h4 className="text-xs font-black text-stone-900 dark:text-white">
+                                  Hình thức nấu cho 1 người
+                                </h4>
+                                <p className="text-[10.5px] text-stone-500 dark:text-stone-400">
+                                  Món đơn gọn nhẹ hay mâm cơm 3 món?
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-2 pt-0.5">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setTempData({ ...tempData, singleMealFormat: 'single-dish' });
+                                }}
+                                className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                                  (tempData.singleMealFormat || 'single-dish') === 'single-dish'
+                                    ? 'border-stone-900 bg-white dark:bg-[#1A1918] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-xs'
+                                    : 'border-[#E8E2D8] dark:border-[#252220] bg-white/70 dark:bg-[#1A1918]/60 hover:bg-white dark:hover:bg-[#1A1918]'
+                                }`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-black text-stone-900 dark:text-white flex items-center gap-1.5">
+                                    🍲 Món Đơn Gọn Nhẹ
+                                  </span>
+                                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                                    (tempData.singleMealFormat || 'single-dish') === 'single-dish'
+                                      ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black'
+                                      : 'border-stone-300 dark:border-stone-700'
+                                  }`}>
+                                    {(tempData.singleMealFormat || 'single-dish') === 'single-dish' && <Check className="w-3 h-3 stroke-[3]" />}
+                                  </div>
+                                </div>
+                                <span className="inline-block mt-1 text-[9.5px] font-extrabold px-1.5 py-0.2 rounded bg-stone-200 dark:bg-stone-800 text-stone-800 dark:text-stone-200">
+                                  Khuyên dùng cho 1 người
+                                </span>
+                                <p className="text-[10.5px] text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
+                                  Nấu 1 món đĩa/tô đủ chất (mì, bún, phở, cơm đĩa). Nhanh, không phải nấu 3 món rườm rà.
+                                </p>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setTempData({ ...tempData, singleMealFormat: 'meal-set' });
+                                }}
+                                className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                                  tempData.singleMealFormat === 'meal-set'
+                                    ? 'border-stone-900 bg-white dark:bg-[#1A1918] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-xs'
+                                    : 'border-[#E8E2D8] dark:border-[#252220] bg-white/70 dark:bg-[#1A1918]/60 hover:bg-white dark:hover:bg-[#1A1918]'
+                                }`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-black text-stone-900 dark:text-white flex items-center gap-1.5">
+                                    🍱 Mâm Cơm 3 Món
+                                  </span>
+                                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                                    tempData.singleMealFormat === 'meal-set'
+                                      ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black'
+                                      : 'border-stone-300 dark:border-stone-700'
+                                  }`}>
+                                    {tempData.singleMealFormat === 'meal-set' && <Check className="w-3 h-3 stroke-[3]" />}
+                                  </div>
+                                </div>
+                                <span className="inline-block mt-1 text-[9.5px] font-extrabold px-1.5 py-0.2 rounded bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                                  Truyền thống
+                                </span>
+                                <p className="text-[10.5px] text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
+                                  Nấu đủ 3 món (mặn + canh + rau) chuẩn mâm cơm nhưng thu nhỏ lượng cho 1 người ăn.
+                                </p>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
-
-              {/* Single Person Meal Format Choice (Single Dish vs 3-Dish Set) */}
-              {tempData.familySize === 1 && (
-                <div className="mt-4 p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] space-y-3 animate-fade-in">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🍳</span>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white">
-                        Hình thức nấu nướng cho 1 người ăn
-                      </h4>
-                      <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-0.5">
-                        Bạn muốn nấu món đơn gọn nhẹ hay nấu mâm cơm 3 món?
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <button
-                      type="button"
-                      onClick={() => setTempData({ ...tempData, singleMealFormat: 'single-dish' })}
-                      className={`p-3.5 rounded-xl border text-left transition-all ${
-                        (tempData.singleMealFormat || 'single-dish') === 'single-dish'
-                          ? 'border-stone-900 bg-white dark:bg-[#1A1918] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-sm'
-                          : 'border-[#E8E2D8] dark:border-[#252220] bg-white/70 dark:bg-[#1A1918]/60 hover:bg-white dark:hover:bg-[#1A1918]'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-black text-stone-900 dark:text-white flex items-center gap-1.5">
-                          🍲 Món Đơn Gọn Nhẹ
-                        </span>
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                          (tempData.singleMealFormat || 'single-dish') === 'single-dish'
-                            ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black'
-                            : 'border-stone-300 dark:border-stone-700'
-                        }`}>
-                          {(tempData.singleMealFormat || 'single-dish') === 'single-dish' && <Check className="w-3 h-3 stroke-[3]" />}
-                        </div>
-                      </div>
-                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-800 text-stone-800 dark:text-stone-200">
-                        Khuyên dùng cho 1 người
-                      </span>
-                      <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
-                        Nấu 1 món đĩa/tô đủ chất (mì, bún, phở, cơm đĩa, món xào/kho). Nhanh, tiện lợi, không phải nấu 3 món rườm rà.
-                      </p>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setTempData({ ...tempData, singleMealFormat: 'meal-set' })}
-                      className={`p-3.5 rounded-xl border text-left transition-all ${
-                        tempData.singleMealFormat === 'meal-set'
-                          ? 'border-stone-900 bg-white dark:bg-[#1A1918] dark:border-white ring-2 ring-stone-900/10 dark:ring-white/20 shadow-sm'
-                          : 'border-[#E8E2D8] dark:border-[#252220] bg-white/70 dark:bg-[#1A1918]/60 hover:bg-white dark:hover:bg-[#1A1918]'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-black text-stone-900 dark:text-white flex items-center gap-1.5">
-                          🍱 Mâm Cơm 3 Món
-                        </span>
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                          tempData.singleMealFormat === 'meal-set'
-                            ? 'border-stone-900 bg-stone-900 text-white dark:border-white dark:bg-white dark:text-stone-950 font-black'
-                            : 'border-stone-300 dark:border-stone-700'
-                        }`}>
-                          {tempData.singleMealFormat === 'meal-set' && <Check className="w-3 h-3 stroke-[3]" />}
-                        </div>
-                      </div>
-                      <span className="inline-block mt-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
-                        Truyền thống
-                      </span>
-                      <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
-                        Vẫn muốn nấu đủ 3 món (mặn + canh + rau) chuẩn mâm cơm nhưng thu nhỏ lượng cho 1 người ăn.
-                      </p>
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           )}
 
@@ -327,7 +447,7 @@ export const OnboardingModal: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 {[
-                  { id: 'gym-protein', title: '🏋️ Tập Gym / Giàu Đạm (Protein)', desc: 'Tối ưu ức gà, bò, cá nạc, đạm cao tăng cơ & kiểm soát calo.' },
+                  { id: 'gym-protein', title: '🏋️ Tập Gym / Giàu Đạm', desc: 'Tối ưu ức gà, bò, cá nạc, đạm cao tăng cơ & kiểm soát calo.' },
                   { id: 'eat-clean', title: '🥗 Eat Clean / Ăn Healthy', desc: 'Ít dầu mỡ, nhiều rau củ luộc, thanh lọc cơ thể & giữ dáng.' },
                   { id: 'western-food', title: '🥩 Món Âu / Đổi Vị Phương Tây', desc: 'Bít tết thăn bò, mì Ý, súp kem béo ngậy, salad kiểu Âu đổi gió.' },
                   { id: 'single-prep', title: '🍱 Meal Prep Độc Thân', desc: 'Nấu 1 lần ăn 2 bữa, hộp cơm văn phòng, tiết kiệm nguyên liệu.' },

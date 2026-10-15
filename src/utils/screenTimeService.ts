@@ -296,7 +296,7 @@ export function getScreenTimeStats(timeframe: TimeframeFilter): {
     day: 'Hôm Nay (24 Giờ)',
     month: '1 Tháng Qua (30 Ngày)',
     year: '1 Năm Qua (365 Ngày)',
-    lifetime: 'Toàn Thời Gian (Lifetime)'
+    lifetime: 'Toàn Thời Gian'
   };
 
   return {

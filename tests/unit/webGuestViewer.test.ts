@@ -23,8 +23,8 @@ describe('Unit: Web Guest Viewer Mode & Download App Gating', () => {
   it('WEB-GUEST-03: Minigames and Apex modals prompt Download App in web guest viewer mode', () => {
     const contextCode = fs.readFileSync(path.join(srcDir, 'context/MealWiseContext.tsx'), 'utf-8');
     expect(contextCode.includes('openDownloadAppModal(\'Minigame & Giải Trí Bàn Tiệc\')')).toBe(true);
-    expect(contextCode.includes('openDownloadAppModal(\'Vòng Quay Bàn Nhậu (Drinking Roulette)\')')).toBe(true);
-    expect(contextCode.includes('openDownloadAppModal(\'Món Nhanh Tốc Biến (Apex Meal)\')')).toBe(true);
+    expect(contextCode.includes('openDownloadAppModal(\'Vòng Quay Bàn Nhậu\')')).toBe(true);
+    expect(contextCode.includes('openDownloadAppModal(\'Món Nhanh Tốc Biến\')')).toBe(true);
   });
 
   it('WEB-GUEST-04: DownloadAppModal component renders Android APK download button and iOS Safari PWA guide', () => {
@@ -35,7 +35,7 @@ describe('Unit: Web Guest Viewer Mode & Download App Gating', () => {
     expect(modalCode.includes('MealWise.apk')).toBe(true);
     expect(modalCode.includes('Android (APK)')).toBe(true);
     expect(modalCode.includes('iPhone / iPad (iOS)')).toBe(true);
-    expect(modalCode.includes('Add to Home Screen')).toBe(true);
+    expect(modalCode.includes('Thêm vào Màn hình chính')).toBe(true);
     expect(modalCode.includes('Tiếp Tục Xem Giỏ Đi Chợ Web')).toBe(true);
   });
 
@@ -56,7 +56,7 @@ describe('Unit: Web Guest Viewer Mode & Download App Gating', () => {
 
   it('WEB-GUEST-07: GroceryList displays Web Guest banner with Live Sync callout', () => {
     const groceryCode = fs.readFileSync(path.join(srcDir, 'components/GroceryList.tsx'), 'utf-8');
-    expect(groceryCode.includes('Chế Độ Khách Xem Đi Chợ (Web Sheet)')).toBe(true);
+    expect(groceryCode.includes('Chế Độ Khách Xem Đi Chợ')).toBe(true);
     expect(groceryCode.includes('Tải App MealWise')).toBe(true);
   });
 

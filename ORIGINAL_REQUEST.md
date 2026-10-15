@@ -723,3 +723,51 @@ Create/expand automated test suites (`tests/unit/dishImageResolver.test.ts` and 
 
 
 
+
+## 2026-10-14T02:28:51Z
+
+Use a full multi-agent team. Smartly integrate the Gundam Exia Repair III 60-30-10 color palette across the MealWise mobile application using clean, flat matte UI colors (strictly NO metallic coloring, chrome gradients, or sci-fi metallic effects), and produce a comprehensive visual Mood Board of the app.
+
+Working directory: d:\New folder\Remotion
+Integrity mode: development
+Artifact directory: C:\Users\EXIA\.gemini\antigravity\brain\b5f1d5ef-463d-47ab-81a1-076674a77a79
+
+## Requirements
+
+### R1. 60-30-10 Flat Matte Color System (No Metallic Coloring)
+Update global styles and Tailwind theme tokens (`src/index.css`, `tailwind.config.js`, `src/App.tsx`) following a strict 60-30-10 rule with flat, clean matte pigments extracted from the 6 reference swatches:
+- 60% Dominant Base Surfaces (Clean Matte White & Flat Neutral Gray):
+  - Light Mode: Pure flat Cool White (`#F8FAFC` app canvas, `#FFFFFF` cards, `#E2E8F0` clean flat borders, `#1E293B` deep neutral gray text).
+  - Dark Mode: Flat Neutral Dark Gray (`#12161F` app canvas, `#1A202C` cards, `#2D3748` flat borders, `#F8FAFC` crisp white text) — strictly flat matte charcoal/gray with zero metallic gradients or sheen.
+- 30% Secondary / Brand Identity (Flat Cobalt & Sky Blue):
+  - Cobalt Blue (`#1D4ED8` / `#2563EB`) and soft flat Sky Blue tint (`#EFF6FF` in light mode, `#1E3A8A`/30 in dark mode) for the Navbar brand badge, Bottom Dock active indicator & centerpiece button (`Tủ Lạnh`), active filter tabs, and primary CTA buttons.
+- 10% Semantic Accents (Flat Clear Green, Warm Yellow & Monza Red):
+  - Clear Emerald Green (`#10B981` / `#059669`): Fresh pantry items, completed cooking steps, grocery checkmarks (`✓ Đã thêm`), and budget health indicators.
+  - Flat Amber Yellow (`#EAB308` / `#F59E0B`): Family recipe heritage badges (`⭐️ Món Bếp Nhà`), chef tips, star highlights, and warning states.
+  - Flat Monza Red (`#DC2626` / `#E11D48`): Calorie/heat badges, spicy tags, urgent expiry alerts, and delete actions.
+
+### R2. Smart Component-Level Integration
+Apply the 60-30-10 flat color palette across core mobile views (`Navbar.tsx`, `Sidebar.tsx`, `MealSetExplorer.tsx`, `WeeklyBoard.tsx`, `RecipeCatalog.tsx`, `RecipeDetailModal.tsx`, `GroceryList.tsx`, `FridgeView.tsx`, `AccountView.tsx`) so that primary actions use flat Cobalt Blue, secondary containers use clean flat White / Neutral Gray, and semantic badges use flat Green, Yellow, and Red. Preserve all Vietnamese UI labels without English in parentheses. Do not break any existing unit tests or React Rules of Hooks.
+
+### R3. Comprehensive App Mood Board
+Create a complete MealWise Color & UI Mood Board artifact (`C:\Users\EXIA\.gemini\antigravity\brain\b5f1d5ef-463d-47ab-81a1-076674a77a79\mood_board.md`) documenting the 60-30-10 flat matte color swatches, hex codes, typography hierarchy, and UI component specimens.
+
+## Verification Resources
+- Existing automated test suite via `cmd.exe /c npm test` (In Windows PowerShell, never chain commands with `&&`).
+- Live Vite development server at `http://localhost:5173/`.
+
+## Acceptance Criteria
+
+### Color & Design Compliance
+- [ ] Strictly 60-30-10 color distribution across the app shell and screens.
+- [ ] Zero metallic gradients, metallic textures, or chrome effects (`linear-gradient` metallic sheens are forbidden on cards/surfaces).
+- [ ] Primary interactive elements (Navbar logo, Sidebar centerpiece & active pill, primary CTAs, active category pills) use flat Cobalt Blue (`#1D4ED8` / `#2563EB`).
+- [ ] All Vietnamese UI labels remain clean with no English explanations in parentheses.
+
+### Technical & Deliverable Verification
+- [ ] All modules compile cleanly via Vite (`curl -I http://localhost:5173/src/App.tsx` returns `200 OK`) and `cmd.exe /c npm test` passes with zero regressions.
+- [ ] Visual Mood Board artifact (`mood_board.md`) is created in the artifact directory.
+
+## 2026-10-14T02:29:29Z
+
+FYI: A high-resolution Mood Board graphic has been generated at `C:/Users/EXIA/.gemini/antigravity/brain/b5f1d5ef-463d-47ab-81a1-076674a77a79/mealwise_exia_moodboard_1791944946938.jpg`. Please embed both this image (`![MealWise 60-30-10 Flat Matte Mood Board](C:/Users/EXIA/.gemini/antigravity/brain/b5f1d5ef-463d-47ab-81a1-076674a77a79/mealwise_exia_moodboard_1791944946938.jpg)`) and the reference color guide (`C:/Users/EXIA/.gemini/antigravity/brain/b5f1d5ef-463d-47ab-81a1-076674a77a79/.user_uploaded/media_1791944418825_4c2680c6.jpg`) in `C:\Users\EXIA\.gemini\antigravity\brain\b5f1d5ef-463d-47ab-81a1-076674a77a79\mood_board.md`.

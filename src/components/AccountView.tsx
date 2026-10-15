@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
-import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock, LayoutDashboard, ArrowRight, Gamepad2 } from 'lucide-react';
+import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock, LayoutDashboard, ArrowRight, Gamepad2, ShoppingCart, PartyPopper, ChevronRight, HelpCircle } from 'lucide-react';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
 import { getDailyBudgetTarget } from '../utils/currency';
 import { 
@@ -219,7 +219,8 @@ export const AccountView: React.FC = () => {
     openAuthModal,
     guestSession,
     setActiveTab,
-    openMinigameHub
+    openMinigameHub,
+    startTutorial
   } = useMealWise();
   const [isAdSequenceOpen, setIsAdSequenceOpen] = useState(false);
   const isLight = theme === 'light';
@@ -243,34 +244,34 @@ export const AccountView: React.FC = () => {
   }, [adTracking.adFreeUntilTimestamp]);
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <div className="space-y-3 max-w-3xl mx-auto">
       
       {/* Profile Header */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4 min-w-0 flex-1">
-          <div className="w-14 h-14 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center shadow-2xs shrink-0">
-            <User className="w-7 h-7 text-stone-700 dark:text-stone-300" />
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shadow-2xs shrink-0">
+            <User className="w-5 h-5 text-slate-700 dark:text-slate-300" />
           </div>
 
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl font-black text-stone-900 dark:text-white truncate">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h1 className="text-base font-black text-slate-900 dark:text-white truncate">
                 {user?.name || 'Tài Khoản Khách'}
               </h1>
               {isRegistered ? (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-900 dark:bg-stone-800 dark:text-stone-100 border border-stone-200 dark:border-stone-700 flex items-center gap-1">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Đã Đăng Ký
                 </span>
               ) : (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-400 border border-stone-200 dark:border-stone-700 flex items-center gap-1">
-                  <Lock className="w-3 h-3 text-stone-500" /> Chế Độ Dùng Thử (Khách)
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
+                  <Lock className="w-3 h-3 text-slate-500" /> Khách
                 </span>
               )}
             </div>
-            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium truncate">
               {user?.email 
-                ? `Tài khoản: ${user.email} • ID: ${user.id || 'usr_registered'}` 
-                : `Phiên dùng thử đang được lưu tự động (ID: ${guestSession?.guestId.slice(0, 14) || 'guest'}...). Đăng ký sẽ giữ nguyên toàn bộ thực đơn tuần!`}
+                ? `${user.email}` 
+                : `Phiên dùng thử (${guestSession?.guestId.slice(0, 10) || 'guest'}...)`}
             </p>
           </div>
         </div>
@@ -288,76 +289,69 @@ export const AccountView: React.FC = () => {
                 onConfirm: logoutUser
               });
             }}
-            className="px-4 py-2.5 rounded-2xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-rose-600 dark:text-rose-400 font-bold text-xs border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap self-stretch sm:self-auto"
+            className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 font-bold text-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
           >
-            <LogOut className="w-4 h-4 shrink-0" />
+            <LogOut className="w-3.5 h-3.5 shrink-0" />
             <span>Đăng Xuất</span>
           </button>
         ) : (
           <button
             type="button"
             onClick={() => openAuthModal('register')}
-            className="px-4 py-2.5 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-bold text-xs shadow-xs flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap self-stretch sm:self-auto"
+            title="Đăng Nhập / Đăng Ký"
+            className="px-3.5 py-2 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
           >
-            <UserPlus className="w-4 h-4 shrink-0" />
-            <span>Đăng Nhập / Đăng Ký</span>
+            <UserPlus className="w-3.5 h-3.5 shrink-0" />
+            <span>Đăng Nhập</span>
           </button>
         )}
       </div>
 
       {/* Admin Portal Gateway for Administrator Account */}
       {user?.role === 'admin' && (
-        <div className="p-4 sm:p-5 rounded-3xl bg-stone-900 border border-amber-500/40 text-white shadow-md space-y-3 relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-                <LayoutDashboard className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-sm font-black text-white">Website Quản Trị (Desktop Web Portal)</h3>
-                <span className="text-[10px] text-amber-400 font-extrabold uppercase tracking-wider block">
-                  Dành riêng cho máy tính & màn hình lớn
+        <div className="p-3.5 rounded-2xl bg-slate-900 border border-amber-500/40 text-white shadow-sm flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+              <LayoutDashboard className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <h3 className="text-xs font-black text-white">Website Quản Trị</h3>
+                <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[9px] font-black uppercase border border-amber-500/30">
+                  Admin
                 </span>
               </div>
+              <p className="text-[11px] text-slate-300 truncate">
+                Giám sát dữ liệu thời gian thực trên màn hình lớn
+              </p>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase border border-amber-500/30">
-              Admin
-            </span>
           </div>
-
-          <p className="text-xs text-stone-300 leading-relaxed">
-            Hệ thống giám sát dữ liệu telemetry thời gian thực, quản lý cơ sở dữ liệu tài khoản, phân tích quảng cáo và phòng mua chung được phát triển chuyên biệt dưới dạng Website Desktop.
-          </p>
 
           <button
             type="button"
             onClick={() => setActiveTab('admin')}
-            className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xs cursor-pointer"
+            className="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-xs cursor-pointer shrink-0"
           >
-            <span>Mở Website Quản Trị Desktop</span>
+            <span>Mở Quản Trị</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
-      {/* Minigame Arcade Hub (Moved from navbar to Account settings per user request) */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5 min-w-0 flex-1">
-            <div className="w-12 h-12 rounded-2xl bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-stone-200 flex items-center justify-center shrink-0 shadow-xs">
-              <Gamepad2 className="w-6 h-6" />
+      {/* Compact 2-Column Hub Row: Minigame + Catering */}
+      <div className="grid grid-cols-2 gap-2.5">
+        {/* Minigame Arcade Hub */}
+        <div className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between gap-2.5">
+          <div className="flex items-start gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-[#1D4ED8] dark:text-blue-400 border border-blue-200/60 dark:border-blue-800/50 flex items-center justify-center shrink-0">
+              <Gamepad2 className="w-4 h-4" />
             </div>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-base font-extrabold text-stone-900 dark:text-white">
-                  Khu Vực Minigame & Giải Trí
-                </h2>
-                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
-                  Arcade Hub
-                </span>
-              </div>
-              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-relaxed">
-                Gợi ý món nhanh bằng hòm may mắn, vòng quay bàn nhậu và trò chơi tiệc tùng vui nhộn.
+            <div className="min-w-0">
+              <h2 className="text-xs font-extrabold text-slate-900 dark:text-white leading-snug">
+                Khu Vực Minigame
+              </h2>
+              <p className="text-[10.5px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2 leading-tight">
+                Hòm may mắn & vòng quay bàn nhậu
               </p>
             </div>
           </div>
@@ -365,155 +359,221 @@ export const AccountView: React.FC = () => {
           <button
             type="button"
             onClick={openMinigameHub}
-            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs shadow-md shadow-stone-900/10 flex items-center justify-center gap-2 transition-all active:scale-95 shrink-0 whitespace-nowrap self-stretch sm:self-center cursor-pointer"
+            className="w-full py-2 px-3 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-[11px] shadow-2xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
           >
-            <Gamepad2 className="w-4 h-4 shrink-0" />
+            <Gamepad2 className="w-3.5 h-3.5 shrink-0" />
             <span>Chơi Minigame</span>
           </button>
         </div>
-      </div>
 
-      {/* Theme Mode Preference: Sleek Interactive Toggle Switch */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-4">
-        <div className="border-b border-stone-100 dark:border-stone-800 pb-3">
-          <h2 className="text-base font-black text-stone-900 dark:text-white">
-            Giao Diện Hiển Thị
-          </h2>
-          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 font-medium">
-            Tùy chỉnh tông màu sáng hoặc tối phù hợp cho mắt
-          </p>
-        </div>
-
-        <div 
-          onClick={toggleTheme}
-          className={`p-4 sm:p-5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4 select-none ${
-            isLight
-              ? 'bg-[#FAF8F5] border-[#E8E2D8] hover:border-stone-400 shadow-2xs'
-              : 'bg-[#121110] border-[#252220] hover:border-stone-600 shadow-2xs'
-          }`}
-        >
-          <div className="flex items-center gap-3.5 min-w-0 flex-1">
-            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
-              isLight
-                ? 'bg-stone-100 text-stone-900 border border-stone-200 shadow-2xs'
-                : 'bg-stone-800 text-stone-100 border border-stone-700 shadow-2xs'
-            }`}>
-              {isLight ? (
-                <Sun className="w-5 h-5 transition-transform hover:rotate-45 duration-300" />
-              ) : (
-                <Moon className="w-5 h-5 transition-transform hover:-rotate-12 duration-300" />
-              )}
+        {/* Catering & Party Planner Hub */}
+        <div className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between gap-2.5">
+          <div className="flex items-start gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <PartyPopper className="w-4 h-4" />
             </div>
-            <div className="min-w-0 flex-1 pr-2">
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-sm sm:text-base font-extrabold text-stone-900 dark:text-white tracking-tight">
-                  {isLight ? 'Chế Độ Sáng' : 'Chế Độ Tối'}
-                </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
-                  {isLight ? 'Light Mode' : 'Dark Mode'}
-                </span>
-              </div>
-              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-relaxed">
-                {isLight 
-                  ? 'Nền sáng thanh lịch, dễ nhìn ban ngày' 
-                  : 'Tông đen sang trọng, dịu mắt ban đêm'}
+            <div className="min-w-0">
+              <h2 className="text-xs font-extrabold text-slate-900 dark:text-white leading-snug">
+                Thực Đơn Tiệc
+              </h2>
+              <p className="text-[10.5px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2 leading-tight">
+                50+ mâm cỗ 10–200 khách & báo giá
               </p>
             </div>
           </div>
 
-          {/* iOS-Style Toggle Switch */}
           <button
             type="button"
-            role="switch"
-            aria-checked={isLight}
-            aria-label="Chuyển đổi giao diện Sáng / Tối"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleTheme();
+            onClick={() => {
+              if (!isRegistered) {
+                openAuthModal('register');
+                return;
+              }
+              setActiveTab('party');
             }}
-            className={`relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-stone-400 ${
-              isLight ? 'bg-stone-900' : 'bg-stone-700'
-            }`}
+            className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-black text-[11px] flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
           >
-            <span
-              className={`pointer-events-none inline-flex h-7 w-7 transform items-center justify-center rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                isLight ? 'translate-x-6 text-stone-900' : 'translate-x-0 text-stone-600'
-              }`}
-            >
-              {isLight ? (
-                <Sun className="h-4 w-4 text-stone-900" />
-              ) : (
-                <Moon className="h-4 w-4 text-stone-600" />
-              )}
-            </span>
+            <PartyPopper className="w-3.5 h-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+            <span>{isRegistered ? 'Lên Thực Đơn Tiệc' : 'Mở Khóa Tiệc 🔒'}</span>
           </button>
         </div>
       </div>
 
-
-      {/* Preferences Overview */}
-      <div className="p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-4">
-        <h2 className="text-base font-extrabold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3">
-          Thông Tin Cấu Hình Hiện Tại
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-1 min-h-[105px]">
-            <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 uppercase tracking-wider block">KHẨU VỊ VÙNG MIỀN</span>
-            <p className="text-sm font-extrabold text-emerald-700 dark:text-emerald-400">
-              {onboardingData.regionPreference === 'bac' && 'Miền Bắc'}
-              {onboardingData.regionPreference === 'nam' && 'Miền Nam'}
-              {onboardingData.regionPreference === 'trung' && 'Miền Trung'}
-              {onboardingData.regionPreference === 'toan-quoc' && 'Đa Dạng 3 Miền'}
-            </p>
+      {/* Theme Mode Preference: Compact Single-Row Toggle */}
+      <div 
+        onClick={toggleTheme}
+        className="p-3 sm:p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between gap-3 cursor-pointer select-none"
+      >
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+            {isLight ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </div>
-
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-1 min-h-[105px]">
-            <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 uppercase tracking-wider block">KHẨU PHẦN GIA ĐÌNH</span>
-            <p className="text-sm font-extrabold text-slate-900 dark:text-white">
-              {onboardingData.familySize === 1 
-                ? (onboardingData.singleMealFormat === 'meal-set' 
-                    ? '1 người (Mâm cơm 3 món)' 
-                    : '1 người (Món đơn gọn nhẹ)') 
-                : `${onboardingData.familySize} người ăn`}
-            </p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-1 min-h-[105px]">
-            <div>
-              <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 uppercase tracking-wider block">NGÂN SÁCH DỰ KIẾN</span>
-              <p className="text-sm font-extrabold text-amber-700 dark:text-amber-300">
-                {onboardingData.budgetLevel === 'tiet-kiem' && (
-                  onboardingData.familySize === 1
-                    ? `Tiết kiệm (~${getDailyBudgetTarget('tiet-kiem', 1, onboardingData.specialNeeds).toLocaleString('vi-VN')} đ/ngày • 3 bữa)`
-                    : `Tiết kiệm (${onboardingData.specialNeeds?.includes('western-food') ? '~140k/mâm' : '~100k/mâm'} • ${getDailyBudgetTarget('tiet-kiem', onboardingData.familySize || 4, onboardingData.specialNeeds).toLocaleString('vi-VN')} đ/ngày cả nhà)`
-                )}
-                {onboardingData.budgetLevel === 'vua-phai' && (
-                  onboardingData.familySize === 1
-                    ? `Vừa phải (~${getDailyBudgetTarget('vua-phai', 1, onboardingData.specialNeeds).toLocaleString('vi-VN')} đ/ngày • 3 bữa)`
-                    : `Vừa phải (${onboardingData.specialNeeds?.includes('western-food') ? '~180k/mâm' : '~140k/mâm'} • ${getDailyBudgetTarget('vua-phai', onboardingData.familySize || 4, onboardingData.specialNeeds).toLocaleString('vi-VN')} đ/ngày cả nhà)`
-                )}
-                {onboardingData.budgetLevel === 'thoai-mai' && (
-                  onboardingData.familySize === 1
-                    ? `Thoải mái (~${getDailyBudgetTarget('thoai-mai', 1, onboardingData.specialNeeds).toLocaleString('vi-VN')} đ/ngày • 3 bữa)`
-                    : `Thoải mái (${onboardingData.specialNeeds?.includes('western-food') ? '>260k/mâm' : '>200k/mâm'} • ${getDailyBudgetTarget('thoai-mai', onboardingData.familySize || 4, onboardingData.specialNeeds).toLocaleString('vi-VN')} đ/ngày cả nhà)`
-                )}
-              </p>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                Giao Diện Hiển Thị: {isLight ? 'Chế Độ Sáng' : 'Chế Độ Tối'}
+              </span>
             </div>
-            <span className="text-[10.5px] text-slate-500 dark:text-slate-400 block font-medium">
-              {onboardingData.familySize === 1
-                ? 'Đã bao gồm 3 bữa ăn (sáng + trưa + tối) cho 1 người.'
-                : `Hạn mức 1 ngày gồm 3 bữa: bữa sáng & 2 mâm cơm trưa + tối cho ${onboardingData.familySize || 4} người.`}
-            </span>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+              {isLight ? 'Nền sáng thanh lịch, dễ nhìn ban ngày' : 'Tông tối dịu mắt ban đêm'}
+            </p>
           </div>
         </div>
 
-        {onboardingData.specialNeeds && onboardingData.specialNeeds.length > 0 && (
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80">
-            <span className="text-[10px] font-extrabold text-slate-600 dark:text-slate-400 uppercase tracking-wider block mb-2">
-              TIÊU CHÍ ƯU TIÊN ĐÃ CHỌN
+        <button
+          type="button"
+          role="switch"
+          aria-checked={isLight}
+          aria-label="Chuyển đổi giao diện Sáng / Tối"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleTheme();
+          }}
+          className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out ${
+            isLight ? 'bg-[#1D4ED8]' : 'bg-slate-700'
+          }`}
+        >
+          <span
+            className={`pointer-events-none inline-flex h-6 w-6 transform items-center justify-center rounded-full bg-white shadow-xs transition duration-200 ease-in-out ${
+              isLight ? 'translate-x-5 text-[#1D4ED8]' : 'translate-x-0 text-slate-600'
+            }`}
+          >
+            {isLight ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+          </span>
+        </button>
+      </div>
+
+      {/* Preferences Overview for Members vs Locked Features Showcase for Guests */}
+      {!isRegistered ? (
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+              <span>Tính Năng Dành Cho Thành Viên</span>
             </span>
-            <div className="flex flex-wrap gap-2">
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[9.5px] font-black uppercase">
+              Chế độ Khách 🔒
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2.5">
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col justify-between gap-2">
+              <div>
+                <h3 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1">
+                  <ShoppingCart className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Đi Chợ Thông Minh</span>
+                </h3>
+                <p className="text-[10.5px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">
+                  Gom nguyên liệu 7 ngày, phân 5 quầy & mua chung.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => openAuthModal('register')}
+                title="Mở Khóa Đi Chợ"
+                className="w-full py-1.5 px-2 rounded-lg bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-black text-[10.5px] flex items-center justify-center gap-1 cursor-pointer"
+              >
+                <span>Mở Khóa Đi Chợ</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
+
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col justify-between gap-2">
+              <div>
+                <h3 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1">
+                  <PartyPopper className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  <span>Lên Thực Đơn Tiệc</span>
+                </h3>
+                <p className="text-[10.5px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">
+                  50+ mâm tiệc chuẩn 5 món & báo giá Zalo.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => openAuthModal('register')}
+                title="Mở Khóa Thực Đơn Tiệc"
+                className="w-full py-1.5 px-2 rounded-lg bg-white dark:bg-slate-900 text-amber-700 dark:text-amber-400 border border-amber-500/30 font-black text-[10.5px] flex items-center justify-center gap-1 cursor-pointer"
+              >
+                <span>Mở Khóa Thực Đơn Tiệc</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-0.5">
+            <button
+              type="button"
+              onClick={() => openAuthModal('register')}
+              title="Đăng Ký Tài Khoản Miễn Phí (Mở Khóa Toàn Bộ)"
+              className="flex-1 py-2.5 px-4 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Đăng Ký Miễn Phí</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => openAuthModal('login')}
+              className="py-2 px-3 text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors cursor-pointer"
+            >
+              Đăng nhập
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* Compact Preferences + Quick Actions Card for Registered Users */
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+            <h2 className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              Cấu Hình & Hướng Dẫn
+            </h2>
+            <span className="text-[10.5px] text-slate-400 font-medium">
+              Tùy chỉnh nhanh
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Khẩu vị vùng miền</span>
+              <p className="text-xs font-extrabold text-emerald-700 dark:text-emerald-400 mt-0.5 truncate">
+                {onboardingData.regionPreference === 'bac' && 'Miền Bắc'}
+                {onboardingData.regionPreference === 'nam' && 'Miền Nam'}
+                {onboardingData.regionPreference === 'trung' && 'Miền Trung'}
+                {onboardingData.regionPreference === 'toan-quoc' && 'Đa Dạng 3 Miền'}
+              </p>
+            </div>
+
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Khẩu phần gia đình</span>
+              <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
+                {onboardingData.familySize === 1 
+                  ? (onboardingData.singleMealFormat === 'meal-set' ? '1 người (Mâm 3 món)' : '1 người (Món đơn)') 
+                  : `${onboardingData.familySize} người ăn`}
+              </p>
+            </div>
+
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">LỊCH BỮA TRƯA NGÀY THƯỜNG</span>
+              <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
+                {onboardingData.weekdayLunchRoutine === 'nau-ca-ngay'
+                  ? '🏠 Nấu đủ cả ngày'
+                  : onboardingData.weekdayLunchRoutine === 'hop-com-van-phong'
+                  ? '🍱 Mang cơm hộp văn phòng'
+                  : '🏫 Bán trú & Đi làm (T2 - T6 ăn ngoài)'}
+              </p>
+            </div>
+
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Ngân sách ngày</span>
+              <p className="text-xs font-extrabold text-amber-700 dark:text-amber-400 mt-0.5 truncate">
+                {onboardingData.budgetLevel === 'tiet-kiem' && `Tiết kiệm (~${(getDailyBudgetTarget('tiet-kiem', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
+                {onboardingData.budgetLevel === 'vua-phai' && `Vừa phải (~${(getDailyBudgetTarget('vua-phai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
+                {onboardingData.budgetLevel === 'thoai-mai' && `Thoải mái (~${(getDailyBudgetTarget('thoai-mai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
+              </p>
+            </div>
+          </div>
+
+          {onboardingData.specialNeeds && onboardingData.specialNeeds.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 pt-0.5">
               {onboardingData.specialNeeds.map(need => {
                 const labelMap: Record<string, string> = {
                   'gym-protein': '🏋️ Tập Gym / Giàu Đạm',
@@ -528,105 +588,89 @@ export const AccountView: React.FC = () => {
                 return (
                   <span
                     key={need}
-                    className="px-3 py-1 rounded-xl bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/25 text-xs font-bold flex items-center gap-1"
+                    className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10.5px] font-bold flex items-center gap-1"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <CheckCircle2 className="w-3 h-3 text-[#1D4ED8] dark:text-blue-400" />
                     <span>{labelMap[need] || need}</span>
                   </span>
                 );
               })}
             </div>
-          </div>
-        )}
-      </div>
+          )}
 
-
-
-
-
-
-      {/* Reset Onboarding Action (Only for registered members) */}
-      {isRegistered && (
-        <div className="p-5 sm:p-6 rounded-3xl glass-card border border-slate-200 dark:border-slate-800 space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1 min-w-0 flex-1">
-              <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
-                Thiết Lập Lại Khẩu Vị & Khẩu Phần
-              </h2>
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                Bạn có thể nhấn nút dưới đây để kích hoạt lại toàn bộ bảng câu hỏi Onboarding (chọn khẩu vị, số người, ngân sách).
-              </p>
-            </div>
-
+          {/* Compact Side-by-Side Action Buttons for Onboarding Reset & Tutorial Replay */}
+          <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"
               onClick={resetOnboarding}
-              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-95 shrink-0 whitespace-nowrap self-stretch sm:self-center cursor-pointer"
+              className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+              title="Xem Lại Khảo Sát Khẩu Vị"
             >
-              <RotateCcw className="w-4 h-4 shrink-0" />
-              <span>Xem Lại Khảo Sát Khẩu Vị (Onboarding)</span>
+              <RotateCcw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span className="truncate">Đổi Khẩu Vị</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={startTutorial}
+              className="py-2 px-2.5 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs shadow-2xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+              title="Xem Lại Hướng Dẫn"
+            >
+              <HelpCircle className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Hướng Dẫn</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Support Developer & Ad-Free Reward Hub */}
-      <div className="p-5 sm:p-6 rounded-3xl glass-card border border-amber-500/25 dark:border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-ceramic-50 to-orange-500/5 dark:from-stone-900 dark:via-stone-900 dark:to-amber-950/30 shadow-sm space-y-4">
-        {/* Header & Status Row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-500/15 dark:border-white/5 pb-3.5">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-base font-extrabold text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-                <span>Ủng Hộ & Trải Nghiệm Không Quảng Cáo</span>
-              </span>
-              {adFreeRemainingMs > 0 ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 text-[10.5px] font-extrabold shadow-xs">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                  <span>Tài Khoản Premium</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-200/60 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-300/40 dark:border-stone-700 text-[10px] font-extrabold">
-                  Bản Tiêu Chuẩn
-                </span>
-              )}
-            </div>
-            <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
-              Mỗi ngày xem 3 video ngắn (90s) để nâng cấp lên <strong>Tài Khoản Premium</strong>, trải nghiệm trọn vẹn không quảng cáo đến <strong>12h đêm (24:00)</strong>.
-            </p>
+      {/* Compact Support Developer & Ad-Free Reward Hub */}
+      <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
+        {/* Compact Header Row */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span className="text-xs font-extrabold text-slate-900 dark:text-white truncate">
+              Ủng Hộ & Không Quảng Cáo
+            </span>
           </div>
+          {adFreeRemainingMs > 0 ? (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[10px] font-extrabold shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+              <span>Premium</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 text-[10px] font-bold shrink-0">
+              Bản Tiêu Chuẩn
+            </span>
+          )}
         </div>
 
-        {/* 2 Live Counters: Daily Ads Watched & Ad-Free Usage Time */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+          Xem 3 video ngắn (~30s) để mở khóa trải nghiệm <strong>không quảng cáo</strong> hết hôm nay.
+        </p>
+
+        {/* Compact Side-by-Side 2-Column Counters */}
+        <div className="grid grid-cols-2 gap-2">
           {/* Counter 1: Ads Watched Today */}
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-xs flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0">
-                <Tv className="w-5 h-5" />
-              </div>
-              <div className="min-w-0">
-                <span className="text-[10px] font-extrabold text-stone-500 dark:text-stone-400 block uppercase tracking-wider">
-                  Số Quảng Cáo Hôm Nay
-                </span>
-                <span className="text-sm sm:text-base font-black text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
-                  <span>{adTracking.adsWatchedToday}</span>
-                  <span className="text-xs font-semibold text-stone-400">/ {adTracking.dailyTarget} video mục tiêu</span>
-                </span>
-              </div>
+          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 block uppercase truncate">
+                Tiến Độ Hôm Nay
+              </span>
+              <span className="text-xs font-black text-slate-900 dark:text-white flex items-baseline gap-1 mt-0.5">
+                <span>{adTracking.adsWatchedToday}/{adTracking.dailyTarget}</span>
+                <span className="text-[10px] font-medium text-slate-400">video</span>
+              </span>
             </div>
 
-            {/* Visual Pips (3 pips) */}
-            <div className="flex items-center gap-1 shrink-0" title={`Mục tiêu hàng ngày: ${adTracking.adsWatchedToday}/${adTracking.dailyTarget}`}>
+            <div className="flex items-center gap-1 shrink-0">
               {Array.from({ length: adTracking.dailyTarget }).map((_, idx) => {
                 const isFilled = idx < adTracking.adsWatchedToday;
                 return (
                   <div
                     key={idx}
-                    className={`w-2.5 h-6 rounded-md transition-all ${
-                      isFilled
-                        ? 'bg-gradient-to-t from-amber-500 to-amber-400 shadow-xs'
-                        : 'bg-stone-200 dark:bg-stone-700/60'
+                    className={`w-2 h-4 rounded-xs transition-all ${
+                      isFilled ? 'bg-amber-500' : 'bg-slate-200 dark:bg-slate-700'
                     }`}
                   />
                 );
@@ -634,69 +678,52 @@ export const AccountView: React.FC = () => {
             </div>
           </div>
 
-          {/* Counter 2: Ad-Free App Usage Time Remaining */}
-          <div className={`p-3.5 rounded-2xl border shadow-xs flex items-center justify-between gap-3 transition-all ${
+          {/* Counter 2: Ad-Free Time Remaining */}
+          <div className={`p-2.5 rounded-xl border flex items-center justify-between gap-2 ${
             adFreeRemainingMs > 0
-              ? 'bg-amber-500/10 dark:bg-amber-950/20 border-amber-500/35'
-              : 'bg-white dark:bg-[#1A1918] border-[#E8E2D8] dark:border-[#252220]'
+              ? 'bg-amber-500/10 border-amber-500/30'
+              : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700/80'
           }`}>
-            <div className="flex items-center gap-3 min-w-0">
-              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
-                adFreeRemainingMs > 0
-                  ? 'bg-amber-500 text-stone-950 shadow-xs'
-                  : 'bg-stone-100 dark:bg-stone-800 text-stone-400'
+            <div className="min-w-0">
+              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 block uppercase truncate">
+                Không Quảng Cáo
+              </span>
+              <span className={`text-xs font-black tracking-tight flex items-center gap-1 mt-0.5 ${
+                adFreeRemainingMs > 0 ? 'text-amber-700 dark:text-amber-300' : 'text-slate-400 dark:text-slate-500'
               }`}>
-                <ShieldCheck className="w-5 h-5 font-bold" />
-              </div>
-              <div className="min-w-0">
-                <span className="text-[10px] font-extrabold text-stone-500 dark:text-stone-400 block uppercase tracking-wider">
-                  Thời Gian Không Quảng Cáo
+                <Clock className="w-3 h-3 shrink-0" />
+                <span className="tabular-nums font-mono">
+                  {adFreeRemainingMs > 0 ? formatAdFreeTime(adFreeRemainingMs) : '00:00:00'}
                 </span>
-                <span className={`text-sm sm:text-base font-black tracking-tight flex items-center gap-1.5 ${
-                  adFreeRemainingMs > 0 ? 'text-amber-700 dark:text-amber-300' : 'text-stone-400 dark:text-stone-500'
-                }`}>
-                  <Clock className="w-3.5 h-3.5 shrink-0" />
-                  <span className="tabular-nums font-mono">
-                    {adFreeRemainingMs > 0 ? formatAdFreeTime(adFreeRemainingMs) : '00:00:00'}
-                  </span>
-                </span>
-              </div>
+              </span>
             </div>
-
-            <span className={`text-[10.5px] font-black px-2 py-1 rounded-xl shrink-0 ${
-              adFreeRemainingMs > 0
-                ? 'bg-amber-500/20 text-amber-900 dark:text-amber-200 border border-amber-500/30'
-                : 'bg-stone-100 dark:bg-stone-800 text-stone-500'
-            }`}>
-              {adFreeRemainingMs > 0 ? 'Đến 12h đêm' : 'Chưa kích hoạt'}
-            </span>
           </div>
         </div>
 
-        {/* Redesigned Button */}
+        {/* Compact Action Button */}
         <button
           type="button"
           onClick={() => {
             if (adTracking.adsWatchedToday >= adTracking.dailyTarget && adFreeRemainingMs > 0) {
-              showToast('✨ Bạn đã xem đủ 3 video và kích hoạt Premium đến 12h đêm nay!');
+              showToast('✨ Bạn đã xem đủ 3 video và kích hoạt trải nghiệm không quảng cáo hôm nay!');
               return;
             }
             openConfirmModal({
-              title: 'Cam Kết Xem Chuỗi 3 Video Tự Nguyện',
-              message: 'Quảng cáo tự nguyện bao gồm chuỗi 3 video ngắn (mỗi video 30 giây không thể bỏ qua, tổng cộng 90 giây). Hoàn thành sẽ tự động nâng cấp tài khoản của bạn lên Premium không quảng cáo đến 12h đêm nay (24:00). Bạn có muốn bắt đầu không?',
-              confirmLabel: 'Tôi cam kết xem (3 video • 30s)',
+              title: 'Xem Video Nhận Trải Nghiệm Không Quảng Cáo',
+              message: 'Xem 3 video ngắn (mỗi video ~30 giây, tổng khoảng 1,5 phút) để mở khóa trải nghiệm không quảng cáo đến hết ngày hôm nay. Bạn có muốn bắt đầu không?',
+              confirmLabel: 'Bắt đầu xem (3 video • ~30s)',
               cancelLabel: 'Để sau',
               onConfirm: () => {
                 setIsAdSequenceOpen(true);
               }
             });
           }}
-          className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs sm:text-sm shadow-md shadow-amber-500/25 flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] cursor-pointer group"
+          className="w-full py-2.5 px-4 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-xs shadow-2xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
         >
-          <PlayCircle className="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform" />
+          <PlayCircle className="w-4 h-4 shrink-0" />
           <span>
             {adTracking.adsWatchedToday >= adTracking.dailyTarget && adFreeRemainingMs > 0
-              ? 'Đã Kích Hoạt Premium Hôm Nay'
+              ? 'Đã Kích Hoạt Không Quảng Cáo'
               : 'Ủng Hộ Nhà Phát Triển'}
           </span>
         </button>
@@ -710,7 +737,7 @@ export const AccountView: React.FC = () => {
           const updated = recordVolunteerAdWatched(3);
           setAdTracking(updated);
           setAdFreeRemainingMs(getAdFreeRemainingMs(updated.adFreeUntilTimestamp));
-          showToast('👑 Chúc mừng! Bạn đã hoàn thành 3 video và được nâng cấp Premium không quảng cáo đến 12h đêm nay.');
+          showToast('👑 Chúc mừng! Bạn đã hoàn thành 3 video và mở khóa trải nghiệm không quảng cáo đến hết ngày hôm nay.');
         }}
       />
     </div>

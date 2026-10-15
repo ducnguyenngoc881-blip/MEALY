@@ -56,8 +56,8 @@ console.log('===================================================================
 // ----------------------------------------------------------------------------
 console.log('[1/7] Auditing static URLs across all datasets...');
 
-// 1.1 mockRecipes (all 1245)
-assert(mockRecipes.length === 1245, 'Dataset Cardinality', 'mockRecipes', 'All Recipes', `Expected 1245, got ${mockRecipes.length}`, String(mockRecipes.length));
+// 1.1 mockRecipes (all 2245)
+assert(mockRecipes.length === 2245, 'Dataset Cardinality', 'mockRecipes', 'All Recipes', `Expected 2245, got ${mockRecipes.length}`, String(mockRecipes.length));
 
 const seenRecipeIds = new Set<string>();
 mockRecipes.forEach(r => {
@@ -129,8 +129,8 @@ westernDishes500.forEach(r => {
   }
 });
 
-// 1.5 mockMealSets (40 meal sets)
-assert(mockMealSets.length === 40, 'Dataset Cardinality', 'mockMealSets', 'mockMealSets', `Expected 40, got ${mockMealSets.length}`, String(mockMealSets.length));
+// 1.5 mockMealSets (44 meal sets)
+assert(mockMealSets.length === 44, 'Dataset Cardinality', 'mockMealSets', 'mockMealSets', `Expected 44, got ${mockMealSets.length}`, String(mockMealSets.length));
 const seenMealSetIds = new Set<string>();
 mockMealSets.forEach(ms => {
   assert(!seenMealSetIds.has(ms.id), 'MealSet ID Uniqueness', ms.id, ms.title, 'Duplicate meal set ID in mockMealSets', ms.id);
@@ -157,7 +157,7 @@ mockMealSets.forEach(ms => {
   });
 });
 
-console.log(`✓ Completed static URL audits across 1,245 recipes & 40 meal sets. Total assertions: ${totalAssertions}`);
+console.log(`✓ Completed static URL audits across ${mockRecipes.length.toLocaleString('en-US')} recipes & ${mockMealSets.length} meal sets. Total assertions: ${totalAssertions}`);
 
 // ----------------------------------------------------------------------------
 // 2. INTERNAL POOL PURITY (FOOD_IMAGE_POOLS & CULINARY_82_POOLS)
@@ -193,7 +193,7 @@ console.log(`✓ Audited ${poolKeys.length} pools and ${totalPoolUrls} total URL
 // ----------------------------------------------------------------------------
 // 3. RUNTIME DYNAMIC RESOLVER AUDIT (3-ARG, 2-ARG, 1-ARG RESOLUTION)
 // ----------------------------------------------------------------------------
-console.log('[3/7] Auditing runtime resolver across all 1,245 recipes in 3 modes...');
+console.log(`[3/7] Auditing runtime resolver across all ${mockRecipes.length.toLocaleString('en-US')} recipes in 3 modes...`);
 
 mockRecipes.forEach(r => {
   // Mode A: 3-arg (title, category, existingUrl)
@@ -222,7 +222,7 @@ mockRecipes.forEach(r => {
   assert(!resolvedC.startsWith('data:image/svg+xml'), 'Resolver 1-arg no cloche', r.id, r.title, 'Pure title URL returned cloche SVG', resolvedC);
 });
 
-console.log(`✓ Audited 3,735 runtime resolution calls across all 1,245 recipes.`);
+console.log(`✓ Audited ${(mockRecipes.length * 3).toLocaleString('en-US')} runtime resolution calls across all ${mockRecipes.length.toLocaleString('en-US')} recipes.`);
 
 // ----------------------------------------------------------------------------
 // 4. ADVERSARIAL STRESS TEST OF western-bfast-433
@@ -375,7 +375,7 @@ console.log(`  Total unique photo IDs in catalog: ${sortedFreq.length}`);
 console.log(`  Top 5 most frequent photos:`);
 sortedFreq.slice(0, 5).forEach(([id, cnt]) => console.log(`    ${id}: ${cnt} recipes`));
 
-// Invariant: No single photo should exceed 100 occurrences in a healthy 1,245 recipe catalog
+// Invariant: No single photo should exceed 100 occurrences in a healthy 2,245 recipe catalog
 sortedFreq.forEach(([id, cnt]) => {
   assert(cnt <= 100, 'Photo Over-saturation', id, 'Photo Frequency', `Photo ${id} is over-saturated with ${cnt} usages (threshold: 100)`, String(cnt));
 });
@@ -498,7 +498,7 @@ mockRecipes.forEach(r => {
   assert(typeof r.chefTip === 'string' && r.chefTip.trim().length > 15, 'Chef Tip Present', r.id, r.title, 'Missing or trivial chefTip', String(r.chefTip));
 });
 
-console.log(`✓ Recipe culinary integrity verified across all 1,245 recipes.`);
+console.log(`✓ Recipe culinary integrity verified across all ${mockRecipes.length.toLocaleString('en-US')} recipes.`);
 
 // ----------------------------------------------------------------------------
 // 7. DEV SERVER HEALTH CHECK (HTTP 200)

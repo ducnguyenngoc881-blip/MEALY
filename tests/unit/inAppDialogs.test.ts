@@ -104,11 +104,11 @@ describe('Unit: In-App Confirmation Modal & Dialog Shield (Zero Chrome Popups)',
     expect(content.includes('Video ${currentVideoIndex + 1}/3')).toBe(true);
   });
 
-  it('DIALOG-12: AccountView enforces 3-video 30s sequence confirmation commitment', () => {
+  it('DIALOG-12: AccountView enforces 3-video sequence confirmation commitment', () => {
     const accountViewPath = path.join(componentsDir, 'AccountView.tsx');
     const content = fs.readFileSync(accountViewPath, 'utf-8');
-    expect(content.includes('Cam Kết Xem Chuỗi 3 Video Tự Nguyện')).toBe(true);
-    expect(content.includes('Tôi cam kết xem (3 video • 30s)')).toBe(true);
+    expect(content.includes('Xem Video Nhận Trải Nghiệm Không Quảng Cáo')).toBe(true);
+    expect(content.includes('Bắt đầu xem (3 video • ~30s)')).toBe(true);
     expect(content.includes('VolunteerAdSequenceModal')).toBe(true);
   });
 });

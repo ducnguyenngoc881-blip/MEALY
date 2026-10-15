@@ -6,7 +6,10 @@ import {
   Moon,
   Lock,
   Sparkles,
-  Smartphone
+  Smartphone,
+  User,
+  UserPlus,
+  LogIn
 } from 'lucide-react';
 import { RiceBowlNavIcon } from './icons/NavIcons';
 import { ActiveTab } from '../types';
@@ -58,7 +61,7 @@ export const Navbar: React.FC = () => {
     : getScreenTitle(activeTab);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/90 dark:bg-[#121110]/90 backdrop-blur-xl border-b border-[#E8E2D8]/70 dark:border-[#252220]/70 shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
+    <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 dark:bg-[#12161F]/90 backdrop-blur-xl border-b border-[#E2E8F0]/70 dark:border-[#2D3748]/70 shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
       <div className="h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
         
         {/* Left: Brand Logo & Title */}
@@ -75,7 +78,7 @@ export const Navbar: React.FC = () => {
           title="Trang chủ: Mâm Cơm Việt"
           aria-label="MealWise - Về trang Hôm Nay"
         >
-          <div className="w-8 h-8 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-stone-200 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs">
+          <div className="w-8 h-8 rounded-xl bg-blue-600 text-white border border-blue-500 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs">
             <RiceBowlNavIcon active={true} className="w-4 h-4" />
           </div>
           <div className="leading-tight">
@@ -104,45 +107,63 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => openDownloadAppModal()}
-              className="px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[10.5px] font-black flex items-center gap-1 shadow-xs transition-all active:scale-95 cursor-pointer"
+              className="px-2.5 py-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-[10.5px] font-black flex items-center gap-1 shadow-xs transition-all active:scale-95 cursor-pointer"
               title="Tải ứng dụng điện thoại MealWise"
             >
               <Smartphone className="w-3.5 h-3.5" />
               <span>Tải App</span>
             </button>
           )}
-          {/* Guest / Member Account Status Badge */}
-          {isRegistered ? (
-            user?.role === 'admin' ? (
-              <button
-                type="button"
-                onClick={() => setActiveTab('admin')}
-                className="px-2.5 py-1 rounded-full bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 active:scale-95 transition-all cursor-pointer shadow-xs"
-                title="Mở Website Quản Trị Viên (Desktop Web Portal)"
-              >
-                <Sparkles className="w-3 h-3 text-amber-500" />
-                <span>Web Admin</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setActiveTab('account')}
-                className="px-2.5 py-1 rounded-full bg-stone-900 text-stone-100 dark:bg-white dark:text-stone-950 border border-stone-800 dark:border-white text-[10px] font-black flex items-center gap-1 active:scale-95 transition-all cursor-pointer shadow-xs"
-                title="Tài khoản thành viên (Đã đăng nhập)"
-              >
-                <Sparkles className="w-3 h-3 text-stone-300 dark:text-stone-700" />
-                <span className="hidden min-[360px]:inline">Thành Viên</span>
-              </button>
-            )
-          ) : (
+          {/* Authentication & Profile Control */}
+          {!isRegistered ? (
             <button
               type="button"
               onClick={() => openAuthModal('register')}
-              className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300 border border-amber-500/20 dark:border-amber-400/25 text-[10px] font-black flex items-center gap-1 hover:bg-amber-500/15 dark:hover:bg-amber-400/15 active:scale-95 transition-all cursor-pointer shadow-2xs"
-              title="Bạn đang ở chế độ khách. Bấm để đăng ký mở khóa toàn bộ tính năng."
+              className="group relative flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white border border-blue-500/80 shadow-sm hover:shadow active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0"
+              title="Đăng ký hoặc đăng nhập tài khoản MealWise"
+              aria-label="Đăng ký hoặc đăng nhập tài khoản"
             >
-              <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" />
-              <span>Khách 🔒</span>
+              <div className="w-6 h-6 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center shadow-2xs shrink-0 group-hover:rotate-12 transition-transform duration-200">
+                <UserPlus className="w-3 h-3 stroke-[2.5]" />
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-xs font-black tracking-tight whitespace-nowrap">Đăng Nhập</span>
+                <span className="text-[10px] font-bold text-amber-300 dark:text-amber-700 hidden min-[360px]:inline">/ Đăng Ký</span>
+              </div>
+            </button>
+          ) : user?.role === 'admin' ? (
+            <button
+              type="button"
+              onClick={() => setActiveTab('admin')}
+              className="group relative flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-white shadow-sm active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0"
+              title="Mở Website Quản Trị Viên"
+            >
+              <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center shrink-0">
+                <Sparkles className="w-3 h-3 text-amber-400" />
+              </div>
+              <span className="text-xs font-black tracking-tight">Web Admin</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                if (activeTab === 'account') {
+                  openAuthModal('login');
+                } else {
+                  setActiveTab('account');
+                }
+              }}
+              className="group relative flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-850/90 dark:hover:bg-stone-800/90 border border-stone-200/80 dark:border-stone-700/70 shadow-2xs active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0 max-w-[140px] sm:max-w-[170px]"
+              title={`Tài khoản: ${user?.name || user?.email || 'Thành viên'}. Bấm để xem thông tin cá nhân`}
+            >
+              {/* Circular Avatar Monogram with Online Green Dot */}
+              <div className="relative w-6.5 h-6.5 rounded-full bg-blue-600 text-white dark:bg-blue-600 dark:text-white flex items-center justify-center text-[11px] font-black shadow-xs shrink-0 ring-1 ring-black/5 dark:ring-white/10 group-hover:scale-105 transition-transform duration-200">
+                {user?.name ? user.name.trim().charAt(0).toUpperCase() : <User className="w-3 h-3" />}
+                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-1.5 ring-white dark:ring-stone-900" />
+              </div>
+              <span className="text-xs font-extrabold text-stone-800 dark:text-stone-200 truncate">
+                {user?.name || 'Tài Khoản'}
+              </span>
             </button>
           )}
 

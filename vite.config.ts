@@ -46,7 +46,7 @@ export default defineConfig({
     strictPort: true,
     allowedHosts: true,
     watch: {
-      ignored: ['**/*.apk', '**/MealWise-Portable-PC/**', '**/tools/**']
+      ignored: ['**/*.apk', '**/*.zip', '**/MealWise-Portable-PC/**', '**/NexsVideo/**', '**/android/**', '**/tools/**']
     },
     hmr: {
       port: 5173
@@ -67,8 +67,14 @@ export default defineConfig({
           if (id.includes('node_modules/lucide-react')) {
             return 'vendor-icons';
           }
-          if (id.includes('recipesDatabase') || id.includes('westernDishes500')) {
-            return 'data-recipes';
+          if (id.includes('recipesDatabase')) {
+            return 'data-recipes-vn1';
+          }
+          if (id.includes('vietnameseDishesPart1') || id.includes('vietnameseDishesPart2')) {
+            return 'data-recipes-vn2';
+          }
+          if (id.includes('westernDishes500')) {
+            return 'data-recipes-western';
           }
           if (id.includes('casePools')) {
             return 'data-minigames';

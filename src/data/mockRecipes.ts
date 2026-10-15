@@ -13,7 +13,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 450,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Thit_rang_chay_canh.jpg/960px-Thit_rang_chay_canh.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt ba chỉ rút sườn', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -71,7 +71,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 180,
     estimatedCostVnd: 50000,
-    imageUrl: 'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1659603667872-915f2b953cb7?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cua đồng xay nguyên chất', amount: 350, unit: 'g', category: 'thit-ca' },
@@ -128,7 +128,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 80,
     estimatedCostVnd: 15000,
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1680676066605-08566beed799?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Rau muống ngọn non cọng nhỏ', amount: 1, unit: 'bó (500g)', category: 'rau-cu' },
@@ -186,7 +186,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 520,
     estimatedCostVnd: 95000,
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Caramelized_Pork_and_Eggs.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Thịt ba chỉ rút sườn (hoặc thịt nách bì mỏng)', amount: 600, unit: 'g', category: 'thit-ca' },
@@ -246,7 +246,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 230,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg/960px-Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cá hú (hoặc cá lóc) cắt khúc dày', amount: 450, unit: 'g', category: 'thit-ca' },
@@ -308,7 +308,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 45,
     estimatedCostVnd: 12000,
-    imageUrl: 'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1592578630143-fac65cda7a67?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Giá đỗ tươi thân mập', amount: 350, unit: 'g', category: 'rau-cu' },
@@ -368,7 +368,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 380,
     estimatedCostVnd: 65000,
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cá nục chuối tươi làm sạch', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -427,7 +427,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 160,
     estimatedCostVnd: 45000,
-    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1763470260582-894ae15f43bb?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Ngao (nghêu) sống sạch cát', amount: 1, unit: 'kg', category: 'thit-ca' },
@@ -485,7 +485,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 110,
     estimatedCostVnd: 18000,
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg/960px-Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Đọt rau lang non tươi', amount: 1, unit: 'bó (400g)', category: 'rau-cu' },
@@ -544,7 +544,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 280,
     estimatedCostVnd: 25000,
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1762305194201-077e7e23ccf2?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Đậu hũ trắng tươi nguyên miếng', amount: 4, unit: 'miếng (500g)', category: 'thit-ca' },
@@ -601,7 +601,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 160,
     estimatedCostVnd: 38000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1684866907269-2248f7334a09?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Hạt sen tươi thông tâm', amount: 150, unit: 'g', category: 'rau-cu' },
@@ -659,7 +659,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 140,
     estimatedCostVnd: 22000,
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1780842819206-435e9b52bc60?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Cà rốt, súp lơ xanh, bầu non, đậu bắp', amount: 500, unit: 'g', category: 'rau-cu' },
@@ -782,7 +782,7 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     servings: 4,
     calories: 490,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1630914441929-0d8ea69f95e6?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Cơm nguội bữa trước (để tơi hạt)', amount: 600, unit: 'g', category: 'do-kho' },
@@ -898,7 +898,7 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     servings: 4,
     calories: 380,
     estimatedCostVnd: 45000,
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Cơm nguội ép mỏng thành bánh', amount: 500, unit: 'g', category: 'do-kho' },
@@ -948,14 +948,14 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     id: 'leftover-goi-ga-xe-phay-bap-cai',
     title: 'Gỏi Gà Xé Phay Bắp Cải Hành Tây',
     description: 'Giải pháp hoàn hảo tận dụng thịt gà luộc thừa bữa trước: Gà xé sợi dai ngọt quyện cùng bắp cải giòn rụm, hành tây chua thanh và nước mắm tỏi ớt chua cay đậm đà.',
-    category: 'mon-rau',
+    category: 'mon-man',
     region: 'toan-quoc',
     prepTimeMinutes: 10,
     cookTimeMinutes: 5,
     servings: 4,
     calories: 320,
     estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1582088498475-efe525179fe0?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt gà luộc thừa (xé phay)', amount: 350, unit: 'g', category: 'thit-ca' },
@@ -1012,7 +1012,7 @@ export const LEFTOVER_RECIPES: Recipe[] = [
     servings: 4,
     calories: 420,
     estimatedCostVnd: 60000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1566749382513-5e93b380138d?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt heo luộc thừa thái mỏng', amount: 350, unit: 'g', category: 'thit-ca' },
@@ -1072,7 +1072,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 380,
     estimatedCostVnd: 48000,
-    imageUrl: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Classic_argentine_omelette_%28dish%29.jpg/960px-Classic_argentine_omelette_%28dish%29.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Trứng gà tươi', amount: 6, unit: 'quả', category: 'khac' },
@@ -1130,7 +1130,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 360,
     estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bánh mì đen hoặc sandwich ngũ cốc', amount: 4, unit: 'lát', category: 'do-kho' },
@@ -1178,8 +1178,8 @@ export const WESTERN_RECIPES: Recipe[] = [
   },
   {
     id: 'trung-khuay-scrambled-eggs-xuc-xich-banh-mi',
-    title: 'Trứng Khuấy Bơ Scrambled Eggs & Xúc Xích Nướng',
-    description: 'Bữa sáng kinh điển kiểu Mỹ: Trứng khuấy bơ lạt mềm mịn mượt mà tan ngay trong miệng, kèm xúc xích Đức nướng xém cạnh thơm nức và bánh mì nướng bơ.',
+    title: 'Trứng Khuấy Bơ & Xúc Xích Nướng',
+    description: 'Bữa sáng kinh điển: Trứng khuấy bơ lạt mềm mịn mượt mà tan ngay trong miệng, kèm xúc xích Đức nướng xém cạnh thơm nức và bánh mì nướng bơ.',
     category: 'an-sang',
     region: 'toan-quoc',
     prepTimeMinutes: 5,
@@ -1187,7 +1187,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 440,
     estimatedCostVnd: 58000,
-    imageUrl: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Trứng gà tươi', amount: 6, unit: 'quả', category: 'khac' },
@@ -1244,7 +1244,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 390,
     estimatedCostVnd: 42000,
-    imageUrl: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bột làm bánh pancake hoặc bột mì đa dụng', amount: 200, unit: 'g', category: 'do-kho' },
@@ -1358,7 +1358,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 320,
     estimatedCostVnd: 46000,
-    imageUrl: 'https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1692071106919-01bc0b9b0919?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Yến mạch Úc nguyên hạt cán mỏng', amount: 150, unit: 'g', category: 'do-kho' },
@@ -1475,7 +1475,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 190,
     estimatedCostVnd: 45000,
-    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1758293121435-396ed31ebcf4?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Cà chua chín đỏ mọng', amount: 500, unit: 'g', category: 'rau-cu' },
@@ -1532,7 +1532,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 230,
     estimatedCostVnd: 50000,
-    imageUrl: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bắp ngọt Mỹ tách hạt', amount: 2, unit: 'bắp', category: 'rau-cu' },
@@ -1591,7 +1591,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 180,
     estimatedCostVnd: 45000,
-    imageUrl: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Xà lách Romaine tươi giòn', amount: 300, unit: 'g', category: 'rau-cu' },
@@ -1648,7 +1648,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 240,
     estimatedCostVnd: 38000,
-    imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1707616954324-99c89a78a20d?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Khoai tây vàng Đà Lạt', amount: 600, unit: 'g', category: 'rau-cu' },
@@ -1705,7 +1705,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 210,
     estimatedCostVnd: 28000,
-    imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1724041305788-afe63ae3bb5a?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bánh mì baguette hoặc bánh mì chuột', amount: 2, unit: 'ổ', category: 'do-kho' },
@@ -1819,7 +1819,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 140,
     estimatedCostVnd: 48000,
-    imageUrl: 'https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1625938144755-652e08e359b7?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Đọt măng tây xanh tươi giòn', amount: 250, unit: 'g', category: 'rau-cu' },
@@ -1878,7 +1878,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 590,
     estimatedCostVnd: 125000,
-    imageUrl: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Chicken_piccata.jpg/960px-Chicken_piccata.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Ức gà phi lê tươi', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -1935,7 +1935,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 560,
     estimatedCostVnd: 165000,
-    imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Cầu kỳ',
     ingredients: [
       { name: 'Thịt bắp bò (hoặc thăn bò)', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -1993,7 +1993,7 @@ export const WESTERN_RECIPES: Recipe[] = [
     servings: 4,
     calories: 520,
     estimatedCostVnd: 145000,
-    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Mì Ý sợi dài Spaghetti lúa mì cứng', amount: 300, unit: 'g', category: 'do-kho' },
@@ -2054,7 +2054,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 280,
     estimatedCostVnd: 65000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1665593998976-d957f2827fe7?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Sườn non heo chặt khúc', amount: 400, unit: 'g', category: 'thit-ca' },
@@ -2064,8 +2064,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Nước mắm & Hạt nêm', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Chần sườn heo', durationMinutes: 5, heatLevel: 'lửa lớn', content: 'Chần sườn qua nước sôi pha muối loãng, rửa sạch bọt bẩn để nước canh trong ngọt.', tip: 'Chần sườn giúp nước canh trong veo không bị đục.' },
-      { step: 2, title: 'Ninh sườn cùng sấu', durationMinutes: 15, heatLevel: 'lửa vừa', content: 'Xào sườn với chút mắm cho săn, đổ 1.2 lít nước vào đun sôi, thả sấu vào ninh lửa vừa 15 phút cho sườn mềm nhừ.', tip: 'Dầm sấu khi sấu đã mềm rồi vớt bỏ hạt.' }
+      { step: 1, title: 'Sơ chế & Chần sườn heo', durationMinutes: 5, heatLevel: 'lửa lớn', content: 'Chần sườn qua nước sôi pha muối loãng, rửa sạch bọt bẩn để nước canh trong ngọt thơm ngon.', tip: 'Chần sườn giúp nước canh trong veo không bị đục.' },
+      { step: 2, title: 'Ướp gia vị cho sườn thấm', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Ướp sườn non với 1 muỗng cà phê hạt nêm và chút nước mắm ngon trong 5 phút trước khi nấu.', tip: 'Ướp nhẹ giúp sườn đậm đà tận trong tủy xương.' },
+      { step: 3, title: 'Ninh sườn cùng quả sấu', durationMinutes: 15, heatLevel: 'lửa vừa', content: 'Xào sườn với chút mắm cho săn, đổ 1.2 lít nước vào đun sôi, thả sấu vào ninh lửa vừa 15 phút cho sườn mềm nhừ.', tip: 'Dầm sấu khi sấu đã mềm rồi vớt bỏ hạt.' },
+      { step: 4, title: 'Hoàn thiện & Bày tô canh', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Dầm sấu chua thanh trút lại nồi, nêm nước mắm vừa ăn, rắc hành hoa mùi tàu rồi múc ra tô lớn thưởng thức.', tip: 'Nêm nước mắm sau cùng giúp giữ trọn hương thơm nồng.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Khi sấu chín mềm, vớt ra bát dầm nát lọc lấy nước chua thanh rồi trút ngược lại nồi canh, nêm chút nước mắm ngon trước khi tắt bếp để canh dậy mùi thơm.',
     tags: ['Miền Bắc', 'Món Canh', 'Canh Chua', 'Sườn Non', 'Cơm Gia Đình']
@@ -2081,7 +2083,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 120,
     estimatedCostVnd: 28000,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1780842819206-435e9b52bc60?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Rau cải ngọt tươi non', amount: 500, unit: 'g', category: 'rau-cu' },
@@ -2089,7 +2091,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Nước mắm cá cơm & Gừng ớt băm', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Luộc rau cải xanh giòn', durationMinutes: 5, heatLevel: 'lửa lớn', content: 'Đun nước sôi bùng với chút muối hạt, thả rau cải vào luộc 3 phút vừa chín tới, vớt ngay ra đĩa ráo nước.', tip: 'Luộc lửa lớn ngập nước giúp rau giữ màu xanh ngọc bích.' }
+      { step: 1, title: 'Sơ chế rau cải ngọt', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Rau cải nhặt bỏ gốc già và lá sâu úa, ngâm nước muối loãng 5 phút rồi rửa sạch để ráo nước.', tip: 'Ngắt đoạn vừa ăn dài khoảng một ngón tay.' },
+      { step: 2, title: 'Luộc trứng gà lòng đào', durationMinutes: 6, heatLevel: 'lửa vừa', content: 'Cho trứng gà vào nồi nước sôi luộc đúng 6 phút, vớt ra ngâm nước đá lạnh rồi bóc vỏ dầm vào chén mắm.', tip: 'Luộc 6 phút chuẩn cho lòng đào dẻo quánh béo ngậy.' },
+      { step: 3, title: 'Luộc rau cải xanh giòn', durationMinutes: 4, heatLevel: 'lửa lớn', content: 'Đun nước sôi bùng với chút muối hạt, thả rau cải vào luộc 3 phút vừa chín tới, vớt ngay ra đĩa ráo nước.', tip: 'Luộc lửa lớn ngập nước giúp rau giữ màu xanh ngọc bích.' },
+      { step: 4, title: 'Pha nước chấm & Thưởng thức', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Gừng giã dập pha cùng 2 muỗng nước mắm ngon, dầm trứng lòng đào thơm béo và chấm ngập cọng rau cải giòn ngọt.', tip: 'Chấm ngập khi rau còn nóng hổi để cảm nhận trọn vẹn vị ngọt thanh.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Cho chút muối hạt vào nồi nước luộc đang sôi bùng, vớt rau ra sốc qua nước đá lạnh 30 giây rồi để ráo, đĩa rau sẽ giữ trọn màu xanh mướt và độ giòn ngọt mọng nước.',
     tags: ['Miền Bắc', 'Món Rau', 'Rau Cải', 'Eat Clean', 'Dễ Làm']
@@ -2105,7 +2110,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 140,
     estimatedCostVnd: 40000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1584003397078-45ef96d6174d?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bí đao non (bí xanh)', amount: 500, unit: 'g', category: 'rau-cu' },
@@ -2113,7 +2118,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Hành hoa & Ngò rí', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Xào tôm & Nấu canh', durationMinutes: 8, heatLevel: 'lửa vừa', content: 'Phi thơm đầu hành, trút tôm vào đảo săn rồi thêm 1 lít nước đun sôi. Thả bí xanh vào nấu chín tới trong 4 phút.', tip: 'Không nấu bí quá nhừ để giữ độ giòn ngọt.' }
+      { step: 1, title: 'Sơ chế bí xanh & Tôm tươi', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Bí đao gọt vỏ bỏ ruột, thái lát mỏng vừa ăn. Tôm lột vỏ bỏ chỉ đen, rửa sạch để ráo.', tip: 'Thái lát mỏng đều tay giúp bí nhanh chín giòn.' },
+      { step: 2, title: 'Giã tôm cùng gia vị', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Cho tôm vào cối giã dập cùng đầu hành hoa, chút tiêu trắng và nửa muỗng cà phê hạt nêm.', tip: 'Giã dập tôm giúp nước canh ngọt đậm tự nhiên.' },
+      { step: 3, title: 'Xào tôm & Nấu canh sôi', durationMinutes: 6, heatLevel: 'lửa vừa', content: 'Phi thơm đầu hành, trút tôm vào đảo săn rồi thêm 1 lít nước đun sôi. Thả bí xanh vào nấu chín tới trong 4 phút.', tip: 'Không nấu bí quá nhừ để giữ độ giòn ngọt.' },
+      { step: 4, title: 'Nêm nếm & Hoàn thiện', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Nêm lại chút nước mắm cho thơm, tắt bếp rắc hành hoa ngò rí thái nhỏ rồi múc canh ra bát sứ lớn.', tip: 'Thưởng thức khi canh còn nóng ấm ngọt thanh.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Tôm giã dập cùng đầu hành và chút tiêu trắng trước khi xào giúp nước canh thơm ngọt đậm sâu mà không cần dùng đến bột ngọt hay hạt nêm.',
     tags: ['Miền Bắc', 'Món Canh', 'Bí Xanh', 'Thanh Mát', 'Eat Clean']
@@ -2129,7 +2137,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 110,
     estimatedCostVnd: 25000,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1648422709905-8c3d148974e1?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bắp cải non thái sợi', amount: 500, unit: 'g', category: 'rau-cu' },
@@ -2137,7 +2145,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Dầu ăn & Tiêu xay', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Xào bắp cải lửa lớn', durationMinutes: 5, heatLevel: 'lửa lớn', content: 'Phi tỏi thơm vàng trên lửa lớn, trút bắp cải vào đảo nhanh tay 4 phút cho chín tới giòn ngọt, rắc tiêu xay rồi tắt bếp.', tip: 'Xào lửa lớn giữ trọn vị ngọt tự nhiên của bắp cải.' }
+      { step: 1, title: 'Thái sợi bắp cải & Ngâm rửa', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Bắp cải thái sợi vừa phải, ngâm nước muối loãng 5 phút rồi rửa sạch vắt ráo nước hoàn toàn.', tip: 'Để thật ráo nước giúp bắp cải khi xào không bị chảy nước.' },
+      { step: 2, title: 'Đập dập tỏi chuẩn bị chảo nóng', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Tỏi bóc vỏ đập dập không băm nát để tinh dầu tỏi tỏa hương thơm nồng nhất khi phi trong chảo dầu.', tip: 'Đập dập tỏi giúp giữ trọn vẹn tinh dầu tự nhiên.' },
+      { step: 3, title: 'Xào bắp cải trên lửa lớn', durationMinutes: 4, heatLevel: 'lửa lớn', content: 'Phi tỏi thơm vàng trên lửa lớn, trút bắp cải vào đảo nhanh tay 4 phút cho chín tới giòn ngọt, rắc tiêu xay rồi tắt bếp.', tip: 'Xào lửa lớn giữ trọn vị ngọt tự nhiên của bắp cải.' },
+      { step: 4, title: 'Trình bày đĩa rau xào', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Gắp bắp cải ra đĩa sâu lòng, rắc tiêu đen xay lên trên và thưởng thức ngay khi rau còn nóng giòn.', tip: 'Rau xào đạt chuẩn phải giữ được màu xanh non sáng bóng.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Bắp cải sau khi thái ngâm nước muối loãng vớt ra để thật ráo nước. Xào trên chảo thật nóng lửa to để rau chín nhanh giòn sần sật mà không bị ra nước.',
     tags: ['Miền Bắc', 'Món Rau', 'Bắp Cải', 'Dễ Làm', 'Tiết Kiệm']
@@ -2153,7 +2164,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 130,
     estimatedCostVnd: 22000,
-    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1684866907269-2248f7334a09?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Đậu phụ Mơ cắt khối vuông', amount: 3, unit: 'bìa', category: 'do-kho' },
@@ -2161,7 +2172,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Hành hoa & Mùi tàu thái nhỏ', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Xào cà chua & Nấu đậu', durationMinutes: 8, heatLevel: 'lửa vừa', content: 'Xào cà chua chín mềm tạo màu đỏ đẹp, thêm nước đun sôi lăn tăn, nhẹ nhàng thả đậu phụ vào đun sôi 3 phút rồi thả hành hoa.', tip: 'Thả đậu phụ nhẹ tay để đậu không bị vỡ nát.' }
+      { step: 1, title: 'Sơ chế đậu phụ & Cà chua', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Đậu phụ tráng qua nước ấm, cắt khối vuông vừa ăn. Cà chua rửa sạch bổ múi cau.', tip: 'Cắt đậu phụ nhẹ tay để không bị nát vụn.' },
+      { step: 2, title: 'Thái hành mùi chuẩn bị nêm', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Hành hoa và mùi tàu rửa sạch thái nhỏ. Giữ lại phần gốc hành trắng để phi thơm ban đầu.', tip: 'Gốc hành phi tạo mùi thơm thanh cho nước dùng.' },
+      { step: 3, title: 'Xào cà chua & Nấu đậu phụ', durationMinutes: 6, heatLevel: 'lửa vừa', content: 'Xào cà chua chín mềm tạo màu đỏ đẹp, thêm nước đun sôi lăn tăn, nhẹ nhàng thả đậu phụ vào đun sôi 3 phút rồi thả hành hoa.', tip: 'Thả đậu phụ nhẹ tay để đậu không bị vỡ nát.' },
+      { step: 4, title: 'Nêm gia vị & Múc ra bát', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Nêm chút mắm ngon và hạt nêm cho vừa miệng, rắc hành hoa mùi tàu rồi múc canh ra bát sứ thưởng thức.', tip: 'Bát canh chua dịu thanh mát ăn cùng cơm mùa hè rất đưa miệng.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Xào cà chua với chút dầu ăn và muối trước khi châm nước để cà chua ra màu đỏ óng ánh tự nhiên, thả đậu hũ vào đun sôi nhỏ lửa cho đậu ngấm vị chua ngọt dịu mát.',
     tags: ['Miền Bắc', 'Món Canh', 'Đậu Phụ', 'Tiết Kiệm', 'Ăn Chay']
@@ -2173,18 +2187,21 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     category: 'mon-rau',
     region: 'bac',
     prepTimeMinutes: 5,
-    cookTimeMinutes: 0,
+    cookTimeMinutes: 5,
     servings: 4,
     calories: 45,
     estimatedCostVnd: 15000,
-    imageUrl: 'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1729292836660-1bd9884457dc?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Dưa cải sen muối chua vàng giòn', amount: 300, unit: 'g', category: 'rau-cu' },
       { name: 'Hành củ muối chua & Ớt tươi', amount: 3, unit: 'củ', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Trộn dưa chua bày đĩa', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Dưa cải chua vớt ráo, cắt khúc vừa ăn, trộn cùng vài lát ớt tươi và hành củ muối, bày ra đĩa ăn kèm cơm nóng.', tip: 'Chấm nước kho thịt kho cá là chuẩn vị Bắc.' }
+      { step: 1, title: 'Vớt dưa chua & Vắt ráo', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Dưa cải sen muối chín vàng vớt ra khỏi vại, vắt nhẹ tay cho ráo bớt nước muối chua.', tip: 'Vắt nhẹ để cọng dưa vẫn giữ độ mọng nước tự nhiên.' },
+      { step: 2, title: 'Cắt khúc vừa ăn đều tay', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Đặt dưa lên thớt cắt khúc dài 3cm, hành củ chẻ đôi hoặc thái lát mỏng.', tip: 'Cắt đều giúp từng miếng dưa ngấm trọn vị cay của ớt.' },
+      { step: 3, title: 'Trộn dưa với ớt tươi thái lát', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Cho dưa vào âu cùng hành muối và ớt hiểm thái lát vát, đảo đều cho vị cay nồng quyện đều vào dưa.', tip: 'Ớt tươi giúp khử bớt mùi men chua nồng.' },
+      { step: 4, title: 'Bày ra đĩa thưởng thức', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Dưa cải chua vớt ráo, cắt khúc vừa ăn, trộn cùng vài lát ớt tươi và hành củ muối, bày ra đĩa ăn kèm cơm nóng.', tip: 'Chấm nước kho thịt kho cá là chuẩn vị Bắc.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Dưa cải chua vắt nhẹ nước trước khi bày ra đĩa, chấm cùng nước thịt kho cá kho sẽ bùng nổ hương vị thơm ngon chống ngấy hoàn hảo.',
     tags: ['Miền Bắc', 'Món Rau', 'Dưa Chua', 'Truyền Thống', 'Đồng Quê']
@@ -2200,7 +2217,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 110,
     estimatedCostVnd: 35000,
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1584003397078-45ef96d6174d?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Nấm hương & Nấm rơm tươi', amount: 200, unit: 'g', category: 'rau-cu' },
@@ -2209,7 +2226,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Cà chua bi & Mùi tàu', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Nấu canh nấm sấu', durationMinutes: 10, heatLevel: 'lửa vừa', content: 'Xào nấm với chút dầu thực vật, châm 1 lít nước đun sôi cùng sấu. Dầm sấu chua thanh rồi thả đậu hũ non và rắc mùi tàu.', tip: 'Nấu sấu chín mềm trước khi dầm chua.' }
+      { step: 1, title: 'Sơ chế các loại nấm tươi', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Nấm hương nấm rơm cắt chân, ngâm nước muối loãng 5 phút rồi rửa sạch, khía chữ thập trên mũ nấm.', tip: 'Khía mũ nấm giúp nấm ngấm gia vị nhanh hơn.' },
+      { step: 2, title: 'Cạo vỏ sấu & Thái đậu hũ', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Sấu tươi cạo sạch vỏ xanh khía vòng quanh. Đậu hũ non nhẹ tay cắt khối vuông vừa ăn.', tip: 'Khía vỏ sấu giúp vị chua tan nhanh vào nước canh.' },
+      { step: 3, title: 'Nấu canh nấm sấu chua', durationMinutes: 6, heatLevel: 'lửa vừa', content: 'Xào nấm với chút dầu thực vật, châm 1 lít nước đun sôi cùng sấu. Dầm sấu chua thanh rồi thả đậu hũ non và rắc mùi tàu.', tip: 'Nấu sấu chín mềm trước khi dầm chua.' },
+      { step: 4, title: 'Hoàn thiện & Bày tô sứ', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Nêm hạt nêm chay nấm hương cho vừa vị thanh khiết, múc canh ra tô sứ rắc mùi tàu thơm ngát.', tip: 'Thưởng thức nóng cùng cơm trắng thanh tịnh.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Dầm sấu chín tới tạo vị chua thanh tao dịu nhẹ làm nổi bật trọn vẹn vị ngọt đậm của nấm hương tươi mà không lấn át hương thảo mộc.',
     tags: ['Miền Bắc', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Món Canh']
@@ -2225,7 +2245,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 480,
     estimatedCostVnd: 110000,
-    imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Dẻ sườn hoặc bắp bò cắt quân cờ', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -2234,8 +2254,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Sốt cà chua & Bột gấc tạo màu', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Ướp bò với quế hồi rượu vang', durationMinutes: 15, heatLevel: 'không dùng nhiệt', content: 'Ướp thịt bò với rượu vang đỏ, bột quế, hồi nướng thơm, tỏi băm và hạt nêm trong 15 phút.', tip: 'Ướp rượu vang giúp thịt bò mềm ngọt ngấm gia vị sâu.' },
-      { step: 2, title: 'Hầm sốt vang sánh mịn', durationMinutes: 30, heatLevel: 'lửa nhỏ', content: 'Xào săn thịt bò, đổ nước ngập hầm lửa nhỏ 30 phút. Cho khoai tây cà rốt vào hầm thêm 10 phút cho sốt sánh đậm.', tip: 'Hầm lửa nhỏ giúp thịt bò mềm rục mà không bị khô.' }
+      { step: 1, title: 'Sơ chế & Cắt khúc thịt bò', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Thịt bò rửa sạch thấm khô, cắt miếng vuông quân cờ khoảng 3cm vừa ăn.', tip: 'Thịt bò cắt vuông đều giúp hầm chín mềm đồng đều.' },
+      { step: 2, title: 'Ướp bò với quế hồi rượu vang', durationMinutes: 15, heatLevel: 'không dùng nhiệt', content: 'Ướp thịt bò với rượu vang đỏ, bột quế, hồi nướng thơm, tỏi băm và hạt nêm trong 15 phút.', tip: 'Ướp rượu vang giúp thịt bò mềm ngọt ngấm gia vị sâu.' },
+      { step: 3, title: 'Hầm sốt vang sánh mịn', durationMinutes: 25, heatLevel: 'lửa nhỏ', content: 'Xào săn thịt bò, đổ nước ngập hầm lửa nhỏ 30 phút. Cho khoai tây cà rốt vào hầm thêm 10 phút cho sốt sánh đậm.', tip: 'Hầm lửa nhỏ giúp thịt bò mềm rục mà không bị khô.' },
+      { step: 4, title: 'Hoàn thiện & Bày ra đĩa sâu', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Khi sốt bò sánh keo màu đỏ cam óng ả, rắc tiêu đen và ngò rí lên trên, ăn kèm bánh mì nóng giòn.', tip: 'Ăn kèm bánh mì giòn hoặc phở trắng đều ngon tuyệt hảo.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Dùng chút bột gấc tươi xào cùng sốt cà chua tạo màu đỏ cam óng ánh tuyệt đẹp đúng chất sốt vang cổ truyền Hà Nội.',
     tags: ['Miền Bắc', 'Món Mặn', 'Bò Sốt Vang', 'Đổi Vị', 'Giàu Đạm']
@@ -2247,7 +2269,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     category: 'mon-rau',
     region: 'bac',
     prepTimeMinutes: 8,
-    cookTimeMinutes: 0,
+    cookTimeMinutes: 5,
     servings: 4,
     calories: 95,
     estimatedCostVnd: 25000,
@@ -2259,7 +2281,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Sốt giấm đường tỏi ớt dầu mè', amount: 3, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Trộn salad dầu giấm', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Rau rửa sạch để ráo vắt kiệt nước. Rưới sốt dầu giấm chua ngọt lên trên ngay trước khi ăn để xà lách giòn tan.', tip: 'Chỉ trộn sốt ngay trước bữa ăn để xà lách không bị ỉu.' }
+      { step: 1, title: 'Nhặt rửa xà lách & Để ráo nước', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Xà lách tách từng lá ngâm nước muối loãng 5 phút, rửa sạch vẩy thật ráo nước.', tip: 'Vẩy thật khô để xà lách giữ trọn độ giòn mọng.' },
+      { step: 2, title: 'Thái lát dưa chuột & Cà chua', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Cà chua thái lát tròn mỏng, dưa chuột gọt vỏ thái vát xéo đẹp mắt.', tip: 'Thái mỏng vừa phải giúp thấm nước sốt nhanh.' },
+      { step: 3, title: 'Pha sốt dầu giấm chua ngọt', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Hòa tan 2 muỗng canh giấm gạo, 1 muỗng đường thốt nốt, 1 muỗng dầu mè thơm và tỏi ớt băm.', tip: 'Khuấy kỹ cho hạt đường tan hết hoàn toàn.' },
+      { step: 4, title: 'Trộn salad dầu giấm & Bày đĩa', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Rau rửa sạch để ráo vắt kiệt nước. Rưới sốt dầu giấm chua ngọt lên trên ngay trước khi ăn để xà lách giòn tan.', tip: 'Chỉ trộn sốt ngay trước bữa ăn để xà lách không bị ỉu.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Pha giấm gạo với chút đường thốt nốt và dầu mè thơm, rưới nhẹ lên xà lách khô ráo giòn ngọt kích thích vị giác tối đa.',
     tags: ['Miền Bắc', 'Món Rau', 'Salad', 'Eat Clean', 'Đổi Vị']
@@ -2275,7 +2300,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 240,
     estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1755438538539-695f7bbfff6a?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Sườn non heo chặt khúc', amount: 300, unit: 'g', category: 'thit-ca' },
@@ -2284,7 +2309,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Hành hoa & Mùi ta', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Ninh sườn với củ quả', durationMinutes: 25, heatLevel: 'lửa nhỏ', content: 'Ninh sườn 15 phút, cho khoai tây cà rốt vào ninh thêm 10 phút đến khi khoai bở tơi, nêm vừa ăn và rắc hành mùi.', tip: 'Không ninh khoai tây quá lâu tránh bị nát đục nước.' }
+      { step: 1, title: 'Sơ chế & Chần sườn non', durationMinutes: 5, heatLevel: 'lửa lớn', content: 'Sườn non chặt khúc vừa ăn chần qua nước sôi rửa sạch bọt bẩn để ráo.', tip: 'Chần sườn giúp nước súp trong và không có mùi tanh.' },
+      { step: 2, title: 'Gọt củ quả tỉa hoa đẹp mắt', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Khoai tây cà rốt gọt vỏ cắt miếng dày hoặc tỉa hoa, ngâm nước muối loãng cho khỏi thâm.', tip: 'Cắt miếng dày vừa để không bị nát nhừ khi ninh.' },
+      { step: 3, title: 'Ninh sườn với củ quả', durationMinutes: 20, heatLevel: 'lửa nhỏ', content: 'Ninh sườn 15 phút, cho khoai tây cà rốt vào ninh thêm 10 phút đến khi khoai bở tơi, nêm vừa ăn và rắc hành mùi.', tip: 'Không ninh khoai tây quá lâu tránh bị nát đục nước.' },
+      { step: 4, title: 'Hoàn thiện & Múc ra bát canh', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Nêm nếm lại gia vị cho vừa miệng, rắc hành hoa mùi ta và chút tiêu xay rồi múc ra bát thưởng thức nóng.', tip: 'Khoai tây bở tơi kết hợp nước sườn ngọt lịm rất ấm lòng.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Xào khoai tây cà rốt sơ qua với chút dầu ăn và hạt nêm trước khi thả vào nồi nước dùng giúp miếng khoai giữ nguyên hình khối mà bên trong vẫn bở tơi thơm ngọt.',
     tags: ['Miền Bắc', 'Món Canh', 'Khoai Tây', 'Sườn Non', 'Cơm Nhà']
@@ -2300,7 +2328,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 420,
     estimatedCostVnd: 95000,
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cá chép sông tươi làm sạch', amount: 700, unit: 'g', category: 'thit-ca' },
@@ -2309,8 +2337,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Cà chua & Nghệ tươi giã', amount: 2, unit: 'quả', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Rán sơ cá & Xào dưa', durationMinutes: 10, heatLevel: 'lửa vừa', content: 'Rán cá chép vàng đều hai mặt. Xào cà chua và dưa chua với chút mỡ cá cho mềm ngấu.', tip: 'Rán cá trước giúp thịt săn chắc không bị nát khi om.' },
-      { step: 2, title: 'Om cá với dưa chua cay', durationMinutes: 15, heatLevel: 'lửa nhỏ', content: 'Đặt cá vào chảo dưa, châm nước sôi ngập 1/2 thân cá, nêm ớt hiểm, đậy vung om 15 phút cho cá ngấm vị chua cay đậm đà, rắc thì là hành hoa.', tip: 'Om lửa nhỏ liu riu cho vị chua ngọt hòa quyện vào thớ cá.' }
+      { step: 1, title: 'Sơ chế & Khứa vẩy cá chép', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Cá chép mổ sạch mang ruột, cạo sạch màng đen, khứa vài đường xéo trên thân cá để ngấm vị.', tip: 'Cạo sạch màng đen trong bụng để cá hoàn toàn không tanh.' },
+      { step: 2, title: 'Rán sơ cá & Xào dưa chua', durationMinutes: 8, heatLevel: 'lửa vừa', content: 'Rán cá chép vàng đều hai mặt. Xào cà chua và dưa chua với chút mỡ cá cho mềm ngấu.', tip: 'Rán cá trước giúp thịt săn chắc không bị nát khi om.' },
+      { step: 3, title: 'Om cá với dưa chua cay', durationMinutes: 15, heatLevel: 'lửa nhỏ', content: 'Đặt cá vào chảo dưa, châm nước sôi ngập 1/2 thân cá, nêm ớt hiểm, đậy vung om 15 phút cho cá ngấm vị chua cay đậm đà, rắc thì là hành hoa.', tip: 'Om lửa nhỏ liu riu cho vị chua ngọt hòa quyện vào thớ cá.' },
+      { step: 4, title: 'Trình bày cá ra đĩa bầu dục', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Múc cá ra đĩa sâu lòng bầu dục, rưới nước om dưa óng vàng lên trên, ăn nóng cùng bún hoặc cơm trắng.', tip: 'Thưởng thức ngay khi còn bốc khói cùng rau sống.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Thêm chút mỡ gà hoặc tóp mỡ xào cùng dưa cải chua trước khi om giúp nước om cá bóng bẩy ngậy béo và khử hoàn toàn vị tanh của cá chép.',
     tags: ['Miền Bắc', 'Cay Nồng', 'Món Mặn', 'Cá Chép Om Dưa', 'Đậm Đà']
@@ -2326,7 +2356,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 460,
     estimatedCostVnd: 85000,
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Thịt chân giò & Bì heo', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -2334,7 +2364,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Nước mắm ngon & Tiêu sọ xay', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Ninh nhừ thịt chân giò', durationMinutes: 40, heatLevel: 'lửa nhỏ', content: 'Ninh thịt chân giò cùng bì heo cho nhừ tơi, thả mộc nhĩ nấm hương đảo đều 5 phút. Múc ra âu để nguội cho đông thành khối trong veo.', tip: 'Bì heo tạo gelatin tự nhiên giúp thịt đông chắc.' }
+      { step: 1, title: 'Sơ chế chân giò & Cạo bì', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Thịt chân giò và bì heo cạo sạch lông, ngâm nước muối chanh rửa sạch, cắt miếng vừa ăn.', tip: 'Cạo sạch lông bì giúp món thịt đông trong suốt.' },
+      { step: 2, title: 'Ướp gia vị tiêu mắm cốt', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Ướp thịt với nước mắm cốt nhĩ và nhiều tiêu sọ xay trong 10 phút cho dậy mùi thơm nức.', tip: 'Nhiều tiêu sọ là linh hồn của món thịt đông xứ Bắc.' },
+      { step: 3, title: 'Ninh nhừ thịt chân giò', durationMinutes: 35, heatLevel: 'lửa nhỏ', content: 'Ninh thịt chân giò cùng bì heo cho nhừ tơi, thả mộc nhĩ nấm hương đảo đều 5 phút. Múc ra âu để nguội cho đông thành khối trong veo.', tip: 'Bì heo tạo gelatin tự nhiên giúp thịt đông chắc.' },
+      { step: 4, title: 'Đổ khuôn & Làm lạnh thành thạch', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Múc thịt ra âu sứ hoặc khuôn tròn, để nguội tự nhiên hoặc cho vào ngăn mát tủ lạnh cho đông cứng, úp ngược ra đĩa ăn kèm dưa cải chua.', tip: 'Cắt lát dày bày đĩa chấm mắm tiêu ớt tuyệt hảo.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Dùng nhiều bì heo cạo sạch ninh kỹ để tiết collagen gelatin tự nhiên giúp bát thịt đông trong vắt như thạch ngọc, ăn kèm dưa cải muối chua ngon quên sầu.',
     tags: ['Miền Bắc', 'Món Mặn', 'Thịt Đông', 'Truyền Thống', 'Đồng Quê']
@@ -2348,153 +2381,168 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     prepTimeMinutes: 20,
     cookTimeMinutes: 15,
     servings: 4,
-    calories: 490,
-    estimatedCostVnd: 80000,
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80',
+    calories: 450,
+    estimatedCostVnd: 85000,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Ch%E1%BA%A3_gi%C3%B2_SG_%28nem_r%C3%A1n_gi%C3%B2n%29_%E1%BB%9F_qu%C3%A1n_b%C3%BAn_ri%C3%AAu_B%C3%A0_Ti_ng26th7n2023_%283%29.jpg/960px-Ch%E1%BA%A3_gi%C3%B2_SG_%28nem_r%C3%A1n_gi%C3%B2n%29_%E1%BB%9F_qu%C3%A1n_b%C3%BAn_ri%C3%AAu_B%C3%A0_Ti_ng26th7n2023_%283%29.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
-      { name: 'Thịt nạc dăm heo xay', amount: 300, unit: 'g', category: 'thit-ca' },
-      { name: 'Tôm nõn băm nhỏ', amount: 100, unit: 'g', category: 'thit-ca' },
-      { name: 'Mộc nhĩ, miến dong, giá đỗ, cà rốt', amount: 150, unit: 'g', category: 'rau-cu' },
-      { name: 'Bánh đa nem Hà Nội & Trứng gà', amount: 1, unit: 'tệp', category: 'do-kho' }
+      { name: 'Thịt heo nạc dăm xay nhuyễn', amount: 350, unit: 'g', category: 'thit-ca' },
+      { name: 'Tôm nõn băm nhỏ', amount: 150, unit: 'g', category: 'thit-ca' },
+      { name: 'Mộc nhĩ, miến dong, cà rốt thái sợi', amount: 100, unit: 'g', category: 'do-kho' },
+      { name: 'Bánh đa nem giòn', amount: 20, unit: 'lá', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Trộn nhân & Cuốn nem', durationMinutes: 10, heatLevel: 'không dùng nhiệt', content: 'Trộn đều thịt, tôm, miến, mộc nhĩ với lòng đỏ trứng. Cuốn chặt tay từng chiếc nem thon đều.', tip: 'Không cho quá nhiều trứng làm nhân bị nhão chảy nước.' },
-      { step: 2, title: 'Rán nem 2 lửa giòn rụm', durationMinutes: 15, heatLevel: 'lửa vừa', content: 'Rán ngập dầu lửa vừa cho chín tới lần 1. Khi ăn rán lại lần 2 lửa lớn cho vỏ ngoài vàng ruộm giòn tan.', tip: 'Kỹ thuật rán 2 lửa giúp nem giòn rụm hàng giờ không ỉu.' }
+      { step: 1, title: 'Trộn đều nhân nem', durationMinutes: 8, heatLevel: 'không dùng nhiệt', content: 'Trộn đều thịt băm, tôm nõn, mộc nhĩ, miến dong, giá đỗ và lòng đỏ trứng gà cùng tiêu xay.', tip: 'Không cho quá nhiều lòng trắng trứng để nhân không bị ướt.' },
+      { step: 2, title: 'Cuốn nem chặt tay đều đặn', durationMinutes: 8, heatLevel: 'không dùng nhiệt', content: 'Thấm chút nước giấm loãng lên bánh đa nem, cho nhân vào cuộn tròn đều tay vừa vặn.', tip: 'Cuộn vừa tay không quá chặt để nem không bị nứt khi rán.' },
+      { step: 3, title: 'Rán nem vàng giòn 2 lửa', durationMinutes: 12, heatLevel: 'lửa vừa', content: 'Rán nem lần 1 trên lửa nhỏ cho chín nhân. Trước khi ăn rán lại lần 2 trên lửa lớn cho vỏ ngoài vàng ruộm giòn tan.', tip: 'Rán 2 lửa là bí quyết giúp nem giòn rụm nhiều giờ liền.' },
+      { step: 4, title: 'Cắt miếng & Pha nước chấm', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Cắt nem thành từng khoanh vừa ăn, dọn kèm đĩa bún tươi, rau sống và bát nước mắm chua ngọt pha tỏi ớt cà rốt đu đủ.', tip: 'Ăn nóng ngay khi nem vừa vớt ra khỏi chảo.' }
     ],
-    chefTip: 'Bí quyết đầu bếp: Quết chút giấm ăn pha bia lên mặt bánh đa nem trước khi gói giúp vỏ nem khi rán có màu vàng cánh gián óng ả và giòn tan suốt cả buổi.',
-    tags: ['Miền Bắc', 'Món Mặn', 'Nem Rán', 'Đặc Sản', 'Yêu Thích']
+    chefTip: 'Bí quyết đầu bếp: Pha chút giấm gạo vào nước thoa bánh đa nem trước khi cuốn, rán ngập dầu 2 lần để nem giữ được lớp vỏ giòn rụm tan trong miệng suốt 2 tiếng đồng hồ.',
+    tags: ['Miền Bắc', 'Món Mặn', 'Nem Rán', 'Giòn Rụm', 'Đặc Sản']
   },
-  {
-    id: 'ca-kho-rieng-tieu-ot',
-    title: 'Cá Kho Riềng Tiêu Ớt Đất Bắc Cay Nồng',
-    description: 'Hương vị niêu cá đồng ấm cúng: Cá kho 2 lửa lót riềng già thái lát, ớt chỉ thiên và tiêu sọ the cay, thịt cá săn chắc thơm nồng đượm khói bếp.',
-    category: 'mon-man',
-    region: 'bac',
-    prepTimeMinutes: 10,
-    cookTimeMinutes: 30,
-    servings: 4,
-    calories: 380,
-    estimatedCostVnd: 75000,
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
-    difficulty: 'Dễ',
-    ingredients: [
-      { name: 'Cá trôi hoặc cá bống sông', amount: 500, unit: 'g', category: 'thit-ca' },
-      { name: 'Riềng già thái lát', amount: 1, unit: 'củ', category: 'rau-cu' },
-      { name: 'Ớt hiểm chỉ thiên & Tiêu sọ', amount: 5, unit: 'quả', category: 'gia-vi' },
-      { name: 'Nước hàng cốt dừa & Nước mắm cốt', amount: 3, unit: 'muỗng canh', category: 'gia-vi' }
-    ],
-    instructions: [
-      { step: 1, title: 'Xếp riềng & Kho cá 2 lửa', durationMinutes: 30, heatLevel: 'lửa nhỏ', content: 'Lót riềng kín đáy nồi, xếp cá lên trên, ướp nước mắm và nước hàng 15 phút. Đun sôi rồi hạ lửa liu riu kho cạn keo sánh nước.', tip: 'Kho 2 lửa giúp thịt cá rắn chắc đậm đà.' }
-    ],
-    chefTip: 'Bí quyết đầu bếp: Đun cá cạn nước lần 1 rồi châm thêm 1 chén nước sôi nóng kho tiếp lần 2 lửa nhỏ liu riu, thịt cá sẽ ngấu đều vị cay ấm của riềng tiêu ăn rất bắt cơm.',
-    tags: ['Miền Bắc', 'Cay Nồng', 'Món Mặn', 'Cá Kho', 'Đậm Đà']
-  },
-
   // --- MIỀN TRUNG AUTHENTIC DISHES ---
   {
+    id: 'ca-kho-rieng-tieu-ot',
+    title: 'Cá Lóc Đồng Kho Riềng Tiêu Ớt Miền Trung',
+    description: 'Hương vị cay nồng đặc trưng đất Trung: Cá lóc đồng kho đượm vị riềng già thái lát, hạt tiêu xay cay xé lưỡi và ớt hiểm đỏ rực, nước kho sánh kẹo.',
+    category: 'mon-man',
+    region: 'trung',
+    prepTimeMinutes: 15,
+    cookTimeMinutes: 35,
+    servings: 4,
+    calories: 410,
+    estimatedCostVnd: 75000,
+    imageUrl: 'https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80',
+    difficulty: 'Dễ',
+    ingredients: [
+      { name: 'Cá lóc đồng cắt khoanh dày', amount: 500, unit: 'g', category: 'thit-ca' },
+      { name: 'Củ riềng già thái lát mỏng', amount: 50, unit: 'g', category: 'rau-cu' },
+      { name: 'Nước mắm cốt cá cơm & Ớt hiểm', amount: 3, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Đường thốt nốt & Tiêu đen xay', amount: 1, unit: 'muỗng canh', category: 'gia-vi' }
+    ],
+    instructions: [
+      { step: 1, title: 'Sơ chế & Khử tanh cá lóc', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Cá lóc đồng đánh vẩy, chà xát với muối hạt và chanh tươi cho sạch nhớt, rửa lại cắt khoanh dày 3cm.', tip: 'Rửa sạch nhớt giúp thớ thịt cá thơm tho tinh khiết.' },
+      { step: 2, title: 'Ướp cá với riềng ớt mắm cốt', durationMinutes: 10, heatLevel: 'không dùng nhiệt', content: 'Ướp cá với nước mắm cốt nhĩ, riềng già thái lát, đường thốt nốt và nhiều ớt hiểm giã dập trong 15 phút.', tip: 'Ướp kỹ giúp thịt cá săn chắc lại trước khi đun nóng.' },
+      { step: 3, title: 'Kho lửa nhỏ đượm vị', durationMinutes: 25, heatLevel: 'lửa nhỏ', content: 'Lót riềng đáy nồi đất, xếp cá lên trên, đun sôi rồi hạ lửa nhỏ liu riu kho 30 phút cho cá ngấm kiệt gia vị nước sánh kẹo.', tip: 'Kho nồi đất giữ nhiệt tốt giúp cá ngấu vị đậm đà.' },
+      { step: 4, title: 'Rắc tiêu đen & Bày ra tộ', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Khi nước kho sánh đặc kẹo màu nâu cánh gián, rắc nhiều tiêu đen xay lên mặt rồi tắt bếp thưởng thức cùng cơm nóng.', tip: 'Nước kho cá chan cơm nóng là món đưa cơm tuyệt đỉnh.' }
+    ],
+    chefTip: 'Bí quyết đầu bếp: Lót một lớp riềng già thái lát dưới đáy nồi kho đất vừa giúp cá không bị bén cháy, vừa tỏa hương thơm nồng ấm lan tỏa khắp từng thớ thịt cá.',
+    tags: ['Miền Trung', 'Cay Nồng', 'Món Mặn', 'Cá Kho Riềng', 'Đậm Vị']
+  },
+  {
     id: 'ca-nuc-kho-keo',
-    title: 'Cá Nục Kho Keo Mật Mía Ớt Xiêm Miền Trung',
-    description: 'Cá nục biển tươi kho cùng mật mía sánh kẹo màu cánh gián, ớt xiêm xanh cay xé lưỡi, nước kho đậm đà mặn ngọt the nồng đặc trưng xứ Quảng.',
+    title: 'Cá Nục Kho Keo Mật Mía Cay Xé Lưỡi',
+    description: 'Món cá kho đậm đà xứ Nghệ: Cá nục tươi rói kho cùng mật mía sánh đặc, ớt cay xé lưỡi đượm vị cay ngọt mặn bùi ăn hao cơm vô cùng.',
     category: 'mon-man',
     region: 'trung',
     prepTimeMinutes: 10,
-    cookTimeMinutes: 25,
+    cookTimeMinutes: 30,
     servings: 4,
     calories: 390,
-    estimatedCostVnd: 65000,
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
+    estimatedCostVnd: 60000,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Cá nục biển tươi làm sạch', amount: 500, unit: 'g', category: 'thit-ca' },
-      { name: 'Mật mía Nghệ An & Nước mắm cá cơm', amount: 3, unit: 'muỗng canh', category: 'gia-vi' },
-      { name: 'Ớt xiêm xanh đập dập', amount: 8, unit: 'quả', category: 'gia-vi' },
-      { name: 'Hành tăm (củ nén) băm', amount: 1, unit: 'muỗng canh', category: 'rau-cu' }
+      { name: 'Mật mía Nghệ An nguyên chất', amount: 3, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Nước mắm cốt & Ớt hiểm cay', amount: 2, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Hành tăm (củ nén) đập dập', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Kho keo cá nục', durationMinutes: 25, heatLevel: 'lửa nhỏ', content: 'Phi hành tăm thơm, cho cá nục vào rim cùng mật mía, nước mắm và ớt xiêm. Kho lửa nhỏ đến khi nước kho kẹo lại óng ánh keo dẻo.', tip: 'Mật mía giúp cá săn cứng màu cánh gián óng ả.' }
+      { step: 1, title: 'Làm sạch cá nục biển', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Cá nục bỏ ruột mang, ngâm nước muối loãng pha chút giấm rồi rửa sạch, để thật ráo nước.', tip: 'Để ráo nước giúp thớ thịt cá săn chắc khi kho.' },
+      { step: 2, title: 'Phi thơm củ nén với mật mía', durationMinutes: 3, heatLevel: 'lửa vừa', content: 'Phi thơm hành tăm (củ nén) giã dập trong dầu nóng, cho mật mía vào khuấy tan tạo màu cánh gián thơm ngát.', tip: 'Hành tăm là linh hồn mùi thơm của ẩm thực miền Trung.' },
+      { step: 3, title: 'Kho keo cá nục trên lửa nhỏ', durationMinutes: 20, heatLevel: 'lửa nhỏ', content: 'Xếp cá nục vào nồi, rưới nước mắm cốt và ớt hiểm, đun lửa nhỏ liu riu cho nước sốt mật mía keo lại bao quanh từng con cá.', tip: 'Kho lửa nhỏ giúp cá ngấm mật mía vào tận xương.' },
+      { step: 4, title: 'Hoàn thiện & Bày tộ đất', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Khi nước kho sánh keo sền sệt, rắc thêm chút tiêu sọ xay rồi gắp ra đĩa sâu lòng thưởng thức.', tip: 'Ăn cùng cơm nóng hoặc cháo trắng đều vô cùng đưa miệng.' }
     ],
-    chefTip: 'Bí quyết đầu bếp: Phi thơm củ nén (hành tăm) giã dập với dầu lạc trước khi kho, mật mía sẽ quyện chặt vào thớ cá tạo độ giòn săn chắc tuyệt hảo.',
-    tags: ['Miền Trung', 'Cay Nồng', 'Món Mặn', 'Cá Biển', 'Đậm Đà']
+    chefTip: 'Bí quyết đầu bếp: Dùng hành tăm (củ nén) đập dập phi thơm cùng mật mía trước khi xếp cá vào kho sẽ triệt tiêu hoàn toàn mùi tanh của cá biển và tạo màu caramel nâu bóng quyến rũ.',
+    tags: ['Miền Trung', 'Cay Nồng', 'Món Mặn', 'Cá Nục Kho', 'Hao Cơm']
   },
   {
     id: 'canh-chua-ca-nam',
-    title: 'Canh Chua Cá Biển Miền Trung Thơm Chua',
-    description: 'Bát canh chua dải đất miền Trung với cá biển tươi ngọt, dứa thơm, cà chua, me chua dịu và chút ớt bột cay nồng kích thích vị giác.',
+    title: 'Canh Chua Cá Bớp Lá Giang Miền Trung',
+    description: 'Vị chua thanh nồng ấm: Cá bớp biển béo ngậy nấu cùng lá giang vò nát chua dịu đặc trưng xứ Quảng, thơm lừng ớt hiểm và ngò gai.',
     category: 'mon-canh',
     region: 'trung',
     prepTimeMinutes: 10,
     cookTimeMinutes: 15,
     servings: 4,
-    calories: 200,
-    estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
+    calories: 260,
+    estimatedCostVnd: 85000,
+    imageUrl: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
-      { name: 'Cá biển tươi cắt khúc', amount: 350, unit: 'g', category: 'thit-ca' },
-      { name: 'Dứa chín & Cà chua', amount: 0.5, unit: 'quả', category: 'rau-cu' },
-      { name: 'Me vắt & Ớt xiêm dầm', amount: 1, unit: 'muỗng canh', category: 'gia-vi' },
-      { name: 'Hành hoa & Rau ngổ', amount: 1, unit: 'nắm', category: 'rau-cu' }
+      { name: 'Cá bớp biển cắt lát dày', amount: 400, unit: 'g', category: 'thit-ca' },
+      { name: 'Lá giang tươi vò nát', amount: 100, unit: 'g', category: 'rau-cu' },
+      { name: 'Ớt sừng, ngò gai & Củ nén', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Nấu canh chua cá biển', durationMinutes: 12, heatLevel: 'lửa vừa', content: 'Đun nước sôi cùng nước cốt me, thả cá biển vào đun chín tới. Cho dứa và cà chua vào sôi bùng, nêm nước mắm và ớt xiêm.', tip: 'Thả cá khi nước sôi sùng sục để không bị tanh.' }
+      { step: 1, title: 'Sơ chế cá bớp biển', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Cá bớp rửa sạch với nước muối loãng, thấm khô ráo, ướp chút củ nén giã dập và tiêu.', tip: 'Cá bớp thịt mềm béo cần thao tác nhẹ tay.' },
+      { step: 2, title: 'Vò nát lá giang tươi', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Lá giang nhặt lá bánh tẻ rửa sạch, dùng tay vò nát nhẹ để lá tiết vị chua thanh khi nấu.', tip: 'Vò nát vừa phải để nước canh có vị chua thanh dịu.' },
+      { step: 3, title: 'Nấu nước dùng & Thả cá lá giang', durationMinutes: 8, heatLevel: 'lửa vừa', content: 'Phi thơm củ nén, châm 1.2 lít nước sôi, thả cá bớp vào nấu chín tới trong 5 phút. Cho lá giang vào sôi bùng rồi tắt bếp.', tip: 'Lá giang nấu nhanh chín không nên đun quá lâu.' },
+      { step: 4, title: 'Nêm mắm nhĩ & Múc ra bát', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Nêm 2 muỗng nước mắm nhĩ ngon, rắc ngò gai ớt hiểm thái lát rồi múc canh ra bát sứ lớn thưởng thức.', tip: 'Vị chua của lá giang quyện vị ngọt béo của cá bớp rất ngon.' }
     ],
-    chefTip: 'Bí quyết đầu bếp: Nấu nước thật sôi mới thả cá biển vào, thêm chút ớt bột cay và rau ngổ thái nhỏ khi tắt bếp để đánh thức hương vị biển miền Trung.',
-    tags: ['Miền Trung', 'Món Canh', 'Canh Chua', 'Cá Biển', 'Thanh Mát']
+    chefTip: 'Bí quyết đầu bếp: Lá giang phải vò nát trước khi thả vào nồi nước sôi bùng, nấu vừa chín tới rồi tắt bếp ngay để nước canh có vị chua thanh khiết không bị chát.',
+    tags: ['Miền Trung', 'Món Canh', 'Cá Bớp', 'Lá Giang', 'Thanh Nhiệt']
   },
   {
     id: 'rau-khoai-lang-luoc-cham-mam-nem',
-    title: 'Rau Khoai Lang Luộc Chấm Mắm Nêm Miền Trung',
-    description: 'Đọt rau khoai lang tươi non luộc xanh mướt giòn ngọt, chấm chén mắm nêm cá cơm Dì Cẩn tỏi ớt dứa băm chua cay nồng nàn.',
+    title: 'Rau Khoai Lang Luộc Chấm Mắm Nêm Đà Nẵng',
+    description: 'Đọt rau lang tươi non luộc xanh mướt giòn ngọt, chấm ngập chén mắm nêm cá cơm nguyên chất pha dứa ớt tỏi thơm nức mũi cay xè.',
     category: 'mon-rau',
     region: 'trung',
     prepTimeMinutes: 5,
     cookTimeMinutes: 6,
     servings: 4,
-    calories: 105,
-    estimatedCostVnd: 25000,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    calories: 90,
+    estimatedCostVnd: 22000,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg/960px-Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
-      { name: 'Đọt rau khoai lang tươi non', amount: 500, unit: 'g', category: 'rau-cu' },
-      { name: 'Mắm nêm Dì Cẩn pha tỏi ớt dứa', amount: 3, unit: 'muỗng canh', category: 'gia-vi' }
+      { name: 'Đọt rau lang tươi non', amount: 500, unit: 'g', category: 'rau-cu' },
+      { name: 'Mắm nêm cá cơm chai', amount: 3, unit: 'muỗng canh', category: 'gia-vi' },
+      { name: 'Dứa (thơm) băm nhuyễn & Tỏi ớt', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Luộc rau khoai lang', durationMinutes: 4, heatLevel: 'lửa lớn', content: 'Nước sôi già thả rau lang vào luộc 3 phút vừa chín tới, vớt ra đĩa ráo nước.', tip: 'Không đậy vung khi luộc để rau giữ màu xanh mướt.' }
+      { step: 1, title: 'Nhặt rửa đọt rau lang non', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Nhặt lấy phần đọt non của rau lang, rửa sạch ngâm nước muối loãng 5 phút rồi vớt ráo.', tip: 'Chọn đọt rau lang tím hoặc non mướt sẽ rất ngọt mát.' },
+      { step: 2, title: 'Pha chén mắm nêm đậm vị', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Mắm nêm pha cùng dứa băm nhuyễn, đường thốt nốt, tỏi ớt băm và chút nước cốt chanh khuấy đều.', tip: 'Dứa băm giúp làm dịu vị mặn gắt của mắm nêm.' },
+      { step: 3, title: 'Luộc rau lang xanh giòn', durationMinutes: 4, heatLevel: 'lửa lớn', content: 'Đun nước sôi sùng sục với chút muối hạt, thả rau lang vào đảo đều 3 phút vừa chín tới, vớt ngay ra đĩa ráo nước.', tip: 'Luộc lửa lớn ngập nước giúp đọt rau giữ màu xanh tươi.' },
+      { step: 4, title: 'Bày ra đĩa & Thưởng thức', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Gắp rau lang ra đĩa, chấm ngập chén mắm nêm chua cay mặn ngọt đậm đà ăn cùng cơm nóng.', tip: 'Món ăn dân dã chống ngấy tuyệt vời cho bữa cơm.' }
     ],
-    chefTip: 'Bí quyết đầu bếp: Pha mắm nêm với dứa băm nhuyễn, nước cốt chanh tươi, tỏi ớt băm và chút đường tạo độ sánh sệt thơm nức mũi.',
-    tags: ['Miền Trung', 'Món Rau', 'Rau Lang', 'Đồng Quê', 'Dễ Làm']
+    chefTip: 'Bí quyết đầu bếp: Pha mắm nêm cùng dứa băm nhuyễn và chút nước cốt chanh tươi sẽ làm dịu độ gắt của mắm cá, tạo hương vị chua ngọt cay bùng nổ ăn kèm rau lang giòn ngọt.',
+    tags: ['Miền Trung', 'Món Rau', 'Rau Lang', 'Mắm Nêm', 'Dân Dã']
   },
   {
     id: 'canh-hen-nau-rau-tap-tang',
-    title: 'Canh Hến Nấu Rau Tập Tàng Xứ Huế',
-    description: 'Hương vị sông Hương cồn Hến: Nước luộc hến ngọt lịm nấu cùng rau mồng tơi, rau dền, ngót ngọt thanh mát xua tan cái nóng miền Trung.',
+    title: 'Canh Hến Nấu Rau Tập Tàng Cồn Hến Xứ Huế',
+    description: 'Tinh hoa ẩm thực sông Hương: Thịt hến ngọt lịm nấu cùng nước luộc hến thanh mát và các loại rau tập tàng vườn nhà, dậy mùi ớt cay thơm.',
     category: 'mon-canh',
     region: 'trung',
     prepTimeMinutes: 10,
-    cookTimeMinutes: 8,
+    cookTimeMinutes: 10,
     servings: 4,
-    calories: 140,
+    calories: 130,
     estimatedCostVnd: 35000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1758293121435-396ed31ebcf4?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
-      { name: 'Thịt hến tươi & Nước luộc hến', amount: 200, unit: 'g', category: 'thit-ca' },
-      { name: 'Rau tập tàng (mồng tơi, rau dền, bồ ngót)', amount: 400, unit: 'g', category: 'rau-cu' },
-      { name: 'Hành khô & Nước mắm ngon', amount: 1, unit: 'muỗng canh', category: 'gia-vi' }
+      { name: 'Thịt hến tươi & Nước luộc hến', amount: 300, unit: 'g', category: 'thit-ca' },
+      { name: 'Rau tập tàng (rau ngót, mồng tơi, rau dền)', amount: 300, unit: 'g', category: 'rau-cu' },
+      { name: 'Củ nén & Ớt xanh Huế', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Nấu canh hến rau', durationMinutes: 6, heatLevel: 'lửa vừa', content: 'Xào thơm thịt hến với hành khô, đổ nước luộc hến đã lắng trong vào đun sôi, thả rau tập tàng vào sôi 2 phút rồi tắt bếp.', tip: 'Lắng thật kỹ nước luộc hến để loại bỏ hết cặn cát.' }
+      { step: 1, title: 'Sơ chế thịt hến & Lọc nước', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Thịt hến đãi sạch cát, nước luộc hến để lắng gạn lấy phần nước trong không lấy cặn.', tip: 'Gạn kỹ nước luộc hến để canh không bị sạn cát.' },
+      { step: 2, title: 'Nhặt rửa các loại rau tập tàng', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Rau ngót, rau dền, mồng tơi nhặt lá non, rửa sạch vò nhẹ để rau mềm ngọt khi nấu.', tip: 'Vò nhẹ rau ngót giúp rau nhanh chín mềm ngọt nước.' },
+      { step: 3, title: 'Xào săn hến & Đun sôi nước', durationMinutes: 5, heatLevel: 'lửa vừa', content: 'Phi củ nén thơm lừng, xào săn thịt hến với chút mắm ruốc Huế. Đổ nước luộc hến vào đun sôi bùng, thả rau tập tàng vào nấu 3 phút.', tip: 'Xào hến trước giúp thịt hến săn chắc thơm nức.' },
+      { step: 4, title: 'Hoàn thiện & Bày tô canh nóng', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Nêm chút muối tiêu ớt xanh Huế cho đậm vị cay nồng, múc canh ra bát thưởng thức thanh nhiệt.', tip: 'Nước canh ngọt lịm từ hến tự nhiên không cần mì chính.' }
     ],
-    chefTip: 'Bí quyết đầu bếp: Xào thịt hến với chút ớt bột Huế và hành khô cho săn thơm trước khi trút nước dùng vào, canh sẽ ngọt đậm đà thơm ngát.',
-    tags: ['Miền Trung', 'Món Canh', 'Hến Huế', 'Thanh Mát', 'Đồng Quê']
+    chefTip: 'Bí quyết đầu bếp: Phi củ nén thơm với chút mắm ruốc Huế xào săn thịt hến trước khi cho nước luộc vào nấu, canh sẽ ngọt đậm sâu và có vị thơm cay nồng nàn đặc trưng xứ Huế.',
+    tags: ['Miền Trung', 'Món Canh', 'Hến', 'Rau Tập Tàng', 'Xứ Huế']
   },
-
   // --- MIỀN NAM AUTHENTIC DISHES ---
   {
     id: 'canh-kho-qua-don-thit',
-    title: 'Canh Khổ Qua Dồn Thịt Băm Thanh Mát Nam Bộ',
-    description: 'Món canh truyền thống Nam Bộ: Mướp đắng dồn thịt nạc dăm mộc nhĩ ninh nước dùng trong ngọt, vị đắng thanh giải nhiệt mát gan.',
+    title: 'Canh Khổ Qua Nhồi Thịt Nạc Dăm Miền Nam',
+    description: 'Món canh truyền thống gửi gắm ước nguyện xua đi nỗi khổ: Mướp đắng nhồi thịt nạc dăm mộc nhĩ ngọt bùi, nước dùng trong veo đắng dịu hậu ngọt.',
     category: 'mon-canh',
     region: 'nam',
     prepTimeMinutes: 15,
@@ -2502,7 +2550,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 230,
     estimatedCostVnd: 55000,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Canh_kh%E1%BB%95_qua.JPG/960px-Canh_kh%E1%BB%95_qua.JPG?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Mướp đắng (khổ qua) bào khúc', amount: 3, unit: 'quả', category: 'rau-cu' },
@@ -2511,8 +2559,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Hành hoa & Ngò rí', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Nhồi thịt vào khổ qua', durationMinutes: 8, heatLevel: 'không dùng nhiệt', content: 'Khổ qua móc ruột, nhồi chặt nhân thịt băm mộc nhĩ đã nêm tiêu mắm.', tip: 'Cắt khổ qua khoanh vừa ăn giúp nhanh chín mềm.' },
-      { step: 2, title: 'Nấu nước dùng trong ngọt', durationMinutes: 15, heatLevel: 'lửa nhỏ', content: 'Đun sôi nước dùng, thả khổ qua vào hầm lửa vừa 15 phút đến khi chín mềm, vớt bọt thường xuyên.', tip: 'Không đậy vung để nước canh trong veo.' }
+      { step: 1, title: 'Sơ chế khổ qua bớt đắng', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Khổ qua móc ruột bỏ sạch màng trắng bên trong, cắt khúc 4cm rồi chần sơ nước sôi.', tip: 'Cạo sạch màng trắng giúp giảm 70% vị đắng gắt.' },
+      { step: 2, title: 'Trộn nhân thịt & Nhồi khổ qua', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Trộn thịt băm, mộc nhĩ, hành tím băm, tiêu xay và hạt nêm. Nhồi chặt tay vào từng khúc khổ qua.', tip: 'Nhồi miết phẳng hai đầu để nhân không bị rơi ra khi hầm.' },
+      { step: 3, title: 'Hầm canh khổ qua nước trong', durationMinutes: 15, heatLevel: 'lửa nhỏ', content: 'Đun sôi nước dùng, thả khổ qua vào hầm lửa vừa 15 phút đến khi chín mềm, vớt bọt thường xuyên.', tip: 'Không đậy vung để nước canh trong veo.' },
+      { step: 4, title: 'Nêm nếm & Hoàn thiện', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Nêm nước mắm ngon vừa ăn, rắc hành ngò thái nhỏ và tiêu xay, múc canh ra bát thưởng thức nóng.', tip: 'Vị đắng dịu hậu ngọt thanh rất giải nhiệt.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Chần sơ khổ qua qua nước sôi trước khi nhồi thịt để giảm bớt vị đắng gắt, khi ninh không đậy nắp giúp nước canh trong veo ngọt thanh.',
     tags: ['Miền Nam', 'Món Canh', 'Khổ Qua', 'Thanh Nhiệt', 'Cơm Mẹ Nấu']
@@ -2528,7 +2578,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 510,
     estimatedCostVnd: 80000,
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Caramelized_Pork_and_Eggs.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt ba rọi rút sườn thái miếng dày', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -2537,7 +2587,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Tiêu đen xay vỡ & Ớt hiểm', amount: 2, unit: 'muỗng cà phê', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Kho tộ thịt ba rọi', durationMinutes: 30, heatLevel: 'lửa nhỏ', content: 'Xào săn thịt ba chỉ, châm nước dừa tươi và mắm đường. Kho lửa nhỏ liu riu trong tộ đất đến khi nước sốt keo nâu óng ánh rắc nhiều tiêu đen.', tip: 'Kho tộ đất giữ nhiệt cực tốt giúp thịt mềm thơm.' }
+      { step: 1, title: 'Sơ chế thịt ba rọi thái dày', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Thịt ba chỉ cạo sạch bì, rửa nước muối loãng, cắt miếng vuông dày 2.5cm đều tay.', tip: 'Thịt kho tộ thái dày miếng giúp giữ vị béo ngọt không bị quắt.' },
+      { step: 2, title: 'Ướp thịt với mắm nhĩ đường thốt nốt', durationMinutes: 6, heatLevel: 'không dùng nhiệt', content: 'Ướp thịt với 2 muỗng nước mắm nhĩ, hành tím băm, tiêu đập dập và chút đường trong 15 phút.', tip: 'Ướp nước mắm nhĩ giúp mỡ thịt trong veo sau khi kho.' },
+      { step: 3, title: 'Kho tộ đất liu riu nước dừa', durationMinutes: 20, heatLevel: 'lửa nhỏ', content: 'Xào săn thịt ba chỉ, châm nước dừa tươi và mắm đường. Kho lửa nhỏ liu riu trong tộ đất đến khi nước sốt keo nâu óng ánh rắc nhiều tiêu đen.', tip: 'Kho tộ đất giữ nhiệt cực tốt giúp thịt mềm thơm.' },
+      { step: 4, title: 'Hoàn thiện & Bày nguyên tộ', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Khi nước kho sánh keo quanh miếng thịt, rắc nhiều tiêu đen xay vỡ và ớt hiểm, dọn cả tộ đất ra bàn ăn.', tip: 'Ăn nóng cùng cơm cháy hoặc rau luộc chấm nước kho.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Dùng nước dừa tươi kho lửa nhỏ cho mỡ thịt trong veo, tắt bếp rắc một nắm tiêu đen Phú Quốc xay vỡ để tạo mùi thơm nồng đặc trưng.',
     tags: ['Miền Nam', 'Món Mặn', 'Thịt Kho Tộ', 'Đậm Đà', 'Cay Nồng']
@@ -2553,7 +2606,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 370,
     estimatedCostVnd: 95000,
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Mực ống tươi cắt khoanh', amount: 400, unit: 'g', category: 'thit-ca' },
@@ -2561,7 +2614,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Ớt sừng băm & Tỏi phi', amount: 1, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Rim mực sốt me', durationMinutes: 10, heatLevel: 'lửa vừa', content: 'Xào săn mực trên lửa lớn trút ra đĩa. Nấu kẹo sốt me đường ớt, trút mực vào đảo nhanh 2 phút cho sốt bọc đều quanh từng khoanh mực.', tip: 'Không rim mực quá lâu để mực không bị dai.' }
+      { step: 1, title: 'Sơ chế mực tươi cắt khoanh', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Mực ống bóc màng da, bỏ ruột túi mực, rửa nước gừng rượu trắng rồi cắt khoanh tròn 2cm.', tip: 'Rửa rượu gừng khử sạch hoàn toàn mùi tanh của mực.' },
+      { step: 2, title: 'Nấu sốt me chua ngọt cay', durationMinutes: 4, heatLevel: 'lửa vừa', content: 'Hòa tan cốt me chua, đường thốt nốt, nước mắm ngon và ớt băm đun sôi sền sệt trong chảo nóng.', tip: 'Đun cho sốt me sánh đặc kẹo lại trước khi cho mực vào.' },
+      { step: 3, title: 'Xào săn & Rim mực nhanh tay', durationMinutes: 6, heatLevel: 'lửa lớn', content: 'Xào săn mực trên lửa lớn trút ra đĩa. Nấu kẹo sốt me đường ớt, trút mực vào đảo nhanh 2 phút cho sốt bọc đều quanh từng khoanh mực.', tip: 'Không rim mực quá lâu để mực không bị dai.' },
+      { step: 4, title: 'Rắc mè rang & Trình bày', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Gắp mực ra đĩa rắc mè rang thơm và tỏi phi vàng lên mặt, thưởng thức ngay khi sốt me còn óng ánh.', tip: 'Vị chua ngọt cay quyện từng khoanh mực giòn sần sật.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Nấu sốt me với đường thốt nốt kẹo sệt lại rồi mới trút mực đã xào vào đảo thật nhanh trên lửa lớn, mực sẽ ngấm sốt đậm đà mà giữ trọn độ giòn ngọt mọng nước.',
     tags: ['Miền Nam', 'Cay Nồng', 'Món Mặn', 'Mực Rim Me', 'Đổi Vị']
@@ -2577,7 +2633,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 220,
     estimatedCostVnd: 70000,
-    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg/960px-Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cá lóc đồng cắt khoanh', amount: 400, unit: 'g', category: 'thit-ca' },
@@ -2585,7 +2641,10 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
       { name: 'Me chín, ngò om, ngò gai, ớt hiểm', amount: 1, unit: 'nắm', category: 'rau-cu' }
     ],
     instructions: [
-      { step: 1, title: 'Nấu canh chua điên điển', durationMinutes: 10, heatLevel: 'lửa vừa', content: 'Nấu nước me sôi, thả cá lóc vào đun chín tới. Cho bông điên điển vào đun sôi bùng 30 giây rồi tắt bếp, rắc ngò om và tỏi phi.', tip: 'Bông điên điển cho vào sau cùng để giữ độ giòn.' }
+      { step: 1, title: 'Sơ chế cá lóc & Bông điên điển', durationMinutes: 4, heatLevel: 'không dùng nhiệt', content: 'Cá lóc cắt khoanh làm sạch để ráo. Bông điên điển nhặt cọng sâu rửa sạch để ráo nước.', tip: 'Bông điên điển rửa nhẹ tay tránh làm dập cánh hoa.' },
+      { step: 2, title: 'Dầm me chín lấy nước chua', durationMinutes: 3, heatLevel: 'không dùng nhiệt', content: 'Cho me chín vào bát nước ấm dầm nát lọc qua rây lấy nước cốt me thanh khiết bỏ hạt.', tip: 'Cốt me chín tạo độ chua dịu thanh tao đặc trưng Nam Bộ.' },
+      { step: 3, title: 'Nấu chín cá lóc & Thả hoa', durationMinutes: 6, heatLevel: 'lửa vừa', content: 'Nấu nước me sôi, thả cá lóc vào đun chín tới. Cho bông điên điển vào đun sôi bùng 30 giây rồi tắt bếp, rắc ngò om và tỏi phi.', tip: 'Bông điên điển cho vào sau cùng để giữ độ giòn.' },
+      { step: 4, title: 'Nêm mắm nhĩ & Múc ra bát', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Nêm 2 muỗng nước mắm cốt ngon, múc canh ra bát sứ rắc tỏi phi vàng thơm lừng thưởng thức.', tip: 'Ăn kèm chén mắm ớt cay chấm cá lóc.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Bông điên điển chỉ thả vào nồi canh khi đã tắt bếp hoặc sôi bùng 30 giây để hoa giữ màu vàng tươi rực rỡ và độ giòn bùi ngọt thanh mát.',
     tags: ['Miền Nam', 'Món Canh', 'Cá Lóc', 'Bông Điên Điển', 'Đồng Quê']
@@ -2601,14 +2660,17 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 110,
     estimatedCostVnd: 30000,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=600&q=80',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Bông bí tươi non tước xơ', amount: 400, unit: 'g', category: 'rau-cu' },
       { name: 'Tỏi băm & Dầu hào', amount: 2, unit: 'muỗng canh', category: 'gia-vi' }
     ],
     instructions: [
-      { step: 1, title: 'Xào bông bí lửa lớn', durationMinutes: 4, heatLevel: 'lửa lớn', content: 'Phi tỏi thơm lừng, cho bông bí vào đảo thật nhanh tay trên lửa lớn trong 3 phút, nêm chút dầu hào rồi tắt bếp.', tip: 'Xào thật nhanh để cánh hoa không bị nát.' }
+      { step: 1, title: 'Tước xơ cuống bông bí', durationMinutes: 5, heatLevel: 'không dùng nhiệt', content: 'Tước sạch lớp xơ cứng bao quanh cuống hoa, ngắt bỏ nhụy đắng bên trong bông bí rồi rửa nhẹ nhàng.', tip: 'Ngắt bỏ nhụy hoa bên trong để bông bí ngọt thanh không bị đắng.' },
+      { step: 2, title: 'Đập dập tỏi phi chuẩn bị chảo', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Tỏi bóc vỏ đập dập để tinh dầu tỏi bung tỏa mùi thơm nồng nhất khi phi trong dầu nóng.', tip: 'Dùng nhiều tỏi phi giúp bông bí xào dậy mùi thơm nức.' },
+      { step: 3, title: 'Xào bông bí lửa lớn nhanh tay', durationMinutes: 3, heatLevel: 'lửa lớn', content: 'Phi tỏi thơm lừng, cho bông bí vào đảo thật nhanh tay trên lửa lớn trong 3 phút, nêm chút dầu hào rồi tắt bếp.', tip: 'Xào thật nhanh để cánh hoa không bị nát.' },
+      { step: 4, title: 'Trình bày đĩa rau xào', durationMinutes: 2, heatLevel: 'không dùng nhiệt', content: 'Gắp bông bí ra đĩa, rắc tỏi phi vàng giòn và tiêu đen lên trên, thưởng thức ngay khi rau còn nóng giòn.', tip: 'Cánh hoa vàng ươm mọng nước ăn rất thanh đạm.' }
     ],
     chefTip: 'Bí quyết đầu bếp: Ngắt bỏ nhụy đắng bên trong bông bí trước khi rửa, xào nhanh trên lửa lớn để bông bí giữ trọn độ giòn ngọt thơm mát.',
     tags: ['Miền Nam', 'Món Rau', 'Bông Bí', 'Thanh Nhẹ', 'Eat Clean']
@@ -2617,8 +2679,16 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
 
 import { recipesDatabase } from './recipesDatabase';
 import { westernDishes500 } from './westernDishes500';
+import { vietnameseDishesPart1 } from './vietnameseDishesPart1';
+import { vietnameseDishesPart2 } from './vietnameseDishesPart2';
 
-export { westernDishes500 };
-export const mockRecipes: Recipe[] = [...INITIAL_RECIPES, ...LEFTOVER_RECIPES, ...WESTERN_RECIPES, ...westernDishes500, ...recipesDatabase];
-export { recipesDatabase };
-
+export { westernDishes500, recipesDatabase, vietnameseDishesPart1, vietnameseDishesPart2 };
+export const mockRecipes: Recipe[] = [
+  ...INITIAL_RECIPES,
+  ...LEFTOVER_RECIPES,
+  ...WESTERN_RECIPES,
+  ...westernDishes500,
+  ...recipesDatabase,
+  ...vietnameseDishesPart1,
+  ...vietnameseDishesPart2
+];

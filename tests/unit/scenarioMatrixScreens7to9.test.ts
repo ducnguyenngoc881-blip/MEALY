@@ -463,7 +463,11 @@ describe('Matrix Screen 9: Dish Image Resolver Fallbacks (15 Scenarios)', () => 
     it(`${id}: Image resolver fallback for "${dish.title}" (${dish.category})`, () => {
       const url = getDishImageUrl(dish.title, dish.category);
       expect(url).toBeDefined();
-      expect(url.startsWith('https://images.unsplash.com/')).toBe(true);
+      const isValidCdn =
+        url.startsWith('https://images.unsplash.com/') ||
+        url.startsWith('https://upload.wikimedia.org/') ||
+        url.startsWith('https://thumb.wikimedia.org/');
+      expect(isValidCdn).toBe(true);
       expect(url.includes('auto=format')).toBe(true);
     });
   }

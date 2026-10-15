@@ -25,6 +25,31 @@
             document.documentElement.classList.remove('dark');
           }
         } catch (e) {}
+
+        // Prevent mobile device system font scaling from distorting app layout
+        function lockDeviceFontSize() {
+          try {
+            var docEl = document.documentElement;
+            if (!docEl) return;
+            var testDiv = document.createElement('div');
+            testDiv.style.cssText = 'position:absolute;visibility:hidden;width:auto;height:auto;font-size:16px;line-height:1;margin:0;padding:0;top:-9999px;left:-9999px;';
+            testDiv.innerText = 'M';
+            (document.body || docEl).appendChild(testDiv);
+            var computedSize = parseFloat(window.getComputedStyle(testDiv).fontSize);
+            if (testDiv.parentNode) testDiv.parentNode.removeChild(testDiv);
+            if (computedSize && Math.abs(computedSize - 16) > 0.4) {
+              var scaleFactor = computedSize / 16;
+              docEl.style.fontSize = (16 / scaleFactor) + 'px';
+            }
+          } catch (err) {}
+        }
+
+        lockDeviceFontSize();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', lockDeviceFontSize);
+        }
+        window.addEventListener('resize', lockDeviceFontSize);
+        window.addEventListener('pageshow', lockDeviceFontSize);
       })();
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {

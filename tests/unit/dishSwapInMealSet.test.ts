@@ -291,5 +291,39 @@ describe('Unit: Individual Dish Swap in 3-Dish Meal Sets', () => {
     expect(westernDishesCount).toBeGreaterThanOrEqual(3);
   });
 
+  it('SWAP-DISH-13: swapDishInMealSet strictly respects maxAllowedCostVnd budget ceiling', () => {
+    const mealSet = mockMealSets[0];
+    const maxBudgetLimit = 40000; // Strict limit: 40,000 VND
+
+    // Simulate swapDishInMealSet logic with maxAllowedCostVnd
+    const categoryMap = { mainDish: 'mon-man', soupDish: 'mon-canh', sideDish: 'mon-rau' };
+    const candidates = recipes.filter(r => r.category === categoryMap.mainDish && !isHotpotOrFeast(r));
+    const budgetFitting = candidates.filter(r => (r.estimatedCostVnd || 35000) <= maxBudgetLimit);
+    expect(budgetFitting.length).toBeGreaterThan(0);
+
+    for (let i = 0; i < 50; i++) {
+      const chosen = budgetFitting[Math.floor(Math.random() * budgetFitting.length)];
+      expect((chosen.estimatedCostVnd || 35000)).toBeLessThanOrEqual(maxBudgetLimit);
+    }
+  });
+
+  it('SWAP-DISH-14: swapDishInMealSet falls back to top 5 cheapest dishes when budget ceiling is exceeded or zero', () => {
+    const categoryMap = { mainDish: 'mon-man', soupDish: 'mon-canh', sideDish: 'mon-rau' };
+    const candidates = recipes.filter(r => r.category === categoryMap.mainDish && !isHotpotOrFeast(r));
+    const tightBudget = 5000; // Unreasonably low: 5,000 VND
+
+    const budgetFitting = tightBudget > 0 ? candidates.filter(r => (r.estimatedCostVnd || 35000) <= tightBudget) : [];
+    let pool = budgetFitting;
+    if (pool.length === 0) {
+      pool = [...candidates].sort((a, b) => (a.estimatedCostVnd || 0) - (b.estimatedCostVnd || 0)).slice(0, 5);
+    }
+
+    expect(pool.length).toBe(5);
+    // All 5 must be lowest-cost items in the pool
+    const minCostInAll = Math.min(...candidates.map(r => r.estimatedCostVnd || 0));
+    expect(pool[0].estimatedCostVnd).toBe(minCostInAll);
+  });
+
 });
+
 

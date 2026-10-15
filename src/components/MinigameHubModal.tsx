@@ -147,7 +147,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
                   </div>
 
                   <h3 className="text-base font-black text-white mt-1 group-hover:text-amber-300 transition-colors">
-                    Mở Hòm Bữa Cơm (Apex Pack)
+                    Mở Hòm Bữa Cơm
                   </h3>
 
                   <p className="text-xs text-slate-300 mt-0.5 line-clamp-2 leading-relaxed">
@@ -163,7 +163,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
             </div>
 
             {/* ==================================================== */}
-            {/* GAME 2: VÒNG QUAY BÀN NHẬU (DRINKING ROULETTE) */}
+            {/* GAME 2: VÒNG QUAY BÀN NHẬU */}
             {/* ==================================================== */}
             <div 
               onClick={handleSelectDrinkRoulette}
@@ -195,7 +195,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
                   </div>
 
                   <h3 className="text-base font-black text-white mt-1 group-hover:text-rose-300 transition-colors">
-                    Vòng Quay Bàn Nhậu (Drinking Roulette)
+                    Vòng Quay Bàn Nhậu
                   </h3>
 
                   <p className="text-xs text-slate-300 mt-0.5 line-clamp-2 leading-relaxed">

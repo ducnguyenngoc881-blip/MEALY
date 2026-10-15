@@ -61,7 +61,7 @@ export function getOfflineFoodPlaceholder(title: string, category: string = 'Mó
     ${cleanTitle}
   </text>
   <text x="200" y="235" fill="${p.iconColor}" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" text-anchor="middle" opacity="0.85">
-    ${category} • Chế độ Ngoại Tuyến (Offline)
+    ${category} • Chế độ Ngoại Tuyến
   </text>
 </svg>`;
 

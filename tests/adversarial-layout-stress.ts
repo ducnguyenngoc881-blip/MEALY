@@ -343,12 +343,12 @@ assert(
 );
 
 // 4.5 Sticky Bottom Bar: Compact Mobile Label & Safe Area Inset
-const bottomZaloBtnCompact = groceryCode.includes('<span className="sm:hidden">Xuất Zalo Đi Chợ</span>');
+const bottomShareBtnCompact = groceryCode.includes('<span className="sm:hidden">Chia Sẻ Danh Sách</span>');
 const bottomBarSafeArea = groceryCode.includes('pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]');
 
 assert(
-  bottomZaloBtnCompact,
-  'Sticky bottom Zalo button displays concise "Xuất Zalo Đi Chợ" on mobile',
+  bottomShareBtnCompact,
+  'Sticky bottom Share button displays concise "Chia Sẻ Danh Sách" on mobile',
   'GroceryList Stress'
 );
 assert(

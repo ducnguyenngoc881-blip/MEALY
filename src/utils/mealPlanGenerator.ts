@@ -27,6 +27,7 @@ export interface PlanGeneratorOptions {
   regionPreference?: 'bac' | 'trung' | 'nam' | 'toan-quoc' | 'all';
   specialNeeds?: string[]; // 'gym-protein', 'eat-clean', 'chay', etc.
   mealFormat?: 'single-dish' | 'meal-set';
+  weekdayLunchRoutine?: 'ban-tru-di-lam' | 'nau-ca-ngay' | 'hop-com-van-phong';
   seed?: number | string;
   variationIndex?: number;
   iteration?: number;
@@ -39,8 +40,18 @@ export interface GeneratedDayPlan {
   dayName: string;
   meals: {
     breakfast: Recipe;
-    lunch: VietnameseMealSet | Recipe;
+    lunch: VietnameseMealSet | Recipe | null;
     dinner: VietnameseMealSet | Recipe;
+  };
+  skippedSlots?: {
+    breakfast?: boolean;
+    lunch?: boolean;
+    dinner?: boolean;
+  };
+  slotNotes?: {
+    breakfast?: string;
+    lunch?: string;
+    dinner?: string;
   };
   unscaledDayCost: number;
   scaledDayCost: number;
@@ -195,8 +206,12 @@ function computeMealSetScore(
 
   // Dietary goal bonuses
   if (isGym) {
-    if (set.tags?.some(t => ['giàu đạm', 'tập gym', 'protein'].includes(t.toLowerCase()))) {
-      score += 12;
+    const isHighProteinSet = set.tags?.some(t => /giàu đạm|tập gym|protein|bò|thịt|ức gà|cá hồi|steak|bít tết|bbq|sườn/i.test(t)) ||
+      /bít tết|steak|bò|thịt|ức gà|cá hồi|sườn|tôm|heo quay/i.test(set.title);
+    if (isHighProteinSet) {
+      score += 150;
+    } else {
+      score -= 30;
     }
   }
   if (isEatClean) {
@@ -206,9 +221,12 @@ function computeMealSetScore(
   }
   if (isWestern) {
     const isWesternSet = set.tags?.some(t => /món âu|western|bít tết|mì ý|pasta|bbq/i.test(t)) ||
-                         /món âu|bít tết|steak|mì ý|spaghetti|carbonara|bolognese|bbq|sườn que|cá hồi nauy/i.test(set.title);
+                         /món âu|bít tết|steak|mì ý|spaghetti|carbonara|bolognese|bbq|sườn que|cá hồi nauy/i.test(set.title) ||
+                         set.id.startsWith('mam-com-au-');
     if (isWesternSet) {
       score += 150;
+    } else {
+      score -= 500;
     }
   }
   if (isQuick) {
@@ -255,11 +273,16 @@ function computeRecipeScore(
 
   // Dietary goals
   if (isGym) {
-    if (recipe.tags?.some(t => ['giàu đạm', 'tập gym', 'protein', 'đạm'].includes(t.toLowerCase()))) {
-      score += 10;
+    const isHighProteinRecipe = /bít tết|steak|bò|thịt|ức gà|gà|cá|tôm|mực|hải sản|sườn|trứng|đậu hũ/i.test(recipe.title) ||
+      recipe.tags?.some(t => /giàu đạm|tập gym|protein/i.test(t)) ||
+      (recipe.ingredients && recipe.ingredients.some(i => i.category === 'thit-ca'));
+    if (isHighProteinRecipe) {
+      score += 120;
+    } else {
+      score -= 40;
     }
     if ((recipe.calories || 0) >= 400) {
-      score += 4;
+      score += 15;
     }
   }
   if (isEatClean) {
@@ -269,9 +292,11 @@ function computeRecipeScore(
   }
   if (isWestern) {
     const isWesternDish = recipe.tags?.some(t => /món âu|western|steak|bít tết|mì ý|pasta|bbq|fast food/i.test(t)) ||
-      /bít tết|steak|mì ý|pasta|salad|áp chảo|súp kem|khoai tây|burger|gà rán|sườn que|sườn nướng|carbonara|bolognese|curry/i.test(recipe.title);
+      /bít tết|steak|mì ý|pasta|salad|áp chảo|súp kem|khoai tây|burger|gà rán|sườn que|sườn nướng|carbonara|bolognese|curry|aglio e olio|bourguignon|parmigiana/i.test(recipe.title);
     if (isWesternDish) {
       score += 120;
+    } else {
+      score -= 500;
     }
   }
   if (isQuick) {
@@ -286,6 +311,108 @@ function computeRecipeScore(
   }
 
   return score;
+}
+
+export type DishFreshnessTier = 'fresh-perishable' | 'standard-fresh' | 'hearty-pantry';
+
+/**
+ * Categorizes a dish or meal set into a food freshness & spoilage tier:
+ * - 'fresh-perishable' (1-2 days shelf life): Bún tươi, phở tươi, bánh mì, đậu phụ sống, ngao, nghêu, sò, ốc, mực tươi, giá đỗ, rau sống.
+ * - 'hearty-pantry' (5-7+ days shelf life): Bí xanh, bí đỏ, bắp cải, củ cải, cà rốt, khoai tây, thịt kho, cá kho, sườn rim, đồ khô, nấm khô, đồ đông lạnh.
+ * - 'standard-fresh' (2-4 days shelf life): Regular fresh meat, poultry, common greens.
+ */
+export function getDishFreshnessTier(item: any): DishFreshnessTier {
+  if (!item) return 'standard-fresh';
+
+  const textToScan = [
+    item.title || '',
+    item.description || '',
+    item.id || '',
+    (item.tags || []).join(' '),
+    item.mainDish?.title || '',
+    item.mainDish?.description || '',
+    (item.mainDish?.tags || []).join(' '),
+    item.soupDish?.title || '',
+    item.sideDish?.title || '',
+    ...(item.ingredients || []).map((i: any) => i?.name || ''),
+    ...(item.mainDish?.ingredients || []).map((i: any) => i?.name || '')
+  ].join(' ').toLowerCase();
+
+  // 1. Tier 1: Fresh Perishables (Spoils within 24-48 hours)
+  // Bún tươi, bánh mì, phở tươi, bánh cuốn, bánh ướt, hủ tiếu tươi, đậu phụ, ngao/sò/nghêu, giá đỗ
+  if (
+    textToScan.includes('bún ') ||
+    textToScan.includes('bún tươi') ||
+    textToScan.includes('bánh mì') ||
+    textToScan.includes('phở ') ||
+    textToScan.includes('phở tươi') ||
+    textToScan.includes('hủ tiếu') ||
+    textToScan.includes('bánh cuốn') ||
+    textToScan.includes('bánh ướt') ||
+    textToScan.includes('đậu phụ') ||
+    textToScan.includes('đậu hũ') ||
+    textToScan.includes('ngao') ||
+    textToScan.includes('nghêu') ||
+    textToScan.includes('sò huyết') ||
+    textToScan.includes('giá đỗ') ||
+    textToScan.includes('rau sống') ||
+    textToScan.includes('gỏi cuốn')
+  ) {
+    return 'fresh-perishable';
+  }
+
+  // 2. Tier 3: Hearty & Long Shelf-Life (Lasts 5-7+ days)
+  // Bí đỏ, bí xanh, bí đao, bầu, mướp, khoai tây, cà rốt, bắp cải, củ cải, thịt kho, cá kho, sườn rim, thịt rang, trứng, đồ khô, nấm khô
+  if (
+    textToScan.includes('bí đỏ') ||
+    textToScan.includes('bí xanh') ||
+    textToScan.includes('bí đao') ||
+    textToScan.includes('bầu ') ||
+    textToScan.includes('mướp') ||
+    textToScan.includes('khoai tây') ||
+    textToScan.includes('cà rốt') ||
+    textToScan.includes('bắp cải') ||
+    textToScan.includes('củ cải') ||
+    textToScan.includes('thịt kho') ||
+    textToScan.includes('cá kho') ||
+    textToScan.includes('sườn rim') ||
+    textToScan.includes('sườn xào') ||
+    textToScan.includes('thịt rang') ||
+    textToScan.includes('bò kho') ||
+    textToScan.includes('cà ri') ||
+    textToScan.includes('cơm chiên') ||
+    textToScan.includes('cơm rang') ||
+    textToScan.includes('nấm đông cô') ||
+    textToScan.includes('nấm hương khô') ||
+    textToScan.includes('mộc nhĩ') ||
+    textToScan.includes('cấp đông') ||
+    textToScan.includes('đông lạnh')
+  ) {
+    return 'hearty-pantry';
+  }
+
+  return 'standard-fresh';
+}
+
+/**
+ * Computes day-of-week freshness score adjustment:
+ * - Days 0-1 (Mon, Tue): Early week / Shopping trip -> prioritize fresh perishables (+25)
+ * - Days 2-6 (Wed to Sun): Late week -> penalize fragile perishables (-30), reward hearty/braised/tubers (+15)
+ */
+export function computeDayFreshnessAdjustment(item: any, dayIdx: number, poolSize: number = 20): number {
+  if (poolSize < 10) return 0; // Guard against small candidate pools (like pure vegetarian meal sets)
+  const tier = getDishFreshnessTier(item);
+  if (dayIdx <= 1) {
+    if (tier === 'fresh-perishable') return 6;
+    if (tier === 'hearty-pantry') return 0;
+    return 1;
+  }
+  if (dayIdx >= 2) {
+    if (tier === 'fresh-perishable') return -6;
+    if (tier === 'hearty-pantry') return 4;
+    return 0;
+  }
+  return 0;
 }
 
 let globalCallCounter = 0;
@@ -452,8 +579,15 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
         s += 2;
       }
     }
-    if (isGym && ((r.calories || 0) >= 400 || r.tags?.some(t => t.toLowerCase().includes('đạm') || t.toLowerCase().includes('bò')))) {
-      s += 8;
+    if (isGym) {
+      const isProteinRichBfast = /trứng|bò|thịt|ức gà|cá|hải sản|phô mai|omelet|chả|pate|bít tết|steak|phở bò|bún bò|hủ tiếu/i.test(r.title) ||
+        r.tags?.some(t => /đạm|protein|gym|thịt|bò|gà|trứng/i.test(t)) ||
+        (r.ingredients && r.ingredients.some(i => i.category === 'thit-ca'));
+      if (isProteinRichBfast) {
+        s += 120;
+      } else {
+        s -= 80; // Strongly penalize low-protein or pure carb breakfasts (e.g. garlic bread without protein)
+      }
     }
     if (isEatClean && r.tags?.some(t => t.toLowerCase().includes('eat clean') || t.toLowerCase().includes('healthy'))) {
       s += 8;
@@ -728,8 +862,10 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
             const pairModulo = Math.max(1, dishesLen * dishesLen);
             const pairCycleBonus = (((pairIdx * 7 + dishCycleOffset * 11 + dishSeedShift * 13) % pairModulo) / pairModulo) * 8.0;
             const rotB = (((j + dishCycleOffset + dishSeedShift * 2 + 1) % dishesLen) / Math.max(1, dishesLen)) * 3.0;
+            const freshnessA = computeDayFreshnessAdjustment(dishA, dayIdx, dishesLen);
+            const freshnessB = computeDayFreshnessAdjustment(dishB, dayIdx, dishesLen);
 
-            const score = scoreA + scoreB - usagePenalty + budgetUtilization + noveltyPenalty + rotA + rotB + pairCycleBonus + pairJitter;
+            const score = scoreA + scoreB - usagePenalty + budgetUtilization + noveltyPenalty + rotA + rotB + pairCycleBonus + pairJitter + freshnessA + freshnessB;
 
             validPairs.push({
               lunch: dishA,
@@ -954,9 +1090,25 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
     prevLunchId = chosenLunch.id;
     prevDinnerId = chosenDinner.id;
 
-    const scaledDayCost = scaleCost(chosenDayCostUnscaled, safeServings);
+    const isWeekday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(dayMeta.dayId);
+    const shouldSkipLunch = (options.weekdayLunchRoutine === 'ban-tru-di-lam' || options.weekdayLunchRoutine === 'hop-com-van-phong') && isWeekday;
+
+    let finalLunch: VietnameseMealSet | Recipe | null = chosenLunch;
+    let finalDayCostUnscaled = chosenDayCostUnscaled;
+    let skippedSlots: { lunch?: boolean } | undefined = undefined;
+    let slotNotes: { lunch?: string } | undefined = undefined;
+
+    if (shouldSkipLunch) {
+      finalLunch = null;
+      skippedSlots = { lunch: true };
+      slotNotes = { lunch: options.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Mang cơm hộp văn phòng' : 'Con học bán trú • Bố mẹ ăn ngoài' };
+      const dinnerCost = 'totalCostVnd' in chosenDinner ? chosenDinner.totalCostVnd : (chosenDinner.estimatedCostVnd || 35000);
+      finalDayCostUnscaled = (chosenBreakfast.estimatedCostVnd || 25000) + dinnerCost;
+    }
+
+    const scaledDayCost = scaleCost(finalDayCostUnscaled, safeServings);
     accumulatedScaledCost += scaledDayCost;
-    accumulatedUnscaledCost += chosenDayCostUnscaled;
+    accumulatedUnscaledCost += finalDayCostUnscaled;
     const isOverBudget = scaledDayCost > budgetCeilingScaled;
 
     weeklyPlan.push({
@@ -964,10 +1116,12 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
       dayName: dayMeta.dayName,
       meals: {
         breakfast: chosenBreakfast,
-        lunch: chosenLunch,
+        lunch: finalLunch,
         dinner: chosenDinner
       },
-      unscaledDayCost: chosenDayCostUnscaled,
+      skippedSlots,
+      slotNotes,
+      unscaledDayCost: finalDayCostUnscaled,
       scaledDayCost,
       dailyBudgetTarget,
       isOverBudget
@@ -991,7 +1145,9 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
         if (d.meals.breakfast?.id === prevBfastSlot) {
           const prevDayBfastId = dayIdx > 0 ? weeklyPlan[dayIdx - 1].meals.breakfast.id : '';
           const nextDayBfastId = dayIdx < 6 ? weeklyPlan[dayIdx + 1]?.meals?.breakfast?.id : '';
-          const lunchCost = 'totalCostVnd' in d.meals.lunch ? d.meals.lunch.totalCostVnd : (d.meals.lunch.estimatedCostVnd || 35000);
+          const lunchCost = d.meals.lunch 
+            ? ('totalCostVnd' in d.meals.lunch ? d.meals.lunch.totalCostVnd : (d.meals.lunch.estimatedCostVnd || 35000))
+            : 0;
           const dinnerCost = 'totalCostVnd' in d.meals.dinner ? d.meals.dinner.totalCostVnd : (d.meals.dinner.estimatedCostVnd || 35000);
 
           const altBfast = affordableBfast.find(b =>
@@ -1022,18 +1178,19 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
     const sortedDays = [...weeklyPlan].sort((a, b) => b.scaledDayCost - a.scaledDayCost);
     for (const d of sortedDays) {
       if (totalWeeklyScaledCost <= weeklyBudgetTarget) break;
-      if (!isSingleDish && 'totalCostVnd' in d.meals.lunch && 'totalCostVnd' in d.meals.dinner) {
-        const currentLunch = d.meals.lunch as VietnameseMealSet;
+      if (!isSingleDish && 'totalCostVnd' in d.meals.dinner) {
+        const currentLunch = d.meals.lunch && 'totalCostVnd' in d.meals.lunch ? (d.meals.lunch as VietnameseMealSet) : null;
         const currentDinner = d.meals.dinner as VietnameseMealSet;
         const bCost = d.meals.breakfast.estimatedCostVnd || 25000;
+        const currentLunchCost = currentLunch ? currentLunch.totalCostVnd : 0;
         
         const cheaperSets = candidateSets
-          .filter(s => s.id !== currentLunch.id && s.id !== currentDinner.id)
+          .filter(s => (!currentLunch || s.id !== currentLunch.id) && s.id !== currentDinner.id)
           .sort((a, b) => a.totalCostVnd - b.totalCostVnd);
 
         for (const replacement of cheaperSets) {
           if (replacement.totalCostVnd < currentDinner.totalCostVnd) {
-            const newUnscaled = bCost + currentLunch.totalCostVnd + replacement.totalCostVnd;
+            const newUnscaled = bCost + currentLunchCost + replacement.totalCostVnd;
             const newScaled = scaleCost(newUnscaled, safeServings);
             const saved = d.scaledDayCost - newScaled;
             if (saved > 0) {
@@ -1045,7 +1202,7 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
               if (totalWeeklyScaledCost <= weeklyBudgetTarget) break;
             }
           }
-          if (replacement.totalCostVnd < currentLunch.totalCostVnd) {
+          if (currentLunch && replacement.totalCostVnd < currentLunch.totalCostVnd) {
             const newUnscaled = bCost + replacement.totalCostVnd + (d.meals.dinner as VietnameseMealSet).totalCostVnd;
             const newScaled = scaleCost(newUnscaled, safeServings);
             const saved = d.scaledDayCost - newScaled;
@@ -1060,17 +1217,18 @@ export function generateBudgetCompliantWeeklyPlan(options: PlanGeneratorOptions)
           }
         }
       } else if (isSingleDish) {
-        const currentLunch = d.meals.lunch as Recipe;
+        const currentLunch = d.meals.lunch as Recipe | null;
         const currentDinner = d.meals.dinner as Recipe;
         const bCost = d.meals.breakfast.estimatedCostVnd || 25000;
+        const currentLunchCost = currentLunch ? (currentLunch.estimatedCostVnd || 35000) : 0;
         const cheaperDishes = candidateDishes
-          .filter(r => r.id !== currentLunch.id && r.id !== currentDinner.id && r.id !== d.meals.breakfast.id)
+          .filter(r => (!currentLunch || r.id !== currentLunch.id) && r.id !== currentDinner.id && r.id !== d.meals.breakfast.id)
           .sort((a, b) => (a.estimatedCostVnd || 35000) - (b.estimatedCostVnd || 35000));
 
         for (const replacement of cheaperDishes) {
           const repCost = replacement.estimatedCostVnd || 35000;
           if (repCost < (currentDinner.estimatedCostVnd || 35000)) {
-            const newUnscaled = bCost + (currentLunch.estimatedCostVnd || 35000) + repCost;
+            const newUnscaled = bCost + currentLunchCost + repCost;
             const newScaled = scaleCost(newUnscaled, safeServings);
             const saved = d.scaledDayCost - newScaled;
             if (saved > 0) {

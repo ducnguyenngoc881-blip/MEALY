@@ -139,8 +139,8 @@ for (const r of mockRecipes) {
   }
   seenIds.add(r.id);
 }
-check(`All 1,245 mockRecipes IDs must be unique (duplicates found: ${duplicateIds.join(', ')})`, duplicateIds.length === 0, duplicateIds);
-check(`Total mockRecipes count is 1,245`, mockRecipes.length === 1245, { count: mockRecipes.length });
+check(`All 2,245 mockRecipes IDs must be unique (duplicates found: ${duplicateIds.join(', ')})`, duplicateIds.length === 0, duplicateIds);
+check(`Total mockRecipes count is 2,245`, mockRecipes.length === 2245, { count: mockRecipes.length });
 
 // 3.2 Anti-Burger Check on non-burger recipes in mockRecipes
 const burgerPhotoId = 'photo-1586190848861-99aa4a171e90';

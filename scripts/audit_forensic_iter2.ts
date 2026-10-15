@@ -111,8 +111,8 @@ mockRecipes.forEach(r => {
   idMap.set(r.id, count);
   if (count === 2) duplicateIds.push(r.id);
 });
-assert(mockRecipes.length === 1245, `Total mockRecipes is 1,245 (got: ${mockRecipes.length})`);
-assert(idMap.size === 1245, `Unique recipe IDs count is 1,245 (got: ${idMap.size})`);
+assert(mockRecipes.length === 2245, `Total mockRecipes is 2,245 (got: ${mockRecipes.length})`);
+assert(idMap.size === 2245, `Unique recipe IDs count is 2,245 (got: ${idMap.size})`);
 assert(duplicateIds.length === 0, `Duplicate recipe IDs is 0 (found: ${duplicateIds.join(', ')})`);
 
 const leftoverGoi = mockRecipes.find(r => r.id === 'leftover-goi-ga-xe-phay-bap-cai');

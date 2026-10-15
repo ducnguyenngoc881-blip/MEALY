@@ -168,7 +168,7 @@ const BLUE_MAINS: FastDishItem[] = [
     description: 'Sườn cốt lết nướng than hoa thơm lừng, mỡ hành óng ả, đồ chua giòn ngọt.',
     estimatedCostVnd: 28000,
     calories: 520,
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-bun-thit-nuong',
@@ -176,7 +176,7 @@ const BLUE_MAINS: FastDishItem[] = [
     description: 'Bún tươi, thịt nướng mè thơm nức, rau thơm và nước mắm chua ngọt thanh tao.',
     estimatedCostVnd: 27000,
     calories: 460,
-    imageUrl: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-banh-mi-xa-xiu',
@@ -184,7 +184,7 @@ const BLUE_MAINS: FastDishItem[] = [
     description: 'Bánh mì giòn rụm kẹp pate béo, xá xíu đậm đà, dưa leo ngò rí và sốt tương ớt.',
     estimatedCostVnd: 22000,
     calories: 390,
-    imageUrl: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1600454309261-3dc9b7597637?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-com-ga-xoi-mo',
@@ -192,7 +192,7 @@ const BLUE_MAINS: FastDishItem[] = [
     description: 'Cơm chiên hạt ngọc dẻo thơm, góc tư đùi gà giòn tan chấm tương ớt chua cay.',
     estimatedCostVnd: 30000,
     calories: 580,
-    imageUrl: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-bun-dau-mam-tom',
@@ -200,7 +200,7 @@ const BLUE_MAINS: FastDishItem[] = [
     description: 'Đậu mơ rán giòn rụm lướt ván, chả cốm thơm dẻo chấm mắm tôm sủi bọt tắc ớt.',
     estimatedCostVnd: 28000,
     calories: 480,
-    imageUrl: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m.jpg/960px-B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-com-thit-rang-chay-canh',
@@ -208,7 +208,7 @@ const BLUE_MAINS: FastDishItem[] = [
     description: 'Ba chỉ xém vàng giòn thơm mắm tỏi hành phi, kèm cơm trắng nóng hổi.',
     estimatedCostVnd: 25000,
     calories: 490,
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -218,28 +218,28 @@ const BLUE_SIDES: FastSideItem[] = [
     title: 'Canh Cải Ngọt Nấu Thịt Bằm',
     estimatedCostVnd: 4000,
     calories: 65,
-    imageUrl: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1584003397078-45ef96d6174d?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-canh-rong-bien',
     title: 'Canh Rong Biển Đậu Hũ Non',
     estimatedCostVnd: 5000,
     calories: 55,
-    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1584003397078-45ef96d6174d?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-dua-chua-bop-xoi',
     title: 'Đĩa Dưa Giá Hẹ Bóp Xổi Giòn Tan',
     estimatedCostVnd: 3000,
     calories: 35,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1592578630143-fac65cda7a67?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'blue-rau-muong-luoc',
     title: 'Rau Muống Luộc Nước Chanh Tươi',
     estimatedCostVnd: 3000,
     calories: 40,
-    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1707270686208-5d1fc168dd7b?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -249,7 +249,7 @@ const BLUE_DRINKS: OfficeDrink[] = [
     title: 'Trà Tắc Mật Ong Nha Đam',
     estimatedCostVnd: 5000,
     calories: 60,
-    imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80',
     officeBuff: '⚡ +50% Tỉnh táo giải nhiệt trưa hè'
   },
   {
@@ -257,7 +257,7 @@ const BLUE_DRINKS: OfficeDrink[] = [
     title: 'Nước Mía Cốt Dừa Thơm Mát',
     estimatedCostVnd: 5000,
     calories: 85,
-    imageUrl: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/N%C6%B0%E1%BB%9Bc_m%C3%ADa_Vi%E1%BB%87t_Nam_si%C3%AAu_to_kh%E1%BB%95ng_l%E1%BB%93_20201201.jpg/960px-N%C6%B0%E1%BB%9Bc_m%C3%ADa_Vi%E1%BB%87t_Nam_si%C3%AAu_to_kh%E1%BB%95ng_l%E1%BB%93_20201201.jpg?auto=format&fit=crop&w=600&q=80',
     officeBuff: '💪 Hồi phục sinh lực tức thì sau 4 tiếng họp'
   },
   {
@@ -265,7 +265,7 @@ const BLUE_DRINKS: OfficeDrink[] = [
     title: 'Sữa Đậu Nành Lá Dứa Nóng/Đá',
     estimatedCostVnd: 5000,
     calories: 70,
-    imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1665582313032-29058cee9c94?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🌿 Thanh lọc cơ thể, tiêu hóa nhẹ nhàng'
   },
   {
@@ -273,7 +273,7 @@ const BLUE_DRINKS: OfficeDrink[] = [
     title: 'Trà Đá Hoa Cúc La Hán Quả',
     estimatedCostVnd: 3000,
     calories: 15,
-    imageUrl: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🎯 Sáng mắt mát gan, nhìn rõ từng dòng code'
   }
 ];
@@ -286,7 +286,7 @@ const PURPLE_MAINS: FastDishItem[] = [
     description: 'Thịt bò xào chín tới cùng cần tây tỏi tây thơm phức, sốt tiêu đen đậm đà kèm cơm trắng dẻo thơm.',
     estimatedCostVnd: 48000,
     calories: 590,
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1723531055833-49fb132cbaab?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-bun-bo-hue-dac-biet',
@@ -294,7 +294,7 @@ const PURPLE_MAINS: FastDishItem[] = [
     description: 'Nước dùng ninh xương thơm nồng mùi sả mắm ruốc, bắp bò hoa và chả cua béo ngậy.',
     estimatedCostVnd: 45000,
     calories: 550,
-    imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-bento-ca-hoi-teriyaki',
@@ -302,7 +302,7 @@ const PURPLE_MAINS: FastDishItem[] = [
     description: 'Cá hồi tươi áp chảo đẫm sốt teriyaki Nhật Bản, cơm rắc rong biển mè rang.',
     estimatedCostVnd: 52000,
     calories: 520,
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-com-ga-hoi-an',
@@ -310,7 +310,7 @@ const PURPLE_MAINS: FastDishItem[] = [
     description: 'Cơm nấu nước luộc gà dẻo thơm óng vàng, gà ta xé phay bóp rau răm hành tây chua ngọt.',
     estimatedCostVnd: 46000,
     calories: 510,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-com-bo-luc-lac',
@@ -318,7 +318,7 @@ const PURPLE_MAINS: FastDishItem[] = [
     description: 'Bò thăn cắt vuông xào bơ tỏi ớt chuông mềm mọng, ăn kèm cơm chiên tỏi.',
     estimatedCostVnd: 50000,
     calories: 610,
-    imageUrl: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-pho-bo-tho-da',
@@ -326,7 +326,7 @@ const PURPLE_MAINS: FastDishItem[] = [
     description: 'Thố đá giữ nhiệt sôi bùng bùng, thịt bò tái lăn mềm ngọt, bánh phở tươi dẻo dai.',
     estimatedCostVnd: 48000,
     calories: 530,
-    imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1766050586763-723571af4dde?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -336,28 +336,28 @@ const PURPLE_SIDES: FastSideItem[] = [
     title: 'Canh Kim Chi Hàn Quốc Thịt Ba Rọi',
     estimatedCostVnd: 8000,
     calories: 85,
-    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1777113310299-c3e41dec4e0f?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-sup-miso',
     title: 'Súp Miso Rong Biển Đậu Phụ Non Nhật',
     estimatedCostVnd: 7000,
     calories: 50,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1763470260582-894ae15f43bb?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-salad-dau-giam',
     title: 'Salad Trộn Sốt Dầu Giấm Trứng Cút',
     estimatedCostVnd: 8000,
     calories: 70,
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1789999018388-68773a66b33f?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'purple-canh-chua-tom',
     title: 'Canh Chua Tôm Tươi Nấu Bạc Hà',
     estimatedCostVnd: 9000,
     calories: 75,
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -367,7 +367,7 @@ const PURPLE_DRINKS: OfficeDrink[] = [
     title: 'Cà Phê Muối Béo Ngậy Chú Long',
     estimatedCostVnd: 12000,
     calories: 110,
-    imageUrl: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=600&q=80',
     officeBuff: '☕ +100% Tập trung xuyên màn hình máy tính'
   },
   {
@@ -375,7 +375,7 @@ const PURPLE_DRINKS: OfficeDrink[] = [
     title: 'Trà Đào Cam Sả Tươi Mát Giòn Miếng',
     estimatedCostVnd: 14000,
     calories: 95,
-    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80',
     officeBuff: '✨ Tăng 200% cảm hứng sáng tạo đồ họa & viết lách'
   },
   {
@@ -383,7 +383,7 @@ const PURPLE_DRINKS: OfficeDrink[] = [
     title: 'Trà Sữa Oolong Nướng Kem Trứng 50% Đường',
     estimatedCostVnd: 15000,
     calories: 160,
-    imageUrl: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🧋 Kháng 100% stress từ khách hàng & sếp'
   },
   {
@@ -391,7 +391,7 @@ const PURPLE_DRINKS: OfficeDrink[] = [
     title: 'Nước Ép Ổi Hồng Ruby Không Đường',
     estimatedCostVnd: 12000,
     calories: 60,
-    imageUrl: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🍎 Nạp Vitamin C dồi dào, da sáng dáng thon'
   }
 ];
@@ -404,7 +404,7 @@ const GOLD_MAINS: FastDishItem[] = [
     description: 'Thăn bò nhập khẩu áp chảo Medium Rare mọng nước, ăn kèm khoai tây nghiền bơ Pháp và măng tây.',
     estimatedCostVnd: 95000,
     calories: 680,
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'gold-pho-bo-tho-da-dac-biet',
@@ -420,7 +420,7 @@ const GOLD_MAINS: FastDishItem[] = [
     description: 'Cá hồi tươi rói béo ngọt kèm lươn nướng sốt Kabayaki đậm đà, trứng cá chuồn và wasabi tươi.',
     estimatedCostVnd: 98000,
     calories: 590,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'gold-com-tam-suon-cong-dac-biet',
@@ -428,7 +428,7 @@ const GOLD_MAINS: FastDishItem[] = [
     description: 'Sườn cọng heo nướng than hoa thơm lừng mỡ hành, chả trứng hấp béo ngậy và 2 trứng ốp la lòng đào.',
     estimatedCostVnd: 75000,
     calories: 620,
-    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1762305193367-91e072e47c3f?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'gold-pizza-hai-san-phomai',
@@ -436,7 +436,7 @@ const GOLD_MAINS: FastDishItem[] = [
     description: 'Đế bánh bột lên men 48h nướng củi, tôm sú, mực ống tươi và phô mai kéo sợi ngập tràn.',
     estimatedCostVnd: 85000,
     calories: 670,
-    imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -446,28 +446,28 @@ const GOLD_SIDES: FastSideItem[] = [
     title: 'Salad Cá Ngừ Đại Dương Quả Bơ Sốt Mè Rang',
     estimatedCostVnd: 15000,
     calories: 95,
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'gold-sup-bao-ngu',
     title: 'Súp Bào Ngư Hải Sản Nấm Đông Cô Mini',
     estimatedCostVnd: 18000,
     calories: 85,
-    imageUrl: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1584003397078-45ef96d6174d?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'gold-salad-uc-ngong',
     title: 'Salad Ức Ngỗng Xông Khói Quả Óc Chó Dầu Olive',
     estimatedCostVnd: 16000,
     calories: 110,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'gold-canh-ga-dong-trung',
     title: 'Canh Gà Hầm Đông Trùng Hạ Thảo Táo Đỏ',
     estimatedCostVnd: 16000,
     calories: 90,
-    imageUrl: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1763470260582-894ae15f43bb?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -485,7 +485,7 @@ const GOLD_DRINKS: OfficeDrink[] = [
     title: 'Trà Hoa Quả Hoàng Gia 7 Loại Quả Tươi Cao Cấp',
     estimatedCostVnd: 20000,
     calories: 110,
-    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🌟 Tâm trạng thư thái như đang nghỉ dưỡng tại resort 5 sao'
   },
   {
@@ -493,7 +493,7 @@ const GOLD_DRINKS: OfficeDrink[] = [
     title: 'Cold Brew Ủ Lạnh 24H Cam Vàng Hoa Rừng',
     estimatedCostVnd: 22000,
     calories: 50,
-    imageUrl: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=600&q=80',
     officeBuff: '⚡ Siêu giác quan: Code không lỗi, tư duy sắc bén như dao cạo'
   },
   {
@@ -501,7 +501,7 @@ const GOLD_DRINKS: OfficeDrink[] = [
     title: 'Nước Ép Lựu Đỏ Tây Ban Nha Ép Lạnh Nguyên Chất',
     estimatedCostVnd: 25000,
     calories: 90,
-    imageUrl: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80',
     officeBuff: '💎 Siêu chống lão hóa, phục hồi năng lượng 300%'
   }
 ];
@@ -520,7 +520,7 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
     calories: 360,
     speedMinutes: 8,
     napBuff: '💤 Cứu cánh đói bụng 5 phút, ngủ trưa tới 13h30!',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1789999375811-d20146a62be4?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-blue-banh-mi-cha-ca-nong',
@@ -530,7 +530,7 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
     calories: 370,
     speedMinutes: 10,
     napBuff: '💤 Bánh mì nóng giòn tan, tiết kiệm 35 phút ngủ trưa!',
-    imageUrl: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1600454309261-3dc9b7597637?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-blue-banh-mi-pate-xa-xiu',
@@ -540,7 +540,7 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
     calories: 390,
     speedMinutes: 10,
     napBuff: '💤 Dành được 35 phút ngủ trưa say giấc!',
-    imageUrl: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg/960px-Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-blue-xoi-man-thap-cam',
@@ -550,7 +550,7 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
     calories: 480,
     speedMinutes: 10,
     napBuff: '💤 Chắc dạ no lâu, nằm xuống là ngủ ngay 35 phút!',
-    imageUrl: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1596560548464-f010549b84d7?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-blue-mi-tom-chanh-bo-kho',
@@ -560,7 +560,7 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
     calories: 420,
     speedMinutes: 8,
     napBuff: '💤 Siêu gọn gàng 8 phút, dư hẳn 40 phút chợp mắt!',
-    imageUrl: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1591989330748-777649e84466?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-blue-banh-mi-opla-pate',
@@ -570,7 +570,7 @@ export const EXPRESS_BLUE_MAINS: FastDishItem[] = [
     calories: 380,
     speedMinutes: 9,
     napBuff: '💤 Ăn nhanh tức thì, nạp đạm chuẩn bị ngủ trưa!',
-    imageUrl: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1647169953827-a7c85f324caf?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -584,7 +584,7 @@ export const EXPRESS_PURPLE_MAINS: FastDishItem[] = [
     calories: 460,
     speedMinutes: 12,
     napBuff: '💤 Nạp đạm thanh nhẹ dễ tiêu, kịp chợp mắt trưa 30 phút!',
-    imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1736631879709-ee5341d7d31c?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-pur-mi-xao-bo-rau-cai',
@@ -594,7 +594,7 @@ export const EXPRESS_PURPLE_MAINS: FastDishItem[] = [
     calories: 520,
     speedMinutes: 12,
     napBuff: '💤 Ăn nhanh gọn gàng, sạc lại 100% pin buổi chiều!',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1605311572312-a926afe51604?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-pur-hu-tieu-nam-vang-kho',
@@ -604,7 +604,7 @@ export const EXPRESS_PURPLE_MAINS: FastDishItem[] = [
     calories: 490,
     speedMinutes: 14,
     napBuff: '💤 Hương vị Nam Bộ thơm ngon, kịp chợp mắt 25 phút!',
-    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-pur-pho-bo-tai-lan-mang-di',
@@ -624,7 +624,7 @@ export const EXPRESS_PURPLE_MAINS: FastDishItem[] = [
     calories: 530,
     speedMinutes: 15,
     napBuff: '💤 Chuẩn vị Hà Nội, no bụng ngủ trưa say nồng!',
-    imageUrl: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/B%C3%BAn_ch%E1%BA%A3_H%C3%A0_N%E1%BB%99i_%28th%E1%BB%8Bt_n%C6%B0%E1%BB%9Bng%29_t%E1%BA%A1i_Nguy%E1%BB%85n_S%C6%A1n%2C_T%C3%A2n_Ph%C3%BA_%281%29.jpg/960px-B%C3%BAn_ch%E1%BA%A3_H%C3%A0_N%E1%BB%99i_%28th%E1%BB%8Bt_n%C6%B0%E1%BB%9Bng%29_t%E1%BA%A1i_Nguy%E1%BB%85n_S%C6%A1n%2C_T%C3%A2n_Ph%C3%BA_%281%29.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-pur-com-rang-dua-bo',
@@ -634,7 +634,7 @@ export const EXPRESS_PURPLE_MAINS: FastDishItem[] = [
     calories: 550,
     speedMinutes: 13,
     napBuff: '💤 No chắc dạ, yên tâm ngủ trưa tràn trề sinh lực!',
-    imageUrl: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1512058533999-106ee01bf777?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -648,7 +648,7 @@ export const EXPRESS_GOLD_MAINS: FastDishItem[] = [
     calories: 590,
     speedMinutes: 15,
     napBuff: '👑 Đẳng cấp thượng hạng, ăn xong ngủ một giấc mơ đẹp!',
-    imageUrl: 'https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-gold-com-luon-unagi',
@@ -658,7 +658,7 @@ export const EXPRESS_GOLD_MAINS: FastDishItem[] = [
     calories: 610,
     speedMinutes: 14,
     napBuff: '👑 Nạp trọn dưỡng chất hoàng gia, tỉnh táo suốt ca chiều!',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-gold-bun-bo-hue-tho-da',
@@ -668,7 +668,7 @@ export const EXPRESS_GOLD_MAINS: FastDishItem[] = [
     calories: 660,
     speedMinutes: 15,
     napBuff: '👑 Bữa trưa cung đình thượng hạng, ăn xong ngủ một giấc mơ đẹp!',
-    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_minh28397.jpg/960px-B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_minh28397.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-gold-com-ca-hoi-ap-chao',
@@ -678,7 +678,7 @@ export const EXPRESS_GOLD_MAINS: FastDishItem[] = [
     calories: 580,
     speedMinutes: 14,
     napBuff: '👑 Giàu Omega-3 bồi bổ trí não cho buổi chiều bứt phá!',
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'exp-gold-pho-thin-tho-da',
@@ -688,7 +688,7 @@ export const EXPRESS_GOLD_MAINS: FastDishItem[] = [
     calories: 570,
     speedMinutes: 15,
     napBuff: '👑 Bữa trưa cực phẩm Hà Thành, đánh tan mọi áp lực công việc!',
-    imageUrl: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -711,7 +711,7 @@ export const SNACK_BLUE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 28000,
     calories: 350,
     snackFeature: '🍟 Mặn ngọt béo bùi, nhâm nhi xuyên suốt buổi chiều gõ phím',
-    imageUrl: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-blue-banh-trang-nuong',
@@ -720,7 +720,7 @@ export const SNACK_BLUE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 25000,
     calories: 340,
     snackFeature: '🍕 Bánh tráng giòn rụm, chuẩn phong cách ăn vặt cổng trường',
-    imageUrl: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1552913903-2cffa1962dc7?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-blue-bap-xao-bo-tep',
@@ -729,7 +729,7 @@ export const SNACK_BLUE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 22000,
     calories: 320,
     snackFeature: '🌽 Bốc thìa nhâm nhi trên bàn, để nguội vẫn dẻo thơm',
-    imageUrl: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1723531055852-744d14ac00b4?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-blue-banh-trang-tron',
@@ -738,7 +738,7 @@ export const SNACK_BLUE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 25000,
     calories: 310,
     snackFeature: '🥢 Món ăn vặt gây nghiện số 1 văn phòng, càng nhai càng cuốn',
-    imageUrl: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1706176224199-cd97c73d7640?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -748,14 +748,14 @@ export const SNACK_BLUE_SIDES: FastSideItem[] = [
     title: 'Dưa Leo Cắt Lát Chấm Muối Tôm Tây Ninh',
     estimatedCostVnd: 3000,
     calories: 25,
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-side-xoai-non-lac',
     title: 'Xoài Non Chua Giòn Lắc Muối Ớt Cay Nồng',
     estimatedCostVnd: 5000,
     calories: 45,
-    imageUrl: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -765,7 +765,7 @@ export const SNACK_BLUE_DRINKS: OfficeDrink[] = [
     title: 'Trà Chanh Giã Tay Quảng Đông Thơm Nồng',
     estimatedCostVnd: 8000,
     calories: 90,
-    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🍋 Tinh dầu chanh bừng sáng trí tuệ, tỉnh như sáo'
   },
   {
@@ -787,7 +787,7 @@ export const SNACK_PURPLE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 38000,
     calories: 420,
     snackFeature: '🍗 Để nguội ăn vẫn giòn tan, bốc tay tiện lợi vừa làm vừa nhâm nhi',
-    imageUrl: 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-pur-ga-ran-popcorn',
@@ -796,7 +796,7 @@ export const SNACK_PURPLE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 40000,
     calories: 450,
     snackFeature: '🍿 Gà viên cắn ngập miệng, vừa gõ phím vừa ăn chill chill',
-    imageUrl: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-pur-nem-chua-ran',
@@ -805,7 +805,7 @@ export const SNACK_PURPLE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 35000,
     calories: 390,
     snackFeature: '🍢 Dai dai giòn giòn, ăn nguội chấm tương ớt ngon đỉnh chóp',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/26/Nem-chua-ran2.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-pur-ca-vien-chien-mam-toi',
@@ -814,7 +814,7 @@ export const SNACK_PURPLE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 36000,
     calories: 410,
     snackFeature: '🍡 Sốt bơ tỏi thơm nức mũi cả phòng, ăn cùng đồng nghiệp bao vui',
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1779939855602-235fff374e16?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-pur-muc-vong-chien-gion',
@@ -823,7 +823,7 @@ export const SNACK_PURPLE_MAINS: FastDishItem[] = [
     estimatedCostVnd: 45000,
     calories: 430,
     snackFeature: '🦑 Giòn sần sật mằn mặn đã miệng, để cả chiều không tanh',
-    imageUrl: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Calamari_grillati.JPG/960px-Calamari_grillati.JPG?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -833,14 +833,14 @@ export const SNACK_PURPLE_SIDES: FastSideItem[] = [
     title: 'Khoai Lang Kén Tẩm Mè Chiên Vàng Giòn',
     estimatedCostVnd: 10000,
     calories: 120,
-    imageUrl: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-pur-side-xuc-xich-nuong-que',
     title: 'Xúc Xích Phô Mai Nướng Que Rưới Sốt Mayonnaise',
     estimatedCostVnd: 12000,
     calories: 140,
-    imageUrl: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1591989330748-777649e84466?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -850,7 +850,7 @@ export const SNACK_PURPLE_DRINKS: OfficeDrink[] = [
     title: 'Trà Sữa Trân Châu Đường Đen Đài Loan Đậm Vị',
     estimatedCostVnd: 22000,
     calories: 220,
-    imageUrl: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🧋 Nạp 100% đường huyết, tăng công suất gõ phím'
   },
   {
@@ -858,7 +858,7 @@ export const SNACK_PURPLE_DRINKS: OfficeDrink[] = [
     title: 'Trà Đào Cam Sả Thạch Đào Giòn Sần Sật',
     estimatedCostVnd: 20000,
     calories: 130,
-    imageUrl: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🍑 Tỉnh táo chém gió cùng hội đồng nghiệp thân thiết'
   }
 ];
@@ -881,7 +881,7 @@ export const SNACK_GOLD_MAINS: FastDishItem[] = [
     estimatedCostVnd: 70000,
     calories: 620,
     snackFeature: '🧀 Đút lò phô mai ngập tràn, thơm lừng cả phòng ban',
-    imageUrl: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1585325701165-351af916e581?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-gold-nem-nuong-nha-trang',
@@ -890,7 +890,7 @@ export const SNACK_GOLD_MAINS: FastDishItem[] = [
     estimatedCostVnd: 85000,
     calories: 650,
     snackFeature: '🌯 Cuốn mỏi tay ăn mỏi miệng, hội nhóm văn phòng cùng thưởng thức',
-    imageUrl: 'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/26/Nem-chua-ran2.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-gold-tokbokki-lau-ly',
@@ -899,7 +899,7 @@ export const SNACK_GOLD_MAINS: FastDishItem[] = [
     estimatedCostVnd: 68000,
     calories: 590,
     snackFeature: '🌶️ Cay nồng nóng hổi, xua tan mọi áp lực deadline',
-    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1758705206993-f141bbe56193?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -909,14 +909,14 @@ export const SNACK_GOLD_SIDES: FastSideItem[] = [
     title: 'Bánh Croffle Kẹp Kem Phô Mai Dâu Tây Tươi',
     estimatedCostVnd: 35000,
     calories: 180,
-    imageUrl: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'snack-gold-side-tart-trung',
     title: 'Bánh Tart Trứng Bồ Đào Nha Nóng Giòn Tan',
     estimatedCostVnd: 28000,
     calories: 160,
-    imageUrl: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1613769049987-b31b641f25b1?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -926,7 +926,7 @@ export const SNACK_GOLD_DRINKS: OfficeDrink[] = [
     title: 'Trà Sữa Nướng Vân Nam Đất Nung Topping 5 Loại',
     estimatedCostVnd: 45000,
     calories: 260,
-    imageUrl: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1756132539966-8d65f7a9eed8?auto=format&fit=crop&w=600&q=80',
     officeBuff: '💎 Cực phẩm trà sữa thượng lưu thơm mùi khói gỗ'
   },
   {
@@ -934,7 +934,7 @@ export const SNACK_GOLD_DRINKS: OfficeDrink[] = [
     title: 'Trà Trái Cây Nhiệt Đới Size Khủng 1000ml Cỡ Đại',
     estimatedCostVnd: 42000,
     calories: 190,
-    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🍹 Bình 1 Lít uống lai rai cả chiều mát lịm tim gan'
   }
 ];
@@ -971,7 +971,7 @@ export const BIZARRE_BLUE_MAINS: FastDishItem[] = [
     calories: 220,
     dareLevel: '🥚 Thử Thách Vị Giác: 6/10',
     darePenalty: 'Kèo khởi động nhẹ nhàng, ai thua phải ăn hết nửa quả!',
-    imageUrl: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1682596044362-e280d6bceb7e?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-blue-nhong-tam-la-chanh',
@@ -981,7 +981,7 @@ export const BIZARRE_BLUE_MAINS: FastDishItem[] = [
     calories: 280,
     dareLevel: '🐛 Thử Thách Côn Trùng: 6.5/10',
     darePenalty: 'Món ăn đại bổ đạm nhưng không phải ai cũng dám thử!',
-    imageUrl: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1762488186475-0fc616459bab?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-blue-bun-dau-mam-tom-dac',
@@ -991,7 +991,7 @@ export const BIZARRE_BLUE_MAINS: FastDishItem[] = [
     calories: 390,
     dareLevel: '💥 Nồng Nàn Đậm Vị: 6.8/10',
     darePenalty: 'Ăn xong cấm nói chuyện với đồng nghiệp trong 2 tiếng!',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m%2C_b%C3%BAn_nem_r%C3%A1n.JPG/960px-B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m%2C_b%C3%BAn_nem_r%C3%A1n.JPG?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -1001,7 +1001,7 @@ export const BIZARRE_BLUE_SIDES: FastSideItem[] = [
     title: 'Chanh Tươi Cắt Lát Chấm Muối Hột Ăn Cả Vỏ',
     estimatedCostVnd: 5000,
     calories: 10,
-    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1709433420422-731e1be1c9aa?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -1011,7 +1011,7 @@ export const BIZARRE_BLUE_DRINKS: OfficeDrink[] = [
     title: 'Nước Đậu Đen Rang Không Đường Giải Ngấy',
     estimatedCostVnd: 6000,
     calories: 25,
-    imageUrl: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🍵 Vị mộc giải nhiệt tức thì, thanh lọc cơ thể'
   }
 ];
@@ -1026,7 +1026,7 @@ export const BIZARRE_PURPLE_MAINS: FastDishItem[] = [
     calories: 290,
     dareLevel: '💀 Cấp Độ Gan Dạ: 7.8/10',
     darePenalty: 'Ai không dám ăn bị phạt 50k vào quỹ trà sữa phòng!',
-    imageUrl: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/64/Chinese_Balut_sold_in_Nanjing_20100115.jpg?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-pur-chan-ga-sot-thai-cap7',
@@ -1036,7 +1036,7 @@ export const BIZARRE_PURPLE_MAINS: FastDishItem[] = [
     calories: 310,
     dareLevel: '🔥 Cay Xé Lưỡi: 8.5/10',
     darePenalty: 'Kèo phạt cho người thua ván bi lắc / bóng bàn trưa nay!',
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-pur-mat-ca-ngu-phu-yen',
@@ -1046,7 +1046,7 @@ export const BIZARRE_PURPLE_MAINS: FastDishItem[] = [
     calories: 380,
     dareLevel: '🐟 Thử Thách Đại Dương: 8.2/10',
     darePenalty: 'Món đại bổ mắt cho coder cày đêm nhìn màn hình!',
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1709433420422-731e1be1c9aa?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-pur-nom-bo-kho-la-lach',
@@ -1056,7 +1056,7 @@ export const BIZARRE_PURPLE_MAINS: FastDishItem[] = [
     calories: 360,
     dareLevel: '🌶️ Thử Thách Siêu Cay: 8/10',
     darePenalty: 'Thua kèo thì phải ăn trọn miếng lá lách chấm ớt!',
-    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1749146878349-b6dc0f931d5d?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -1066,7 +1066,7 @@ export const BIZARRE_PURPLE_SIDES: FastSideItem[] = [
     title: 'Đĩa Ớt Xiêm Xanh Rừng Ngâm Giấm Tỏi Cay Xé',
     estimatedCostVnd: 6000,
     calories: 15,
-    imageUrl: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -1076,7 +1076,7 @@ export const BIZARRE_PURPLE_DRINKS: OfficeDrink[] = [
     title: 'Trà Khổ Qua Rừng Nước Cốt Đậm Đặc Hạ Hỏa',
     estimatedCostVnd: 18000,
     calories: 20,
-    imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Soup_made_from_stuffed_bitter_melon%2C_Canh_Kho_Qua.jpg?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🍵 Thuốc đắng dã tật, đánh thức mọi giác quan sau 1 ngụm'
   }
 ];
@@ -1091,7 +1091,7 @@ export const BIZARRE_GOLD_MAINS: FastDishItem[] = [
     calories: 320,
     dareLevel: '💀 CỰC HẠN GAN DẠ: 10/10',
     darePenalty: 'Ai dám nuốt trọn được cả phòng phong làm Đại Ca!',
-    imageUrl: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1680169610391-1c7d1ede96b9?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-gold-nam-pia-tay-bac',
@@ -1101,7 +1101,7 @@ export const BIZARRE_GOLD_MAINS: FastDishItem[] = [
     calories: 350,
     dareLevel: '💀 ĐỘC BẢN VÙNG CAO: 9.8/10',
     darePenalty: 'Ai ăn hết đĩa được miễn rửa chén và dọn văn phòng cả tuần!',
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-gold-sau-rieng-nuong-muoi-ot',
@@ -1111,7 +1111,7 @@ export const BIZARRE_GOLD_MAINS: FastDishItem[] = [
     calories: 460,
     dareLevel: '⚡ Đột Phá Vị Giác: 9.5/10',
     darePenalty: 'Kèo thử thách độc quyền dành riêng cho tín đồ sầu riêng!',
-    imageUrl: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1588482415422-a061902e00a4?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'biz-gold-sau-tre-chien-mac-khen',
@@ -1121,7 +1121,7 @@ export const BIZARRE_GOLD_MAINS: FastDishItem[] = [
     calories: 390,
     dareLevel: '🐛 ĐỘC LẠ TÂY BẮC: 10/10',
     darePenalty: 'Thua kèo bắt buộc phải ăn ít nhất 3 con sâu tre giòn rụm!',
-    imageUrl: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1762488186475-0fc616459bab?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -1131,7 +1131,7 @@ export const BIZARRE_GOLD_SIDES: FastSideItem[] = [
     title: 'Mướp Đắng Ướp Đá Lạnh Chấm Ruốc Nồng',
     estimatedCostVnd: 10000,
     calories: 30,
-    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Soup_made_from_stuffed_bitter_melon%2C_Canh_Kho_Qua.jpg?auto=format&fit=crop&w=600&q=80'
   }
 ];
 
@@ -1141,7 +1141,7 @@ export const BIZARRE_GOLD_DRINKS: OfficeDrink[] = [
     title: 'Nước Rau Má Đắng Nguyên Chất Không Đường',
     estimatedCostVnd: 15000,
     calories: 35,
-    imageUrl: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80',
     officeBuff: '🌿 Đắng ngắt mát ruột, giải sạch nghiệp deadline'
   }
 ];

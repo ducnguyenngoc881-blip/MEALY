@@ -341,7 +341,14 @@ describe('Unit: Semantic Dish Image Matching Engine (dishImageResolver)', () => 
       expect(urls.length).toBeGreaterThanOrEqual(1);
 
       for (const url of urls) {
-        if (!url || typeof url !== 'string' || !url.startsWith('https://images.unsplash.com/')) {
+        const isValidCdn = Boolean(
+          url &&
+          typeof url === 'string' &&
+          (url.startsWith('https://images.unsplash.com/') ||
+            url.startsWith('https://upload.wikimedia.org/') ||
+            url.startsWith('https://thumb.wikimedia.org/'))
+        );
+        if (!isValidCdn) {
           poolViolations.push({ pool: poolName, url: String(url), reason: 'invalid_url_format' });
         }
 
@@ -473,8 +480,8 @@ describe('Unit: Semantic Dish Image Matching Engine (dishImageResolver)', () => 
   // ==========================================================================
   // Specification 5: Zero Offline Cloche Graphics in Online Mode
   // ==========================================================================
-  it('should assert zero offline cloche graphics in online mode for all 1,245 recipes in mockRecipes (Spec 5)', () => {
-    expect(mockRecipes.length).toBe(1245);
+  it('should assert zero offline cloche graphics in online mode for all 2,245 recipes in mockRecipes (Spec 5)', () => {
+    expect(mockRecipes.length).toBe(2245);
 
     let clocheCount = 0;
     let emptyCount = 0;
@@ -512,4 +519,70 @@ describe('Unit: Semantic Dish Image Matching Engine (dishImageResolver)', () => 
     expect(emptyCount).toBe(0);
     expect(nonHttpCount).toBe(0);
   });
+
+  // ==========================================================================
+  // Specification 6: Zero Cross-Cluster URL Sharing & Edge-Case Dish Accuracy
+  // ==========================================================================
+  it('should guarantee zero cross-cluster duplicate URLs across CULINARY_82_POOLS and resolve Cơm Cháy / Tép Đồng / Đậu Phụ accurately', () => {
+    const seenUrls = new Map<string, string>();
+    let duplicateCrossClusterCount = 0;
+
+    for (const [clusterKey, urls] of Object.entries(CULINARY_82_POOLS)) {
+      for (const url of urls) {
+        const prevCluster = seenUrls.get(url);
+        if (prevCluster && prevCluster !== clusterKey) {
+          duplicateCrossClusterCount++;
+        }
+        seenUrls.set(url, clusterKey);
+      }
+    }
+    expect(duplicateCrossClusterCount).toBe(0);
+
+    // Cơm Cháy Đáy Nồi Mỡ Hành Chà Bông must resolve to com_rang (never trung_cuon_omelette or mon_chay)
+    expect(resolveCulinaryCluster('Cơm Cháy Đáy Nồi Mỡ Hành Chà Bông', 'an-sang')).toBe('com_rang');
+    expect(FOOD_IMAGE_POOLS.com_rang.includes(getDishImageUrl('Cơm Cháy Đáy Nồi Mỡ Hành Chà Bông', 'an-sang'))).toBe(true);
+
+    // Tép Đồng Xào Bông Điên Điển Miền Tây must not be disqualified by "Miền" colliding with "Miến"
+    expect(resolveCulinaryCluster('Tép Đồng Xào Bông Điên Điển Miền Tây', 'mon-man')).toBe('tom_rim_hai_san');
+
+    // Đậu Phụ Rán Giòn Lướt Ván must resolve to dau_sot_ca_chua (never fried_chicken)
+    expect(resolveCulinaryCluster('Đậu Phụ Rán Giòn Lướt Ván', 'mon-man')).toBe('dau_sot_ca_chua');
+
+    // User screenshot regression checks:
+    // 1. Cá Nục Kho Tiêu Ớt Hiểm Miền Trung -> ca_kho_to (never shrimp photo-1559737558-2f5a35f4523b)
+    expect(resolveCulinaryCluster('Cá Nục Kho Tiêu Ớt Hiểm Miền Trung', 'mon-man')).toBe('ca_kho_to');
+    const caNucUrl = getDishImageUrl('Cá Nục Kho Tiêu Ớt Hiểm Miền Trung', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.ca_kho_to.includes(caNucUrl)).toBe(true);
+    expect(caNucUrl).not.toContain('photo-1559737558-2f5a35f4523b');
+
+    // 2. Thịt Gà Kiểu Âu: Ức Gà Phi Lê Đút Lò Sốt Pesto Phô Mai -> western_chicken_roast (never pasta my_y_pasta)
+    expect(resolveCulinaryCluster('Thịt Gà Kiểu Âu: Ức Gà Phi Lê Đút Lò Sốt Pesto Phô Mai', 'mon-man')).toBe('western_chicken_roast');
+    const ucGaPestoUrl = getDishImageUrl('Thịt Gà Kiểu Âu: Ức Gà Phi Lê Đút Lò Sốt Pesto Phô Mai', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.western_chicken_roast.includes(ucGaPestoUrl)).toBe(true);
+    expect(FOOD_IMAGE_POOLS.my_y_pasta.includes(ucGaPestoUrl)).toBe(false);
+
+    // 3. Thịt Heo Kiểu Âu: Sườn Que Nạc Đút Lò Phô Mai Sốt Cà -> bbq_ribs_roast (never salmon or whole roast chicken)
+    expect(resolveCulinaryCluster('Thịt Heo Kiểu Âu: Sườn Que Nạc Đút Lò Phô Mai Sốt Cà', 'mon-man')).toBe('bbq_ribs_roast');
+    const suonQueUrl = getDishImageUrl('Thịt Heo Kiểu Âu: Sườn Que Nạc Đút Lò Phô Mai Sốt Cà', 'mon-man');
+    expect(FOOD_IMAGE_POOLS.bbq_ribs_roast.includes(suonQueUrl)).toBe(true);
+    expect(suonQueUrl).not.toContain('photo-1598515213692-5f252f75d785');
+    expect(suonQueUrl).not.toContain('photo-1518492104633-130d0cc84637');
+
+    // 4. Sub-cluster index selection: Khoai Tây Nghiền vs Bánh Mì Bơ Tỏi
+    const mashedPotatoUrl = getDishImageUrl('Khoai Tây Nghiền Bơ Tỏi Thảo Mộc (Garlic Mashed Potatoes)', 'mon-rau');
+    expect(mashedPotatoUrl).toContain('photo-1707616954324-99c89a78a20d');
+    const garlicBreadUrl = getDishImageUrl('Bánh Mì Bơ Tỏi Nướng Giòn Rụm Thảo Mộc', 'mon-rau');
+    expect(garlicBreadUrl).toContain('photo-1724041305788-afe63ae3bb5a');
+
+    // 5. Sub-cluster index selection: Bánh Xèo vs Bánh Khọt, Mì Quảng vs Cao Lầu, Xôi Gấc, Cháo Lòng vs Cháo Lòng Gà
+    expect(getDishImageUrl('Bánh Xèo Tôm Thịt Giá Đỗ Giòn Rụm', 'an-sang')).not.toBe(
+      getDishImageUrl('Bánh Khọt Vũng Tàu Tôm Tươi Nước Cốt Dừa', 'an-sang')
+    );
+    expect(getDishImageUrl('Xôi Gấc Đỏ Thắm Đậu Xanh Dừa Nạo', 'an-sang')).toContain('X%C3%B4i_g%E1%BA%A5c.JPG');
+    expect(getDishImageUrl('Cháo Lòng Gà Nấu Nấm Hương', 'an-sang')).not.toBe(
+      getDishImageUrl('Cháo Lòng Nóng Hổi Hành Hoa Tiêu Đen Đậm Vị', 'an-sang')
+    );
+  });
 });
+
+

@@ -353,12 +353,12 @@ export const VolunteerAdSequenceModal: React.FC<VolunteerAdSequenceModalProps> =
               )}
               <div className="space-y-0.5 leading-relaxed">
                 <span className="font-bold text-slate-200">
-                  {singleAdMode ? 'Hoàn thành bước nấu cuối cùng:' : 'Cam kết xem trọn vẹn chuỗi 3 video:'}
+                  {singleAdMode ? 'Hoàn thành bước nấu cuối cùng:' : 'Xem 3 video ngắn nhận quyền lợi:'}
                 </span>
                 <p className="text-[11px] text-slate-400">
                   {singleAdMode
-                    ? 'Video quảng cáo 30 giây tài trợ cho công thức nấu ăn. Xem hết để hoàn tất ghi nhận món ăn và sẵn sàng thưởng thức!'
-                    : 'Hệ thống tự động phát lần lượt 3 video (30s mỗi video, tổng 90s). Xin vui lòng không đóng ứng dụng để nhận được xác nhận hoàn tất.'}
+                    ? 'Video ngắn 30 giây tài trợ cho công thức món ăn. Xem hết để hoàn tất ghi nhận món và sẵn sàng thưởng thức!'
+                    : 'Hệ thống tự động phát 3 video ngắn (~30s mỗi video, tổng khoảng 1,5 phút). Vui lòng không đóng ứng dụng để nhận trọn vẹn quyền lợi.'}
                 </p>
               </div>
             </div>
@@ -372,15 +372,15 @@ export const VolunteerAdSequenceModal: React.FC<VolunteerAdSequenceModalProps> =
 
             <div className="space-y-1.5">
               <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-black uppercase tracking-wider">
-                {singleAdMode ? '✨ Món Ăn Đã Hoàn Tất' : '✨ Hoàn Tất Cam Kết 3/3 Video'}
+                {singleAdMode ? '✨ Món Ăn Đã Hoàn Tất' : '✨ Hoàn Tất 3/3 Video'}
               </span>
               <h3 className="text-lg font-black text-white">
-                {completionTitle || (singleAdMode ? '🎉 Chúc Mừng Hoàn Thành Món Ăn!' : 'Cảm Ơn Sự Cam Kết Của Bạn!')}
+                {completionTitle || (singleAdMode ? '🎉 Chúc Mừng Hoàn Thành Món Ăn!' : 'Cảm Ơn Sự Ủng Hộ Của Bạn!')}
               </h3>
               <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
                 {completionSubtitle || (singleAdMode
                   ? 'Bạn đã hoàn tất tất cả các bước chế biến món ăn và xem quảng cáo tài trợ. Chúc bạn và gia đình có một bữa cơm thơm ngon tròn vị!'
-                  : 'Bạn đã hoàn thành trọn vẹn chuỗi 3 video quảng cáo tự nguyện (90 giây). Sự đóng góp của bạn giúp MealWise tiếp tục duy trì máy chủ và phát triển các tính năng hữu ích!')}
+                  : 'Bạn đã hoàn thành 3 video ngắn. Sự ủng hộ của bạn giúp MealWise tiếp tục duy trì và phát triển!')}
               </p>
             </div>
 
@@ -389,7 +389,7 @@ export const VolunteerAdSequenceModal: React.FC<VolunteerAdSequenceModalProps> =
               <span>
                 {singleAdMode
                   ? 'Đã ghi nhận hoàn thành món ăn & tích lũy vào hệ thống báo cáo!'
-                  : 'Đã kích hoạt +8 GIỜ sử dụng MealWise hoàn toàn không quảng cáo!'}
+                  : 'Đã kích hoạt trải nghiệm không quảng cáo đến hết ngày hôm nay!'}
               </span>
             </div>
 

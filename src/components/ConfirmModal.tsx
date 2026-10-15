@@ -38,7 +38,7 @@ export const ConfirmModal: React.FC = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in"
       onClick={handleCancel}
       role="dialog"
       aria-modal="true"

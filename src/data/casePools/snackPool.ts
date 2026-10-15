@@ -12,7 +12,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Banhtrangtron.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-2",
@@ -22,7 +22,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Banhtrangtron.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-3",
@@ -32,7 +32,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Pizzabanhtrangnuong3.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-4",
@@ -42,7 +42,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-5",
@@ -52,7 +52,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-6",
@@ -62,7 +62,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1601226809816-b8c32440158a?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-7",
@@ -72,7 +72,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1584495018406-036108e89aa2?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-8",
@@ -92,7 +92,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-10",
@@ -102,7 +102,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Nem-chua-ran2.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-11",
@@ -112,7 +112,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855602-235fff374e16?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-12",
@@ -122,7 +122,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855552-eb0838225f82?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-13",
@@ -132,7 +132,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1552913903-2cffa1962dc7?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-14",
@@ -142,7 +142,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1612487439139-c2d7bac13577?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-15",
@@ -152,7 +152,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-16",
@@ -162,7 +162,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 380,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-17",
@@ -172,7 +172,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1647169953827-a7c85f324caf?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-18",
@@ -182,7 +182,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-19",
@@ -192,7 +192,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-20",
@@ -202,7 +202,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-21",
@@ -212,7 +212,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Italian_Creme_Caramel.JPG/960px-Italian_Creme_Caramel.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-22",
@@ -222,7 +222,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-23",
@@ -232,7 +232,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-24",
@@ -252,7 +252,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-26",
@@ -262,7 +262,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-27",
@@ -272,7 +272,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/X%C3%B4i_x%C3%A9o.jpg/960px-X%C3%B4i_x%C3%A9o.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-28",
@@ -282,7 +282,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Ch%C3%A8_xo%C3%A0i.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-29",
@@ -292,7 +292,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-30",
@@ -302,7 +302,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Ch%C3%A8_xo%C3%A0i.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-31",
@@ -312,7 +312,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Vietblackeyedpeas.jpg/960px-Vietblackeyedpeas.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-32",
@@ -322,7 +322,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 380,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Ch%C3%A8_xo%C3%A0i.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-33",
@@ -332,7 +332,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-34",
@@ -342,7 +342,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Vietblackeyedpeas.jpg/960px-Vietblackeyedpeas.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-35",
@@ -352,7 +352,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Banhchay.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-36",
@@ -362,7 +362,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-37",
@@ -372,7 +372,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Vietblackeyedpeas.jpg/960px-Vietblackeyedpeas.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-38",
@@ -382,7 +382,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Vietblackeyedpeas.jpg/960px-Vietblackeyedpeas.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-39",
@@ -392,7 +392,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1756132539966-8d65f7a9eed8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-40",
@@ -402,7 +402,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 380,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-41",
@@ -412,7 +412,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-42",
@@ -422,7 +422,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1665582313032-29058cee9c94?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-43",
@@ -432,7 +432,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-44",
@@ -442,7 +442,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-45",
@@ -462,7 +462,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1624487394217-6d192d003564?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-47",
@@ -472,7 +472,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-48",
@@ -482,7 +482,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 380,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-49",
@@ -492,7 +492,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Calamari_grillati.JPG/960px-Calamari_grillati.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-50",
@@ -502,7 +502,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1760504526069-ff0f8bf6e4ca?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-51",
@@ -512,7 +512,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-52",
@@ -522,7 +522,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Vietnamese_thit_kho%2C_braised_pork_belly_and_boiled_eggs.jpg/960px-Vietnamese_thit_kho%2C_braised_pork_belly_and_boiled_eggs.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-53",
@@ -532,7 +532,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-54",
@@ -542,7 +542,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-55",
@@ -552,7 +552,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-56",
@@ -562,7 +562,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 380,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-57",
@@ -572,7 +572,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-58",
@@ -582,7 +582,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-59",
@@ -592,7 +592,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-60",
@@ -602,7 +602,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-61",
@@ -612,7 +612,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-62",
@@ -622,7 +622,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 340,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-63",
@@ -632,7 +632,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1695712641388-87c0f9c2d36e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-64",
@@ -642,7 +642,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 380,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-65",
@@ -652,7 +652,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 240,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/82/Banh_trang_tron_%28mua_tai_truong_thpt_giadinh%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-66",
@@ -662,7 +662,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 260,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG/960px-Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-67",
@@ -672,7 +672,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 280,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-68",
@@ -682,7 +682,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 300,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-69",
@@ -692,7 +692,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 320,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-blue-70",
@@ -712,7 +712,7 @@ export const SNACK_POOL_BLUE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
@@ -725,7 +725,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-2",
@@ -745,7 +745,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-4",
@@ -755,7 +755,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1585325701165-351af916e581?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-5",
@@ -765,7 +765,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-6",
@@ -775,7 +775,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-7",
@@ -785,7 +785,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-8",
@@ -795,7 +795,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-9",
@@ -805,7 +805,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-10",
@@ -815,7 +815,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1707056503922-91c9ebaf0774?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-11",
@@ -825,7 +825,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-12",
@@ -835,7 +835,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-13",
@@ -855,7 +855,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-15",
@@ -865,7 +865,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-16",
@@ -875,7 +875,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-17",
@@ -885,7 +885,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-18",
@@ -895,7 +895,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_%E1%BB%9F_qu%C3%A1n_Th%E1%BA%A3o_Vy_2020_09_06.jpg/960px-Ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_%E1%BB%9F_qu%C3%A1n_Th%E1%BA%A3o_Vy_2020_09_06.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-19",
@@ -905,7 +905,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-20",
@@ -915,7 +915,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-21",
@@ -925,7 +925,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1752245055475-8b7c3b4756ac?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-22",
@@ -935,7 +935,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1767436093457-84ea9122eb4e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-23",
@@ -945,7 +945,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-24",
@@ -955,7 +955,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-25",
@@ -965,7 +965,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Nem-chua-ran2.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-26",
@@ -975,7 +975,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855602-235fff374e16?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-27",
@@ -985,7 +985,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1625477811233-044633d10dd1?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-28",
@@ -995,7 +995,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg/960px-06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-29",
@@ -1005,7 +1005,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg/960px-Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-30",
@@ -1015,7 +1015,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-31",
@@ -1025,7 +1025,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-32",
@@ -1035,7 +1035,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg/960px-Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-33",
@@ -1045,7 +1045,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-34",
@@ -1055,7 +1055,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1613769049987-b31b641f25b1?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-35",
@@ -1065,7 +1065,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-36",
@@ -1075,7 +1075,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-37",
@@ -1085,7 +1085,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-38",
@@ -1095,7 +1095,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1653988354010-39637252a2db?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-39",
@@ -1105,7 +1105,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-40",
@@ -1115,7 +1115,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-41",
@@ -1125,7 +1125,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1648299732724-b480cbb65548?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-42",
@@ -1135,7 +1135,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG/960px-Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-43",
@@ -1145,7 +1145,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-44",
@@ -1155,7 +1155,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-45",
@@ -1165,7 +1165,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-46",
@@ -1175,7 +1175,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-47",
@@ -1185,7 +1185,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-48",
@@ -1205,7 +1205,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-50",
@@ -1225,7 +1225,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-52",
@@ -1245,7 +1245,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-54",
@@ -1265,7 +1265,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-56",
@@ -1275,7 +1275,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Calamari_grillati.JPG/960px-Calamari_grillati.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-57",
@@ -1285,7 +1285,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1762305193367-91e072e47c3f?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-58",
@@ -1295,7 +1295,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-59",
@@ -1305,7 +1305,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-60",
@@ -1315,7 +1315,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-61",
@@ -1325,7 +1325,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Banhtrangtron.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-62",
@@ -1335,7 +1335,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Pizzabanhtrangnuong2.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-63",
@@ -1345,7 +1345,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-64",
@@ -1355,7 +1355,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855602-235fff374e16?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-65",
@@ -1365,7 +1365,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855602-235fff374e16?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-66",
@@ -1375,7 +1375,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-67",
@@ -1385,7 +1385,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1788928808407-531f4779bd50?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-68",
@@ -1395,7 +1395,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 435,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-69",
@@ -1405,7 +1405,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Banhchay.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-70",
@@ -1415,7 +1415,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Ch%C3%A8_xo%C3%A0i.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-71",
@@ -1425,7 +1425,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-72",
@@ -1435,7 +1435,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1639927663411-35f23bb792b7?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-73",
@@ -1445,7 +1445,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 360,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-74",
@@ -1455,7 +1455,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 385,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1665582313032-29058cee9c94?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-75",
@@ -1465,7 +1465,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 410,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-76",
@@ -1485,7 +1485,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 460,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1613769049987-b31b641f25b1?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-78",
@@ -1495,7 +1495,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 485,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-79",
@@ -1505,7 +1505,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 510,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-pur-80",
@@ -1515,7 +1515,7 @@ export const SNACK_POOL_PURPLE: FastDishItem[] = [
     "calories": 535,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1706176224199-cd97c73d7640?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
@@ -1538,7 +1538,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 550,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-3",
@@ -1548,7 +1548,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 580,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-4",
@@ -1558,7 +1558,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 610,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1771573042846-9f3631a48058?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-5",
@@ -1588,7 +1588,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 700,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-8",
@@ -1598,7 +1598,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 730,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-9",
@@ -1608,7 +1608,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 520,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1747628857852-2ffef1e3d06b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-10",
@@ -1618,7 +1618,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 550,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Durian_fruit_opened_PJ_DSC_0802.jpg/960px-Durian_fruit_opened_PJ_DSC_0802.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-11",
@@ -1628,7 +1628,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 580,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/G%E1%BB%8Fi_cu%E1%BB%91n.jpg/960px-G%E1%BB%8Fi_cu%E1%BB%91n.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-12",
@@ -1638,7 +1638,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 610,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-13",
@@ -1648,7 +1648,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 640,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg/960px-06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-14",
@@ -1658,7 +1658,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 670,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Banhchay.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-15",
@@ -1668,7 +1668,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 700,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-16",
@@ -1688,7 +1688,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 520,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/Pizzabanhtrangnuong.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-18",
@@ -1698,7 +1698,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 550,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1695712641388-87c0f9c2d36e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-19",
@@ -1708,7 +1708,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 580,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-20",
@@ -1718,7 +1718,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 610,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1706176224199-cd97c73d7640?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-21",
@@ -1728,7 +1728,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 640,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1719454261026-fc7f0ffc1835?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-22",
@@ -1738,7 +1738,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 670,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-23",
@@ -1748,7 +1748,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 700,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/B%C3%A1nh_x%C3%A8o_1.jpg/960px-B%C3%A1nh_x%C3%A8o_1.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-24",
@@ -1768,7 +1768,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 520,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg/960px-Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-26",
@@ -1778,7 +1778,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 550,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1624487394217-6d192d003564?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-27",
@@ -1788,7 +1788,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 580,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1719454260936-caa0a804f154?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-28",
@@ -1798,7 +1798,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 610,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-29",
@@ -1808,7 +1808,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 640,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1688084468401-4938b073aef2?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-30",
@@ -1818,7 +1818,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 670,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1706176224199-cd97c73d7640?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-31",
@@ -1828,7 +1828,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 700,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-32",
@@ -1838,7 +1838,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 730,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-33",
@@ -1848,7 +1848,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 520,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-34",
@@ -1858,7 +1858,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 550,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1647169953827-a7c85f324caf?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-35",
@@ -1878,7 +1878,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 610,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855602-235fff374e16?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-37",
@@ -1888,7 +1888,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 640,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG/960px-Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-38",
@@ -1898,7 +1898,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 670,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-39",
@@ -1908,7 +1908,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 700,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1706176224199-cd97c73d7640?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-40",
@@ -1918,7 +1918,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 730,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-41",
@@ -1928,7 +1928,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 520,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1625477811233-044633d10dd1?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-42",
@@ -1938,7 +1938,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 550,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-43",
@@ -1948,7 +1948,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 580,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/M%C3%B3n_ti%E1%BB%87c_c%C6%B0%E1%BB%9Bi_%E1%BB%9F_T%C3%A2n_B%C3%ACnh_ng6th8n2023_%28m%C3%B3n_tr%C3%A1ng_mi%E1%BB%87ng%2C_ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_long_nh%C3%A3n%29_%282%29.jpg/960px-M%C3%B3n_ti%E1%BB%87c_c%C6%B0%E1%BB%9Bi_%E1%BB%9F_T%C3%A2n_B%C3%ACnh_ng6th8n2023_%28m%C3%B3n_tr%C3%A1ng_mi%E1%BB%87ng%2C_ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_long_nh%C3%A3n%29_%282%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-44",
@@ -1958,7 +1958,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 610,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1747628857852-2ffef1e3d06b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-45",
@@ -1968,7 +1968,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 640,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-46",
@@ -1978,7 +1978,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 670,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-47",
@@ -1988,7 +1988,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 700,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1756132539966-8d65f7a9eed8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-48",
@@ -1998,7 +1998,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 730,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1763994682737-477d8200dd5d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "snk-gold-49",
@@ -2018,7 +2018,7 @@ export const SNACK_POOL_GOLD: FastDishItem[] = [
     "calories": 550,
     "snackFeature": "🍟 Bốc tay tiện lợi, để nguội ăn vẫn giòn tan đậm đà, nhâm nhi cả buổi chiều chill chill!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1630914441929-0d8ea69f95e6?auto=format&fit=crop&w=600&q=80"
   }
 ];
 

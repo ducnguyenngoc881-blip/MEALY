@@ -62,12 +62,16 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     expect(content.includes('Đăng Ký Miễn Phí Để Mở Khóa')).toBe(true);
   });
 
-  it('GUEST-03: Grocery List collaborative sharing is locked for guest accounts and triggers registration', () => {
+  it('GUEST-03: Grocery List is locked entirely for guest accounts and triggers registration', () => {
     const groceryFilePath = path.join(srcDir, 'components', 'GroceryList.tsx');
     const content = fs.readFileSync(groceryFilePath, 'utf-8');
+    // Verify full grocery screen guest lock
+    expect(content.includes('if (!isRegistered && !isWebGuestViewer)')).toBe(true);
+    expect(content.includes('Danh Sách Đi Chợ Tự Động')).toBe(true);
+    expect(content.includes('Tự Gom Nguyên Liệu')).toBe(true);
     expect(content.includes('startCollabRoom(allList')).toBe(true);
     expect(content.includes('Chia Sẻ Mua Chung')).toBe(true);
-    expect(content.includes('Mua Chung (Live)')).toBe(true);
+    expect(content.includes('Mua Chung')).toBe(true);
     // Verify guest lock enforcement
     expect(content.includes('Đi Chợ Chung 🔒')).toBe(true);
     expect(content.includes("openAuthModal('register')")).toBe(true);
@@ -100,13 +104,21 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     expect(content.includes('<AuthModal />')).toBe(true);
   });
 
-  it('GUEST-07: AccountView supports seamless guest registration and member logout', () => {
+  it('GUEST-07: AccountView displays locked features showcase for guests instead of onboarding preferences', () => {
     const accountFilePath = path.join(srcDir, 'components', 'AccountView.tsx');
     const content = fs.readFileSync(accountFilePath, 'utf-8');
     expect(content.includes('isRegistered')).toBe(true);
     expect(content.includes('openAuthModal')).toBe(true);
     expect(content.includes('logoutUser')).toBe(true);
     expect(content.includes('Đăng Nhập / Đăng Ký')).toBe(true);
+    // Guest locked features verification
+    expect(content.includes('!isRegistered ?')).toBe(true);
+    expect(content.includes('Tính Năng Dành Cho Thành Viên')).toBe(true);
+    expect(content.includes('Đi Chợ Thông Minh')).toBe(true);
+    expect(content.includes('Lên Thực Đơn Tiệc')).toBe(true);
+    expect(content.includes('Mở Khóa Đi Chợ')).toBe(true);
+    expect(content.includes('Mở Khóa Thực Đơn Tiệc')).toBe(true);
+    expect(content.includes('Đăng Ký Tài Khoản Miễn Phí (Mở Khóa Toàn Bộ)')).toBe(true);
   });
 
   it('GUEST-08: AuthModal distinguishes registration vs login and passes isNewRegistration to loginUser', () => {
@@ -133,5 +145,21 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     expect(content.includes('regeneratePlan')).toBe(true);
     expect(content.includes('completeOnboarding(tempData, { regeneratePlan })')).toBe(true);
     expect(content.includes('Giữ nguyên các món ăn')).toBe(true);
+  });
+
+  it('GUEST-11: Guests strictly use default app settings and cannot access OnboardingModal', () => {
+    const onboardingFilePath = path.join(srcDir, 'components', 'OnboardingModal.tsx');
+    const onboardingContent = fs.readFileSync(onboardingFilePath, 'utf-8');
+    expect(onboardingContent.includes('if (!showOnboarding || !isRegistered) return null;')).toBe(true);
+
+    const contextFilePath = path.join(srcDir, 'context', 'MealWiseContext.tsx');
+    const contextContent = fs.readFileSync(contextFilePath, 'utf-8');
+    expect(contextContent.includes('const effectiveOnboardingData = useMemo<OnboardingData>')).toBe(true);
+    expect(contextContent.includes('INITIAL_ONBOARDING')).toBe(true);
+    expect(contextContent.includes("regionPreference: 'toan-quoc'")).toBe(true);
+
+    const weeklyBoardPath = path.join(srcDir, 'components', 'WeeklyBoard.tsx');
+    const weeklyBoardContent = fs.readFileSync(weeklyBoardPath, 'utf-8');
+    expect(weeklyBoardContent.includes("isRegistered ? 'Đổi mục tiêu' : 'Đổi mục tiêu 🔒'")).toBe(true);
   });
 });

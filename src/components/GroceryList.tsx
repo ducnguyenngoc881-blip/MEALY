@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { 
   ShoppingCart, 
@@ -30,12 +30,16 @@ import {
   AlertCircle,
   Smartphone,
   Trash2,
-  Lock
+  Lock,
+  ArrowRight,
+  CheckSquare,
+  Share2
 } from 'lucide-react';
 import { VietnameseMealSet, Recipe, StoreChannel, CollabCartItem, CollabShopper } from '../types';
 import { scaleCost } from '../utils/currency';
 import { copyTextToClipboard } from './CateringPartyPlanner';
 import { FridgeLeftoverModal } from './FridgeLeftoverModal';
+import { inferItemCompartment } from './FridgeView';
 import { SHOPPER_PALETTE, getShopperStyle, formatTtlRemaining } from '../services/collabGroceryService';
 import { CollabBasketIcon, GroceryScrollIcon } from './icons/NavIcons';
 
@@ -224,9 +228,9 @@ export const GROCERY_AISLES: Record<Exclude<GroceryAisleCategory, 'all'>, AisleC
     name: 'Thịt & Trứng',
     shortName: 'Thịt/Trứng',
     icon: '🥩',
-    badgeBg: 'bg-rose-50 dark:bg-rose-950/40',
-    badgeText: 'text-rose-700 dark:text-rose-300',
-    badgeBorder: 'border-rose-200/60 dark:border-rose-800/50',
+    badgeBg: 'bg-slate-100 dark:bg-slate-800',
+    badgeText: 'text-slate-700 dark:text-slate-300',
+    badgeBorder: 'border-slate-200 dark:border-slate-700',
     tagline: 'Thịt heo, bò, gà, vịt, trứng'
   },
   'hai-san': {
@@ -234,9 +238,9 @@ export const GROCERY_AISLES: Record<Exclude<GroceryAisleCategory, 'all'>, AisleC
     name: 'Hải Sản',
     shortName: 'Hải Sản',
     icon: '🦐',
-    badgeBg: 'bg-sky-50 dark:bg-sky-950/40',
-    badgeText: 'text-sky-700 dark:text-sky-300',
-    badgeBorder: 'border-sky-200/60 dark:border-sky-800/50',
+    badgeBg: 'bg-slate-100 dark:bg-slate-800',
+    badgeText: 'text-slate-700 dark:text-slate-300',
+    badgeBorder: 'border-slate-200 dark:border-slate-700',
     tagline: 'Cá tươi, tôm, cua, mực, nghêu'
   },
   'rau-cu': {
@@ -244,9 +248,9 @@ export const GROCERY_AISLES: Record<Exclude<GroceryAisleCategory, 'all'>, AisleC
     name: 'Rau Củ & Nấm',
     shortName: 'Rau Củ',
     icon: '🥬',
-    badgeBg: 'bg-emerald-50 dark:bg-emerald-950/40',
-    badgeText: 'text-emerald-700 dark:text-emerald-300',
-    badgeBorder: 'border-emerald-200/60 dark:border-emerald-800/50',
+    badgeBg: 'bg-slate-100 dark:bg-slate-800',
+    badgeText: 'text-slate-700 dark:text-slate-300',
+    badgeBorder: 'border-slate-200 dark:border-slate-700',
     tagline: 'Rau tươi, củ quả, hành tỏi, nấm'
   },
   'trai-cay': {
@@ -254,9 +258,9 @@ export const GROCERY_AISLES: Record<Exclude<GroceryAisleCategory, 'all'>, AisleC
     name: 'Trái Cây',
     shortName: 'Trái Cây',
     icon: '🍎',
-    badgeBg: 'bg-amber-50 dark:bg-amber-950/40',
-    badgeText: 'text-amber-700 dark:text-amber-300',
-    badgeBorder: 'border-amber-200/60 dark:border-amber-800/50',
+    badgeBg: 'bg-slate-100 dark:bg-slate-800',
+    badgeText: 'text-slate-700 dark:text-slate-300',
+    badgeBorder: 'border-slate-200 dark:border-slate-700',
     tagline: 'Hoa quả tươi, dứa, sấu, tráng miệng'
   },
   'gia-vi-kho': {
@@ -264,12 +268,27 @@ export const GROCERY_AISLES: Record<Exclude<GroceryAisleCategory, 'all'>, AisleC
     name: 'Gia Vị & Đồ Khô',
     shortName: 'Gia Vị/Khô',
     icon: '🧂',
-    badgeBg: 'bg-purple-50 dark:bg-purple-950/40',
-    badgeText: 'text-purple-700 dark:text-purple-300',
-    badgeBorder: 'border-purple-200/60 dark:border-purple-800/50',
+    badgeBg: 'bg-slate-100 dark:bg-slate-800',
+    badgeText: 'text-slate-700 dark:text-slate-300',
+    badgeBorder: 'border-slate-200 dark:border-slate-700',
     tagline: 'Gia vị, dầu ăn, bún khô, gạo, đồ hộp'
   }
 };
+
+export const ALL_GROCERY_AISLES: Array<{
+  id: GroceryAisleCategory;
+  name: string;
+  shortName: string;
+  icon: string;
+  tagline: string;
+}> = [
+  { id: 'all', name: 'Tất Cả Quầy', shortName: 'Tất Cả', icon: '🧺', tagline: 'Toàn bộ nguyên liệu cần mua' },
+  { id: 'thit', name: 'Thịt & Trứng', shortName: 'Thịt/Trứng', icon: '🥩', tagline: 'Thịt heo, bò, gà, vịt, trứng' },
+  { id: 'hai-san', name: 'Hải Sản', shortName: 'Hải Sản', icon: '🦐', tagline: 'Cá tươi, tôm, cua, mực, nghêu' },
+  { id: 'rau-cu', name: 'Rau Củ & Nấm', shortName: 'Rau Củ', icon: '🥬', tagline: 'Rau tươi, củ quả, hành tỏi, nấm' },
+  { id: 'trai-cay', name: 'Trái Cây', shortName: 'Trái Cây', icon: '🍎', tagline: 'Hoa quả tươi tráng miệng' },
+  { id: 'gia-vi-kho', name: 'Gia Vị & Khô', shortName: 'Gia Vị', icon: '🧂', tagline: 'Dầu ăn, nước mắm, đồ khô' }
+];
 
 // Pure Helper: Classify ingredients into real-life grocery aisles
 export function getGroceryAisleCategory(name: string, rawCategory?: string): Exclude<GroceryAisleCategory, 'all'> {
@@ -491,19 +510,46 @@ export function generateZaloShoppingText(
   return text;
 }
 
+export interface CommonPantrySpice {
+  name: string;
+  shortName: string;
+  unit: string;
+  cost: number;
+  icon: string;
+}
+
+export const COMMON_PANTRY_SPICES: CommonPantrySpice[] = [
+  { name: 'Nước mắm cá cơm', shortName: 'Nước mắm', unit: 'chai', cost: 35000, icon: '🐟' },
+  { name: 'Dầu ăn thực vật', shortName: 'Dầu ăn', unit: 'chai', cost: 45000, icon: '🌻' },
+  { name: 'Hạt nêm thịt thăn', shortName: 'Hạt nêm', unit: 'gói', cost: 25000, icon: '🧂' },
+  { name: 'Tỏi & Hành khô', shortName: 'Tỏi & Hành', unit: 'túi', cost: 15000, icon: '🧄' },
+  { name: 'Đường cát trắng', shortName: 'Đường', unit: 'kg', cost: 24000, icon: '🍬' },
+  { name: 'Muối tinh sấy', shortName: 'Muối', unit: 'gói', cost: 8000, icon: '🧂' },
+  { name: 'Nước tương đậu nành', shortName: 'Nước tương', unit: 'chai', cost: 20000, icon: '🥢' },
+  { name: 'Tương ớt', shortName: 'Tương ớt', unit: 'chai', cost: 16000, icon: '🌶️' },
+  { name: 'Tiêu đen xay', shortName: 'Tiêu đen', unit: 'lọ', cost: 22000, icon: '🌶️' },
+  { name: 'Dầu hào', shortName: 'Dầu hào', unit: 'chai', cost: 28000, icon: '🦪' }
+];
+
 export const GroceryList: React.FC = () => {
   const { 
     weeklyPlan, 
     servings,
+    onboardingData,
     extraGroceryItems, 
     addExtraGroceryItems,
     removeExtraGroceryItem,
     clearExtraGrocery, 
     showToast,
     groceryCheckedItems,
+    setGroceryCheckedItems,
     toggleGroceryItemChecked,
     clearGroceryCheckedItems,
+    isWeeklyShoppingCompleted,
+    setIsWeeklyShoppingCompleted,
     pantryItems,
+    addPantryItem,
+    addPantryItems,
     setActiveTab,
     collabRoom,
     collabCheckedMap,
@@ -534,10 +580,64 @@ export const GroceryList: React.FC = () => {
   const [showPriceSimulation, setShowPriceSimulation] = useState<boolean>(false);
   const [isFridgeModalOpen, setIsFridgeModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
+  const [isStockFridgeModalOpen, setIsStockFridgeModalOpen] = useState<boolean>(false);
   const [customShopperName, setCustomShopperName] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [isLobbyOpen, setIsLobbyOpen] = useState<boolean>(false);
   const lobbyRef = useRef<HTMLDivElement | null>(null);
+
+  const [isAisleDropdownOpen, setIsAisleDropdownOpen] = useState<boolean>(false);
+  const aisleDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (aisleDropdownRef.current && !aisleDropdownRef.current.contains(e.target as Node)) {
+        setIsAisleDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsAisleDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const isSpiceMarkedToBuy = (spiceName: string): boolean => {
+    return (extraGroceryItems || []).some(item => isGroceryItemMatch(item.name, spiceName));
+  };
+
+  const toggleSpiceToBuy = (spice: CommonPantrySpice) => {
+    const isToBuy = isSpiceMarkedToBuy(spice.name);
+    if (isToBuy) {
+      removeExtraGroceryItem([spice.name, spice.shortName, canonicalizeIngredientName(spice.name)]);
+      showToast(`✓ Đã bỏ "${spice.shortName}" khỏi giỏ đi chợ`);
+    } else {
+      setDeletedItemNames(prev => {
+        const filtered = prev.filter(d => !isGroceryItemMatch(d, spice.name) && !isGroceryItemMatch(d, canonicalizeIngredientName(spice.name)));
+        try {
+          localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(filtered));
+        } catch {}
+        return filtered;
+      });
+      if (isWeeklyShoppingCompleted) {
+        setIsWeeklyShoppingCompleted(false);
+      }
+      addExtraGroceryItems([{
+        name: spice.name,
+        amount: 1,
+        unit: spice.unit,
+        category: 'gia-vi',
+        cost: spice.cost
+      }]);
+      showToast(`🛒 Đã thêm "${spice.name}" vào giỏ đi chợ!`);
+    }
+  };
 
   // In-cart items expansion states per aisle category (pushed to bottom)
   const [expandedAisleCarts, setExpandedAisleCarts] = useState<Record<string, boolean>>({
@@ -565,11 +665,13 @@ export const GroceryList: React.FC = () => {
     { name: 'Nước mắm cá cơm', amount: 1, unit: 'chai', cost: 35000, store: 'winmart', category: 'gia-vi' },
     { name: 'Dầu ăn thực vật', amount: 1, unit: 'chai', cost: 45000, store: 'winmart', category: 'gia-vi' },
     { name: 'Hạt nêm thịt thăn', amount: 1, unit: 'gói', cost: 25000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Tỏi & Hành khô', amount: 1, unit: 'túi', cost: 15000, store: 'cho-dan-sinh', category: 'gia-vi' },
     { name: 'Đường cát trắng', amount: 1, unit: 'kg', cost: 24000, store: 'winmart', category: 'gia-vi' },
     { name: 'Muối tinh sấy', amount: 1, unit: 'gói', cost: 8000, store: 'winmart', category: 'gia-vi' },
     { name: 'Tiêu đen xay', amount: 1, unit: 'lọ', cost: 22000, store: 'winmart', category: 'gia-vi' },
     { name: 'Nước tương đậu nành', amount: 1, unit: 'chai', cost: 20000, store: 'winmart', category: 'gia-vi' },
     { name: 'Tương ớt', amount: 1, unit: 'chai', cost: 16000, store: 'winmart', category: 'gia-vi' },
+    { name: 'Dầu hào', amount: 1, unit: 'chai', cost: 28000, store: 'winmart', category: 'gia-vi' },
     { name: 'Trứng gà (vỉ 10 quả)', amount: 10, unit: 'quả', cost: 32000, store: 'cho-dan-sinh', category: 'thit-ca' },
     { name: 'Gạo tẻ thơm ST25', amount: 5, unit: 'kg', cost: 160000, store: 'winmart', category: 'do-kho' }
   ];
@@ -623,6 +725,12 @@ export const GroceryList: React.FC = () => {
   };
 
   const handleAddPreset = (preset: typeof DEPLETED_PANTRY_PRESETS[0]) => {
+    if (isSpiceMarkedToBuy(preset.name)) {
+      removeExtraGroceryItem([preset.name, canonicalizeIngredientName(preset.name)]);
+      showToast(`✓ Đã bỏ "${preset.name}" khỏi giỏ đi chợ`);
+      return;
+    }
+
     // Un-delete if previously deleted
     setDeletedItemNames(prev => {
       const filtered = prev.filter(d => !isGroceryItemMatch(d, preset.name) && !isGroceryItemMatch(d, canonicalizeIngredientName(preset.name)));
@@ -633,6 +741,10 @@ export const GroceryList: React.FC = () => {
       }
       return filtered;
     });
+
+    if (isWeeklyShoppingCompleted) {
+      setIsWeeklyShoppingCompleted(false);
+    }
 
     addExtraGroceryItems([{
       name: preset.name,
@@ -663,6 +775,10 @@ export const GroceryList: React.FC = () => {
       return filtered;
     });
 
+    if (isWeeklyShoppingCompleted) {
+      setIsWeeklyShoppingCompleted(false);
+    }
+
     const numericAmount = typeof customItemAmount === 'number' 
       ? customItemAmount 
       : (parseFloat(customItemAmount) || 1);
@@ -692,8 +808,13 @@ export const GroceryList: React.FC = () => {
 
   const getDayCost = (day: typeof weeklyPlan[0]) => {
     let cost = 0;
-    Object.values(day.meals).forEach(m => {
+    const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(day.dayId);
+    const isSkipLunch = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
+    const isBantru = Boolean(day.skippedSlots?.lunch ?? (isSkipLunch && isWkday));
+    (Object.entries(day.meals) as [MealSlot, any][]).forEach(([slot, m]) => {
       if (m) {
+        if (slot === 'lunch' && isBantru) return;
+        if (day.skippedSlots?.[slot]) return;
         if (isMealSet(m)) cost += m.totalCostVnd;
         else cost += m.estimatedCostVnd || 35000;
       }
@@ -793,8 +914,13 @@ export const GroceryList: React.FC = () => {
   // Traverse weekly plan by meal slot to ensure 100% budget harmonization with WeeklyBoard
   weeklyPlan.forEach(day => {
     if (!day || !day.meals) return;
-    Object.values(day.meals).forEach(meal => {
+    const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(day.dayId);
+    const isSkipLunch = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
+    const isBantru = Boolean(day.skippedSlots?.lunch ?? (isSkipLunch && isWkday));
+    (Object.entries(day.meals) as [MealSlot, any][]).forEach(([slot, meal]) => {
       if (!meal) return;
+      if (slot === 'lunch' && isBantru) return;
+      if (day.skippedSlots?.[slot]) return;
       if (isMealSet(meal)) {
         const set = meal as VietnameseMealSet;
         const scaledSetBudget = scaleCost(set.totalCostVnd, safeServings);
@@ -954,6 +1080,28 @@ export const GroceryList: React.FC = () => {
   const totalCount = effectiveList.length;
   const totalCostEstimate = effectiveList.reduce((sum, item) => sum + item.cost, 0);
 
+  const totalWeeklyMeals = (weeklyPlan || []).reduce(
+    (acc, d) => acc + (['breakfast', 'lunch', 'dinner'] as const).filter(s => Boolean(d.meals?.[s])).length, 
+    0
+  );
+
+  const totalPlanIngredientsCount = Object.keys(itemsMap).length;
+  const planBoughtCount = Object.values(itemsMap).filter(entry => 
+    isItemDeleted(entry.cleanName, entry.extraOriginalNames)
+  ).length;
+
+  const isWeeklyShoppingDone = Boolean(
+    isWeeklyShoppingCompleted ||
+    (totalWeeklyMeals > 0 && totalPlanIngredientsCount > 0 && planBoughtCount === totalPlanIngredientsCount) ||
+    (totalWeeklyMeals > 0 && deletedItemNames.length > 0 && allList.length === 0)
+  );
+
+  useEffect(() => {
+    if (isWeeklyShoppingDone && !isWeeklyShoppingCompleted) {
+      setIsWeeklyShoppingCompleted(true);
+    }
+  }, [isWeeklyShoppingDone, isWeeklyShoppingCompleted, setIsWeeklyShoppingCompleted]);
+
   // Filter by grocery aisle AND collaborative assignment
   const displayedList = effectiveList.filter(item => {
     const aisleMatch = aisleFilter === 'all' || item.aisleCategory === aisleFilter;
@@ -985,6 +1133,71 @@ export const GroceryList: React.FC = () => {
   const unclaimedCount = totalCount - overallCheckedCount;
   const progressPercent = totalCount > 0 ? Math.round((overallCheckedCount / totalCount) * 100) : 0;
 
+  // Checked counts for current displayed (filtered) list
+  const displayedCheckedCount = displayedList.filter(i => getItemCheckInfo(i).isChecked).length;
+  const isAllDisplayedChecked = displayedList.length > 0 && displayedCheckedCount === displayedList.length;
+
+  // Universal Select All for currently displayed items (adapts dynamically to active filter)
+  const handleSelectAllDisplayed = () => {
+    if (displayedList.length === 0) return;
+    const filterName = aisleFilter === 'all' 
+      ? 'tất cả các quầy' 
+      : (ALL_GROCERY_AISLES.find(a => a.id === aisleFilter)?.name || 'quầy hiện tại');
+
+    if (collabRoom?.roomId) {
+      displayedList.forEach(item => {
+        if (!getItemCheckInfo(item).isChecked) {
+          toggleCollabChecked(item.id);
+        }
+      });
+    } else {
+      setGroceryCheckedItems(prev => {
+        const next = { ...prev };
+        displayedList.forEach(item => {
+          next[item.id] = true;
+          next[item.name] = true;
+        });
+        return next;
+      });
+    }
+    showToast(`✓ Đã chọn tất cả ${displayedList.length} món (${filterName})!`);
+  };
+
+  // Universal Deselect All for currently displayed items
+  const handleUnselectAllDisplayed = () => {
+    if (displayedList.length === 0) return;
+    const filterName = aisleFilter === 'all' 
+      ? 'tất cả các quầy' 
+      : (ALL_GROCERY_AISLES.find(a => a.id === aisleFilter)?.name || 'quầy hiện tại');
+
+    if (collabRoom?.roomId) {
+      displayedList.forEach(item => {
+        if (getItemCheckInfo(item).isChecked) {
+          toggleCollabChecked(item.id);
+        }
+      });
+    } else {
+      setGroceryCheckedItems(prev => {
+        const next = { ...prev };
+        displayedList.forEach(item => {
+          delete next[item.id];
+          delete next[item.name];
+        });
+        return next;
+      });
+    }
+    showToast(`Đã bỏ chọn các món (${filterName}).`);
+  };
+
+  // Universal Toggle handler
+  const handleToggleSelectAllUniversal = () => {
+    if (isAllDisplayedChecked) {
+      handleUnselectAllDisplayed();
+    } else {
+      handleSelectAllDisplayed();
+    }
+  };
+
   // Toggle item checkoff (supports both local and collaborative real-time sync)
   const handleToggle = (item: ProcessedGroceryItem) => {
     if (collabRoom?.roomId) {
@@ -994,21 +1207,166 @@ export const GroceryList: React.FC = () => {
     }
   };
 
-  // Copy to Zalo handler
-  const handleCopy = async () => {
+  // Toggle select all items within a specific grocery aisle
+  const handleToggleSelectAllAisle = (aisleItems: ProcessedGroceryItem[], aisleName: string) => {
+    if (aisleItems.length === 0) return;
+    const allChecked = aisleItems.every(i => getItemCheckInfo(i).isChecked);
+
+    if (allChecked) {
+      // Uncheck all items in this aisle
+      if (collabRoom?.roomId) {
+        aisleItems.forEach(item => {
+          if (getItemCheckInfo(item).isChecked) {
+            toggleCollabChecked(item.id);
+          }
+        });
+      } else {
+        setGroceryCheckedItems(prev => {
+          const next = { ...prev };
+          aisleItems.forEach(item => {
+            delete next[item.id];
+            delete next[item.name];
+          });
+          return next;
+        });
+      }
+      showToast(`Đã bỏ chọn các món thuộc quầy ${aisleName}.`);
+    } else {
+      // Check all pending items in this aisle
+      if (collabRoom?.roomId) {
+        aisleItems.forEach(item => {
+          if (!getItemCheckInfo(item).isChecked) {
+            toggleCollabChecked(item.id);
+          }
+        });
+      } else {
+        setGroceryCheckedItems(prev => {
+          const next = { ...prev };
+          aisleItems.forEach(item => {
+            next[item.id] = true;
+            next[item.name] = true;
+          });
+          return next;
+        });
+      }
+      showToast(`✓ Đã chọn tất cả ${aisleItems.length} món quầy ${aisleName}!`);
+    }
+  };
+
+  // Share / Quick Share / Copy shopping list handler
+  const handleShareList = async () => {
     const activeCheckedRecord: Record<string, boolean> = {};
     effectiveList.forEach(item => {
       activeCheckedRecord[item.id] = getItemCheckInfo(item).isChecked;
     });
     const text = generateZaloShoppingText(effectiveList, activeCheckedRecord, totalCostEstimate, storeFilter);
+
+    // Try native Web Share API first (opens phone's Quick Share: Zalo, Messenger, SMS, Contacts...)
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title: 'Danh sách đi chợ MealWise',
+          text: text
+        });
+        setCopied(true);
+        showToast('✓ Đã mở chia sẻ danh sách đi chợ!');
+        setTimeout(() => setCopied(false), 3000);
+        return;
+      } catch (err: any) {
+        // If user dismissed / canceled the native share sheet, do not show error or copy
+        if (err?.name === 'AbortError') {
+          return;
+        }
+        // If sharing failed with other errors, proceed to clipboard fallback
+      }
+    }
+
+    // Graceful clipboard fallback for browsers without Web Share API
     const success = await copyTextToClipboard(text);
     if (success) {
       setCopied(true);
-      showToast('📋 Đã sao chép danh sách đi chợ Zalo với trạng thái đã mua!');
+      showToast('📋 Đã sao chép danh sách đi chợ vào bộ nhớ tạm!');
       setTimeout(() => setCopied(false), 3000);
     } else {
       showToast('⚠️ Không thể tự động sao chép. Vui lòng kiểm tra quyền trình duyệt.');
     }
+  };
+  const handleCopy = handleShareList;
+
+  const checkedItems = effectiveList.filter(i => getItemCheckInfo(i).isChecked);
+
+  // Stock bought items into Smart Fridge (Partial Intake Engine)
+  const handleConfirmStockFridge = () => {
+    if (checkedItems.length === 0) return;
+
+    const itemsToStock = checkedItems.map(item => {
+      const comp = inferItemCompartment({
+        id: item.id,
+        name: item.name,
+        category: item.rawCategory || 'Khác',
+        quantity: `${item.amount} ${item.unit}`,
+        daysLeft: 3,
+        status: 'fresh'
+      });
+      return {
+        name: item.name,
+        category: item.rawCategory || (comp === 'crisper' ? 'Rau củ quả' : comp === 'freezer' ? 'Thịt / Hải sản' : 'Khác'),
+        quantity: `${item.amount} ${item.unit}`,
+        daysLeft: comp === 'freezer' ? 30 : comp === 'crisper' ? 5 : 3,
+        status: 'fresh' as const,
+        compartment: comp,
+        isLeftover: false,
+        discountOpportunityVnd: item.estimatedCost || 20000,
+        addedAt: new Date().toLocaleDateString('vi-VN')
+      };
+    });
+
+    // Batch add to pantry items in one single state update
+    if (typeof addPantryItems === 'function') {
+      addPantryItems(itemsToStock);
+    } else {
+      for (const item of itemsToStock) {
+        addPantryItem(item);
+      }
+    }
+
+    // Append to deletedItemNames so bought items disappear from active grocery trip
+    const namesToDelete = checkedItems.flatMap(item => [
+      item.name,
+      item.id,
+      ...(item.extraOriginalNames || []),
+      canonicalizeIngredientName(item.name)
+    ]).filter(Boolean);
+
+    setDeletedItemNames(prev => {
+      const updated = Array.from(new Set([...prev, ...namesToDelete]));
+      try {
+        localStorage.setItem('mealwise_deleted_grocery_items', JSON.stringify(updated));
+      } catch (e) {
+        console.error('Failed to save deleted grocery items', e);
+      }
+      return updated;
+    });
+
+    removeExtraGroceryItem(namesToDelete);
+
+    // Batch uncheck all checkedItems in one single setState call instead of multiple re-renders
+    setGroceryCheckedItems(prev => {
+      const next = { ...prev };
+      for (const item of checkedItems) {
+        delete next[item.id];
+        delete next[item.name];
+      }
+      return next;
+    });
+
+    setIsStockFridgeModalOpen(false);
+    setIsWeeklyShoppingCompleted(true);
+    try {
+      localStorage.setItem('mealwise_weekly_shopping_completed', 'true');
+    } catch {}
+    showToast(`✓ Đã cất ${checkedItems.length} món vào Tủ Lạnh Thông Minh!`, 'success');
+    setActiveTab('pantry');
   };
 
   // Grocery aisle counts
@@ -1214,23 +1572,87 @@ export const GroceryList: React.FC = () => {
     );
   };
 
+  // Guest Account Feature Gating: Lock grocery shopping entirely for unregistered guests
+  if (!isRegistered && !isWebGuestViewer) {
+    return (
+      <div className="space-y-4 max-w-lg mx-auto animate-in fade-in duration-300">
+        <div className="p-6 rounded-3xl bg-white dark:bg-[#1A202C] border border-[#E2E8F0] dark:border-[#2D3748] text-center shadow-xs relative overflow-hidden">
+          <div className="w-16 h-16 mx-auto mb-3.5 rounded-3xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
+            <Lock className="w-8 h-8" />
+          </div>
+
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/50 text-[11px] font-black uppercase tracking-wider mb-2">
+            <Sparkles className="w-3.5 h-3.5" /> Tính Năng Thành Viên
+          </span>
+
+          <h2 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white tracking-tight mb-2">
+            Danh Sách Đi Chợ Tự Động
+          </h2>
+
+          <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-md mx-auto leading-relaxed mb-6">
+            Đăng ký tài khoản miễn phí để mở khóa tính năng tự động cộng dồn nguyên liệu cả tuần theo khẩu phần, phân loại theo 5 quầy siêu thị, ước tính chi phí và chia sẻ giỏ hàng mua chung thời gian thực.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-left mb-6">
+            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
+              <span className="text-lg block mb-1">🛒</span>
+              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Tự Gom Nguyên Liệu</h4>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400">Tự cộng dồn từng gram thịt, mớ rau từ thực đơn tuần, tránh lãng phí.</p>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
+              <span className="text-lg block mb-1">🏪</span>
+              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Phân Quầy & Báo Giá</h4>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400">Phân 5 quầy siêu thị kèm so sánh giá WinMart, chợ dân sinh.</p>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
+              <span className="text-lg block mb-1">👥</span>
+              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Đi Chợ Chung Live</h4>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400">Mua sắm cùng gia đình với mã phòng real-time, chia người mua món.</p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => openAuthModal('register')}
+              className="w-full py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-sm shadow-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Đăng Ký Miễn Phí Để Mở Khóa</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => openAuthModal('login')}
+              className="w-full py-2.5 px-4 rounded-xl text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-200 font-bold text-xs transition-colors cursor-pointer"
+            >
+              Đã có tài khoản? Đăng nhập ngay
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       
       {/* Web Guest Viewer Mode Callout Banner */}
       {isWebGuestViewer && (
-        <div className="p-3.5 sm:p-4 rounded-3xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-amber-500/10 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs animate-fade-in">
+        <div className="p-3.5 sm:p-4 rounded-3xl bg-white dark:bg-[#1A202C] border border-[#E2E8F0] dark:border-[#2D3748] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs animate-fade-in">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30 shadow-2xs">
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-200/60 dark:border-blue-800/50 shadow-2xs">
               <Smartphone className="w-5 h-5" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="font-black text-stone-900 dark:text-white text-xs">
-                  Chế Độ Khách Xem Đi Chợ (Web Sheet)
+                  Chế Độ Khách Xem Đi Chợ
                 </span>
-                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300">
-                  Live Sync
+                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/50">
+                  Đồng Bộ Trực Tiếp
                 </span>
               </div>
               <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-0.5 leading-snug">
@@ -1241,7 +1663,7 @@ export const GroceryList: React.FC = () => {
           <button
             type="button"
             onClick={() => openDownloadAppModal()}
-            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs flex items-center justify-center gap-1.5 shrink-0 shadow-md shadow-emerald-600/20 active:scale-95 transition-all cursor-pointer self-start sm:self-auto"
+            className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer self-start sm:self-auto"
           >
             <Smartphone className="w-3.5 h-3.5" />
             <span>Tải App MealWise</span>
@@ -1250,10 +1672,10 @@ export const GroceryList: React.FC = () => {
       )}
 
       {/* Header Banner */}
-      <div className="p-4 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xs space-y-3">
+      <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 text-[11px] font-bold shrink-0">
-            <ShoppingCart className="w-3.5 h-3.5 text-stone-900 dark:text-white" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[11px] font-bold shrink-0">
+            <ShoppingCart className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400" />
             <span>Tự Động Gom Nguyên Liệu</span>
           </div>
 
@@ -1268,14 +1690,14 @@ export const GroceryList: React.FC = () => {
                 }
                 setActiveTab('pantry');
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
               title="Xem tủ lạnh, kiểm tra đồ thừa và nguyên liệu sẵn có"
             >
               <span className="text-xs">🧊</span>
               <span>Tủ Lạnh & Đồ Thừa</span>
               {isWebGuestViewer && <span className="text-[9px] text-amber-600 dark:text-amber-400 font-black">🔒 App</span>}
               {!isWebGuestViewer && (
-                <span className="px-1.5 py-0.2 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] font-black">
+                <span className="px-1.5 py-0.2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-[10px] font-black">
                   {pantryItems.length}
                 </span>
               )}
@@ -1285,62 +1707,78 @@ export const GroceryList: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowPriceSimulation(prev => !prev)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0"
               title="Mô phỏng và so sánh giỏ hàng online giữa các chuỗi siêu thị"
             >
-              <TrendingUp className="w-3.5 h-3.5 text-stone-600 dark:text-stone-400" />
+              <TrendingUp className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
               <span>Mô Phỏng Giá Online</span>
               {showPriceSimulation ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-            </button>
-
-            {/* Quick-Add Depleted Pantry Essentials Button */}
-            <button
-              type="button"
-              onClick={() => setIsQuickAddOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500 hover:bg-amber-400 text-stone-950 text-[11px] font-black transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
-              title="Bổ sung món hoặc gia vị bếp vừa hết vào danh sách đi chợ tuần"
-            >
-              <Plus className="w-3.5 h-3.5 stroke-[3]" />
-              <span>+ Thêm Món / Gia Vị Hết</span>
-              {(extraGroceryItems || []).length > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full bg-stone-900 text-white text-[10px] font-black">
-                  +{(extraGroceryItems || []).length}
-                </span>
-              )}
             </button>
           </div>
         </div>
 
         <div>
-          <h1 className="text-lg font-black tracking-tight text-stone-900 dark:text-white">
+          <h1 className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
             Danh Sách Đi Chợ Thông Minh
           </h1>
-          <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
             Tự động gộp nguyên liệu trùng lặp, chuẩn hóa đơn vị và phân luồng theo quầy mua sắm tối ưu.
           </p>
         </div>
 
-        {/* Smart Pantry Exemption Reassurance Banner with direct pop-up trigger */}
-        <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-900 dark:text-amber-200">
-          <div className="flex items-start sm:items-center gap-2 min-w-0 flex-1">
-            <span className="text-base shrink-0 mt-0.5 sm:mt-0">✨</span>
-            <p className="text-xs leading-snug font-medium text-amber-900 dark:text-amber-200 break-words">
-              Đã tự động <strong className="font-bold">ẩn gia vị phổ thông có sẵn</strong> trong bếp gồm nước mắm, muối, đường và dầu ăn.
-            </p>
+        {/* Compact 1-Tap Pantry Spices Strip (Zero Vertical Expansion) */}
+        <div
+          data-tutorial-target="spices-cabinet-btn"
+          className="p-2.5 sm:p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 space-y-2"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-sm shrink-0">🧂</span>
+              <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 truncate">
+                Gia vị cơ bản đã ẩn • <strong className="text-slate-900 dark:text-white">Chạm món hết để mua:</strong>
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsQuickAddOpen(true)}
+              className="px-2.5 py-1 rounded-lg bg-white hover:bg-blue-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-[#1D4ED8] dark:text-blue-400 border border-blue-200 dark:border-blue-800/70 text-[11px] font-black transition-all active:scale-95 cursor-pointer shrink-0 flex items-center gap-1 shadow-2xs"
+              title="Nhập thêm món hoặc nhu yếu phẩm khác"
+            >
+              <Plus className="w-3 h-3 stroke-[3]" />
+              <span>Món khác</span>
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsQuickAddOpen(true)}
-            className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-black shrink-0 transition-all active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap min-h-[36px] flex items-center justify-center"
-            title="Bổ sung gia vị hoặc món ngoài kế hoạch"
-          >
-            + Bổ sung
-          </button>
+
+          {/* Horizontal 1-Tap Scrollable Spice Chips */}
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5 -mx-0.5 px-0.5">
+            {COMMON_PANTRY_SPICES.map(spice => {
+              const toBuy = isSpiceMarkedToBuy(spice.name);
+              return (
+                <button
+                  key={spice.name}
+                  type="button"
+                  onClick={() => toggleSpiceToBuy(spice)}
+                  className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0 border ${
+                    toBuy
+                      ? 'bg-[#1D4ED8] text-white border-[#1D4ED8] shadow-xs'
+                      : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-blue-400'
+                  }`}
+                  title={toBuy ? `Đang trong giỏ (${spice.name}) — Chạm để bỏ` : `Thêm ${spice.name} (~${(spice.cost / 1000).toFixed(0)}k/${spice.unit}) vào giỏ`}
+                >
+                  <span>{spice.icon}</span>
+                  <span>{spice.shortName}</span>
+                  <span className={`text-[10px] font-black ml-0.5 ${toBuy ? 'text-white' : 'text-slate-400 dark:text-slate-500'}`}>
+                    {toBuy ? '✓' : '+'}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="pt-2 flex items-center justify-between text-xs text-stone-600 dark:text-stone-300 border-t border-stone-100 dark:border-stone-800 font-medium">
+        <div className="pt-2 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 border-t border-slate-100 dark:border-slate-800 font-medium">
           <span>{totalCount} nguyên liệu ({overallCheckedCount} đã mua)</span>
-          <span className="font-extrabold text-stone-900 dark:text-white">
+          <span className="font-extrabold text-slate-900 dark:text-white">
             Ước tính: {totalCostEstimate.toLocaleString('vi-VN')} đ
           </span>
         </div>
@@ -1513,29 +1951,29 @@ export const GroceryList: React.FC = () => {
       {/* STREAMLINED POP-UP BANNER / MODAL: QUICK ADD DEPLETED ESSENTIALS & CUSTOM ITEMS */}
       {isQuickAddOpen && (
         <div 
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs animate-fade-in"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/65 backdrop-blur-xs animate-fade-in"
           onClick={() => setIsQuickAddOpen(false)}
         >
           <div 
-            className="w-full max-w-lg max-h-[88vh] bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xl rounded-t-[28px] sm:rounded-3xl flex flex-col overflow-hidden animate-slideUp sm:animate-scaleUp"
+            className="w-full max-w-lg max-h-[88vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-t-[28px] sm:rounded-3xl flex flex-col overflow-hidden animate-slideUp sm:animate-scaleUp"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Mobile drag handle */}
             <div className="pt-2.5 pb-1 sm:hidden flex justify-center">
-              <div className="w-10 h-1 rounded-full bg-stone-300 dark:bg-stone-700" />
+              <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
             </div>
 
             {/* Modal Header */}
-            <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between gap-3 shrink-0">
+            <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-9 h-9 rounded-2xl bg-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-2xs">
+                <div className="w-9 h-9 rounded-2xl bg-blue-50 dark:bg-blue-950/50 text-[#1D4ED8] dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-200 dark:border-blue-800/60 shadow-2xs">
                   <Plus className="w-4 h-4 stroke-[3]" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-xs sm:text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider truncate">
+                  <h3 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider truncate">
                     Bổ Sung Nhu Yếu Phẩm & Gia Vị Hết
                   </h3>
-                  <p className="text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                     Gom tất cả vào 1 chuyến đi chợ tuần duy nhất, không lo quên đồ
                   </p>
                 </div>
@@ -1543,7 +1981,7 @@ export const GroceryList: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsQuickAddOpen(false)}
-                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
                 title="Đóng cửa sổ"
               >
                 <X className="w-4 h-4" />
@@ -1554,12 +1992,12 @@ export const GroceryList: React.FC = () => {
             <div className="p-4 sm:p-5 overflow-y-auto space-y-4">
               
               {/* SECTION 1: CUSTOM ITEM INPUT (QUICK FORM) */}
-              <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700/60 space-y-2.5">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                     <span>✍️</span> Tự nhập món / đồ gia dụng bất kỳ
                   </span>
-                  <span className="text-[10px] text-stone-400 dark:text-stone-500">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500">
                     Thêm tự do
                   </span>
                 </div>
@@ -1570,7 +2008,7 @@ export const GroceryList: React.FC = () => {
                     placeholder="Ví dụ: Giấy ăn, Cà phê lon, Nước rửa chén, Bánh mì..."
                     value={customItemName}
                     onChange={(e) => setCustomItemName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:border-amber-500 text-stone-900 dark:text-white placeholder:text-stone-400 shadow-2xs"
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-hidden focus:border-[#1D4ED8] text-slate-900 dark:text-white placeholder:text-slate-400 shadow-2xs"
                   />
 
                   <div className="grid grid-cols-3 gap-2">
@@ -1582,7 +2020,7 @@ export const GroceryList: React.FC = () => {
                         placeholder="Số lượng"
                         value={customItemAmount}
                         onChange={(e) => setCustomItemAmount(e.target.value)}
-                        className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:border-amber-500 text-stone-900 dark:text-white text-center shadow-2xs"
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-hidden focus:border-[#1D4ED8] text-slate-900 dark:text-white text-center shadow-2xs"
                       />
                     </div>
                     <div className="col-span-1">
@@ -1591,13 +2029,13 @@ export const GroceryList: React.FC = () => {
                         placeholder="Đơn vị (chai, gói...)"
                         value={customItemUnit}
                         onChange={(e) => setCustomItemUnit(e.target.value)}
-                        className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:border-amber-500 text-stone-900 dark:text-white text-center shadow-2xs"
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-hidden focus:border-[#1D4ED8] text-slate-900 dark:text-white text-center shadow-2xs"
                       />
                     </div>
                     <div className="col-span-1">
                       <button
                         type="submit"
-                        className="w-full h-full min-h-[36px] px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs flex items-center justify-center gap-1 transition-all active:scale-95 shadow-xs cursor-pointer whitespace-nowrap"
+                        className="w-full h-full min-h-[36px] px-3 py-2 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-xs flex items-center justify-center gap-1 transition-all active:scale-95 shadow-xs cursor-pointer whitespace-nowrap"
                       >
                         <Plus className="w-3.5 h-3.5 stroke-[3]" />
                         <span>Thêm Vào Giỏ</span>
@@ -1610,67 +2048,65 @@ export const GroceryList: React.FC = () => {
               {/* SECTION 2: 1-TAP QUICK ADD FOR DEPLETED PANTRY STAPLES */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between px-0.5">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
-                    <span>⚡</span> Bổ sung nhanh 1 chạm (gia vị hay hết):
+                  <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                    <span>⚡</span> Nhu yếu phẩm & gia vị hay hết (1 chạm):
                   </span>
-                  <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold">
-                    Chạm để thêm
+                  <span className="text-[10px] text-[#1D4ED8] dark:text-blue-400 font-bold">
+                    Chạm để thêm / bỏ
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-1.5">
-                  {DEPLETED_PANTRY_PRESETS.map((preset, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleAddPreset(preset)}
-                      className="flex items-center justify-between p-2 rounded-xl bg-stone-50 hover:bg-amber-50/80 dark:bg-stone-800/60 dark:hover:bg-amber-950/40 border border-stone-200/80 dark:border-stone-700/80 hover:border-amber-400 text-stone-900 dark:text-stone-100 text-left transition-all active:scale-95 cursor-pointer shadow-2xs group"
-                    >
-                      <div className="min-w-0 pr-1">
-                        <span className="text-xs font-bold block truncate group-hover:text-amber-800 dark:group-hover:text-amber-300">
-                          {preset.name}
-                        </span>
-                        <span className="text-[10px] text-stone-500 dark:text-stone-400 block truncate">
-                          {preset.amount} {preset.unit} • ~{(preset.cost / 1000).toFixed(0)}k
-                        </span>
-                      </div>
-                      <div className="w-5 h-5 rounded-lg bg-amber-500/20 group-hover:bg-amber-500 text-amber-700 group-hover:text-stone-950 flex items-center justify-center shrink-0 transition-colors">
-                        <Plus className="w-3 h-3 stroke-[3]" />
-                      </div>
-                    </button>
-                  ))}
+                  {DEPLETED_PANTRY_PRESETS.map((preset, idx) => {
+                    const isAdded = isSpiceMarkedToBuy(preset.name);
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleAddPreset(preset)}
+                        className={`flex items-center justify-between p-2 rounded-xl border text-left transition-all active:scale-95 cursor-pointer shadow-2xs group ${
+                          isAdded
+                            ? 'bg-[#1D4ED8] text-white border-[#1D4ED8]'
+                            : 'bg-slate-50 hover:bg-blue-50/70 dark:bg-slate-800/60 dark:hover:bg-blue-950/30 border-slate-200/80 dark:border-slate-700/80 hover:border-blue-400 text-slate-900 dark:text-slate-100'
+                        }`}
+                      >
+                        <div className="min-w-0 pr-1">
+                          <span className={`text-xs font-bold block truncate ${
+                            isAdded ? 'text-white' : 'group-hover:text-[#1D4ED8] dark:group-hover:text-blue-300'
+                          }`}>
+                            {preset.name}
+                          </span>
+                          <span className={`text-[10px] block truncate ${
+                            isAdded ? 'text-blue-100' : 'text-slate-500 dark:text-slate-400'
+                          }`}>
+                            {preset.amount} {preset.unit} • ~{(preset.cost / 1000).toFixed(0)}k
+                          </span>
+                        </div>
+                        <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 transition-colors text-[10px] font-black ${
+                          isAdded
+                            ? 'bg-white text-[#1D4ED8]'
+                            : 'bg-blue-50 dark:bg-blue-950/60 group-hover:bg-[#1D4ED8] text-[#1D4ED8] dark:text-blue-400 group-hover:text-white'
+                        }`}>
+                          {isAdded ? '✓' : <Plus className="w-3 h-3 stroke-[3]" />}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-
-              {/* Added Custom Items notification */}
-              {(extraGroceryItems || []).length > 0 && (
-                <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center justify-between gap-2">
-                  <span>
-                    ✓ Đã thêm <strong>{(extraGroceryItems || []).length} món bổ sung</strong> vào giỏ tuần này!
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setIsQuickAddOpen(false)}
-                    className="font-bold underline cursor-pointer"
-                  >
-                    Xem giỏ hàng
-                  </button>
-                </div>
-              )}
-
             </div>
 
             {/* Modal Bottom Action Bar */}
-            <div className="p-3 sm:p-4 border-t border-stone-100 dark:border-stone-800 bg-stone-50/80 dark:bg-stone-900/80 flex items-center justify-between gap-2 shrink-0 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]">
-              <span className="text-[11px] text-stone-500 dark:text-stone-400">
+            <div className="p-3 sm:p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex items-center justify-between gap-2 shrink-0 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">
                 {(extraGroceryItems || []).length > 0 
-                  ? `Đang có ${(extraGroceryItems || []).length} món tự thêm`
+                  ? `Đang có ${(extraGroceryItems || []).length} món bổ sung trong giỏ`
                   : 'Chưa thêm món bổ sung nào'}
               </span>
               <button
                 type="button"
                 onClick={() => setIsQuickAddOpen(false)}
-                className="px-4 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-950 font-bold text-xs hover:bg-stone-800 dark:hover:bg-white active:scale-95 transition-all cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs active:scale-95 transition-all cursor-pointer"
               >
                 Xong & Xem Giỏ Hàng
               </button>
@@ -1679,35 +2115,10 @@ export const GroceryList: React.FC = () => {
         </div>
       )}
 
-      {/* Catering Sync Notification Banner */}
-      {extraGroceryItems && extraGroceryItems.length > 0 && (
-        <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="p-1.5 rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-400 shrink-0">
-              <PartyPopper className="w-4 h-4" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-bold text-amber-900 dark:text-amber-300">
-                Gồm {extraGroceryItems.length} nguyên liệu tiệc / catering
-              </p>
-              <p className="text-[10px] text-amber-800/80 dark:text-amber-300/80">
-                Đã nhân hệ số khách tiệc tự động
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={clearExtraGrocery}
-            className="px-2.5 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-950 dark:text-amber-200 text-[11px] font-bold shrink-0 transition-colors"
-          >
-            Gỡ tiệc
-          </button>
-        </div>
-      )}
-
       {/* COMPACT COLLAB STATUS PILL (WHEN LOBBY IS CLOSED) */}
       {isCollabActive && collabRoom && !isLobbyOpen && (
         <div 
-          className="p-3 px-4 rounded-2xl bg-amber-500/15 dark:bg-amber-950/40 border border-amber-500/30 flex items-center justify-between gap-2 text-xs shadow-xs animate-fade-in"
+          className="p-3 px-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 flex items-center justify-between gap-2 text-xs shadow-xs animate-fade-in"
         >
           <div 
             onClick={() => {
@@ -1720,14 +2131,14 @@ export const GroceryList: React.FC = () => {
             title="Bấm để mở sảnh phòng mua chung"
           >
             <span className="relative flex h-2.5 w-2.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#1D4ED8]"></span>
             </span>
             <div className="min-w-0">
-              <span className="font-extrabold text-amber-950 dark:text-amber-200 truncate block">
-                Phòng Mua Chung: #{collabRoom.roomId} (Live Sync • {formatTtlRemaining(collabRoom.expiresAt, collabRoom.createdAt)})
+              <span className="font-extrabold text-slate-900 dark:text-white truncate block">
+                Phòng Mua Chung: #{collabRoom.roomId} • Đồng bộ trực tiếp ({formatTtlRemaining(collabRoom.expiresAt, collabRoom.createdAt)})
               </span>
-              <span className="text-[10.5px] text-amber-800/80 dark:text-amber-300/80 truncate block">
+              <span className="text-[10.5px] text-slate-600 dark:text-slate-300 truncate block">
                 Chủ phòng: {collabRoom.hostName} • Danh sách riêng của bạn được lưu an toàn 🛡️
               </span>
             </div>
@@ -1748,7 +2159,7 @@ export const GroceryList: React.FC = () => {
                   }
                 });
               }}
-              className="text-[10.5px] font-bold text-stone-700 dark:text-stone-300 px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors cursor-pointer"
+              className="text-[10.5px] font-bold text-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
               title="Quay lại danh sách riêng"
             >
               Quay lại của tôi
@@ -1761,7 +2172,7 @@ export const GroceryList: React.FC = () => {
                   lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 50);
               }}
-              className="text-[11px] font-black text-amber-900 dark:text-amber-300 px-2.5 py-1 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center gap-1 shrink-0 cursor-pointer"
+              className="text-[11px] font-black text-white px-2.5 py-1 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 flex items-center gap-1 shrink-0 cursor-pointer"
             >
               Mở Sảnh ▼
             </button>
@@ -1771,23 +2182,23 @@ export const GroceryList: React.FC = () => {
 
       {/* COLLABORATIVE ROOM ACTIVE LOBBY: ONLY OPEN IF USER CLICKS ON THE BUTTON */}
       {isCollabActive && collabRoom && isLobbyOpen && (
-        <div ref={lobbyRef} className="p-3.5 sm:p-4 rounded-3xl bg-amber-50/50 dark:bg-stone-900 border border-amber-500/30 dark:border-amber-500/30 text-slate-900 dark:text-white space-y-3 shadow-sm animate-fade-in">
+        <div ref={lobbyRef} className="p-3.5 sm:p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white space-y-3 shadow-sm animate-fade-in">
           {/* Header */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
               <span className="relative flex h-2.5 w-2.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#1D4ED8]"></span>
               </span>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-xs font-black uppercase tracking-wider text-amber-900 dark:text-amber-300">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
                     Phòng Mua Chung: #{collabRoom.roomId}
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 font-bold border border-amber-300/60 dark:border-amber-500/30">
-                    Live Sync
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-[#1D4ED8] dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800/50">
+                    Đồng Bộ Trực Tiếp
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold border border-amber-300/60 dark:border-amber-500/30 flex items-center gap-1" title="Thời hạn phòng tối đa 1 giờ">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border border-slate-200 dark:border-slate-700 flex items-center gap-1" title="Thời hạn phòng tối đa 1 giờ">
                     <Clock className="w-2.5 h-2.5" />
                     <span>{formatTtlRemaining(collabRoom.expiresAt, collabRoom.createdAt)}</span>
                   </span>
@@ -1802,7 +2213,7 @@ export const GroceryList: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsShareModalOpen(true)}
-                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 text-[11.5px] font-black flex items-center gap-1.5 shadow-sm transition-all active:scale-95 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white text-[11.5px] font-black flex items-center gap-1.5 shadow-xs transition-all active:scale-95 cursor-pointer"
                 title="Xem liên kết & mã QR"
               >
                 <QrCode className="w-3.5 h-3.5" />
@@ -1869,17 +2280,17 @@ export const GroceryList: React.FC = () => {
                   }
                 });
               }}
-              className="px-2.5 py-1 rounded-xl bg-white dark:bg-stone-800 text-stone-900 dark:text-white font-bold text-[10.5px] border border-stone-200 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors shadow-2xs shrink-0 cursor-pointer"
+              className="px-2.5 py-1 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-[10.5px] border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-2xs shrink-0 cursor-pointer"
             >
               Quay Lại Của Tôi
             </button>
           </div>
 
           {/* Shoppers in room Roster Bar */}
-          <div className="pt-2.5 border-t border-emerald-200/60 dark:border-slate-800 space-y-1.5">
+          <div className="pt-2.5 border-t border-slate-200 dark:border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-[10.5px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                <Users className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                <Users className="w-3 h-3 text-[#1D4ED8] dark:text-blue-400" />
                 Người đi chợ trong phòng:
               </span>
               <button
@@ -1889,7 +2300,7 @@ export const GroceryList: React.FC = () => {
                   setSelectedColor(collabUser.color || '#10b981');
                   setIsProfileModalOpen(true);
                 }}
-                className="text-[11px] font-black text-amber-800 dark:text-amber-300 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-[11px] font-black text-[#1D4ED8] dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Edit3 className="w-3 h-3" />
                 <span>Đổi tên & màu của bạn</span>
@@ -1961,13 +2372,13 @@ export const GroceryList: React.FC = () => {
 
           {/* Collaborative breakdown stats */}
           <div className="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
-            <div className="p-2 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-xs">
-              <span className="block text-stone-500 dark:text-stone-400 font-semibold text-[10px]">Chưa ai mua</span>
-              <strong className="text-stone-900 dark:text-stone-100 text-sm font-black">{unclaimedCount} món</strong>
+            <div className="p-2 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="block text-slate-500 dark:text-slate-400 font-semibold text-[10px]">Chưa ai mua</span>
+              <strong className="text-slate-900 dark:text-slate-100 text-sm font-black">{unclaimedCount} món</strong>
             </div>
             
             <div 
-              className="p-2 rounded-2xl bg-white dark:bg-[#1A1918] border shadow-xs transition-all"
+              className="p-2 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border shadow-xs transition-all"
               style={{
                 borderColor: `${collabUser.color || '#10b981'}50`
               }}
@@ -1980,17 +2391,17 @@ export const GroceryList: React.FC = () => {
               </strong>
             </div>
 
-            <div className="p-2 rounded-2xl bg-white dark:bg-[#1A1918] border border-violet-200 dark:border-violet-800/60 shadow-xs">
-              <span className="block text-violet-700 dark:text-violet-400 font-semibold text-[10px]">
+            <div className="p-2 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="block text-slate-600 dark:text-slate-400 font-semibold text-[10px]">
                 Người khác nhặt
               </span>
-              <strong className="text-violet-700 dark:text-violet-300 text-sm font-black">{othersCheckedCount} món</strong>
+              <strong className="text-slate-900 dark:text-slate-100 text-sm font-black">{othersCheckedCount} món</strong>
             </div>
           </div>
 
           {/* Collaborative filter tabs */}
           <div className="flex items-center gap-1.5 pt-1 overflow-x-auto scrollbar-none text-[11px]">
-            <span className="text-stone-500 dark:text-stone-400 font-bold shrink-0 text-[10px]">Lọc theo người mua:</span>
+            <span className="text-slate-500 dark:text-slate-400 font-bold shrink-0 text-[10px]">Lọc theo người mua:</span>
             {[
               { id: 'all', label: `Tất cả (${totalCount})` },
               { id: 'unclaimed', label: `Chưa mua (${unclaimedCount})` },
@@ -2003,8 +2414,8 @@ export const GroceryList: React.FC = () => {
                 onClick={() => setCollabFilter(tab.id as any)}
                 className={`px-2.5 py-1 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
                   collabFilter === tab.id
-                    ? 'bg-amber-500 text-stone-950 shadow-sm font-black'
-                    : 'bg-white dark:bg-[#1A1918] text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-[#252220] border border-[#E8E2D8] dark:border-[#252220]'
+                    ? 'bg-[#1D4ED8] text-white shadow-sm font-black'
+                    : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                 }`}
               >
                 {tab.label}
@@ -2016,7 +2427,7 @@ export const GroceryList: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsLobbyOpen(false)}
-            className="w-full py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-200 text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer"
+            className="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer"
           >
             <span>▲ Thu Gọn Sảnh Mua Chung</span>
           </button>
@@ -2024,207 +2435,236 @@ export const GroceryList: React.FC = () => {
       )}
 
       {/* REAL-LIFE GROCERY AISLE FILTERING TABS */}
-      <div className="space-y-2">
+      <div data-tutorial-target="grocery-checklist-section" className="space-y-2">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
-              <Store className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+              <Store className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400" />
               <span>Quầy Thực Phẩm</span>
             </span>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 border border-stone-200/60 dark:border-stone-700/50">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/50">
               {displayedList.length} món
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {deletedItemNames.length > 0 && (
               <button
                 type="button"
                 onClick={() => {
                   setDeletedItemNames([]);
-                  localStorage.removeItem('mealwise_deleted_grocery_items');
+                  setIsWeeklyShoppingCompleted(false);
+                  try {
+                    localStorage.removeItem('mealwise_deleted_grocery_items');
+                    localStorage.removeItem('mealwise_weekly_shopping_completed');
+                  } catch {}
                   showToast('🔄 Đã khôi phục các món đã xóa!');
                 }}
-                className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors cursor-pointer"
+                className="text-[11px] font-bold text-[#1D4ED8] dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors cursor-pointer"
                 title="Khôi phục lại các nguyên liệu đã xóa"
               >
                 <RotateCcw className="w-3 h-3" />
-                <span>Khôi phục ({deletedItemNames.length})</span>
+                <span className="hidden sm:inline">Khôi phục ({deletedItemNames.length})</span>
               </button>
             )}
 
-            {overallCheckedCount > 0 && (
+            {displayedCheckedCount > 0 && !isAllDisplayedChecked && (
               <button
-                onClick={clearGroceryCheckedItems}
-                className="text-[11px] font-bold text-stone-500 dark:text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
-                title="Đặt lại toàn bộ trạng thái đã mua"
+                type="button"
+                onClick={handleUnselectAllDisplayed}
+                className="text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                title={`Bỏ chọn ${displayedCheckedCount} món đang lọc`}
               >
-                <RotateCcw className="w-3 h-3" />
-                <span>Bỏ chọn tất cả</span>
+                <span>Bỏ chọn ({displayedCheckedCount})</span>
+              </button>
+            )}
+
+            {displayedList.length > 0 && (
+              <button
+                type="button"
+                data-tutorial-target="grocery-select-all-btn"
+                onClick={handleToggleSelectAllUniversal}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs border ${
+                  isAllDisplayedChecked
+                    ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800'
+                    : 'bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-emerald-500'
+                }`}
+                title={
+                  isAllDisplayedChecked
+                    ? `Bỏ chọn tất cả món đang hiển thị (${displayedList.length} món)`
+                    : `Chọn tất cả món đang hiển thị (${displayedList.length} món)`
+                }
+              >
+                <CheckSquare className={`w-3.5 h-3.5 ${isAllDisplayedChecked ? 'text-rose-500' : 'text-emerald-600 dark:text-emerald-400'}`} />
+                <span>{isAllDisplayedChecked ? 'Bỏ chọn' : 'Chọn tất cả'}</span>
               </button>
             )}
           </div>
         </div>
 
-        {/* Horizontal scrollable aisle tabs (6 aisles) */}
-        <div className="flex items-center gap-1 p-1 overflow-x-auto scrollbar-none sm:grid sm:grid-cols-6 sm:gap-1.5 rounded-2xl bg-stone-100/80 dark:bg-stone-900/80 border border-stone-200/70 dark:border-stone-800/70 shadow-2xs">
-          {/* Tất Cả */}
-          <button
-            onClick={() => setAisleFilter('all')}
-            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
-              aisleFilter === 'all'
-                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
-                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
-            }`}
-          >
-            <span className="text-xs">🧺</span>
-            <span className="text-[11px] whitespace-nowrap">Tất Cả</span>
-            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
-              aisleFilter === 'all'
-                ? 'bg-white/20 text-white dark:bg-stone-900/20 dark:text-stone-950'
-                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-            }`}>
-              {aisleCounts['all']}
-            </span>
-          </button>
+        {/* Aisle Category Dropdown Bar */}
+        <div data-tutorial-target="grocery-aisles-bar" className="relative" ref={aisleDropdownRef}>
+          {(() => {
+            const selectedAisle = ALL_GROCERY_AISLES.find(a => a.id === aisleFilter) || ALL_GROCERY_AISLES[0];
+            return (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAisleDropdownOpen(prev => !prev)}
+                  aria-expanded={isAisleDropdownOpen}
+                  className={`flex-1 flex items-center justify-between px-3.5 py-2.5 rounded-2xl border text-xs font-bold transition-all shadow-xs min-h-[44px] cursor-pointer ${
+                    aisleFilter !== 'all'
+                      ? 'bg-[#1D4ED8] text-white border-[#1D4ED8] font-extrabold'
+                      : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-slate-400'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 truncate">
+                    <span className="text-sm shrink-0">
+                      {selectedAisle.icon}
+                    </span>
+                    <span className={`text-[11px] font-semibold shrink-0 ${aisleFilter !== 'all' ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'}`}>
+                      Quầy hàng:
+                    </span>
+                    <span className="font-extrabold truncate">
+                      {selectedAisle.name}
+                    </span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold shrink-0 ${
+                      aisleFilter !== 'all'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                    }`}>
+                      {aisleCounts[aisleFilter]} món
+                    </span>
+                  </div>
 
-          {/* Thịt & Trứng */}
-          <button
-            onClick={() => setAisleFilter('thit')}
-            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
-              aisleFilter === 'thit'
-                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
-                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
-            }`}
-          >
-            <span className="text-xs">🥩</span>
-            <span className="text-[11px] whitespace-nowrap">
-              <span className="sm:hidden">Thịt/Trứng</span>
-              <span className="hidden sm:inline">Thịt & Trứng</span>
-            </span>
-            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
-              aisleFilter === 'thit'
-                ? 'bg-rose-500 text-white'
-                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-            }`}>
-              {aisleCounts['thit']}
-            </span>
-          </button>
+                  <div className="flex items-center gap-1 shrink-0 ml-2">
+                    <span className={`text-[10px] hidden min-[360px]:inline ${aisleFilter !== 'all' ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'}`}>
+                      {isAisleDropdownOpen ? 'Đóng' : 'Đổi quầy'}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isAisleDropdownOpen ? 'rotate-180' : ''}`} />
+                  </div>
+                </button>
 
-          {/* Hải Sản */}
-          <button
-            onClick={() => setAisleFilter('hai-san')}
-            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
-              aisleFilter === 'hai-san'
-                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
-                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
-            }`}
-          >
-            <span className="text-xs">🦐</span>
-            <span className="text-[11px] whitespace-nowrap">Hải Sản</span>
-            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
-              aisleFilter === 'hai-san'
-                ? 'bg-sky-500 text-white'
-                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-            }`}>
-              {aisleCounts['hai-san']}
-            </span>
-          </button>
+                {/* Quick 1-tap Clear Filter Button if a specific aisle is active */}
+                {aisleFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setAisleFilter('all')}
+                    className="px-3 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center gap-1 border border-slate-200 dark:border-slate-700 min-h-[44px] transition-all shrink-0 cursor-pointer active:scale-95"
+                    title="Xem tất cả quầy"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    <span className="hidden min-[360px]:inline">Tất cả</span>
+                  </button>
+                )}
+              </div>
+            );
+          })()}
 
-          {/* Rau Củ & Nấm */}
-          <button
-            onClick={() => setAisleFilter('rau-cu')}
-            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
-              aisleFilter === 'rau-cu'
-                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
-                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
-            }`}
-          >
-            <span className="text-xs">🥬</span>
-            <span className="text-[11px] whitespace-nowrap">
-              <span className="sm:hidden">Rau Củ</span>
-              <span className="hidden sm:inline">Rau Củ & Nấm</span>
-            </span>
-            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
-              aisleFilter === 'rau-cu'
-                ? 'bg-emerald-500 text-white'
-                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-            }`}>
-              {aisleCounts['rau-cu']}
-            </span>
-          </button>
+          {/* Dropdown Menu Panel */}
+          {isAisleDropdownOpen && (
+            <div className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl p-2.5 space-y-1 animate-fade-in max-h-72 overflow-y-auto">
+              <div className="px-2 py-1 flex items-center justify-between text-[11px] font-bold text-slate-400 border-b border-slate-100 dark:border-slate-800 mb-1">
+                <span>Chọn quầy thực phẩm siêu thị</span>
+                <span>{aisleCounts['all']} món</span>
+              </div>
 
-          {/* Trái Cây */}
-          <button
-            onClick={() => setAisleFilter('trai-cay')}
-            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
-              aisleFilter === 'trai-cay'
-                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
-                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
-            }`}
-          >
-            <span className="text-xs">🍎</span>
-            <span className="text-[11px] whitespace-nowrap">Trái Cây</span>
-            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
-              aisleFilter === 'trai-cay'
-                ? 'bg-amber-500 text-white'
-                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-            }`}>
-              {aisleCounts['trai-cay']}
-            </span>
-          </button>
-
-          {/* Gia Vị & Đồ Khô */}
-          <button
-            onClick={() => setAisleFilter('gia-vi-kho')}
-            className={`py-2 px-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 min-h-[40px] flex-1 shrink-0 cursor-pointer active:scale-95 select-none ${
-              aisleFilter === 'gia-vi-kho'
-                ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 shadow-sm font-black'
-                : 'bg-white/80 hover:bg-white dark:bg-stone-850/80 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/60 dark:border-stone-800/60 shadow-2xs'
-            }`}
-          >
-            <span className="text-xs">🧂</span>
-            <span className="text-[11px] whitespace-nowrap">
-              <span className="sm:hidden">Gia Vị</span>
-              <span className="hidden sm:inline">Gia Vị & Khô</span>
-            </span>
-            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full leading-none ${
-              aisleFilter === 'gia-vi-kho'
-                ? 'bg-purple-500 text-white'
-                : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-            }`}>
-              {aisleCounts['gia-vi-kho']}
-            </span>
-          </button>
+              <div className="grid grid-cols-2 gap-1.5">
+                {ALL_GROCERY_AISLES.map(aisle => {
+                  const active = aisleFilter === aisle.id;
+                  const count = aisleCounts[aisle.id];
+                  return (
+                    <button
+                      key={aisle.id}
+                      type="button"
+                      onClick={() => {
+                        setAisleFilter(aisle.id);
+                        setIsAisleDropdownOpen(false);
+                      }}
+                      className={`flex items-center justify-between p-2 rounded-xl text-left transition-all min-h-[44px] cursor-pointer ${
+                        active
+                          ? 'bg-[#1D4ED8] text-white font-black shadow-xs'
+                          : 'bg-slate-50 dark:bg-slate-800/60 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 min-w-0 pr-1">
+                        <span className="text-sm shrink-0">{aisle.icon}</span>
+                        <div className="min-w-0">
+                          <span className="text-xs font-bold block truncate">{aisle.name}</span>
+                          <span className={`text-[9px] block truncate ${active ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'}`}>
+                            {aisle.tagline}
+                          </span>
+                        </div>
+                      </div>
+                      <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full shrink-0 ${
+                        active
+                          ? 'bg-white/20 text-white'
+                          : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
+                      }`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* CHECKLIST ITEMS ORGANIZED BY REAL-LIFE SHOPPING AISLE */}
-      <div className="space-y-4">
-        {(['thit', 'hai-san', 'rau-cu', 'trai-cay', 'gia-vi-kho'] as const).map(aisleKey => {
-          const aisle = GROCERY_AISLES[aisleKey];
-          const aisleItems = displayedList.filter(i => i.aisleCategory === aisleKey);
-          if (aisleItems.length === 0) return null;
+      <div data-tutorial-target="grocery-items-list" className="space-y-4">
+        {(() => {
+          let hasMarkedFirstAisle = false;
+          return (['thit', 'hai-san', 'rau-cu', 'trai-cay', 'gia-vi-kho'] as const).map(aisleKey => {
+            const aisle = GROCERY_AISLES[aisleKey];
+            const aisleItems = displayedList.filter(i => i.aisleCategory === aisleKey);
+            if (aisleItems.length === 0) return null;
 
-          const pendingItems = aisleItems.filter(i => !getItemCheckInfo(i).isChecked);
-          const cartedItems = aisleItems.filter(i => getItemCheckInfo(i).isChecked);
-          const isCartExpanded = expandedAisleCarts[aisleKey] !== false;
+            const isFirstAisle = !hasMarkedFirstAisle;
+            if (isFirstAisle) hasMarkedFirstAisle = true;
 
-          return (
-            <div key={aisleKey} className="space-y-2">
+            const pendingItems = aisleItems.filter(i => !getItemCheckInfo(i).isChecked);
+            const cartedItems = aisleItems.filter(i => getItemCheckInfo(i).isChecked);
+            const isCartExpanded = expandedAisleCarts[aisleKey] !== false;
+            const isAllAisleChecked = aisleItems.length > 0 && cartedItems.length === aisleItems.length;
+
+            return (
+              <div 
+                key={aisleKey} 
+                className="space-y-2"
+              >
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs font-black text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wider">
                   <span className="text-sm">{aisle.icon}</span>
                   <span>Quầy {aisle.name}</span>
                 </span>
-                <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">
-                  {cartedItems.length}/{aisleItems.length} đã vào giỏ
-                </span>
+                
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">
+                    {cartedItems.length}/{aisleItems.length} đã vào giỏ
+                  </span>
+                </div>
               </div>
 
               {/* Pending Items to buy: ALWAYS at the top */}
               <div className="space-y-1.5">
-                {pendingItems.map(renderGroceryItemRow)}
+                {isFirstAisle ? (
+                  pendingItems.length > 0 ? (
+                    <>
+                      <div data-tutorial-target="grocery-first-three-items" className="space-y-1.5">
+                        {pendingItems.slice(0, 3).map(renderGroceryItemRow)}
+                      </div>
+                      {pendingItems.slice(3).map(renderGroceryItemRow)}
+                    </>
+                  ) : (
+                    <div data-tutorial-target="grocery-first-three-items" className="space-y-1.5">
+                      {cartedItems.slice(0, 3).map(renderGroceryItemRow)}
+                    </div>
+                  )
+                ) : (
+                  pendingItems.map(renderGroceryItemRow)
+                )}
                 {pendingItems.length === 0 && cartedItems.length > 0 && (
                   <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-300 dark:border-emerald-800 text-center text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center justify-center gap-2">
                     <span>🎉</span>
@@ -2260,50 +2700,130 @@ export const GroceryList: React.FC = () => {
               )}
             </div>
           );
-        })}
+        });
+      })()}
 
         {/* Empty state for current filter */}
         {displayedList.length === 0 && (
-          <div className="py-8 text-center text-xs text-slate-500 dark:text-slate-400 italic rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
-            {totalCount === 0 
-              ? 'Chưa có món nào trong thực đơn tuần hoặc kế hoạch tiệc.' 
-              : `Không có nguyên liệu nào thuộc quầy "${aisleFilter === 'all' ? 'Tất Cả' : GROCERY_AISLES[aisleFilter].name}".`}
-          </div>
+          isWeeklyShoppingDone && effectiveList.length === 0 ? (
+            <div className="py-8 px-4 text-center rounded-3xl border border-emerald-300/60 dark:border-emerald-800/60 bg-emerald-50/50 dark:bg-emerald-950/30 space-y-3 animate-fadeIn">
+              <div className="w-14 h-14 mx-auto rounded-3xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl shadow-sm">
+                🎉
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-base font-black text-stone-900 dark:text-white">
+                  Đã Hoàn Thành Đi Chợ Cho Thực Đơn Tuần Này!
+                </h3>
+                <p className="text-xs text-stone-600 dark:text-stone-300 max-w-sm mx-auto leading-relaxed">
+                  Bạn đã mua sắm đủ toàn bộ nguyên liệu cho thực đơn tuần và cất vào Tủ Lạnh Thông Minh.
+                </p>
+              </div>
+              <div className="flex items-center justify-center gap-2 pt-1 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDeletedItemNames([]);
+                    setIsWeeklyShoppingCompleted(false);
+                    try {
+                      localStorage.removeItem('mealwise_deleted_grocery_items');
+                      localStorage.removeItem('mealwise_weekly_shopping_completed');
+                    } catch {}
+                    showToast('🔄 Đã khôi phục toàn bộ danh sách đi chợ cho tuần này!');
+                  }}
+                  className="px-4 py-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold hover:bg-stone-100 dark:hover:bg-stone-700 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Mua Lại Tuần Này</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="py-8 text-center text-xs text-slate-500 dark:text-slate-400 italic rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
+              {totalCount === 0 
+                ? 'Chưa có món nào trong thực đơn tuần hoặc kế hoạch tiệc.' 
+                : `Không có nguyên liệu nào thuộc quầy "${aisleFilter === 'all' ? 'Tất Cả' : GROCERY_AISLES[aisleFilter].name}".`}
+            </div>
+          )
         )}
+        {/* Bottom padding spacer to ensure list items can scroll smoothly above the fixed action bar */}
+        <div className={isWeeklyShoppingDone && totalCount === 0 ? "h-20 shrink-0 pointer-events-none" : "h-32 shrink-0 pointer-events-none"} aria-hidden="true" />
       </div>
 
-      {/* STICKY BOTTOM PROGRESS BAR (STICKY ABOVE BOTTOM TAB BAR AT bottom-16) */}
-      <div className="sticky bottom-16 z-30 -mx-3 sm:-mx-4 -mb-3 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-t border-stone-200 dark:border-stone-800 shadow-2xl space-y-2">
+      {/* FIXED BOTTOM PROGRESS BAR (ALWAYS VISIBLE ABOVE BOTTOM TAB BAR AT bottom-16) */}
+      <div className="fixed bottom-16 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-30 px-3 sm:px-4 py-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-t sm:border-x border-stone-200 dark:border-stone-800 shadow-2xl space-y-2">
         
-        {/* Progress status & percentage */}
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1.5 font-bold text-stone-900 dark:text-white">
-            {progressPercent === 100 ? (
-              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> Đã gom đủ {totalCount} món!
+        {/* Progress status & percentage — hidden when weekly shopping is completed since the main screen card already shows it */}
+        {!(isWeeklyShoppingDone && totalCount === 0) && (
+          <>
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1.5 font-bold text-stone-900 dark:text-white">
+                {progressPercent === 100 ? (
+                  <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <CheckCircle2 className="w-4 h-4" /> Đã gom đủ {totalCount} món!
+                  </span>
+                ) : (
+                  <span>Đã mua: {overallCheckedCount} / {totalCount} món ({progressPercent}%)</span>
+                )}
+              </div>
+              <span className="text-xs font-black text-stone-900 dark:text-white">
+                {totalCostEstimate.toLocaleString('vi-VN')} đ
               </span>
-            ) : (
-              <span>Đã mua: {overallCheckedCount} / {totalCount} món ({progressPercent}%)</span>
-            )}
-          </div>
-          <span className="text-xs font-black text-stone-900 dark:text-white">
-            {totalCostEstimate.toLocaleString('vi-VN')} đ
-          </span>
-        </div>
+            </div>
 
-        {/* Visual Progress Bar */}
-        <div className="h-2 w-full bg-stone-100 dark:bg-stone-800 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-stone-900 dark:bg-stone-100 transition-all duration-300 rounded-full"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
+            {/* Visual Progress Bar */}
+            <div className="h-2 w-full bg-stone-100 dark:bg-stone-800 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all duration-300 rounded-full"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </>
+        )}
+
+        {/* Golden Loop: Stock Checked Items to Smart Fridge OR View Fridge when done */}
+        {isWeeklyShoppingDone && totalCount === 0 ? (
+          <button
+            type="button"
+            onClick={() => setActiveTab('pantry')}
+            className="w-full py-2.5 px-4 rounded-2xl font-black text-xs sm:text-sm shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-400/30"
+          >
+            <span className="text-base">🧊</span>
+            <span>Mở Tủ Lạnh Thông Minh</span>
+            <ArrowRight className="w-4 h-4 ml-1 opacity-75" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            data-tutorial-target="stock-fridge-btn"
+            onClick={() => {
+              if (overallCheckedCount === 0) {
+                showToast('Hãy tích chọn các món bạn đã mua trước khi cất vào tủ lạnh nhé!', 'info');
+                return;
+              }
+              setIsStockFridgeModalOpen(true);
+            }}
+            className={`w-full py-2.5 px-4 rounded-2xl font-black text-xs sm:text-sm shadow-xs transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer border ${
+              overallCheckedCount > 0
+                ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-400/30 shadow-md hover:shadow-lg'
+                : 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-700'
+            }`}
+          >
+            <span className="text-base">🧊</span>
+            <span>
+              {overallCheckedCount > 0
+                ? `Cất Vào Tủ Lạnh (${overallCheckedCount} món đã mua)`
+                : 'Cất Vào Tủ Lạnh (Tích chọn món đã mua)'}
+            </span>
+            <ArrowRight className="w-4 h-4 ml-1 opacity-75" />
+          </button>
+        )}
 
         {/* Collaborative Share & Zalo Export Buttons Grid */}
         <div className="grid grid-cols-2 gap-2">
           {/* Button 1: Collaborative Live Share (Locked for Guests) */}
           <button
             type="button"
+            data-tutorial-target="collab-lobby-btn"
             onClick={async () => {
               if (!isRegistered) {
                 showToast('🔒 Tính năng Đi Chợ Chung thời gian thực chỉ dành cho Thành Viên! Vui lòng đăng ký tài khoản miễn phí.', 'warning');
@@ -2329,7 +2849,7 @@ export const GroceryList: React.FC = () => {
             className={
               !isRegistered
                 ? "py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/80 shadow-xs"
-                : "py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100 text-white dark:text-stone-950 shadow-md font-black"
+                : "py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-md font-black"
             }
             title={
               !isRegistered
@@ -2347,7 +2867,7 @@ export const GroceryList: React.FC = () => {
                 <Users className="w-4 h-4 shrink-0" />
                 <span className="truncate">
                   {collabRoom
-                    ? (isLobbyOpen ? 'Đóng Sảnh (Live)' : 'Mua Chung (Live)')
+                    ? (isLobbyOpen ? 'Đóng Sảnh' : 'Mua Chung')
                     : 'Chia Sẻ Mua Chung'}
                 </span>
                 {collabRoom && (
@@ -2360,19 +2880,23 @@ export const GroceryList: React.FC = () => {
             )}
           </button>
 
-          {/* Button 2: Quick Zalo Export */}
+          {/* Button 2: Quick Share / Export Shopping List */}
           <button
             type="button"
-            onClick={handleCopy}
+            onClick={handleShareList}
             className="py-2.5 px-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer"
-            title="Sao chép toàn bộ danh sách dạng văn bản gửi Zalo"
+            title="Chia sẻ danh sách đi chợ hoặc sao chép"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <GroceryScrollIcon className="w-4 h-4 text-stone-600 dark:text-stone-400" />}
+            {copied ? (
+              <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+            ) : (
+              <Share2 className="w-4 h-4 text-stone-600 dark:text-stone-400 shrink-0" />
+            )}
             <span className="truncate">
-              {copied ? 'Đã Chép Zalo' : (
+              {copied ? 'Đã Chia Sẻ' : (
                 <>
-                  <span className="sm:hidden">Xuất Zalo Đi Chợ</span>
-                  <span className="hidden sm:inline">Xuất Zalo Đi Chợ</span>
+                  <span className="sm:hidden">Chia Sẻ Danh Sách</span>
+                  <span className="hidden sm:inline">Chia Sẻ Danh Sách</span>
                 </>
               )}
             </span>
@@ -2495,9 +3019,163 @@ export const GroceryList: React.FC = () => {
                   setIsProfileModalOpen(false);
                   showToast(`✓ Đã lưu hồ sơ: ${finalName}!`);
                 }}
-                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 text-xs font-black shadow-sm transition-all cursor-pointer"
+                className="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer"
               >
                 Lưu thay đổi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Stock Fridge Confirmation Modal (Golden Loop Intake) */}
+      {isStockFridgeModalOpen && (
+        <div 
+          className="fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-4 bg-stone-950/75 backdrop-blur-sm animate-fade-in"
+          onClick={() => setIsStockFridgeModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div 
+            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-4 animate-scale-up text-stone-900 dark:text-white max-h-[85vh] flex flex-col"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-[#E8E2D8] dark:border-[#252220] shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-2xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+                  🧊
+                </div>
+                <div>
+                  <h4 className="text-sm font-black">Cất Vào Tủ Lạnh Thông Minh</h4>
+                  <p className="text-[11px] text-stone-500 dark:text-stone-400">
+                    Chuyển {checkedItems.length} món đã mua vào đúng các ngăn tủ lạnh
+                  </p>
+                </div>
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setIsStockFridgeModalOpen(false)}
+                className="p-1 rounded-xl text-stone-400 hover:text-stone-600 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-[#252220]"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body: Compartment Breakdown */}
+            <div className="overflow-y-auto space-y-3 pr-1 flex-1">
+              <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                Hệ thống tự động phân loại thực phẩm vào từng ngăn tối ưu theo hạn bảo quản:
+              </p>
+
+              {/* Ngăn Đông */}
+              {(() => {
+                const freezerItems = checkedItems.filter(i => {
+                  const comp = inferItemCompartment({
+                    id: i.id, name: i.name, category: i.rawCategory || 'Khác',
+                    quantity: `${i.amount} ${i.unit}`, daysLeft: 3, status: 'fresh'
+                  });
+                  return comp === 'freezer';
+                });
+                if (freezerItems.length === 0) return null;
+                return (
+                  <div className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200/60 dark:border-sky-800/40 space-y-1.5">
+                    <div className="flex items-center justify-between text-xs font-black text-sky-800 dark:text-sky-300">
+                      <span className="flex items-center gap-1.5">❄️ Ngăn Đông (Bảo quản ~30 ngày)</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-sky-200 dark:bg-sky-900 text-sky-900 dark:text-sky-200">{freezerItems.length} món</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {freezerItems.map(it => (
+                        <span key={it.id} className="text-[11px] px-2 py-0.5 rounded-lg bg-white/80 dark:bg-stone-900/80 font-bold border border-sky-200/50 dark:border-sky-800/50">
+                          {it.name} ({it.amount} {it.unit})
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Ngăn Mát */}
+              {(() => {
+                const fridgeItems = checkedItems.filter(i => {
+                  const comp = inferItemCompartment({
+                    id: i.id, name: i.name, category: i.rawCategory || 'Khác',
+                    quantity: `${i.amount} ${i.unit}`, daysLeft: 3, status: 'fresh'
+                  });
+                  return comp === 'fridge';
+                });
+                if (fridgeItems.length === 0) return null;
+                return (
+                  <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 space-y-1.5">
+                    <div className="flex items-center justify-between text-xs font-black text-amber-800 dark:text-amber-300">
+                      <span className="flex items-center gap-1.5">🧊 Ngăn Mát (Bảo quản ~3 ngày)</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200">{fridgeItems.length} món</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {fridgeItems.map(it => (
+                        <span key={it.id} className="text-[11px] px-2 py-0.5 rounded-lg bg-white/80 dark:bg-stone-900/80 font-bold border border-amber-200/50 dark:border-amber-800/50">
+                          {it.name} ({it.amount} {it.unit})
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Ngăn Rau Củ */}
+              {(() => {
+                const crisperItems = checkedItems.filter(i => {
+                  const comp = inferItemCompartment({
+                    id: i.id, name: i.name, category: i.rawCategory || 'Khác',
+                    quantity: `${i.amount} ${i.unit}`, daysLeft: 3, status: 'fresh'
+                  });
+                  return comp === 'crisper';
+                });
+                if (crisperItems.length === 0) return null;
+                return (
+                  <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/40 space-y-1.5">
+                    <div className="flex items-center justify-between text-xs font-black text-emerald-800 dark:text-emerald-300">
+                      <span className="flex items-center gap-1.5">🥦 Ngăn Rau Củ Quả (Bảo quản ~5 ngày)</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200">{crisperItems.length} món</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {crisperItems.map(it => (
+                        <span key={it.id} className="text-[11px] px-2 py-0.5 rounded-lg bg-white/80 dark:bg-stone-900/80 font-bold border border-emerald-200/50 dark:border-emerald-800/50">
+                          {it.name} ({it.amount} {it.unit})
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Partial Note: Remaining unbought items */}
+              {totalCount > checkedItems.length && (
+                <div className="p-2.5 rounded-xl bg-stone-100 dark:bg-stone-800/50 text-[11px] text-stone-600 dark:text-stone-300 leading-snug flex items-center gap-2">
+                  <span>💡</span>
+                  <span>
+                    Còn <strong>{totalCount - checkedItems.length} món chưa nhặt</strong> sẽ được giữ lại trong danh sách đi chợ cho chuyến đi tiếp theo.
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Actions */}
+            <div className="pt-2 flex items-center justify-end gap-2 border-t border-[#E8E2D8] dark:border-[#252220] shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsStockFridgeModalOpen(false)}
+                className="px-3.5 py-2 rounded-xl text-xs font-bold text-stone-500 hover:bg-stone-100 dark:hover:bg-[#252220] cursor-pointer"
+              >
+                Xem lại giỏ
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmStockFridge}
+                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-xs transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
+              >
+                <span>Xác nhận cất vào tủ lạnh</span>
+                <Check className="w-4 h-4 stroke-[3]" />
               </button>
             </div>
           </div>

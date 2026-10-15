@@ -94,9 +94,9 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
 
   return (
     <div className="relative flex flex-col items-center justify-center select-none py-2 w-full max-w-[290px] mx-auto">
-      {/* Outer Glow Halo */}
+      {/* Outer Flat Halo */}
       <div 
-        className="absolute rounded-full bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-emerald-500/20 blur-xl transition-opacity pointer-events-none"
+        className="absolute rounded-full bg-blue-500/10 blur-xl transition-opacity pointer-events-none"
         style={{ width: '100%', maxWidth: size + 20, height: 'auto', aspectRatio: '1/1' }}
       />
 
@@ -129,34 +129,19 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
           style={{ maxWidth: size, aspectRatio: '1/1' }}
         >
           <defs>
-            {/* Outer Rim Gradient */}
-            <linearGradient id="wheelRimGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f59e0b" />
-              <stop offset="50%" stopColor="#b45309" />
-              <stop offset="100%" stopColor="#f59e0b" />
-            </linearGradient>
-
-            {/* Inner Metallic Hub Gradient */}
-            <radialGradient id="centerHubGradient" cx="35%" cy="35%" r="70%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="35%" stopColor="#e2e8f0" />
-              <stop offset="70%" stopColor="#94a3b8" />
-              <stop offset="100%" stopColor="#475569" />
-            </radialGradient>
-
             {/* Drop Shadow Filter */}
             <filter id="wheelShadow" x="-10%" y="-10%" width="120%" height="120%">
               <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.35" />
             </filter>
           </defs>
 
-          {/* Outer Metallic Rim */}
+          {/* Outer Flat Matte Cobalt Rim */}
           <circle
             cx={center}
             cy={center}
             r={radius - 2}
             fill="#1e293b"
-            stroke="url(#wheelRimGradient)"
+            stroke="#1d4ed8"
             strokeWidth="8"
             filter="url(#wheelShadow)"
           />
@@ -248,13 +233,13 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
               strokeWidth="3.5"
               filter="url(#wheelShadow)"
             />
-            {/* Inner Metallic Button */}
+            {/* Inner Flat Matte Cobalt Button */}
             <circle
               cx={center}
               cy={center}
               r="28"
-              fill="url(#centerHubGradient)"
-              className="group-hover:opacity-95 transition-opacity"
+              fill="#1d4ed8"
+              className="group-hover:fill-[#2563eb] transition-colors"
             />
             {/* Center Knob Text */}
             <text
@@ -262,7 +247,7 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
               y={center - 3}
               textAnchor="middle"
               dominantBaseline="central"
-              fill="#0f172a"
+              fill="#ffffff"
               fontWeight="900"
               fontSize="12"
               className="tracking-wider uppercase font-sans pointer-events-none"
@@ -274,7 +259,7 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
               y={center + 10}
               textAnchor="middle"
               dominantBaseline="central"
-              fill="#d97706"
+              fill="#93c5fd"
               fontWeight="bold"
               fontSize="8.5"
               className="tracking-tighter uppercase font-sans pointer-events-none"

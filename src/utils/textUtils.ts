@@ -222,3 +222,130 @@ export function isHotpotOrFeast(recipe: { title?: string; id?: string; tags?: st
   return false;
 }
 
+/**
+ * Common Vietnamese regional food synonyms (North <-> South / Central).
+ * Enables seamless cross-dialect search:
+ * - "heo" <-> "lợn" (e.g. "thịt heo" <-> "thịt lợn")
+ * - "ba rọi" <-> "ba chỉ"
+ * - "đậu hũ" <-> "đậu phụ" <-> "tàu hũ"
+ * - "ngô" <-> "bắp"
+ * - "lạc" <-> "đậu phộng"
+ * - "dưa chuột" <-> "dưa leo"
+ * - "vừng" <-> "mè"
+ * - "nấm mèo" <-> "mộc nhĩ"
+ * - "rau mùi" <-> "ngò rí" / "ngò"
+ * - "mùi tàu" <-> "ngò gai"
+ * - "dọc mùng" <-> "bạc hà"
+ */
+export const VIETNAMESE_FOOD_SYNONYMS: Record<string, string[]> = {
+  heo: ['lon'],
+  lon: ['heo'],
+  'thit heo': ['thit lon'],
+  'thit lon': ['thit heo'],
+  'ba chi': ['ba roi'],
+  'ba roi': ['ba chi'],
+  'dau hu': ['dau phu', 'tau hu'],
+  'dau phu': ['dau hu', 'tau hu'],
+  'tau hu': ['dau hu', 'dau phu'],
+  bap: ['ngo'],
+  ngo: ['bap'],
+  'dua leo': ['dua chuot'],
+  'dua chuot': ['dua leo'],
+  lac: ['dau phong'],
+  'dau phong': ['lac'],
+  me: ['vung'],
+  vung: ['me'],
+  'moc nhi': ['nam meo'],
+  'nam meo': ['moc nhi'],
+  'rau mui': ['ngo', 'ngo ri'],
+  'ngo ri': ['rau mui'],
+  'mui tau': ['ngo gai'],
+  'ngo gai': ['mui tau'],
+  'hanh hoa': ['hanh la'],
+  'hanh la': ['hanh hoa'],
+  'cha gio': ['nem ran', 'nem'],
+  'nem ran': ['cha gio'],
+  thom: ['dua', 'khom'],
+  khom: ['dua', 'thom'],
+};
+
+/**
+ * Expands a food search query into an array of search variants including
+ * regional Vietnamese synonyms.
+ * For example:
+ * - "thit lon" -> ["thit lon", "thit heo"]
+ * - "heo" -> ["heo", "lon"]
+ * - "thit h" -> ["thit h", "thit l"]
+ * - "thit l" -> ["thit l", "thit h"]
+ */
+export function expandFoodSearchQueries(rawQuery: string): string[] {
+  const norm = normalizeSearchString(rawQuery);
+  if (!norm) return [];
+  const results = new Set<string>([norm]);
+
+  // Check prefix / partial typing: e.g. "thit l" <-> "thit h", "thit he" <-> "thit lo"
+  if (norm.startsWith('thit l')) {
+    results.add('thit heo' + norm.slice(6));
+    results.add('thit h' + norm.slice(6));
+  } else if (norm.startsWith('thit h')) {
+    results.add('thit lon' + norm.slice(6));
+    results.add('thit l' + norm.slice(6));
+  } else if (norm.startsWith('l')) {
+    results.add('heo' + norm.slice(1));
+    results.add('h' + norm.slice(1));
+  } else if (norm.startsWith('h')) {
+    results.add('lon' + norm.slice(1));
+    results.add('l' + norm.slice(1));
+  }
+
+  // Check direct compound phrases
+  for (const [key, synonyms] of Object.entries(VIETNAMESE_FOOD_SYNONYMS)) {
+    const normKey = normalizeSearchString(key);
+    if (norm.includes(normKey)) {
+      for (const syn of synonyms) {
+        const normSyn = normalizeSearchString(syn);
+        results.add(norm.replace(normKey, normSyn));
+        results.add(normSyn);
+      }
+    }
+  }
+
+  // Token-level replacements
+  const tokens = norm.split(/\s+/);
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (VIETNAMESE_FOOD_SYNONYMS[t]) {
+      for (const syn of VIETNAMESE_FOOD_SYNONYMS[t]) {
+        const newTokens = [...tokens];
+        newTokens[i] = syn;
+        results.add(newTokens.join(' '));
+      }
+    }
+  }
+
+  return Array.from(results);
+}
+
+/**
+ * Checks whether a target text matches any of the query variants,
+ * taking into account Vietnamese regional synonyms (heo <-> lợn, bắp <-> ngô, etc.).
+ */
+export function matchesFoodSearch(target: string | undefined | null, rawQuery: string | undefined | null): boolean {
+  if (!rawQuery || !rawQuery.trim()) return true;
+  if (!target || !target.trim()) return false;
+
+  const queries = expandFoodSearchQueries(rawQuery);
+  const normTarget = normalizeSearchString(target);
+
+  for (const q of queries) {
+    if (normTarget.includes(q)) return true;
+    const tokens = q.split(/\s+/).filter(Boolean);
+    if (tokens.length > 1 && tokens.every(tok => normTarget.includes(tok))) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+

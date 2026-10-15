@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { 
   Recipe, 
   VietnameseMealSet, 
@@ -80,6 +80,9 @@ export type ToastType = 'info' | 'success' | 'warning' | 'error';
 interface MealWiseContextType {
   guestSession: GuestUserSession | null;
   recipes: Recipe[];
+  customRecipes: Recipe[];
+  addCustomRecipe: (recipe: Recipe) => void;
+  deleteCustomRecipe: (recipeId: string) => void;
   mealSets: VietnameseMealSet[];
   weeklyPlan: DailyMealPlan[];
   setWeeklyPlan: React.Dispatch<React.SetStateAction<DailyMealPlan[]>>;
@@ -96,6 +99,9 @@ interface MealWiseContextType {
   setShowOnboarding: (show: boolean) => void;
   completeOnboarding: (data: Partial<OnboardingData>, options?: { regeneratePlan?: boolean }) => void;
   resetOnboarding: () => void;
+  isTutorialOpen: boolean;
+  setIsTutorialOpen: (open: boolean) => void;
+  startTutorial: () => void;
   
   // Selection modals
   selectedRecipe: Recipe | null;
@@ -111,6 +117,7 @@ interface MealWiseContextType {
   addRecipeToSlot: (dayId: string, slot: MealSlot, recipeId: string) => void;
   assignRecipeToSlot: (dayId: string, slot: MealSlot, recipeId: string) => void;
   removeMealFromSlot: (dayId: string, slot: MealSlot) => void;
+  toggleSkipSlot: (dayId: string, slot: MealSlot, customNote?: string) => void;
   generationCount: number;
   autoFillWeeklyMenu: (customPreferences?: OnboardingData, options?: { seed?: number; cycleIndex?: number }) => void;
   recalibrateDayMenu: (dayId: string) => boolean;
@@ -127,6 +134,8 @@ interface MealWiseContextType {
   setGroceryCheckedItems: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
   toggleGroceryItemChecked: (key: string) => void;
   clearGroceryCheckedItems: () => void;
+  isWeeklyShoppingCompleted: boolean;
+  setIsWeeklyShoppingCompleted: React.Dispatch<React.SetStateAction<boolean>>;
   groceryItemBuyerCounts: Record<string, number>;
   incrementGroceryItemBuyer: (key: string) => void;
   decrementGroceryItemBuyer: (key: string) => void;
@@ -189,6 +198,7 @@ interface MealWiseContextType {
   // Pantry / Fridge state
   pantryItems: PantryItem[];
   addPantryItem: (item: Omit<PantryItem, 'id'>) => void;
+  addPantryItems: (items: Array<Omit<PantryItem, 'id'>>) => void;
   removePantryItem: (id: string) => void;
   updatePantryItem: (id: string, updates: Partial<PantryItem>) => void;
   clearPantryItems: () => void;
@@ -244,10 +254,11 @@ if (typeof globalThis !== 'undefined') {
   (globalThis as any).__MEALWISE_REACT_CONTEXT__ = MealWiseContext;
 }
 
-const INITIAL_ONBOARDING: OnboardingData = {
-  regionPreference: 'bac',
+export const INITIAL_ONBOARDING: OnboardingData = {
+  regionPreference: 'toan-quoc',
   familySize: 4,
   singleMealFormat: 'single-dish',
+  weekdayLunchRoutine: 'ban-tru-di-lam',
   budgetLevel: 'vua-phai',
   specialNeeds: [],
   completed: false
@@ -339,8 +350,44 @@ const DEFAULT_PARTY_PLAN: CustomPartyPlan = {
   staffNotes: 'Khách yêu cầu chuẩn bị đồ ăn trước 11:30 trưa. Bố trí bàn tiệc gần cửa sổ thoáng mát.'
 };
 
+const loadCustomRecipesFromStorage = (): Recipe[] => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const saved = localStorage.getItem('mealwise_custom_recipes');
+    return saved ? JSON.parse(saved) : [];
+  } catch {
+    return [];
+  }
+};
+
 export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [recipes] = useState<Recipe[]>(mockRecipes);
+  const [customRecipes, setCustomRecipes] = useState<Recipe[]>(() => loadCustomRecipesFromStorage());
+  const recipes = useMemo(() => [...customRecipes, ...mockRecipes], [customRecipes]);
+
+  const addCustomRecipe = useCallback((newRecipe: Recipe) => {
+    setCustomRecipes(prev => {
+      const updated = [newRecipe, ...prev.filter(r => r.id !== newRecipe.id)];
+      try {
+        localStorage.setItem('mealwise_custom_recipes', JSON.stringify(updated));
+      } catch (err) {
+        console.error('Failed to save custom recipe to localStorage', err);
+      }
+      return updated;
+    });
+  }, []);
+
+  const deleteCustomRecipe = useCallback((recipeId: string) => {
+    setCustomRecipes(prev => {
+      const updated = prev.filter(r => r.id !== recipeId);
+      try {
+        localStorage.setItem('mealwise_custom_recipes', JSON.stringify(updated));
+      } catch (err) {
+        console.error('Failed to remove custom recipe from localStorage', err);
+      }
+      return updated;
+    });
+  }, []);
+
   const [mealSets, setMealSets] = useState<VietnameseMealSet[]>(extendedMealSets);
 
   // Web Guest Viewer Mode: accessed via shared grocery link (?collab_cart=...) or web guest parameter
@@ -386,7 +433,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         if (isCollab || stored) return 'grocery';
       } catch {}
     }
-    return 'meal-sets';
+    return 'weekly';
   });
 
   const setActiveTab = useCallback((tab: ActiveTab) => {
@@ -400,7 +447,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         'recipes': 'Sổ Tay Công Thức Nấu Ăn',
         'account': 'Tài Khoản & Cá Nhân Hóa Dinh Dưỡng',
         'admin': 'Bảng Điều Khiển Quản Trị',
-        'fast-meal': 'Món Nhanh Tốc Biến (Apex Meal)'
+        'fast-meal': 'Món Nhanh Tốc Biến'
       };
       openDownloadAppModal(featureNames[tab] || 'Tính năng này');
       return;
@@ -494,12 +541,17 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isApexModalOpen, setIsApexModalOpen] = useState<boolean>(false);
   const openApexModal = useCallback(() => {
     if (isWebGuestViewer) {
-      openDownloadAppModal('Món Nhanh Tốc Biến (Apex Meal)');
+      openDownloadAppModal('Món Nhanh Tốc Biến');
       return;
     }
     setIsApexModalOpen(true);
   }, [isWebGuestViewer, openDownloadAppModal]);
   const closeApexModal = useCallback(() => setIsApexModalOpen(false), []);
+
+  const [isTutorialOpen, setIsTutorialOpen] = useState<boolean>(false);
+  const startTutorial = useCallback(() => {
+    setIsTutorialOpen(true);
+  }, []);
 
   const [isMinigameHubOpen, setIsMinigameHubOpen] = useState<boolean>(false);
   const openMinigameHub = useCallback(() => {
@@ -514,7 +566,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isDrinkRouletteOpen, setIsDrinkRouletteOpen] = useState<boolean>(false);
   const openDrinkRoulette = useCallback(() => {
     if (isWebGuestViewer) {
-      openDownloadAppModal('Vòng Quay Bàn Nhậu (Drinking Roulette)');
+      openDownloadAppModal('Vòng Quay Bàn Nhậu');
       return;
     }
     setIsDrinkRouletteOpen(true);
@@ -700,6 +752,18 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setPantryItems(prev => [newItem, ...prev]);
     recordTelemetryEvent('fridge', `Lưu "${newItem.name}" vào tủ lạnh (Hạn ${newItem.daysLeft} ngày)`, user?.name || 'Người dùng');
     showToast(`Đã lưu "${newItem.name}" vào tủ lạnh!`);
+  }, [user, showToast]);
+
+  const addPantryItems = useCallback((items: Array<Omit<PantryItem, 'id'>>) => {
+    if (!items || items.length === 0) return;
+    const now = Date.now();
+    const newItems: PantryItem[] = items.map((item, idx) => ({
+      ...item,
+      id: `pantry-${now}-${idx}-${Math.random().toString(36).substring(2, 7)}`
+    }));
+    setPantryItems(prev => [...newItems, ...prev]);
+    recordTelemetryEvent('fridge', `Lưu ${newItems.length} món vào tủ lạnh`, user?.name || 'Người dùng');
+    showToast(`Đã lưu ${newItems.length} món vào tủ lạnh!`);
   }, [user, showToast]);
 
   const removePantryItem = useCallback((id: string) => {
@@ -1014,12 +1078,14 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Helper to build default weekly plan with authentic preset Mâm Cơm sets
   const buildDefaultWeeklyPlan = (): DailyMealPlan[] => {
+    const routine = onboardingData?.weekdayLunchRoutine || 'ban-tru-di-lam';
     const generated = generateBudgetCompliantWeeklyPlan({
       servings: 4,
       budgetLevel: 'vua-phai',
       regionPreference: 'toan-quoc',
       specialNeeds: [],
-      mealFormat: 'meal-set'
+      mealFormat: 'meal-set',
+      weekdayLunchRoutine: routine
     });
     return generated.map(d => ({
       dayId: d.dayId,
@@ -1029,6 +1095,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         lunch: d.meals.lunch,
         dinner: d.meals.dinner
       },
+      skippedSlots: d.skippedSlots,
+      slotNotes: d.slotNotes,
       totalCost: d.unscaledDayCost
     }));
   };
@@ -1061,6 +1129,32 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       console.error('Failed to persist mealwise_weekly_plan to localStorage', e);
     }
   }, [weeklyPlan, user?.id]);
+
+  // Reconcile existing stored weekly plan with user weekday lunch routine
+  useEffect(() => {
+    const routine = onboardingData?.weekdayLunchRoutine;
+    const isSkipRoutine = routine === 'ban-tru-di-lam' || routine === 'hop-com-van-phong';
+    if (!isSkipRoutine) return;
+    const noteText = routine === 'hop-com-van-phong' ? 'Mang cơm hộp văn phòng' : 'Con học bán trú • Bố mẹ ăn ngoài';
+
+    setWeeklyPlan(prev => {
+      let changed = false;
+      const nextPlan = prev.map(day => {
+        const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(day.dayId);
+        if (isWkday && !day.skippedSlots?.lunch && day.meals.lunch) {
+          changed = true;
+          return {
+            ...day,
+            meals: { ...day.meals, lunch: null },
+            skippedSlots: { ...day.skippedSlots, lunch: true },
+            slotNotes: { ...day.slotNotes, lunch: noteText }
+          };
+        }
+        return day;
+      });
+      return changed ? nextPlan : prev;
+    });
+  }, [onboardingData?.weekdayLunchRoutine]);
 
   const loginUser = useCallback((profile: { name: string; email: string }, isNewRegistration?: boolean) => {
     const rawEmail = profile.email.trim();
@@ -1147,6 +1241,10 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setOnboardingData(prev => ({ ...prev, completed: false }));
       try {
         localStorage.setItem(userOnboardingKey, 'false');
+        if (emailLower) {
+          localStorage.removeItem(`mealwise_tutorial_completed_${emailLower}`);
+        }
+        localStorage.removeItem('mealwise_tutorial_completed');
         const savedOnboarding = localStorage.getItem('mealwise_onboarding');
         const parsed = savedOnboarding ? JSON.parse(savedOnboarding) : INITIAL_ONBOARDING;
         parsed.completed = false;
@@ -1184,6 +1282,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCollabRoom(null);
     setCollabCheckedMap({});
     setShowOnboarding(false);
+    setOnboardingData(INITIAL_ONBOARDING);
 
     // Restore guest session and guest partition if available
     const guestData = loadGuestPartition();
@@ -1226,6 +1325,27 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, [servings]);
 
+  // Effective onboarding data:
+  // If user is an unregistered guest (!isRegistered), they do not have access to the onboarding screen,
+  // so their active settings are strictly the default settings of the app (INITIAL_ONBOARDING).
+  const effectiveOnboardingData = useMemo<OnboardingData>(() => {
+    if (!isRegistered) {
+      return {
+        ...INITIAL_ONBOARDING,
+        familySize: Number.isFinite(servings) && servings > 0 ? Math.min(20, Math.max(1, Math.round(servings))) : 4
+      };
+    }
+    return onboardingData;
+  }, [isRegistered, onboardingData, servings]);
+
+  const setShowOnboardingSafe = useCallback((show: boolean) => {
+    if (show && !isRegistered) {
+      openAuthModal('register');
+      return;
+    }
+    setShowOnboarding(show);
+  }, [isRegistered, openAuthModal]);
+
   // Persistent grocery checked state
   const [groceryCheckedItems, setGroceryCheckedItems] = useState<Record<string, boolean>>(() => {
     try {
@@ -1262,6 +1382,22 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       console.error('Failed to persist mealwise_grocery_buyer_counts to localStorage', e);
     }
   }, [groceryItemBuyerCounts]);
+
+  const [isWeeklyShoppingCompleted, setIsWeeklyShoppingCompleted] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('mealwise_weekly_shopping_completed') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('mealwise_weekly_shopping_completed', String(isWeeklyShoppingCompleted));
+    } catch (e) {
+      console.error('Failed to persist mealwise_weekly_shopping_completed', e);
+    }
+  }, [isWeeklyShoppingCompleted]);
 
   const toggleGroceryItemChecked = (key: string) => {
     setGroceryCheckedItems(prev => {
@@ -1830,6 +1966,24 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   const completeOnboarding = (data: Partial<OnboardingData>, options?: { regeneratePlan?: boolean }) => {
+    let emailLower = user?.email?.toLowerCase().trim();
+    if (!emailLower) {
+      const savedUserStr = localStorage.getItem('mealwise_registered_user');
+      if (savedUserStr) {
+        try {
+          const parsed = JSON.parse(savedUserStr);
+          emailLower = parsed.email?.toLowerCase().trim();
+        } catch {}
+      }
+    }
+    const userOnboardingKey = emailLower ? `mealwise_onboarding_completed_${emailLower}` : null;
+    const isAlreadyOnboarded = Boolean(
+      onboardingData?.completed ||
+      user?.onboardingCompleted ||
+      (userOnboardingKey && localStorage.getItem(userOnboardingKey) === 'true')
+    );
+    const isFirstTimeOnboarding = !isAlreadyOnboarded;
+
     const updated: OnboardingData = { ...onboardingData, ...data, completed: true };
     setOnboardingData(updated);
     if (updated.familySize && updated.familySize > 0) {
@@ -1843,7 +1997,6 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     // Persist per-user onboarding completed flag
     if (user?.email) {
-      const emailLower = user.email.toLowerCase();
       try {
         localStorage.setItem(`mealwise_onboarding_completed_${emailLower}`, 'true');
       } catch {}
@@ -1871,25 +2024,63 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     setShowOnboarding(false);
 
+    const isSkipRoutine = updated.weekdayLunchRoutine === 'ban-tru-di-lam' || updated.weekdayLunchRoutine === 'hop-com-van-phong';
+    const noteText = updated.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Mang cơm hộp văn phòng' : 'Con học bán trú • Bố mẹ ăn ngoài';
+
     // If regeneratePlan is not explicitly false, auto fill weekly menu with tailoring
     if (options?.regeneratePlan !== false) {
       autoFillWeeklyMenu(updated, { seed: Date.now() });
+    } else if (isSkipRoutine) {
+      // User kept their existing plan, but chose a lunch-skip routine:
+      // Update weekday lunches to reflect the chosen routine immediately
+      setWeeklyPlan(prev => {
+        const nextPlan = prev.map(day => {
+          const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(day.dayId);
+          if (isWkday) {
+            return {
+              ...day,
+              meals: { ...day.meals, lunch: null },
+              skippedSlots: { ...day.skippedSlots, lunch: true },
+              slotNotes: { ...day.slotNotes, lunch: noteText }
+            };
+          }
+          return day;
+        });
+        try {
+          localStorage.setItem('mealwise_weekly_plan', JSON.stringify(nextPlan));
+        } catch {}
+        return nextPlan;
+      });
     }
 
     // Switch to weekly tab so user immediately sees their tailored plan
     setActiveTab('weekly');
+
+    // Automatically begin interactive tutorial ONLY for newly registered users on initial onboarding!
+    // When existing users change/update their configuration, the tutorial must NEVER trigger.
+    if (isFirstTimeOnboarding) {
+      try {
+        const userTutorialKey = emailLower ? `mealwise_tutorial_completed_${emailLower}` : null;
+        const isUserTutorialDone = userTutorialKey
+          ? localStorage.getItem(userTutorialKey) === 'true'
+          : (localStorage.getItem('mealwise_tutorial_completed') === 'true');
+
+        if (!isUserTutorialDone) {
+          setTimeout(() => {
+            setIsTutorialOpen(true);
+          }, 500);
+        }
+      } catch {}
+    }
   };
 
   const resetOnboarding = () => {
-    const resetData: OnboardingData = { ...onboardingData, completed: false };
-    setOnboardingData(resetData);
-    if (user?.email) {
-      const emailLower = user.email.toLowerCase();
-      try {
-        localStorage.removeItem(`mealwise_onboarding_completed_${emailLower}`);
-      } catch {}
-      setUser(prev => prev ? { ...prev, onboardingCompleted: false } : prev);
+    if (!isRegistered) {
+      openAuthModal('register');
+      return;
     }
+    // Re-open onboarding for existing user to review/adjust preferences.
+    // Keep onboardingData and tutorial completion flags intact.
     setShowOnboarding(true);
     showToast('🔄 Đang mở lại khảo sát khẩu vị & mục tiêu!');
   };
@@ -1897,7 +2088,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const swapDishInMealSet = useCallback((
     mealSet: VietnameseMealSet,
     dishType: 'mainDish' | 'soupDish' | 'sideDish',
-    replacementRecipeId?: string
+    replacementRecipeId?: string,
+    maxAllowedCostVnd?: number
   ): VietnameseMealSet => {
     const isVegetarian = mealSet.region === 'chay' || 
       (mealSet.tags && mealSet.tags.some(t => /chay|thanh tịnh/i.test(t))) ||
@@ -1968,6 +2160,19 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       candidateRecipes = recipes.filter(r => r.id !== mealSet[dishType]?.id && !isHotpotOrFeast(r) && isSingleDish(r));
     }
 
+    // Strict Budget Invariant: Guarantee replacement dish stays within remaining room
+    if (maxAllowedCostVnd !== undefined) {
+      const budgetFitting = maxAllowedCostVnd > 0 
+        ? candidateRecipes.filter(r => (r.estimatedCostVnd || 35000) <= maxAllowedCostVnd)
+        : [];
+      if (budgetFitting.length > 0) {
+        candidateRecipes = budgetFitting;
+      } else {
+        // Fallback to lowest-cost dishes if remaining budget is extremely tight or exceeded
+        candidateRecipes = [...candidateRecipes].sort((a, b) => (a.estimatedCostVnd || 0) - (b.estimatedCostVnd || 0)).slice(0, 5);
+      }
+    }
+
     const chosenRecipe = candidateRecipes[Math.floor(Math.random() * candidateRecipes.length)] || mealSet[dishType];
 
     const newMain = dishType === 'mainDish' ? chosenRecipe : mealSet.mainDish;
@@ -1999,7 +2204,33 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (day.dayId !== dayId) return day;
       const currentMeal = day.meals[slot];
       if (!currentMeal || !isMealSet(currentMeal)) return day;
-      const updated = swapDishInMealSet(currentMeal, dishType);
+
+      // Calculate budget room for this day
+      const safeServings = Number.isFinite(servings) && servings > 0 ? Math.min(20, Math.max(1, Math.round(servings))) : 4;
+      const currentBudgetLevel = onboardingData?.budgetLevel || 'vua-phai';
+      const dailyBudgetTarget = getDailyBudgetTarget(currentBudgetLevel, safeServings, onboardingData?.specialNeeds);
+      
+      let otherSlotsScaledCost = 0;
+      (Object.keys(day.meals) as MealSlot[]).forEach(s => {
+        if (s === slot) return;
+        const isUserSkipLunch = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
+        const isBantruLunch = s === 'lunch' && Boolean(day.skippedSlots?.lunch ?? (isUserSkipLunch && ['mon','tue','wed','thu','fri'].includes(day.dayId)));
+        if (m && !day.skippedSlots?.[s] && !isBantruLunch) {
+          if (isMealSet(m)) otherSlotsScaledCost += scaleCost(m.totalCostVnd, safeServings);
+          else otherSlotsScaledCost += scaleCost(m.estimatedCostVnd || 35000, safeServings);
+        }
+      });
+
+      const otherDish1 = dishType === 'mainDish' ? currentMeal.soupDish : currentMeal.mainDish;
+      const otherDish2 = dishType === 'sideDish' ? currentMeal.soupDish : currentMeal.sideDish;
+      const otherTwoDishesUnscaled = (otherDish1?.estimatedCostVnd || 0) + (otherDish2?.estimatedCostVnd || 0);
+      const otherTwoDishesScaled = scaleCost(otherTwoDishesUnscaled, safeServings);
+
+      const remainingScaled = Math.max(0, dailyBudgetTarget - (otherSlotsScaledCost + otherTwoDishesScaled));
+      const scale = safeServings / 4;
+      const maxAllowedDishCostUnscaled = Math.floor(remainingScaled / scale);
+
+      const updated = swapDishInMealSet(currentMeal, dishType, undefined, maxAllowedDishCostUnscaled);
       updatedSet = updated;
       newChosenTitle = updated[dishType]?.title || '';
       return {
@@ -2019,9 +2250,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const dishLabel = dishType === 'mainDish' ? 'món mặn' : dishType === 'soupDish' ? 'món canh' : 'món rau';
     if (newChosenTitle) {
       recordTelemetryEvent('weekly', `Đổi ${dishLabel} sang "${newChosenTitle}" (${slotLabel})`, user?.name || 'Người dùng');
-      showToast(`🔄 Đã đổi ${dishLabel} sang "${newChosenTitle}" (${slotLabel})!`);
+      showToast(`🔄 Đã đổi ${dishLabel} sang "${newChosenTitle}" (${slotLabel}) chuẩn ngân sách!`);
     }
-  }, [user, swapDishInMealSet, selectedMealSet, showToast]);
+  }, [user, swapDishInMealSet, selectedMealSet, showToast, servings, onboardingData]);
 
   const addMealSetToSlot = (dayId: string, slot: MealSlot, mealSetIdOrObj: string | VietnameseMealSet) => {
     let targetSet: VietnameseMealSet | undefined;
@@ -2039,7 +2270,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           meals: {
             ...day.meals,
             [slot]: targetSet
-          }
+          },
+          skippedSlots: day.skippedSlots ? { ...day.skippedSlots, [slot]: false } : undefined,
+          slotNotes: day.slotNotes ? { ...day.slotNotes, [slot]: undefined } : undefined
         };
       }
       return day;
@@ -2061,7 +2294,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           meals: {
             ...day.meals,
             [slot]: targetRecipe
-          }
+          },
+          skippedSlots: day.skippedSlots ? { ...day.skippedSlots, [slot]: false } : undefined,
+          slotNotes: day.slotNotes ? { ...day.slotNotes, [slot]: undefined } : undefined
         };
       }
       return day;
@@ -2086,6 +2321,53 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return day;
     }));
     showToast('🗑️ Đã xóa món khỏi thực đơn.');
+  };
+
+  const toggleSkipSlot = (dayId: string, slot: MealSlot, customNote?: string) => {
+    setWeeklyPlan(prev => prev.map(day => {
+      if (day.dayId !== dayId) return day;
+      const isCurrentlySkipped = Boolean(day.skippedSlots?.[slot]);
+      if (isCurrentlySkipped) {
+        // Re-enable cooking for this slot
+        const updatedSkipped = { ...day.skippedSlots, [slot]: false };
+        const updatedNotes = { ...day.slotNotes, [slot]: undefined };
+        const isSingleDish = servings === 1 && onboardingData?.singleMealFormat !== 'meal-set';
+        let suggestedMeal: Recipe | VietnameseMealSet | null = null;
+        if (slot === 'breakfast') {
+          const bfastPool = recipes.filter(r => r.category === 'an-sang');
+          suggestedMeal = bfastPool[Math.floor(Math.random() * bfastPool.length)] || recipes[0];
+        } else if (isSingleDish) {
+          const eligibleRecipes = recipes.filter(r => r.category !== 'an-sang' && r.category !== 'trang-mieng' && !isHotpotOrFeast(r));
+          suggestedMeal = eligibleRecipes[Math.floor(Math.random() * eligibleRecipes.length)] || recipes[0];
+        } else {
+          const eligibleSets = mealSets.filter(s => !isHotpotOrFeast(s.mainDish) && !isHotpotOrFeast(s.soupDish) && !isHotpotOrFeast(s.sideDish));
+          suggestedMeal = eligibleSets[Math.floor(Math.random() * eligibleSets.length)] || mealSets[0];
+        }
+        return {
+          ...day,
+          meals: {
+            ...day.meals,
+            [slot]: suggestedMeal
+          },
+          skippedSlots: updatedSkipped,
+          slotNotes: updatedNotes
+        };
+      } else {
+        // Mark as skipped / bán trú
+        const updatedSkipped = { ...day.skippedSlots, [slot]: true };
+        const updatedNotes = { ...day.slotNotes, [slot]: customNote || 'Con học bán trú • Bố mẹ ăn ngoài' };
+        return {
+          ...day,
+          meals: {
+            ...day.meals,
+            [slot]: null
+          },
+          skippedSlots: updatedSkipped,
+          slotNotes: updatedNotes
+        };
+      }
+    }));
+    showToast('🔄 Đã cập nhật lịch nấu bữa này.');
   };
 
   const autoFillWeeklyMenu = (
@@ -2133,6 +2415,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       regionPreference,
       specialNeeds,
       mealFormat,
+      weekdayLunchRoutine: prefs.weekdayLunchRoutine,
       seed: dynamicSeed,
       variationIndex: nextCount,
       previousPlanSlotIds
@@ -2146,12 +2429,16 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         lunch: d.meals.lunch,
         dinner: d.meals.dinner
       },
+      skippedSlots: d.skippedSlots,
+      slotNotes: d.slotNotes,
       totalCost: d.unscaledDayCost
     }));
 
     setWeeklyPlan(suggestedPlan);
+    setIsWeeklyShoppingCompleted(false);
     try {
       localStorage.setItem('mealwise_weekly_plan', JSON.stringify(suggestedPlan));
+      localStorage.removeItem('mealwise_weekly_shopping_completed');
     } catch (e) {
       console.error('Failed to save autoFill weekly plan to localStorage', e);
     }
@@ -2161,7 +2448,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const isChay = specialNeeds.includes('chay');
 
     if (isGym) {
-      showToast(`🏋️ Đã tạo thực đơn 7 ngày Giàu Đạm (Protein) chuẩn Gym cho ${safeServings} người (chuẩn ngân sách)!`);
+      showToast(`🏋️ Đã tạo thực đơn 7 ngày Giàu Đạm chuẩn Gym cho ${safeServings} người (chuẩn ngân sách)!`);
     } else if (isEatClean) {
       showToast(`🥗 Đã tạo thực đơn 7 ngày Eat Clean thanh lành & kiểm soát calo cho ${safeServings} người (chuẩn ngân sách)!`);
     } else if (isChay) {
@@ -2185,8 +2472,10 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       meals: { breakfast: null, lunch: null, dinner: null }
     }));
     setWeeklyPlan(emptyPlan);
+    setIsWeeklyShoppingCompleted(false);
     try {
       localStorage.setItem('mealwise_weekly_plan', JSON.stringify(emptyPlan));
+      localStorage.removeItem('mealwise_weekly_shopping_completed');
     } catch (e) {
       console.error('Failed to clear mealwise_weekly_plan in localStorage', e);
     }
@@ -2196,8 +2485,10 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const resetWeeklyMenu = () => {
     const defaults = buildDefaultWeeklyPlan();
     setWeeklyPlan(defaults);
+    setIsWeeklyShoppingCompleted(false);
     try {
       localStorage.setItem('mealwise_weekly_plan', JSON.stringify(defaults));
+      localStorage.removeItem('mealwise_weekly_shopping_completed');
     } catch (e) {
       console.error('Failed to reset mealwise_weekly_plan in localStorage', e);
     }
@@ -2220,14 +2511,25 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const isChay = specialNeeds.includes('chay');
     const isNoSpicy = specialNeeds.includes('it-cay');
     const isWestern = specialNeeds.includes('western-food');
+    const isGym = specialNeeds.includes('gym-protein');
     const isSingle = safeServings === 1;
     const isSingleDish = isSingle && onboardingData?.singleMealFormat !== 'meal-set';
+
+    const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(dayId);
+    const isUserBantru = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
+    const isLunchSkipped = Boolean(targetDay.skippedSlots?.lunch) || (isUserBantru && isWkday && !targetDay.meals.lunch);
+
+    // Current meal IDs on this day to avoid repeating the exact same dishes
+    const currentMealIds = new Set<string>();
+    Object.values(targetDay.meals).forEach(m => {
+      if (m && m.id) currentMealIds.add(m.id);
+    });
 
     // Tier-aware breakfast budget ceiling: Tiết kiệm <= 25%, Vừa phải <= 32%, Thoải mái <= 38%
     const bfastCapRatio = currentBudgetLevel === 'tiet-kiem' ? 0.25 : currentBudgetLevel === 'vua-phai' ? 0.32 : 0.38;
     const maxBfastCost = Math.floor(dailyBudgetTarget * bfastCapRatio);
 
-    // 1. Gather all recipe IDs and meal set IDs used on the OTHER 6 days to prevent duplicates
+    // 1. Gather recipe IDs and meal set IDs used on OTHER 6 days
     const otherDays = weeklyPlan.filter(d => d.dayId !== dayId);
     const usedRecipeIds = new Set<string>();
     const usedMealSetIds = new Set<string>();
@@ -2242,6 +2544,16 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
       });
     });
+
+    // Helper to shuffle an array
+    function shuffle<T>(array: T[]): T[] {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
 
     if (isSingleDish) {
       let rawBfastPool = recipes.filter(r => isSubstantialBreakfast(r, isChay, isNoSpicy));
@@ -2258,8 +2570,16 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (rawBfastPool.length === 0) rawBfastPool = [recipes[0]];
 
       if (isWestern) {
-        const westernBfast = rawBfastPool.filter(r => /pancake|sandwich|omelette|bơ tỏi|trứng khuấy|scrambled|french toast|avocado|yến mạch/i.test(r.title) || (r.tags || []).some(t => /món âu|western/i.test(t)));
+        const westernBfast = rawBfastPool.filter(r => /pancake|sandwich|omelette|bơ tỏi|trứng khuấy|french toast|avocado|yến mạch/i.test(r.title) || (r.tags || []).some(t => /món âu|western/i.test(t)));
         if (westernBfast.length > 0) rawBfastPool = westernBfast;
+      }
+      if (isGym) {
+        const gymBfast = rawBfastPool.filter(r =>
+          /trứng|bò|thịt|ức gà|cá|hải sản|phô mai|omelet|chả|pate|bít tết|steak|phở bò|bún bò|hủ tiếu/i.test(r.title) ||
+          (r.tags || []).some(t => /đạm|protein|gym|thịt|bò|gà|trứng/i.test(t)) ||
+          (r.ingredients && r.ingredients.some(i => i.category === 'thit-ca'))
+        );
+        if (gymBfast.length > 0) rawBfastPool = gymBfast;
       }
 
       let affordableBfast = rawBfastPool.filter(r => scaleCost(r.estimatedCostVnd || 25000, safeServings) <= maxBfastCost);
@@ -2269,13 +2589,14 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         ).slice(0, 5);
       }
 
-      // Sort breakfasts: unused on other days first, then lowest cost
-      affordableBfast.sort((a, b) => {
-        const aUsed = usedRecipeIds.has(a.id) ? 1 : 0;
-        const bUsed = usedRecipeIds.has(b.id) ? 1 : 0;
-        if (aUsed !== bUsed) return aUsed - bUsed;
-        return (a.estimatedCostVnd || 25000) - (b.estimatedCostVnd || 25000);
-      });
+      // Prioritize breakfasts not on current day and not used on other days
+      const freshBfast = affordableBfast.filter(b => !currentMealIds.has(b.id) && !usedRecipeIds.has(b.id));
+      const backupBfast = affordableBfast.filter(b => !currentMealIds.has(b.id));
+      const bfastCandidatePool = freshBfast.length > 0 ? freshBfast : backupBfast.length > 0 ? backupBfast : affordableBfast;
+      const shuffledBfast = shuffle(bfastCandidatePool);
+      const chosenBreakfast = shuffledBfast[0] || affordableBfast[0];
+      const bfastCost = scaleCost(chosenBreakfast.estimatedCostVnd || 25000, safeServings);
+      const remBudget = budgetCeiling - bfastCost;
 
       let singleDishPool = recipes.filter(r => isSubstantialMainMeal(r, isChay, isNoSpicy));
       if (singleDishPool.length < 14) {
@@ -2285,54 +2606,61 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const westernMains = singleDishPool.filter(r => /bít tết|steak|mì ý|pasta|salad|áp chảo|súp kem|khoai tây|burger|gà rán|sườn que|sườn nướng|carbonara|bolognese|curry|aglio e olio|bourguignon|parmigiana/i.test(r.title) || (r.tags || []).some(t => /món âu|western/i.test(t)));
         if (westernMains.length >= 2) singleDishPool = westernMains;
       }
-
-      let chosenBreakfast = affordableBfast[0];
-      let chosenLunch: Recipe | null = null;
-      let chosenDinner: Recipe | null = null;
-      let chosenCost = 0;
-
-      for (const bfastCandidate of affordableBfast) {
-        const bfastCost = scaleCost(bfastCandidate.estimatedCostVnd || 25000, safeServings);
-        const remBudget = budgetCeiling - bfastCost;
-
-        const candidateMains = singleDishPool.filter(r => r.id !== bfastCandidate.id);
-        const unusedMains = candidateMains.filter(r => !usedRecipeIds.has(r.id));
-        const pool = unusedMains.length >= 2 ? unusedMains : candidateMains;
-
-        pool.sort((a, b) => (b.estimatedCostVnd || 35000) - (a.estimatedCostVnd || 35000));
-
-        let bestSum = 0;
-        let bestPair: [Recipe, Recipe] | null = null;
-
-        for (let i = 0; i < pool.length; i++) {
-          const costI = scaleCost(pool[i].estimatedCostVnd || 35000, safeServings);
-          for (let j = i + 1; j < pool.length; j++) {
-            const costJ = scaleCost(pool[j].estimatedCostVnd || 35000, safeServings);
-            const sum = costI + costJ;
-            if (sum <= remBudget && sum > bestSum) {
-              bestSum = sum;
-              bestPair = [pool[i], pool[j]];
-              if (sum >= remBudget * 0.95) break;
-            }
-          }
-          if (bestPair && bestSum >= remBudget * 0.95) break;
-        }
-
-        if (bestPair) {
-          chosenBreakfast = bfastCandidate;
-          chosenLunch = bestPair[0];
-          chosenDinner = bestPair[1];
-          chosenCost = bfastCost + bestSum;
-          break;
-        }
+      if (isGym) {
+        const gymMains = singleDishPool.filter(r =>
+          /bít tết|steak|bò|thịt|ức gà|gà|cá|tôm|mực|hải sản|sườn|trứng|đậu hũ/i.test(r.title) ||
+          (r.tags || []).some(t => /giàu đạm|tập gym|protein/i.test(t)) ||
+          (r.ingredients && r.ingredients.some(i => i.category === 'thit-ca'))
+        );
+        if (gymMains.length >= 2) singleDishPool = gymMains;
       }
 
-      if (!chosenLunch || !chosenDinner) {
-        chosenBreakfast = affordableBfast[0];
-        const sorted = [...singleDishPool].sort((a, b) => (a.estimatedCostVnd || 35000) - (b.estimatedCostVnd || 35000));
-        chosenLunch = sorted[0];
-        chosenDinner = sorted[1] || sorted[0];
-        chosenCost = scaleCost((chosenBreakfast.estimatedCostVnd || 25000) + (chosenLunch.estimatedCostVnd || 35000) + (chosenDinner.estimatedCostVnd || 35000), safeServings);
+      let chosenLunch: Recipe | null = null;
+      let chosenDinner: Recipe | null = null;
+      let chosenCost = bfastCost;
+
+      if (isLunchSkipped) {
+        // Lunch is bán trú • Only dinner is cooked
+        const dinnerCandidates = singleDishPool.filter(r => r.id !== chosenBreakfast.id && !currentMealIds.has(r.id) && !usedRecipeIds.has(r.id));
+        const pool = dinnerCandidates.length > 0 ? dinnerCandidates : singleDishPool.filter(r => r.id !== chosenBreakfast.id);
+        const affordableDinner = pool.filter(r => scaleCost(r.estimatedCostVnd || 35000, safeServings) <= remBudget);
+        const dinnerPool = affordableDinner.length > 0 ? affordableDinner : pool;
+        chosenDinner = shuffle(dinnerPool)[0] || singleDishPool[0];
+        chosenLunch = null;
+        chosenCost += scaleCost(chosenDinner.estimatedCostVnd || 35000, safeServings);
+      } else {
+        // Both lunch & dinner
+        const candidateMains = singleDishPool.filter(r => r.id !== chosenBreakfast.id);
+        const freshMains = candidateMains.filter(r => !currentMealIds.has(r.id) && !usedRecipeIds.has(r.id));
+        const pool = freshMains.length >= 4 ? freshMains : candidateMains.filter(r => !currentMealIds.has(r.id));
+        const finalPool = pool.length >= 2 ? pool : candidateMains;
+
+        const shuffledMains = shuffle(finalPool);
+        const validPairs: [Recipe, Recipe][] = [];
+
+        for (let i = 0; i < shuffledMains.length; i++) {
+          const costI = scaleCost(shuffledMains[i].estimatedCostVnd || 35000, safeServings);
+          for (let j = i + 1; j < shuffledMains.length; j++) {
+            const costJ = scaleCost(shuffledMains[j].estimatedCostVnd || 35000, safeServings);
+            if (costI + costJ <= remBudget) {
+              validPairs.push([shuffledMains[i], shuffledMains[j]]);
+              if (validPairs.length >= 8) break;
+            }
+          }
+          if (validPairs.length >= 8) break;
+        }
+
+        if (validPairs.length > 0) {
+          const randomPair = validPairs[Math.floor(Math.random() * validPairs.length)];
+          chosenLunch = randomPair[0];
+          chosenDinner = randomPair[1];
+          chosenCost += scaleCost((chosenLunch.estimatedCostVnd || 35000) + (chosenDinner.estimatedCostVnd || 35000), safeServings);
+        } else {
+          const sorted = [...candidateMains].sort((a, b) => (a.estimatedCostVnd || 35000) - (b.estimatedCostVnd || 35000));
+          chosenLunch = sorted[0];
+          chosenDinner = sorted[1] || sorted[0];
+          chosenCost += scaleCost((chosenLunch.estimatedCostVnd || 35000) + (chosenDinner.estimatedCostVnd || 35000), safeServings);
+        }
       }
 
       setWeeklyPlan(prev => {
@@ -2345,7 +2673,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 lunch: chosenLunch,
                 dinner: chosenDinner
               },
-              totalCost: (chosenBreakfast.estimatedCostVnd || 25000) + (chosenLunch!.estimatedCostVnd || 35000) + (chosenDinner!.estimatedCostVnd || 35000)
+              skippedSlots: isLunchSkipped ? { ...d.skippedSlots, lunch: true } : d.skippedSlots,
+              slotNotes: isLunchSkipped ? { ...d.slotNotes, lunch: d.slotNotes?.lunch || 'Bán trú • Ăn ngoài' } : d.slotNotes,
+              totalCost: (chosenBreakfast.estimatedCostVnd || 25000) + (chosenLunch ? (chosenLunch.estimatedCostVnd || 35000) : 0) + (chosenDinner ? (chosenDinner.estimatedCostVnd || 35000) : 0)
             };
           }
           return d;
@@ -2356,9 +2686,11 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return nextPlan;
       });
 
-      showToast(`⚡ Đã cân chỉnh thực đơn ${targetDay.dayName} đầy đặn, đủ chất: ${chosenCost.toLocaleString('vi-VN')} đ (chuẩn ngân sách ${dailyBudgetTarget.toLocaleString('vi-VN')} đ)!`);
+      setGenerationCount(prev => prev + 1);
+      showToast(`🎲 Đã đổi mới thực đơn ${targetDay.dayName} (${chosenCost.toLocaleString('vi-VN')} đ, chuẩn ngân sách)!`);
       return true;
     } else {
+      // Family Meal Sets Mode
       let rawBfastPool = recipes.filter(r => isSubstantialBreakfast(r, isChay, isNoSpicy));
       if (rawBfastPool.length === 0) {
         if (isChay) {
@@ -2373,8 +2705,16 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (rawBfastPool.length === 0) rawBfastPool = [recipes[0]];
 
       if (isWestern) {
-        const westernBfast = rawBfastPool.filter(r => /pancake|sandwich|omelette|bơ tỏi|trứng khuấy|scrambled|french toast|avocado|yến mạch/i.test(r.title) || (r.tags || []).some(t => /món âu|western/i.test(t)));
+        const westernBfast = rawBfastPool.filter(r => /pancake|sandwich|omelette|bơ tỏi|trứng khuấy|french toast|avocado|yến mạch/i.test(r.title) || (r.tags || []).some(t => /món âu|western/i.test(t)));
         if (westernBfast.length > 0) rawBfastPool = westernBfast;
+      }
+      if (isGym) {
+        const gymBfast = rawBfastPool.filter(r =>
+          /trứng|bò|thịt|ức gà|cá|hải sản|phô mai|omelet|chả|pate|bít tết|steak|phở bò|bún bò|hủ tiếu/i.test(r.title) ||
+          (r.tags || []).some(t => /đạm|protein|gym|thịt|bò|gà|trứng/i.test(t)) ||
+          (r.ingredients && r.ingredients.some(i => i.category === 'thit-ca'))
+        );
+        if (gymBfast.length > 0) rawBfastPool = gymBfast;
       }
 
       let affordableBfast = rawBfastPool.filter(r => scaleCost(r.estimatedCostVnd || 25000, safeServings) <= maxBfastCost);
@@ -2384,12 +2724,12 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         ).slice(0, 5);
       }
 
-      affordableBfast.sort((a, b) => {
-        const aUsed = usedRecipeIds.has(a.id) ? 1 : 0;
-        const bUsed = usedRecipeIds.has(b.id) ? 1 : 0;
-        if (aUsed !== bUsed) return aUsed - bUsed;
-        return (a.estimatedCostVnd || 25000) - (b.estimatedCostVnd || 25000);
-      });
+      const freshBfast = affordableBfast.filter(b => !currentMealIds.has(b.id) && !usedRecipeIds.has(b.id));
+      const backupBfast = affordableBfast.filter(b => !currentMealIds.has(b.id));
+      const bfastCandidatePool = freshBfast.length > 0 ? freshBfast : backupBfast.length > 0 ? backupBfast : affordableBfast;
+      const chosenBreakfast = shuffle(bfastCandidatePool)[0] || affordableBfast[0];
+      const bfastCost = scaleCost(chosenBreakfast.estimatedCostVnd || 25000, safeServings);
+      const remBudget = budgetCeiling - bfastCost;
 
       let candidateSets = [...mealSets];
       if (isChay) {
@@ -2397,54 +2737,59 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       } else if (isWestern) {
         candidateSets = candidateSets.filter(s => s.id.startsWith('mam-com-au-') || s.tags?.some(t => /món âu|western/i.test(t)));
       }
-
-      let chosenBreakfast = affordableBfast[0];
-      let chosenLunchSet: VietnameseMealSet | null = null;
-      let chosenDinnerSet: VietnameseMealSet | null = null;
-      let chosenCost = 0;
-
-      for (const bfastCandidate of affordableBfast) {
-        const bfastCost = scaleCost(bfastCandidate.estimatedCostVnd || 25000, safeServings);
-        const remBudget = budgetCeiling - bfastCost;
-
-        const unusedSets = candidateSets.filter(s => !usedMealSetIds.has(s.id));
-        const pool = unusedSets.length >= 2 ? unusedSets : candidateSets;
-
-        pool.sort((a, b) => b.totalCostVnd - a.totalCostVnd);
-
-        let bestSum = 0;
-        let bestPair: [VietnameseMealSet, VietnameseMealSet] | null = null;
-
-        for (let i = 0; i < pool.length; i++) {
-          const costI = scaleCost(pool[i].totalCostVnd, safeServings);
-          for (let j = 0; j < pool.length; j++) {
-            if (i === j) continue;
-            const costJ = scaleCost(pool[j].totalCostVnd, safeServings);
-            const sum = costI + costJ;
-            if (sum <= remBudget && sum > bestSum) {
-              bestSum = sum;
-              bestPair = [pool[i], pool[j]];
-              if (sum >= remBudget * 0.95) break;
-            }
-          }
-          if (bestPair && bestSum >= remBudget * 0.95) break;
-        }
-
-        if (bestPair) {
-          chosenBreakfast = bfastCandidate;
-          chosenLunchSet = bestPair[0];
-          chosenDinnerSet = bestPair[1];
-          chosenCost = bfastCost + bestSum;
-          break;
-        }
+      if (isGym) {
+        const gymSets = candidateSets.filter(s =>
+          s.tags?.some(t => /giàu đạm|tập gym|protein|bò|thịt|ức gà|cá hồi|steak|bít tết|bbq|sườn/i.test(t)) ||
+          /bít tết|steak|bò|thịt|ức gà|cá hồi|sườn|tôm|heo quay/i.test(s.title)
+        );
+        if (gymSets.length >= 2) candidateSets = gymSets;
       }
 
-      if (!chosenLunchSet || !chosenDinnerSet) {
-        chosenBreakfast = affordableBfast[0];
-        const sorted = [...candidateSets].sort((a, b) => a.totalCostVnd - b.totalCostVnd);
-        chosenLunchSet = sorted[0];
-        chosenDinnerSet = sorted[1] || sorted[0];
-        chosenCost = scaleCost((chosenBreakfast.estimatedCostVnd || 25000) + chosenLunchSet.totalCostVnd + chosenDinnerSet.totalCostVnd, safeServings);
+      let chosenLunchSet: VietnameseMealSet | null = null;
+      let chosenDinnerSet: VietnameseMealSet | null = null;
+      let chosenCost = bfastCost;
+
+      if (isLunchSkipped) {
+        // Lunch is bán trú • Only dinner is a meal set
+        const dinnerCandidates = candidateSets.filter(s => !currentMealIds.has(s.id) && !usedMealSetIds.has(s.id));
+        const pool = dinnerCandidates.length > 0 ? dinnerCandidates : candidateSets.filter(s => !currentMealIds.has(s.id));
+        const finalPool = pool.length > 0 ? pool : candidateSets;
+        const affordableDinner = finalPool.filter(s => scaleCost(s.totalCostVnd, safeServings) <= remBudget);
+        const dinnerPool = affordableDinner.length > 0 ? affordableDinner : finalPool;
+        chosenDinnerSet = shuffle(dinnerPool)[0] || candidateSets[0];
+        chosenLunchSet = null;
+        chosenCost += scaleCost(chosenDinnerSet.totalCostVnd, safeServings);
+      } else {
+        const unusedSets = candidateSets.filter(s => !currentMealIds.has(s.id) && !usedMealSetIds.has(s.id));
+        const pool = unusedSets.length >= 3 ? unusedSets : candidateSets.filter(s => !currentMealIds.has(s.id));
+        const finalPool = pool.length >= 2 ? pool : candidateSets;
+
+        const shuffledSets = shuffle(finalPool);
+        const validPairs: [VietnameseMealSet, VietnameseMealSet][] = [];
+
+        for (let i = 0; i < shuffledSets.length; i++) {
+          const costI = scaleCost(shuffledSets[i].totalCostVnd, safeServings);
+          for (let j = i + 1; j < shuffledSets.length; j++) {
+            const costJ = scaleCost(shuffledSets[j].totalCostVnd, safeServings);
+            if (costI + costJ <= remBudget) {
+              validPairs.push([shuffledSets[i], shuffledSets[j]]);
+              if (validPairs.length >= 8) break;
+            }
+          }
+          if (validPairs.length >= 8) break;
+        }
+
+        if (validPairs.length > 0) {
+          const randomPair = validPairs[Math.floor(Math.random() * validPairs.length)];
+          chosenLunchSet = randomPair[0];
+          chosenDinnerSet = randomPair[1];
+          chosenCost += scaleCost(chosenLunchSet.totalCostVnd + chosenDinnerSet.totalCostVnd, safeServings);
+        } else {
+          const sorted = [...candidateSets].sort((a, b) => a.totalCostVnd - b.totalCostVnd);
+          chosenLunchSet = sorted[0];
+          chosenDinnerSet = sorted[1] || sorted[0];
+          chosenCost += scaleCost(chosenLunchSet.totalCostVnd + chosenDinnerSet.totalCostVnd, safeServings);
+        }
       }
 
       setWeeklyPlan(prev => {
@@ -2457,7 +2802,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 lunch: chosenLunchSet,
                 dinner: chosenDinnerSet
               },
-              totalCost: (chosenBreakfast.estimatedCostVnd || 25000) + chosenLunchSet!.totalCostVnd + chosenDinnerSet!.totalCostVnd
+              skippedSlots: isLunchSkipped ? { ...d.skippedSlots, lunch: true } : d.skippedSlots,
+              slotNotes: isLunchSkipped ? { ...d.slotNotes, lunch: d.slotNotes?.lunch || 'Bán trú • Ăn ngoài' } : d.slotNotes,
+              totalCost: (chosenBreakfast.estimatedCostVnd || 25000) + (chosenLunchSet ? chosenLunchSet.totalCostVnd : 0) + (chosenDinnerSet ? chosenDinnerSet.totalCostVnd : 0)
             };
           }
           return d;
@@ -2468,7 +2815,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return nextPlan;
       });
 
-      showToast(`⚡ Đã cân chỉnh mâm cơm ${targetDay.dayName} đầy đặn, chuẩn vị: ${chosenCost.toLocaleString('vi-VN')} đ (chuẩn ngân sách ${dailyBudgetTarget.toLocaleString('vi-VN')} đ)!`);
+      setGenerationCount(prev => prev + 1);
+      showToast(`🎲 Đã đổi mới mâm cơm ${targetDay.dayName} (${chosenCost.toLocaleString('vi-VN')} đ, chuẩn ngân sách)!`);
       return true;
     }
   };
@@ -2550,6 +2898,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const contextValue: MealWiseContextType = {
         guestSession,
         recipes,
+        customRecipes,
+        addCustomRecipe,
+        deleteCustomRecipe,
         mealSets,
         weeklyPlan,
         setWeeklyPlan,
@@ -2560,12 +2911,15 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         theme,
         setTheme,
         toggleTheme,
-        onboardingData,
+        onboardingData: effectiveOnboardingData,
         setOnboardingData,
-        showOnboarding,
-        setShowOnboarding,
+        showOnboarding: isRegistered ? showOnboarding : false,
+        setShowOnboarding: setShowOnboardingSafe,
         completeOnboarding,
         resetOnboarding,
+        isTutorialOpen,
+        setIsTutorialOpen,
+        startTutorial,
         selectedRecipe,
         setSelectedRecipe,
         selectedMealSet,
@@ -2577,6 +2931,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         addRecipeToSlot,
         assignRecipeToSlot,
         removeMealFromSlot,
+        toggleSkipSlot,
         generationCount,
         autoFillWeeklyMenu,
         recalibrateDayMenu,
@@ -2589,6 +2944,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setGroceryCheckedItems,
         toggleGroceryItemChecked,
         clearGroceryCheckedItems,
+        isWeeklyShoppingCompleted,
+        setIsWeeklyShoppingCompleted,
         partyPlan,
         updatePartyPlan,
         addDishToParty,
@@ -2633,6 +2990,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         closeDrinkRoulette,
         pantryItems,
         addPantryItem,
+        addPantryItems,
         removePantryItem,
         updatePantryItem,
         clearPantryItems,
@@ -2703,6 +3061,9 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
   return {
     guestSession: null,
     recipes: mockRecipes,
+    customRecipes: [],
+    addCustomRecipe: () => {},
+    deleteCustomRecipe: () => {},
     mealSets: mockMealSets,
     weeklyPlan: defaultWeeklyPlan,
     setWeeklyPlan: () => {},
@@ -2719,6 +3080,9 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     setShowOnboarding: () => {},
     completeOnboarding: () => {},
     resetOnboarding: () => {},
+    isTutorialOpen: false,
+    setIsTutorialOpen: () => {},
+    startTutorial: () => {},
     selectedRecipe: null,
     setSelectedRecipe: () => {},
     selectedMealSet: null,
@@ -2730,6 +3094,7 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     addRecipeToSlot: () => {},
     assignRecipeToSlot: () => {},
     removeMealFromSlot: () => {},
+    toggleSkipSlot: () => {},
     generationCount: 0,
     autoFillWeeklyMenu: () => {},
     recalibrateDayMenu: () => true,
@@ -2742,6 +3107,8 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     setGroceryCheckedItems: () => {},
     toggleGroceryItemChecked: () => {},
     clearGroceryCheckedItems: () => {},
+    isWeeklyShoppingCompleted: false,
+    setIsWeeklyShoppingCompleted: () => {},
     groceryItemBuyerCounts: {},
     incrementGroceryItemBuyer: () => {},
     decrementGroceryItemBuyer: () => {},
@@ -2818,6 +3185,7 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     hideToast: () => {},
     pantryItems: INITIAL_PANTRY_ITEMS,
     addPantryItem: () => {},
+    addPantryItems: () => {},
     removePantryItem: () => {},
     updatePantryItem: () => {},
     clearPantryItems: () => {},

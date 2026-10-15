@@ -24,7 +24,8 @@ import {
   Volume2,
   FileText,
   Gamepad2,
-  Dices
+  Dices,
+  Pencil
 } from 'lucide-react';
 import { SafeImage } from './SafeImage';
 import { Ingredient, CookingInstruction } from '../types';
@@ -56,10 +57,70 @@ interface CategorizedGroup {
   items: { ingredient: Ingredient; originalIndex: number }[];
 }
 
+interface PantryMatchResult {
+  inFridge: boolean;
+  pantryId?: string;
+  pantryName?: string;
+  quantity?: string;
+}
+
+/**
+ * Intelligent helper to match a recipe ingredient name against current pantry items
+ */
+function findPantryMatchForIngredient(
+  ingredientName: string,
+  pantryItems: Array<{ id: string; name: string; quantity?: string }>
+): PantryMatchResult {
+  if (!ingredientName || !pantryItems || pantryItems.length === 0) {
+    return { inFridge: false };
+  }
+  const ingClean = ingredientName.toLowerCase().trim();
+
+  // Strip prep/form words for broader entity matching
+  const stripPrep = (str: string) =>
+    str
+      .toLowerCase()
+      .replace(/\b(thịt|con|miếng|quả|củ|nhánh|tép|trái|gói|hộp|tươi|khô|sống|chín|băm|xay|thái|cắt|lát|khúc)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const ingStripped = stripPrep(ingClean);
+
+  const match = pantryItems.find(p => {
+    const pClean = p.name.toLowerCase().trim();
+    if (ingClean === pClean) return true;
+    if (ingClean.includes(pClean) || pClean.includes(ingClean)) return true;
+
+    const pStripped = stripPrep(pClean);
+    if (ingStripped && pStripped && (ingStripped.includes(pStripped) || pStripped.includes(ingStripped))) {
+      return true;
+    }
+    return false;
+  });
+
+  if (match) {
+    return { inFridge: true, pantryId: match.id, pantryName: match.name, quantity: match.quantity };
+  }
+  return { inFridge: false };
+}
+
 export const RecipeDetailModal: React.FC = () => {
-  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast, user } = useMealWise();
+  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast, user, pantryItems, removePantryItem } = useMealWise();
   const [dragY, setDragY] = useState<number>(0);
   const touchStartY = useRef<number | null>(null);
+
+  // Pre-calculate pantry item availability for recipe ingredients
+  const pantryIngredientMatches = useMemo<Record<number, PantryMatchResult>>(() => {
+    if (!selectedRecipe || !pantryItems || pantryItems.length === 0) return {};
+    const map: Record<number, PantryMatchResult> = {};
+    selectedRecipe.ingredients.forEach((ing, idx) => {
+      const match = findPantryMatchForIngredient(ing.name, pantryItems);
+      if (match.inFridge) {
+        map[idx] = match;
+      }
+    });
+    return map;
+  }, [selectedRecipe, pantryItems]);
 
   // Servings Stepper State
   const [servings, setServings] = useState<number>(selectedRecipe?.servings || 4);
@@ -94,6 +155,53 @@ export const RecipeDetailModal: React.FC = () => {
 
   // 30s Meal Completion Ad State (Triggers on ticking final step)
   const [isCompletionAdOpen, setIsCompletionAdOpen] = useState<boolean>(false);
+
+  // Author Voice Note Playback State
+  const [isPlayingAuthorVoice, setIsPlayingAuthorVoice] = useState<boolean>(false);
+  const authorVoiceAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const toggleAuthorVoicePlayback = () => {
+    if (!selectedRecipe) return;
+    if (isPlayingAuthorVoice) {
+      if (authorVoiceAudioRef.current) {
+        authorVoiceAudioRef.current.pause();
+        authorVoiceAudioRef.current = null;
+      }
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setIsPlayingAuthorVoice(false);
+      return;
+    }
+
+    const voiceUrl = selectedRecipe.authorVoiceUrl || '';
+    if (voiceUrl.startsWith('data:audio')) {
+      try {
+        const audio = new Audio(voiceUrl);
+        authorVoiceAudioRef.current = audio;
+        setIsPlayingAuthorVoice(true);
+        audio.onended = () => setIsPlayingAuthorVoice(false);
+        audio.onerror = () => setIsPlayingAuthorVoice(false);
+        audio.play().catch(() => setIsPlayingAuthorVoice(false));
+        return;
+      } catch {}
+    }
+
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const spokenText =
+        (voiceUrl.startsWith('voice-tts:') ? voiceUrl.replace('voice-tts:', '') : '') ||
+        selectedRecipe.authorNote ||
+        `Món ${selectedRecipe.title}, nhớ nêm vừa miệng và ăn lúc còn nóng nhé!`;
+      const utter = new SpeechSynthesisUtterance(spokenText);
+      utter.lang = 'vi-VN';
+      utter.rate = 0.95;
+      setIsPlayingAuthorVoice(true);
+      utter.onend = () => setIsPlayingAuthorVoice(false);
+      utter.onerror = () => setIsPlayingAuthorVoice(false);
+      window.speechSynthesis.speak(utter);
+    }
+  };
 
   // Roll a funny randomized Gen Z Easter Egg Quote
   const rollNewEasterEggQuote = () => {
@@ -133,16 +241,29 @@ export const RecipeDetailModal: React.FC = () => {
       setActiveStepIndex(0);
       setShowHandsFreeIngredients(false);
 
-      // Restore saved ingredient checklist from localStorage
+      // Restore saved ingredient checklist from localStorage & auto-tick fridge items
       try {
         const savedIng = localStorage.getItem(`mealwise_recipe_ing_${selectedRecipe.id}`);
-        if (savedIng) {
-          setCheckedIngredients(JSON.parse(savedIng));
-        } else {
-          setCheckedIngredients({});
-        }
+        const parsedSaved: Record<string, boolean> = savedIng ? JSON.parse(savedIng) : {};
+        const merged: Record<string, boolean> = { ...parsedSaved };
+
+        // Auto-tick any ingredient that is already present in the user's fridge!
+        selectedRecipe.ingredients.forEach((ing, idx) => {
+          const key = `${ing.name}_${idx}`;
+          if (pantryIngredientMatches[idx]?.inFridge) {
+            merged[key] = true;
+          }
+        });
+        setCheckedIngredients(merged);
       } catch {
-        setCheckedIngredients({});
+        const initialChecked: Record<string, boolean> = {};
+        selectedRecipe.ingredients.forEach((ing, idx) => {
+          const key = `${ing.name}_${idx}`;
+          if (pantryIngredientMatches[idx]?.inFridge) {
+            initialChecked[key] = true;
+          }
+        });
+        setCheckedIngredients(initialChecked);
       }
 
       // Restore saved step completion from localStorage
@@ -164,7 +285,7 @@ export const RecipeDetailModal: React.FC = () => {
       });
       setExpandedSteps(allOpen);
     }
-  }, [selectedRecipe?.id]);
+  }, [selectedRecipe?.id, pantryIngredientMatches]);
 
   // Actionable Countdown Timer interval
   useEffect(() => {
@@ -542,6 +663,25 @@ export const RecipeDetailModal: React.FC = () => {
     setExpandedSteps({});
   };
 
+  const consumeUsedFridgeIngredients = (): string[] => {
+    if (!selectedRecipe || !pantryItems || pantryItems.length === 0 || typeof removePantryItem !== 'function') {
+      return [];
+    }
+    const removedIds = new Set<string>();
+    const removedNames: string[] = [];
+
+    selectedRecipe.ingredients.forEach((ing) => {
+      const match = findPantryMatchForIngredient(ing.name, pantryItems);
+      if (match.inFridge && match.pantryId && !removedIds.has(match.pantryId)) {
+        removedIds.add(match.pantryId);
+        removedNames.push(match.pantryName || ing.name);
+        removePantryItem(match.pantryId);
+      }
+    });
+
+    return removedNames;
+  };
+
   const toggleStepCompleted = (stepNum: number, e?: React.MouseEvent) => {
     e?.stopPropagation();
     setCompletedSteps(prev => {
@@ -551,13 +691,20 @@ export const RecipeDetailModal: React.FC = () => {
         localStorage.setItem(`mealwise_recipe_progress_${selectedRecipe.id}`, JSON.stringify(next));
       } catch {}
 
-      // Trigger 30s Ad when user ticks the final step of the meal ONLY if not ad-free
+      // Trigger 30s Ad and auto-consume fridge ingredients when user ticks the final step of the meal
       const totalSteps = selectedRecipe.instructions.length;
       if (willBeCompleted && stepNum === totalSteps) {
+        const consumedNames = consumeUsedFridgeIngredients();
+        const consumedSuffix = consumedNames.length > 0
+          ? ` (Đã tự động trừ ${consumedNames.length} nguyên liệu khỏi Tủ Lạnh: ${consumedNames.slice(0, 3).join(', ')}${consumedNames.length > 3 ? '...' : ''})`
+          : '';
         const adFree = isUserAdFree() || user?.role === 'admin';
         if (adFree) {
-          showToast(`🎉 Tuyệt vời! Bạn đã hoàn thành món ${selectedRecipe.title}! Chúc cả nhà ngon miệng!`, 'success');
+          showToast(`🎉 Tuyệt vời! Bạn đã hoàn thành món ${selectedRecipe.title}!${consumedSuffix}`, 'success');
         } else {
+          if (consumedNames.length > 0) {
+            showToast(`🧊 Đã tự động đánh dấu đã dùng & trừ ${consumedNames.length} nguyên liệu khỏi Tủ Lạnh!`, 'success');
+          }
           setIsCompletionAdOpen(true);
         }
       }
@@ -589,7 +736,11 @@ export const RecipeDetailModal: React.FC = () => {
     if (activeStepIndex < totalSteps - 1) {
       setActiveStepIndex(prev => prev + 1);
     } else {
-      showToast(`🎉 Chúc mừng! Bạn đã hoàn thành nấu món "${selectedRecipe.title}"!`);
+      const consumedNames = consumeUsedFridgeIngredients();
+      const consumedSuffix = consumedNames.length > 0
+        ? ` • Đã tự động trừ ${consumedNames.length} nguyên liệu khỏi Tủ Lạnh!`
+        : '';
+      showToast(`🎉 Chúc mừng! Bạn đã hoàn thành nấu món "${selectedRecipe.title}"!${consumedSuffix}`);
       setIsHandsFreeMode(false);
     }
   };
@@ -636,7 +787,7 @@ export const RecipeDetailModal: React.FC = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-[150] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
       onClick={() => {
         setSelectedRecipe(null);
         setIsHandsFreeMode(false);
@@ -715,6 +866,23 @@ export const RecipeDetailModal: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
+            {selectedRecipe.isCustom && (
+              <button
+                type="button"
+                onClick={() => {
+                  const recipeToEdit = selectedRecipe;
+                  setSelectedRecipe(null);
+                  setIsHandsFreeMode(false);
+                  setIsTimerOpen(false);
+                  window.dispatchEvent(new CustomEvent('mealwise:edit-custom-recipe', { detail: recipeToEdit }));
+                }}
+                className="px-2.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700 hover:bg-amber-100 transition-all cursor-pointer min-h-[36px]"
+                title="Chỉnh sửa món ăn này"
+              >
+                <Pencil className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-[11px]">Sửa món</span>
+              </button>
+            )}
             {/* Actionable Countdown Timer Quick Trigger Button */}
             <button
               type="button"
@@ -750,11 +918,11 @@ export const RecipeDetailModal: React.FC = () => {
 
         {/* Actionable Cooking Timer Drawer / Banner (Expandable) */}
         {isTimerOpen && (
-          <div className="p-3.5 bg-[#FAF8F5] dark:bg-[#1A1918] border-b border-[#E8E2D8] dark:border-[#252220] shrink-0 space-y-3 animate-fade-in select-none">
+          <div className="p-3.5 bg-[#F8FAFC] dark:bg-[#1A202C] border-b border-[#E2E8F0] dark:border-[#2D3748] shrink-0 space-y-3 animate-fade-in select-none">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs font-black text-stone-900 dark:text-stone-200 uppercase tracking-wide">
                 <Timer className="w-4 h-4 text-stone-800 dark:text-stone-300" />
-                <span>Bộ Đếm Giờ Nấu Ăn (Cooking Timer)</span>
+                <span>Bộ Đếm Giờ Nấu Ăn</span>
               </div>
               <button
                 type="button"
@@ -892,7 +1060,7 @@ export const RecipeDetailModal: React.FC = () => {
                 {/* Subtle Game Loading Bar Accent */}
                 <div className="mt-2 h-1 rounded-full bg-amber-200/60 dark:bg-stone-800 overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-1000 ease-linear"
+                    className="h-full bg-amber-500 rounded-full transition-all duration-1000 ease-linear"
                     style={{ 
                       width: `${timerTotalDuration > 0 ? Math.min(100, Math.round(((timerTotalDuration - timerSecondsLeft) / timerTotalDuration) * 100)) : 100}%` 
                     }}
@@ -1163,6 +1331,11 @@ export const RecipeDetailModal: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
                     <div className="absolute bottom-3 left-4 right-4">
                       <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                        {selectedRecipe.isCustom && (
+                          <span className="px-2.5 py-0.5 rounded-full bg-amber-500/90 text-stone-950 text-[10px] font-black inline-block backdrop-blur-sm shadow-xs">
+                            ⭐️ Món Bếp Nhà
+                          </span>
+                        )}
                         <span className="px-2.5 py-0.5 rounded-full bg-stone-900/80 text-white border border-stone-700/60 text-[10px] font-extrabold inline-block backdrop-blur-sm">
                           {selectedRecipe.region === 'bac' ? 'Vị Bắc' : selectedRecipe.region === 'nam' ? 'Vị Nam' : selectedRecipe.region === 'trung' ? 'Vị Trung' : 'Toàn Quốc'}
                         </span>
@@ -1281,6 +1454,47 @@ export const RecipeDetailModal: React.FC = () => {
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
                     {selectedRecipe.description}
                   </p>
+
+                  {(selectedRecipe.authorNote || selectedRecipe.authorVoiceUrl) && (
+                    <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-950 dark:text-amber-200 flex items-center justify-between gap-3">
+                      <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                        <ChefHat className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-bold text-[11px] text-amber-900 dark:text-amber-300">Dấu ấn bếp nhà</p>
+                          <p className="text-xs text-stone-800 dark:text-stone-200 mt-0.5 leading-relaxed">
+                            {selectedRecipe.authorNote || 'Lời nhắn ghi âm từ người nấu'}
+                          </p>
+                        </div>
+                      </div>
+                      {(selectedRecipe.authorVoiceUrl || selectedRecipe.isCustom) && (
+                        <button
+                          type="button"
+                          onClick={toggleAuthorVoicePlayback}
+                          className={`px-3 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer shadow-xs ${
+                            isPlayingAuthorVoice
+                              ? 'bg-rose-600 text-white animate-pulse'
+                              : 'bg-amber-500 hover:bg-amber-400 text-stone-950'
+                          }`}
+                          title="Nghe lời nhắn của người nấu"
+                        >
+                          {isPlayingAuthorVoice ? (
+                            <>
+                              <Pause className="w-3.5 h-3.5 fill-current" />
+                              <span>Đang phát...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Volume2 className="w-3.5 h-3.5" />
+                              <span>
+                                Nghe lời dặn
+                                {selectedRecipe.authorVoiceDurationSec ? ` (${selectedRecipe.authorVoiceDurationSec}s)` : ''}
+                              </span>
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </>
               ) : (
                 /* Uniform Mode Header & Switcher (Step 2: Công thức vs Thực hành) */
@@ -1492,11 +1706,21 @@ export const RecipeDetailModal: React.FC = () => {
                                 >
                                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                                 </button>
-                                <span className={`font-semibold min-w-0 leading-relaxed transition-all ${
-                                  isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-stone-100'
-                                }`}>
-                                  {ing.name}
-                                </span>
+                                <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
+                                  <span className={`font-semibold min-w-0 leading-relaxed transition-all ${
+                                    isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-stone-100'
+                                  }`}>
+                                    {ing.name}
+                                  </span>
+                                  {pantryIngredientMatches[originalIndex]?.inFridge && (
+                                    <span 
+                                      className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 px-1.5 py-0.5 rounded-md border border-sky-200 dark:border-sky-800 shrink-0"
+                                      title={`Thực phẩm có sẵn trong tủ lạnh: ${pantryIngredientMatches[originalIndex]?.pantryName || ing.name}`}
+                                    >
+                                      <span>🧊 Có sẵn trong tủ</span>
+                                    </span>
+                                  )}
+                                </div>
                               </div>
 
                               {/* Preserving exact shrink-0 whitespace-nowrap for test suite */}
@@ -1687,11 +1911,11 @@ export const RecipeDetailModal: React.FC = () => {
 
                 {/* Chef's Secret / Mẹo Bếp Vàng */}
                 {selectedRecipe.chefTip && (
-                  <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#1A1918] border border-amber-300/60 dark:border-amber-700/40 text-xs sm:text-sm text-stone-900 dark:text-stone-100 space-y-1.5 mt-3 shadow-sm">
+                  <div className="p-4 rounded-2xl bg-white dark:bg-[#1A202C] border border-amber-300/60 dark:border-amber-700/40 text-xs sm:text-sm text-stone-900 dark:text-stone-100 space-y-1.5 mt-3 shadow-sm">
                     <div className="flex items-center justify-between flex-wrap gap-2">
                       <div className="flex items-center gap-1.5 font-black uppercase text-xs text-amber-900 dark:text-amber-300">
                         <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                        <span>Bí Quyết Đầu Bếp (Chef's Secret)</span>
+                        <span>Bí Quyết Đầu Bếp</span>
                       </div>
                       <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
                         Chuẩn Vị Cơm Nhà
@@ -1751,12 +1975,12 @@ export const RecipeDetailModal: React.FC = () => {
           onClick={() => setEasterEggQuote(null)}
         >
           <div 
-            className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-[#1A1918] border border-amber-300/80 dark:border-amber-700/60 p-5 shadow-2xl space-y-4 text-center animate-in zoom-in-95 duration-200"
+            className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-[#1A202C] border border-amber-300/80 dark:border-amber-700/60 p-5 shadow-2xl space-y-4 text-center animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header Badge */}
             <div className="flex items-center justify-center gap-1.5">
-              <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white shadow-xs flex items-center gap-1.5">
+              <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-500 text-stone-950 shadow-xs flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Gen Z Bếp Mode · Easter Egg</span>
               </span>

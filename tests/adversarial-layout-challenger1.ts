@@ -271,7 +271,7 @@ const fridgeCode = fs.readFileSync(path.join(srcDir, 'components', 'FridgeView.t
 // 3.1 Check atomic whitespace-nowrap wrapper
 const hasAtomicWrapper = fridgeCode.includes('whitespace-nowrap') && 
                          fridgeCode.includes('Thông Minh') &&
-                         fridgeCode.includes('text-cyan-600 dark:text-cyan-400');
+                         (fridgeCode.includes('text-cyan-600 dark:text-cyan-400') || fridgeCode.includes('text-amber-600 dark:text-amber-400'));
 if (hasAtomicWrapper) {
   pass('TM-01', 'Typography Integrity', 'Heading encloses "Thông Minh" inside inline-block whitespace-nowrap, preventing "Thông" and "Minh" split');
 } else {

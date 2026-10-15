@@ -11,36 +11,79 @@ export default {
         18: '4.5rem',
       },
       colors: {
+        // Exia Repair III Flat Matte System (60-30-10)
+        exia: {
+          canvas: {
+            light: '#F8FAFC',
+            dark: '#12161F',
+          },
+          card: {
+            light: '#FFFFFF',
+            dark: '#1A202C',
+          },
+          subcard: {
+            light: '#F8FAFC',
+            dark: '#141824',
+          },
+          border: {
+            light: '#E2E8F0',
+            dark: '#2D3748',
+          },
+          text: {
+            light: '#1E293B',
+            dark: '#F8FAFC',
+            mutedLight: '#64748B',
+            mutedDark: '#94A3B8',
+          },
+          cobalt: {
+            DEFAULT: '#1D4ED8',
+            hover: '#2563EB',
+            light: '#EFF6FF',
+            dark: '#1E3A8A',
+          },
+          emerald: {
+            DEFAULT: '#10B981',
+            dark: '#059669',
+          },
+          amber: {
+            DEFAULT: '#EAB308',
+            dark: '#F59E0B',
+          },
+          monza: {
+            DEFAULT: '#DC2626',
+            dark: '#E11D48',
+          },
+        },
         ceramic: {
-          50: '#FAF8F5',  // Warm Jasmine Rice Canvas (60%)
-          100: '#F5F1EB', // Soft Oatmeal / Dough
-          200: '#EBE5DC', // Soft Ceramic Border
-          300: '#DDD4C7',
-          400: '#C8BEAD',
+          50: '#F8FAFC',  // Exia Cool White Canvas (60%)
+          100: '#F1F5F9', // Exia Slate Sub-surface
+          200: '#E2E8F0', // Exia Flat Border
+          300: '#CBD5E1',
+          400: '#94A3B8',
         },
         umber: {
           50: '#FFFBEB',
           100: '#FEF3C7',
           200: '#FDE68A',
           500: '#F59E0B',
-          600: '#D97706', // Golden Saffron & Caramel Glaze (10% Accent)
+          600: '#D97706',
           700: '#B45309',
           800: '#92400E',
           900: '#78350F',
         },
         hearth: {
-          950: '#121110', // Deep Cast Iron / Clay Pot Canvas
-          900: '#1C1A18', // Elevated Hearth Card
-          800: '#292524', // Hearth Border
-          700: '#44403C',
+          950: '#12161F', // Exia Dark Canvas (60%)
+          900: '#1A202C', // Exia Dark Card
+          800: '#2D3748', // Exia Dark Border
+          700: '#475569',
         },
         stone: {
-          750: '#252220', // Dark Mode Hearth Elevated Sub-card / Border
-          850: '#1A1918', // Dark Mode Hearth Primary Card
+          750: '#2D3748', // Flat Dark Border / Sub-card
+          850: '#1A202C', // Flat Dark Card
         },
         slate: {
-          750: '#252220', // Fallback for legacy dark mode sub-cards
-          850: '#1A1918', // Fallback for legacy dark mode cards
+          750: '#2D3748', // Flat Dark Border / Sub-card
+          850: '#1A202C', // Flat Dark Card
         },
         herbal: {
           50: '#F0FDF4',
@@ -72,16 +115,16 @@ export default {
           700: '#9C3418',
         },
         brand: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
+          50: '#EFF6FF',
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#2563EB',
+          600: '#1D4ED8',
+          700: '#1E40AF',
+          800: '#1E3A8A',
+          900: '#172554',
         }
       },
       boxShadow: {

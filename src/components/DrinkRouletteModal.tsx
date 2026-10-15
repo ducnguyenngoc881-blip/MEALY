@@ -15,7 +15,8 @@ import {
   Settings,
   Wine,
   UserCheck,
-  ArrowLeft
+  ArrowLeft,
+  FileText
 } from 'lucide-react';
 import { useMealWise } from '../context/MealWiseContext';
 import { RouletteWheel, WheelSegment } from './RouletteWheel';
@@ -73,7 +74,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { openMinigameHub } = useMealWise();
+  const { openMinigameHub, openConfirmModal, showToast } = useMealWise();
 
   // Game Setup State
   const [players, setPlayers] = useState<Player[]>([
@@ -85,6 +86,8 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
   const [minShots, setMinShots] = useState<number>(1);
   const [maxShots, setMaxShots] = useState<number>(3);
   const [includeBonusSlots, setIncludeBonusSlots] = useState<boolean>(true);
+  const [showAllLeaderboard, setShowAllLeaderboard] = useState<boolean>(false);
+  const [isRoundSummaryOpen, setIsRoundSummaryOpen] = useState<boolean>(false);
 
   const handleBackToHub = () => {
     if (isSpinning) return;
@@ -348,10 +351,20 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
     setStage('SETUP');
   };
 
-  // RESET ENTIRE SCOREBOARD
+  // RESET ENTIRE SCOREBOARD WITH CONFIRMATION SHIELD
   const handleResetScores = () => {
-    setPlayers(prev => prev.map(p => ({ ...p, shotsCount: 0 })));
-    setRoundNumber(1);
+    openConfirmModal({
+      title: 'Đặt Lại Điểm Bàn Nhậu',
+      message: 'Bạn có chắc chắn muốn xóa toàn bộ số shot đã uống và đưa điểm số của tất cả thành viên về 0?',
+      confirmLabel: 'Đặt Lại Điểm',
+      cancelLabel: 'Giữ Lại Điểm',
+      isDanger: true,
+      onConfirm: () => {
+        setPlayers(prev => prev.map(p => ({ ...p, shotsCount: 0 })));
+        setRoundNumber(1);
+        showToast('🔄 Đã đặt lại điểm số bàn nhậu về 0!');
+      }
+    });
   };
 
   // Leaderboard sorted by highest shots
@@ -359,9 +372,17 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
     return rankPlayersByShots(players);
   }, [players]);
 
+  const displayedPlayers = useMemo(() => {
+    return showAllLeaderboard ? sortedPlayers : sortedPlayers.slice(0, 3);
+  }, [sortedPlayers, showAllLeaderboard]);
+
   const randomQuote = useMemo(() => {
     return FUN_QUOTES[Math.floor(Math.random() * FUN_QUOTES.length)];
   }, [roundNumber]);
+
+  const totalShots = useMemo(() => {
+    return players.reduce((sum, p) => sum + p.shotsCount, 0);
+  }, [players]);
 
   if (!isOpen) return null;
 
@@ -874,49 +895,86 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
 
               {/* Session Scoreboard / Leaderboard */}
               <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-3.5 border border-slate-200 dark:border-slate-700/60 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                    <Trophy className="w-3.5 h-3.5 text-amber-500" />
-                    Nhật Ký Bàn Nhậu (Tổng số shot đã uống)
-                  </span>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <Trophy className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 truncate">
+                      Nhật Ký Bàn Nhậu
+                    </span>
+                    <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300/80 dark:border-amber-700/60 shrink-0">
+                      Top {Math.min(3, sortedPlayers.length)}{sortedPlayers.length > 3 && !showAllLeaderboard ? ` / ${sortedPlayers.length}` : ''}
+                    </span>
+                  </div>
                   <button
                     type="button"
                     onClick={handleResetScores}
-                    className="text-[10.5px] font-semibold text-slate-400 hover:text-rose-500 transition-colors"
+                    className="text-[10.5px] font-semibold text-slate-400 hover:text-rose-500 transition-colors cursor-pointer shrink-0"
                   >
                     Đặt lại điểm
                   </button>
                 </div>
 
-                <div className="space-y-1.5">
-                  {sortedPlayers.map((p, idx) => (
-                    <div 
-                      key={p.id}
-                      className="flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/60 text-xs"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-extrabold text-slate-400 w-4">
-                          #{idx + 1}
-                        </span>
-                        <span 
-                          className="w-2.5 h-2.5 rounded-full" 
-                          style={{ backgroundColor: p.color }} 
-                        />
-                        <span className="font-bold text-slate-800 dark:text-slate-200">
-                          {p.name}
-                        </span>
-                        {idx === 0 && p.shotsCount > 0 && (
-                          <span className="text-amber-500 font-bold text-[10px] flex items-center gap-0.5">
-                            👑 Dẫn đầu
+                {/* Top 3 Highlighted & Scrollable List */}
+                <div className="space-y-1.5 max-h-[160px] overflow-y-auto overscroll-contain pr-0.5 select-none">
+                  {displayedPlayers.map((p, idx) => {
+                    const isTop1 = idx === 0 && p.shotsCount > 0;
+                    const isTop3 = idx < 3;
+
+                    return (
+                      <div 
+                        key={p.id}
+                        className={`flex items-center justify-between p-2 rounded-xl border text-xs transition-all ${
+                          isTop1
+                            ? 'bg-amber-50/90 dark:bg-amber-950/30 border-amber-300 dark:border-amber-700/70 shadow-2xs'
+                            : isTop3
+                              ? 'bg-white dark:bg-slate-900 border-amber-200/60 dark:border-slate-700/80 shadow-2xs'
+                              : 'bg-slate-100/70 dark:bg-slate-900/40 border-slate-200/50 dark:border-slate-800/40 opacity-80'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className={`text-[11px] font-black w-4 text-center shrink-0 ${
+                            idx === 0
+                              ? 'text-amber-500 font-black'
+                              : idx === 1
+                                ? 'text-slate-400 dark:text-slate-300'
+                                : idx === 2
+                                  ? 'text-amber-700 dark:text-amber-500'
+                                  : 'text-slate-400'
+                          }`}>
+                            #{idx + 1}
                           </span>
-                        )}
+                          <span 
+                            className="w-2.5 h-2.5 rounded-full shrink-0" 
+                            style={{ backgroundColor: p.color }} 
+                          />
+                          <span className="font-bold text-slate-800 dark:text-slate-200 truncate">
+                            {p.name}
+                          </span>
+                          {isTop1 && (
+                            <span className="text-amber-600 dark:text-amber-400 font-bold text-[10px] flex items-center gap-0.5 shrink-0">
+                              👑 Dẫn đầu
+                            </span>
+                          )}
+                        </div>
+                        <span className={`font-black shrink-0 ${p.shotsCount > 0 ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`}>
+                          {p.shotsCount} shot
+                        </span>
                       </div>
-                      <span className="font-black text-rose-500">
-                        {p.shotsCount} shot
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
+
+                {/* Show All / Collapse Toggle Button */}
+                {sortedPlayers.length > 3 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllLeaderboard(prev => !prev)}
+                    className="w-full py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer select-none"
+                  >
+                    <span>{showAllLeaderboard ? 'Thu gọn (Top 3)' : `Xem tất cả (${sortedPlayers.length} người chơi)`}</span>
+                    <span className="text-[10px]">{showAllLeaderboard ? '▲' : '▼'}</span>
+                  </button>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -939,19 +997,149 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
                 </button>
               </div>
 
-              <button
-                type="button"
-                onClick={handleBackToHub}
-                className="w-full py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                Quay Lại Chọn Minigame Khác
-              </button>
+              {/* Secondary Navigation Actions: Round Summary & Back to Minigame */}
+              <div className="space-y-1.5 pt-0.5">
+                <button
+                  type="button"
+                  onClick={() => setIsRoundSummaryOpen(true)}
+                  className="w-full py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-98 cursor-pointer select-none"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Tổng Kết Vòng</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleBackToHub}
+                  className="w-full py-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-semibold text-[11.5px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer select-none"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Quay Lại Sảnh Minigame</span>
+                </button>
+              </div>
             </div>
           )}
 
         </div>
       </div>
+
+      {/* ROUND SUMMARY MODAL */}
+      {isRoundSummaryOpen && (
+        <div 
+          className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn select-none"
+          onClick={() => setIsRoundSummaryOpen(false)}
+        >
+          <div 
+            className="w-full max-w-sm bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl p-4 sm:p-5 space-y-4 max-h-[85vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-xl bg-amber-500/10 text-amber-500 text-sm">
+                  📊
+                </span>
+                <div>
+                  <h3 className="text-sm font-black text-slate-900 dark:text-white">
+                    Tổng Kết Vòng {roundNumber}
+                  </h3>
+                  <p className="text-[10.5px] text-slate-500 dark:text-slate-400">
+                    Chi tiết vòng đấu & thống kê bàn nhậu
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsRoundSummaryOpen(false)}
+                className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
+                title="Đóng"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Current Round Penalty Spotlight */}
+            <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 space-y-1 text-center">
+              <span className="text-[10px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                Kết Quả Vừa Xảy Ra (Vòng {roundNumber})
+              </span>
+              <div className="text-sm font-black text-slate-900 dark:text-slate-100">
+                {selectedPlayer?.name || 'Chưa xác định'}: {currentPenalty?.label || `${currentPenalty?.shots || 0} shot`}
+              </div>
+              {delegatedPlayer && (
+                <p className="text-[11px] font-semibold text-rose-500">
+                  🤝 {delegatedPlayer.name} đã uống hộ 1 shot!
+                </p>
+              )}
+            </div>
+
+            {/* Session Stats Grid */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-center">
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block">
+                  Tổng Shot Đã Uống
+                </span>
+                <span className="text-base font-black text-rose-500">
+                  {totalShots} shot
+                </span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-center">
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block">
+                  Số Vòng Đã Chơi
+                </span>
+                <span className="text-base font-black text-amber-500">
+                  {roundNumber} vòng
+                </span>
+              </div>
+            </div>
+
+            {/* Full Player Standings */}
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <Trophy className="w-3.5 h-3.5 text-amber-500" />
+                Bảng Điểm Toàn Bộ Người Chơi ({sortedPlayers.length})
+              </span>
+              <div className="space-y-1.5 max-h-[180px] overflow-y-auto overscroll-contain pr-0.5">
+                {sortedPlayers.map((p, idx) => (
+                  <div
+                    key={p.id}
+                    className="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-xs"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`text-[11px] font-black w-4 text-center shrink-0 ${
+                        idx === 0 ? 'text-amber-500' : idx === 1 ? 'text-slate-400 dark:text-slate-300' : idx === 2 ? 'text-amber-700 dark:text-amber-500' : 'text-slate-400'
+                      }`}>
+                        #{idx + 1}
+                      </span>
+                      <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: p.color }} />
+                      <span className="font-bold text-slate-800 dark:text-slate-200 truncate">
+                        {p.name}
+                      </span>
+                      {idx === 0 && p.shotsCount > 0 && (
+                        <span className="text-amber-500 font-bold text-[10px] flex items-center gap-0.5 shrink-0">
+                          👑 Thần cồn
+                        </span>
+                      )}
+                    </div>
+                    <span className="font-black text-rose-500 shrink-0">
+                      {p.shotsCount} shot
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setIsRoundSummaryOpen(false)}
+              className="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-stone-100 text-white dark:text-stone-900 font-black text-xs transition-transform active:scale-98 cursor-pointer select-none"
+            >
+              Đóng & Tiếp Tục Cuộc Vui
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

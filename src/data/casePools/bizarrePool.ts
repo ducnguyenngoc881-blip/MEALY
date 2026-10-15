@@ -13,7 +13,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1727867183198-bf1a1b248f22?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-2",
@@ -24,7 +24,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Hotvitlon.jpg/960px-Hotvitlon.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-3",
@@ -35,7 +35,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg/960px-06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-4",
@@ -46,7 +46,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-5",
@@ -68,7 +68,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Bowl_of_Vietnamese_bun_rieu_soup_with_tomato.jpg/960px-Bowl_of_Vietnamese_bun_rieu_soup_with_tomato.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-7",
@@ -79,7 +79,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-8",
@@ -90,7 +90,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-9",
@@ -101,7 +101,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-10",
@@ -112,7 +112,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1647169953827-a7c85f324caf?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-11",
@@ -123,7 +123,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-12",
@@ -145,7 +145,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Canh_kh%E1%BB%95_qua.JPG/960px-Canh_kh%E1%BB%95_qua.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-14",
@@ -156,7 +156,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-15",
@@ -167,7 +167,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Ch%C3%A8_xo%C3%A0i.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-16",
@@ -178,7 +178,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-17",
@@ -200,7 +200,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pizzabanhtrangnuong1.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-19",
@@ -211,7 +211,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-20",
@@ -222,7 +222,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-21",
@@ -233,7 +233,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-22",
@@ -244,7 +244,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1789999375811-d20146a62be4?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-23",
@@ -255,7 +255,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-24",
@@ -266,7 +266,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg/960px-06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-25",
@@ -277,7 +277,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-26",
@@ -288,7 +288,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-27",
@@ -299,7 +299,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1647169953827-a7c85f324caf?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-28",
@@ -310,7 +310,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Thit_rang_chay_canh.jpg/960px-Thit_rang_chay_canh.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-29",
@@ -321,7 +321,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1752245055475-8b7c3b4756ac?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-30",
@@ -332,7 +332,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-31",
@@ -343,7 +343,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1676693420436-7fa448f054eb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-32",
@@ -354,7 +354,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-33",
@@ -365,7 +365,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1680169610391-1c7d1ede96b9?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-34",
@@ -376,7 +376,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1512058533999-106ee01bf777?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-35",
@@ -387,7 +387,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1727867183198-bf1a1b248f22?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-36",
@@ -398,7 +398,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1552913903-2cffa1962dc7?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-37",
@@ -409,7 +409,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-38",
@@ -420,7 +420,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-39",
@@ -431,7 +431,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1680169610391-1c7d1ede96b9?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-40",
@@ -442,7 +442,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1709433420422-731e1be1c9aa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-41",
@@ -453,7 +453,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-42",
@@ -464,7 +464,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-43",
@@ -475,7 +475,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-44",
@@ -486,7 +486,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1630914441929-0d8ea69f95e6?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-45",
@@ -497,7 +497,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-46",
@@ -508,7 +508,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1600454309261-3dc9b7597637?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-47",
@@ -519,7 +519,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-48",
@@ -530,7 +530,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Bun_thit_nuong.jpg/960px-Bun_thit_nuong.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-49",
@@ -541,7 +541,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-50",
@@ -552,7 +552,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg/960px-Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-51",
@@ -563,7 +563,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-52",
@@ -574,7 +574,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1786114774610-8696925848c6?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-53",
@@ -585,7 +585,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1608039762150-b682eb589303?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-54",
@@ -596,7 +596,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Dau_sot_ca%2C_tofu_stuffed_with_pork%2C_in_tomato_sauce.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-55",
@@ -607,7 +607,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1707270686208-5d1fc168dd7b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-56",
@@ -618,7 +618,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg/960px-Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-57",
@@ -629,7 +629,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-58",
@@ -640,7 +640,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1706176224199-cd97c73d7640?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-59",
@@ -651,7 +651,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg/960px-Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-60",
@@ -662,7 +662,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1709433420422-731e1be1c9aa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-61",
@@ -673,7 +673,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Nem-chua-ran2.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-62",
@@ -684,7 +684,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-63",
@@ -695,7 +695,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg/960px-Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-64",
@@ -728,7 +728,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1665582313032-29058cee9c94?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-67",
@@ -739,7 +739,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1788928808407-531f4779bd50?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-68",
@@ -750,7 +750,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1596560548464-f010549b84d7?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-69",
@@ -761,7 +761,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-blue-70",
@@ -772,7 +772,7 @@ export const BIZARRE_POOL_BLUE: FastDishItem[] = [
     "dareLevel": "Cấp 6: Thử Nghiệm",
     "darePenalty": "Dám ăn 2 miếng lớn hoặc chịu phạt bao nước cả team!",
     "tier": "blue",
-    "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
@@ -786,7 +786,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg/960px-06749jfCuisine_Foods_Takoyaki_cooking_Balut_Penoy_Baliuag_Bulacanfvf_22.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-2",
@@ -797,7 +797,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855596-8506096e2ebe?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-3",
@@ -808,7 +808,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1747628857852-2ffef1e3d06b?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-4",
@@ -819,7 +819,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Bun_rieu_with_herbs.jpg/960px-Bun_rieu_with_herbs.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-5",
@@ -830,7 +830,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg/960px-Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-6",
@@ -841,7 +841,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1761321626747-a2da185beab3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-7",
@@ -852,7 +852,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1756132539966-8d65f7a9eed8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-8",
@@ -874,7 +874,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1648299732724-b480cbb65548?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-10",
@@ -885,7 +885,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1763470260582-894ae15f43bb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-11",
@@ -896,7 +896,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg/960px-Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-12",
@@ -907,7 +907,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1566749382513-5e93b380138d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-13",
@@ -918,7 +918,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-14",
@@ -929,7 +929,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-15",
@@ -940,7 +940,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Pizzabanhtrangnuong3.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-16",
@@ -951,7 +951,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Hotvitlon.jpg/960px-Hotvitlon.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-17",
@@ -962,7 +962,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg/960px-Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-18",
@@ -973,7 +973,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855596-8506096e2ebe?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-19",
@@ -984,7 +984,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Thit_rang_chay_canh.jpg/960px-Thit_rang_chay_canh.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-20",
@@ -995,7 +995,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-21",
@@ -1006,7 +1006,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1601226809816-b8c32440158a?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-22",
@@ -1017,7 +1017,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-23",
@@ -1028,7 +1028,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-24",
@@ -1039,7 +1039,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1688084468401-4938b073aef2?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-25",
@@ -1050,7 +1050,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-26",
@@ -1061,7 +1061,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/82/Banh_trang_tron_%28mua_tai_truong_thpt_giadinh%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-27",
@@ -1072,7 +1072,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-28",
@@ -1083,7 +1083,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-29",
@@ -1094,7 +1094,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-30",
@@ -1116,7 +1116,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-32",
@@ -1127,7 +1127,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-33",
@@ -1138,7 +1138,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg/960px-Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-34",
@@ -1149,7 +1149,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Italian_Creme_Caramel.JPG/960px-Italian_Creme_Caramel.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-35",
@@ -1160,7 +1160,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg/960px-Ch%C3%A8_%C4%91%E1%BA%ADu_xanh_nha_%C4%91am.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-36",
@@ -1171,7 +1171,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1588482415422-a061902e00a4?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-37",
@@ -1182,7 +1182,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Hotvitlon.jpg/960px-Hotvitlon.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-38",
@@ -1193,7 +1193,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1680169610391-1c7d1ede96b9?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-39",
@@ -1204,7 +1204,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1605311572312-a926afe51604?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-40",
@@ -1215,7 +1215,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg/960px-Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-41",
@@ -1226,7 +1226,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1707056503922-91c9ebaf0774?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-42",
@@ -1237,7 +1237,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/X%C3%B4i_x%C3%A9o.jpg/960px-X%C3%B4i_x%C3%A9o.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-43",
@@ -1248,7 +1248,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg/960px-Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-44",
@@ -1259,7 +1259,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1760504526069-ff0f8bf6e4ca?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-45",
@@ -1270,7 +1270,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-46",
@@ -1281,7 +1281,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-47",
@@ -1292,7 +1292,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1758293121435-396ed31ebcf4?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-48",
@@ -1303,7 +1303,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-49",
@@ -1314,7 +1314,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-50",
@@ -1325,7 +1325,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m_%281%29.jpg/960px-B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m_%281%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-51",
@@ -1336,7 +1336,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Bowl_of_Vietnamese_bun_rieu_soup_with_tomato.jpg/960px-Bowl_of_Vietnamese_bun_rieu_soup_with_tomato.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-52",
@@ -1347,7 +1347,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-53",
@@ -1358,7 +1358,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-54",
@@ -1369,7 +1369,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-55",
@@ -1380,7 +1380,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1600454309261-3dc9b7597637?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-56",
@@ -1391,7 +1391,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/X%C3%B4i_x%C3%A9o.jpg/960px-X%C3%B4i_x%C3%A9o.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-57",
@@ -1402,7 +1402,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1719454260936-caa0a804f154?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-58",
@@ -1413,7 +1413,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Ch%E1%BA%A3_gi%C3%B2_SG_%28nem_r%C3%A1n_gi%C3%B2n%29_%E1%BB%9F_qu%C3%A1n_b%C3%BAn_ri%C3%AAu_B%C3%A0_Ti_ng26th7n2023_%283%29.jpg/960px-Ch%E1%BA%A3_gi%C3%B2_SG_%28nem_r%C3%A1n_gi%C3%B2n%29_%E1%BB%9F_qu%C3%A1n_b%C3%BAn_ri%C3%AAu_B%C3%A0_Ti_ng26th7n2023_%283%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-59",
@@ -1424,7 +1424,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855594-5fae616d0481?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-60",
@@ -1435,7 +1435,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-61",
@@ -1446,7 +1446,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1756132539966-8d65f7a9eed8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-62",
@@ -1457,7 +1457,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855596-8506096e2ebe?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-63",
@@ -1468,7 +1468,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/Pizzabanhtrangnuong.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-64",
@@ -1479,7 +1479,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-65",
@@ -1490,7 +1490,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Hotvitlon.jpg/960px-Hotvitlon.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-66",
@@ -1501,7 +1501,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-67",
@@ -1512,7 +1512,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/G%E1%BB%8Fi_cu%E1%BB%91n.jpg/960px-G%E1%BB%8Fi_cu%E1%BB%91n.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-68",
@@ -1523,7 +1523,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1719454261026-fc7f0ffc1835?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-69",
@@ -1534,7 +1534,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1719454261026-fc7f0ffc1835?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-70",
@@ -1545,7 +1545,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/B%C3%BAn_ri%C3%AAu_cua_n%C6%B0%E1%BB%9Bc.jpg/960px-B%C3%BAn_ri%C3%AAu_cua_n%C6%B0%E1%BB%9Bc.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-71",
@@ -1556,7 +1556,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Bun_rieu_with_herbs.jpg/960px-Bun_rieu_with_herbs.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-72",
@@ -1567,7 +1567,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1605311572312-a926afe51604?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-73",
@@ -1578,7 +1578,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1600454309261-3dc9b7597637?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-74",
@@ -1589,7 +1589,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1788928808407-531f4779bd50?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-75",
@@ -1600,7 +1600,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1766761562530-c8dd12c96d9a?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-76",
@@ -1611,7 +1611,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1719454260936-caa0a804f154?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-77",
@@ -1622,7 +1622,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1605311572312-a926afe51604?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-78",
@@ -1633,7 +1633,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-79",
@@ -1644,7 +1644,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Nem-chua-ran2.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-pur-80",
@@ -1655,7 +1655,7 @@ export const BIZARRE_POOL_PURPLE: FastDishItem[] = [
     "dareLevel": "Cấp 8: Cay Đắng Tột Cùng",
     "darePenalty": "Ăn hết nửa phần hoặc trả tiền bữa trưa cho người thắng kèo!",
     "tier": "purple",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1625477811233-044633d10dd1?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
@@ -1669,7 +1669,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-2",
@@ -1680,7 +1680,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-3",
@@ -1691,7 +1691,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg/960px-Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-4",
@@ -1702,7 +1702,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg/960px-Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-5",
@@ -1713,7 +1713,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1680169610391-1c7d1ede96b9?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-6",
@@ -1724,7 +1724,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg/960px-Vietnamese_B%C3%A1nh_m%C3%AC_%28Banh_Mi%29_Sandwich.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-7",
@@ -1735,7 +1735,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-8",
@@ -1746,7 +1746,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-9",
@@ -1757,7 +1757,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-10",
@@ -1768,7 +1768,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-11",
@@ -1779,7 +1779,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855596-8506096e2ebe?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-12",
@@ -1790,7 +1790,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1761321626747-a2da185beab3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-13",
@@ -1801,7 +1801,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/64/Chinese_Balut_sold_in_Nanjing_20100115.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-14",
@@ -1812,7 +1812,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg/960px-Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-15",
@@ -1823,7 +1823,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1761321626747-a2da185beab3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-16",
@@ -1834,7 +1834,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1680169610391-1c7d1ede96b9?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-17",
@@ -1845,7 +1845,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1756132539966-8d65f7a9eed8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-18",
@@ -1856,7 +1856,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1680169610391-1c7d1ede96b9?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-19",
@@ -1867,7 +1867,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-20",
@@ -1878,7 +1878,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-21",
@@ -1889,7 +1889,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-22",
@@ -1900,7 +1900,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855596-8506096e2ebe?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-23",
@@ -1911,7 +1911,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1504973960431-1c467e159aa4?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-24",
@@ -1922,7 +1922,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1767436093457-84ea9122eb4e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-25",
@@ -1933,7 +1933,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1709433420422-731e1be1c9aa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-26",
@@ -1944,7 +1944,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-27",
@@ -1955,7 +1955,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-28",
@@ -1966,7 +1966,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg/960px-Nh%C3%A0_m%C3%ACnh_d%E1%BB%8Bp_L%E1%BB%85_2th9n2023_%28ch%C3%A9n_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm_t%E1%BB%8Fi_%E1%BB%9Bt%29_%282%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-29",
@@ -1977,7 +1977,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1512058533999-106ee01bf777?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-30",
@@ -1988,7 +1988,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1637024698421-533d83c7b883?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-31",
@@ -1999,7 +1999,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1709433420422-731e1be1c9aa?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-32",
@@ -2010,7 +2010,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/64/Chinese_Balut_sold_in_Nanjing_20100115.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-33",
@@ -2021,7 +2021,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1779939855596-8506096e2ebe?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-34",
@@ -2032,7 +2032,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1584003397078-45ef96d6174d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-35",
@@ -2043,7 +2043,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-36",
@@ -2054,7 +2054,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-37",
@@ -2065,7 +2065,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-38",
@@ -2076,7 +2076,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-39",
@@ -2087,7 +2087,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1588482415422-a061902e00a4?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-40",
@@ -2098,7 +2098,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1512058556646-c4da40fba323?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-41",
@@ -2109,7 +2109,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-42",
@@ -2120,7 +2120,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-43",
@@ -2131,7 +2131,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg/960px-Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-44",
@@ -2142,7 +2142,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1761321626747-a2da185beab3?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-45",
@@ -2153,7 +2153,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg/960px-Tray_with_bowls_of_food_including_fried_insects_used_in_Lao_cuisine.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-46",
@@ -2164,7 +2164,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-47",
@@ -2175,7 +2175,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg/960px-Fried_tofu%2C_rice_noodle_with_shrimp_paste.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-48",
@@ -2186,7 +2186,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-49",
@@ -2197,7 +2197,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Canh_chua_c%C3%A1_l%C3%B3c_%E1%BB%9F_Th%E1%BB%A7y_Tr%C3%BAc_Qu%C3%A1n%2C_%C4%91%C6%B0%E1%BB%9Dng_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m_%281%29.jpg/960px-Canh_chua_c%C3%A1_l%C3%B3c_%E1%BB%9F_Th%E1%BB%A7y_Tr%C3%BAc_Qu%C3%A1n%2C_%C4%91%C6%B0%E1%BB%9Dng_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m_%281%29.jpg?auto=format&fit=crop&w=600&q=80"
   },
   {
     "id": "biz-gold-50",
@@ -2208,7 +2208,7 @@ export const BIZARRE_POOL_GOLD: FastDishItem[] = [
     "dareLevel": "CỰC HẠN 10: HUYỀN THOẠI GAN DẠ",
     "darePenalty": "Ăn 1 thìa đầy mà không nhăn mặt sẽ được phong Vua Gan Dạ Văn Phòng!",
     "tier": "gold",
-    "imageUrl": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=600&q=80"
+    "imageUrl": "https://images.unsplash.com/photo-1761321626747-a2da185beab3?auto=format&fit=crop&w=600&q=80"
   }
 ];
 

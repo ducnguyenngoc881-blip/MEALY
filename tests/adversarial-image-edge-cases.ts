@@ -370,7 +370,12 @@ runTestCase('Suite 4: SafeImage Cascade', 'Stage 0 (Pre-Flight Sanitization with
   const resolved = getDishImageUrl('Canh Chua Cá Hồi', 'mon-canh', offlineSvg);
 
   assert(resolved !== offlineSvg, 'Stage 0 MUST NOT return cloche SVG when online');
-  assert(resolved.startsWith('https://images.unsplash.com/'), 'Stage 0 must return live Unsplash URL');
+  assert(
+    resolved.startsWith('https://images.unsplash.com/') ||
+    resolved.startsWith('https://upload.wikimedia.org/') ||
+    resolved.startsWith('https://thumb.wikimedia.org/'),
+    'Stage 0 must return live CDN URL'
+  );
   assert(FOOD_IMAGE_POOLS.canh_chua.includes(resolved), 'Must resolve to canh_chua pool');
 });
 
@@ -378,7 +383,12 @@ runTestCase('Suite 4: SafeImage Cascade', 'Stage 1 (Fallback to Semantic Cluster
   const title = 'Bò Bít Tết Sốt Tiêu Đen';
   const stage1Src = getDishImageUrl(title, 'mon-chinh');
 
-  assert(stage1Src.startsWith('https://images.unsplash.com/'), 'Stage 1 must return valid HTTPS photo');
+  assert(
+    stage1Src.startsWith('https://images.unsplash.com/') ||
+    stage1Src.startsWith('https://upload.wikimedia.org/') ||
+    stage1Src.startsWith('https://thumb.wikimedia.org/'),
+    'Stage 1 must return valid HTTPS photo'
+  );
   assert(FOOD_IMAGE_POOLS.steak_beef.includes(stage1Src), 'Stage 1 must resolve to steak_beef cluster');
   assert(!isDeadOrPlaceholderUrl(stage1Src), 'Stage 1 must not be dead');
 });
@@ -388,7 +398,12 @@ runTestCase('Suite 4: SafeImage Cascade', 'Stage 2 (Guaranteed High-Definition F
   const stage2Src = guaranteedPool[0];
 
   assert(typeof stage2Src === 'string' && stage2Src.length > 0, 'Stage 2 guaranteed pool must exist');
-  assert(stage2Src.startsWith('https://images.unsplash.com/'), 'Stage 2 must be an online food photo');
+  assert(
+    stage2Src.startsWith('https://images.unsplash.com/') ||
+    stage2Src.startsWith('https://upload.wikimedia.org/') ||
+    stage2Src.startsWith('https://thumb.wikimedia.org/'),
+    'Stage 2 must be an online food photo'
+  );
   assert(!isDeadOrPlaceholderUrl(stage2Src), 'Stage 2 guaranteed pool must never contain dead or blacklisted IDs');
 });
 
@@ -427,7 +442,12 @@ runTestCase('Suite 4: SafeImage Cascade', 'Stage 0 -> Stage 1 -> Stage 2 -> Stag
   errorStage = Math.min(errorStage + 1, 3);
   currentSrc = getSafeImageSrc(errorStage);
   assert(errorStage === 1, 'Error stage transitioned to 1');
-  assert(currentSrc.startsWith('https://images.unsplash.com/'), 'Stage 1 provides semantic cluster fallback');
+  assert(
+    currentSrc.startsWith('https://images.unsplash.com/') ||
+    currentSrc.startsWith('https://upload.wikimedia.org/') ||
+    currentSrc.startsWith('https://thumb.wikimedia.org/'),
+    'Stage 1 provides semantic cluster fallback'
+  );
 
   errorStage = Math.min(errorStage + 1, 3);
   currentSrc = getSafeImageSrc(errorStage);
@@ -446,7 +466,7 @@ runTestCase('Suite 4: SafeImage Cascade', 'Stage 0 -> Stage 1 -> Stage 2 -> Stag
 // ============================================================================
 // SUITE 5: EXHAUSTIVE CATALOG AUDIT (100% ONLINE PURITY & INTEGRITY)
 // ============================================================================
-console.log('\n--- SUITE 5: Full Database Catalog Audit (1,245 Recipes) ---');
+console.log('\n--- SUITE 5: Full Database Catalog Audit (2,245 Recipes) ---');
 
 runTestCase('Suite 5: Catalog Audit', 'Audit all mockRecipes (zero dead URLs, zero cloches)', () => {
   let count = 0;

@@ -85,18 +85,18 @@ function escapeRegex(term: string): string {
   return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-/**
- * Strict Syllable Boundary Matcher
- * Uses Vietnamese syllable delimiters (whitespace, punctuation, string boundaries)
- * so "cá" does not match "xoài cát", "tiêu" does not match "chuối tiêu", and "mè" does not match "nấm mèo".
- */
+const exactSyllableRegexCache = new Map<string, RegExp>();
+
 export function hasExactSyllable(text: string, term: string): boolean {
   if (!text || !term) return false;
-  const cleanText = text.toLowerCase().trim();
   const cleanTerm = term.toLowerCase().trim();
-  const escaped = escapeRegex(cleanTerm);
-  const regex = new RegExp(`(^|[\\s,.;:!?()\\[\\]\\/\\-"'“”])` + escaped + `([\\s,.;:!?()\\[\\]\\/\\-"'“”]|$)`, 'i');
-  return regex.test(cleanText);
+  let regex = exactSyllableRegexCache.get(cleanTerm);
+  if (!regex) {
+    const escaped = escapeRegex(cleanTerm);
+    regex = new RegExp(`(^|[\\s,.;:!?()\\[\\]\\/\\-"'“”])` + escaped + `([\\s,.;:!?()\\[\\]\\/\\-"'“”]|$)`, 'i');
+    exactSyllableRegexCache.set(cleanTerm, regex);
+  }
+  return regex.test(text.toLowerCase().trim());
 }
 
 /**
@@ -283,6 +283,9 @@ export function matchRecipeWithPantryItem(
 
   if (isMushroomItem) {
     const isKingOyster = hasInName('đùi gà') || hasInName('dui ga');
+    if (isKingOyster && (titleLower.includes('gà rán') || titleLower.includes('cánh gà') || titleLower.includes('ức gà'))) {
+      return { matched: false, score: 0, matchedAs: '', matchedIngredients: [], missingIngredients: [], matchPercentage: 0 };
+    }
     const isStraw = hasInName('nấm rơm') || hasInName('nam rom') || hasInName('rơm');
     const isShiitake =
       hasInName('nấm hương') ||
@@ -570,6 +573,9 @@ export function matchRecipeWithPantryItem(
   if (isChickenItem) {
     const isBoiledLeftover =
       hasInName('luộc') || item.isLeftover || rawNote.includes('xé') || rawNote.includes('gỏi');
+    const isThigh = hasInName('đùi gà') || hasInName('dui ga') || hasInName('má đùi');
+    const isBreast = hasInName('ức gà') || hasInName('uc ga');
+    const isWing = hasInName('cánh gà') || hasInName('canh ga');
 
     const chickenIng = recipe.ingredients.find(i => {
       const n = i.name.toLowerCase();
@@ -593,7 +599,11 @@ export function matchRecipeWithPantryItem(
       !titleLower.includes('đậu gà');
 
     if (chickenIng || hasChickenInTitle) {
-      let score = 90;
+      let score = hasChickenInTitle ? 180 : 40;
+      if (isThigh && titleLower.includes('đùi gà')) score += 120;
+      else if (isBreast && titleLower.includes('ức gà')) score += 120;
+      else if (isWing && titleLower.includes('cánh gà')) score += 120;
+
       if (
         isBoiledLeftover &&
         (titleLower.includes('gỏi gà') ||
@@ -603,9 +613,9 @@ export function matchRecipeWithPantryItem(
          titleLower.includes('miến gà') ||
          titleLower.includes('bún gà'))
       ) {
-        score = 160;
-      } else if (titleLower.includes('gà chiên') || titleLower.includes('gà rán') || titleLower.includes('gà kho')) {
-        score = 130;
+        score += 80;
+      } else if (hasChickenInTitle && (titleLower.includes('gà chiên') || titleLower.includes('gà rán') || titleLower.includes('gà kho') || titleLower.includes('gà nướng') || titleLower.includes('gà rô ti') || titleLower.includes('gà xào'))) {
+        score += 50;
       }
       const matchedName = chickenIng ? chickenIng.name : 'Món gà';
       return {
@@ -936,6 +946,10 @@ export function matchRecipeWithPantryItem(
 
   if (isGeneralPork) {
     if (hasInName('bò') || hasInName('bo ')) {
+      return { matched: false, score: 0, matchedAs: '', matchedIngredients: [], missingIngredients: [], matchPercentage: 0 };
+    }
+    // Strict invariant: Pork items must never match vegetarian recipes
+    if (!hasInName('chay') && (recipe.category === 'mon-chay' || (recipe.tags && recipe.tags.some(t => t.toLowerCase().includes('chay'))))) {
       return { matched: false, score: 0, matchedAs: '', matchedIngredients: [], missingIngredients: [], matchPercentage: 0 };
     }
     const porkIng = recipe.ingredients.find(i => {
@@ -1697,6 +1711,104 @@ export function matchRecipeWithPantryItem(
  * Recommends recipes that combine the maximum number of items currently in the fridge.
  * Strictly verifies each match to eliminate phantom item synergies.
  */
+// Global memoization cache for matchRecipeWithPantryItem across re-renders
+const recipeMatchCache = new Map<string, IngredientMatchDetail>();
+
+// Global memoization cache for lowercased recipe keywords
+const recipeKeywordsCache = new Map<string, string>();
+export function getRecipeKeywords(recipe: Recipe): string {
+  let kw = recipeKeywordsCache.get(recipe.id);
+  if (!kw) {
+    kw = (recipe.title + ' ' + recipe.ingredients.map(i => i.name).join(' ')).toLowerCase();
+    recipeKeywordsCache.set(recipe.id, kw);
+  }
+  return kw;
+}
+
+const STOP_WORDS = new Set([
+  'tươi', 'ngon', 'ngọt', 'chua', 'cay', 'đậm', 'khô', 'chín', 'sống', 'non', 'già',
+  'lá', 'củ', 'trái', 'quả', 'hạt', 'bột', 'nước', 'dầu', 'mỡ', 'xay', 'băm',
+  'thái', 'cắt', 'lát', 'khúc', 'miếng', 'nhánh', 'bó', 'chùm', 'gói', 'hộp',
+  'lon', 'chai', 'bát', 'chén', 'kg', 'gram', 'gam', 'muỗng', 'thìa', 'qua', 'leo', 've', 'cô'
+]);
+
+export function getSmartDistinctiveTokens(rawName: string): string[] {
+  const clean = rawName.toLowerCase().replace(/[()[\]{}<>,.;:!?/\\#~*"-]/g, ' ').replace(/\d+/g, ' ').trim();
+  const tokens: string[] = [];
+
+  // 1. Mushrooms must precede chicken to prevent "Nấm đùi gà" collision!
+  if (clean.includes('nấm đùi gà')) {
+    tokens.push('nấm đùi gà', 'nấm');
+  } else if (clean.includes('nấm rơm')) {
+    tokens.push('nấm rơm', 'nấm');
+  } else if (clean.includes('nấm hương') || clean.includes('mộc nhĩ')) {
+    tokens.push('nấm hương', 'mộc nhĩ', 'nấm');
+  } else if (clean.includes('nấm')) {
+    tokens.push('nấm');
+  } else if (clean.includes('trứng gà') || clean.includes('trứng vịt') || clean.includes('trứng cút') || clean.includes('trứng')) {
+    // 2. Eggs must precede chicken to prevent "Trứng gà" collision!
+    tokens.push('trứng', 'hột vịt', 'ốp la', 'lòng đỏ');
+  } else if (clean.includes('ba rọi') || clean.includes('ba chỉ')) {
+    tokens.push('ba chỉ', 'ba rọi');
+  } else if (clean.includes('thịt heo') || clean.includes('thịt lợn') || clean.includes('thịt lơn')) {
+    tokens.push('thịt heo', 'thịt lợn', 'thịt nạc', 'sườn');
+  } else if (clean.includes('sườn heo') || clean.includes('sườn non') || clean.includes('sườn')) {
+    tokens.push('sườn');
+  } else if (clean.includes('thịt bò') || clean.includes('bắp bò')) {
+    tokens.push('thịt bò', 'bắp bò', 'bò xào', 'bò sốt', 'bò kho', 'thăn bò');
+  } else if (!clean.includes('nấm') && !clean.includes('trứng') && (clean.includes('thịt gà') || clean.includes('gà ta') || clean.includes('ức gà') || clean.includes('đùi gà') || clean.includes('cánh gà'))) {
+    tokens.push('thịt gà', 'ức gà', 'đùi gà', 'cánh gà', 'gà ta', 'gà kho', 'gà luộc');
+  } else if (clean.includes('đậu phụ') || clean.includes('đậu hũ')) {
+    tokens.push('đậu phụ', 'đậu hũ', 'tàu hũ');
+  } else if (clean.includes('cà chua')) {
+    tokens.push('cà chua');
+  } else if (clean.includes('cà rốt')) {
+    tokens.push('cà rốt');
+  } else if (clean.includes('bắp cải')) {
+    tokens.push('bắp cải', 'cải bắp');
+  } else if (clean.includes('cơm nguội') || clean.includes('cơm')) {
+    tokens.push('cơm', 'cháo');
+  } else if (clean.includes('hành lá')) {
+    tokens.push('hành lá');
+  } else if (clean.includes('rau muống')) {
+    tokens.push('rau muống');
+  } else if (clean.includes('cải ngọt')) {
+    tokens.push('cải ngọt');
+  } else if (clean.includes('mồng tơi')) {
+    tokens.push('mồng tơi');
+  } else if (clean.includes('bí đỏ')) {
+    tokens.push('bí đỏ');
+  } else if (clean.includes('khoai tây')) {
+    tokens.push('khoai tây');
+  } else if (clean.includes('mướp')) {
+    tokens.push('mướp');
+  } else if (clean.includes('mực')) {
+    tokens.push('mực');
+  } else if (clean.includes('tôm')) {
+    tokens.push('tôm');
+  } else if (clean.includes('cá nục')) {
+    tokens.push('cá nục');
+  } else if (clean.includes('cá lóc')) {
+    tokens.push('cá lóc');
+  } else if (clean.includes('cá hồi')) {
+    tokens.push('cá hồi');
+  } else if (clean.includes('ngao') || clean.includes('nghêu')) {
+    tokens.push('ngao', 'nghêu');
+  } else if (clean.includes('thịt vịt')) {
+    tokens.push('thịt vịt', 'vịt');
+  } else if (clean.includes('thịt xay') || clean.includes('thịt băm')) {
+    tokens.push('thịt xay', 'thịt băm');
+  } else {
+    const words = clean.split(/\s+/).filter(w => w.length >= 2 && !STOP_WORDS.has(w));
+    if (words.length >= 2) tokens.push(words.join(' '));
+    for (const w of words) {
+      if (w.length >= 3 && !STOP_WORDS.has(w)) tokens.push(w);
+    }
+  }
+
+  return [...new Set(tokens.filter(t => t.length >= 2 && !STOP_WORDS.has(t)))];
+}
+
 export function findWholeFridgeRecipeSuggestions(
   pantryItems: PantryItem[],
   allRecipes: Recipe[],
@@ -1710,19 +1822,42 @@ export function findWholeFridgeRecipeSuggestions(
     return { results: [], totalEligible: 0 };
   }
 
+  // Pre-filter non-condiment pantry items once
+  const activeItems = pantryItems.filter(item => !isCondiment(item.name));
+  if (activeItems.length === 0) {
+    return { results: [], totalEligible: 0 };
+  }
+
   // Check if any fridge item is rice
-  const hasRiceInFridge = pantryItems.some(item => {
+  const hasRiceInFridge = activeItems.some(item => {
     const n = item.name.toLowerCase();
     return n.includes('cơm') || n.includes('xôi');
   });
 
   // Check if user also has bread or noodles in fridge
-  const hasBreadOrNoodles = pantryItems.some(item => {
+  const hasBreadOrNoodles = activeItems.some(item => {
     const n = item.name.toLowerCase();
     return n.includes('bánh mì') || n.includes('bún') || n.includes('phở') || n.includes('miến');
   });
 
-  const candidates: WholeFridgeSuggestionResult[] = [];
+  // Pre-tokenize active pantry items using smart distinctive tokens
+  const preppedItems = activeItems.map(item => {
+    const rawLower = item.name.toLowerCase().trim();
+    const rootName = rawLower.replace(/\d+/g, '').trim();
+    const tokens = getSmartDistinctiveTokens(rawLower);
+    return { item, rawLower, rootName, tokens };
+  });
+
+  interface SlimCandidate {
+    recipe: Recipe;
+    totalScore: number;
+    matchedCount: number;
+    matchedPantryItems: PantryItem[];
+    matchedIngredientNames: string[];
+    urgentCount: number;
+  }
+
+  const candidates: SlimCandidate[] = [];
 
   for (const recipe of allRecipes) {
     const titleLower = recipe.title.toLowerCase();
@@ -1734,15 +1869,25 @@ export function findWholeFridgeRecipeSuggestions(
       }
     }
 
+    const recipeKeywords = getRecipeKeywords(recipe);
+
     const matchedPantryItems: PantryItem[] = [];
     const matchedIngredientNames: string[] = [];
     let totalScore = 0;
     let urgentCount = 0;
 
-    for (const item of pantryItems) {
-      if (isCondiment(item.name)) continue; // Condiments do not inflate whole-fridge matches
+    for (const { item, rootName, tokens } of preppedItems) {
+      // High-speed preflight: does this recipe contain any token from this item?
+      const hasAnyToken = tokens.some(t => recipeKeywords.includes(t));
+      if (!hasAnyToken) continue;
 
-      const match = matchRecipeWithPantryItem(recipe, item);
+      const cacheKey = `${recipe.id}:${rootName}:${item.isLeftover ? 1 : 0}:${item.notes || ''}`;
+      let match = recipeMatchCache.get(cacheKey);
+      if (match === undefined) {
+        match = matchRecipeWithPantryItem(recipe, item);
+        recipeMatchCache.set(cacheKey, match);
+      }
+
       if (match.matched) {
         matchedPantryItems.push(item);
         totalScore += match.score;
@@ -1766,32 +1911,13 @@ export function findWholeFridgeRecipeSuggestions(
       if (matchedCount >= 2) totalScore += 120;
       if (matchedCount >= 3) totalScore += 250;
 
-      const nonCondimentIngredients = recipe.ingredients.filter(
-        i => !isCondiment(i.name) && i.category !== 'gia-vi'
-      );
-      const matchedLowerSet = new Set(matchedIngredientNames.map(n => n.toLowerCase()));
-      const missingIngredients = nonCondimentIngredients
-        .filter(i => !matchedLowerSet.has(i.name.toLowerCase()))
-        .map(i => i.name);
-
-      const totalRequired = Math.max(1, nonCondimentIngredients.length);
-      const matchPercentage = Math.min(100, Math.round((matchedCount / totalRequired) * 100));
-
-      const itemNames = matchedPantryItems.map(i => i.name).slice(0, 3).join(', ');
-      const summary = `Có sẵn ${matchedCount} món trong tủ: ${itemNames}${matchedCount > 3 ? '...' : ''}`;
-
       candidates.push({
         recipe,
         totalScore,
-        score: totalScore,
         matchedCount,
         matchedPantryItems,
-        matchedPantryItemIds: matchedPantryItems.map(i => i.id),
         matchedIngredientNames,
-        missingIngredients,
-        matchPercentage,
-        urgentMatchedCount: urgentCount,
-        summary
+        urgentCount
       });
     }
   }
@@ -1811,10 +1937,37 @@ export function findWholeFridgeRecipeSuggestions(
   const seenIds = new Set<string>();
 
   for (let i = 0; i < totalEligible && results.length < limit; i++) {
-    const candidate = candidates[(start + i) % totalEligible];
-    if (!seenIds.has(candidate.recipe.id)) {
-      seenIds.add(candidate.recipe.id);
-      results.push(candidate);
+    const c = candidates[(start + i) % totalEligible];
+    if (!seenIds.has(c.recipe.id)) {
+      seenIds.add(c.recipe.id);
+
+      const nonCondimentIngredients = c.recipe.ingredients.filter(
+        ing => !isCondiment(ing.name) && ing.category !== 'gia-vi'
+      );
+      const matchedLowerSet = new Set(c.matchedIngredientNames.map(n => n.toLowerCase()));
+      const missingIngredients = nonCondimentIngredients
+        .filter(ing => !matchedLowerSet.has(ing.name.toLowerCase()))
+        .map(ing => ing.name);
+
+      const totalRequired = Math.max(1, nonCondimentIngredients.length);
+      const matchPercentage = Math.min(100, Math.round((c.matchedCount / totalRequired) * 100));
+
+      const itemNames = c.matchedPantryItems.map(it => it.name).slice(0, 3).join(', ');
+      const summary = `Có sẵn ${c.matchedCount} món trong tủ: ${itemNames}${c.matchedCount > 3 ? '...' : ''}`;
+
+      results.push({
+        recipe: c.recipe,
+        totalScore: c.totalScore,
+        score: c.totalScore,
+        matchedCount: c.matchedCount,
+        matchedPantryItems: c.matchedPantryItems,
+        matchedPantryItemIds: c.matchedPantryItems.map(it => it.id),
+        matchedIngredientNames: c.matchedIngredientNames,
+        missingIngredients,
+        matchPercentage,
+        urgentMatchedCount: c.urgentCount,
+        summary
+      });
     }
   }
 
@@ -1822,22 +1975,73 @@ export function findWholeFridgeRecipeSuggestions(
 }
 
 /**
- * Single-Item Matcher with Reload & Synergy support:
+ * Single-Item Matcher with Reload & Synergy support (with total count):
  * Recommends recipes for a specific item, prioritizing synergy with other fridge items.
  */
-export function findLeftoverRecipeSuggestions(
+export function findLeftoverRecipeSuggestionsWithCount(
   item: PantryItem,
   allRecipes: Recipe[],
   limit = 4,
   offset = 0,
   allPantryItems: PantryItem[] = []
-): Recipe[] {
-  if (!item || !item.name || !allRecipes || allRecipes.length === 0) return [];
+): { results: Recipe[]; totalEligible: number; synergyCounts: Record<string, number> } {
+  if (!item || !item.name || !allRecipes || allRecipes.length === 0 || isCondiment(item.name)) {
+    return { results: [], totalEligible: 0, synergyCounts: {} };
+  }
 
-  const candidates: { recipe: Recipe; score: number }[] = [];
+  const rawLower = item.name.toLowerCase().trim();
+  const tokens = getSmartDistinctiveTokens(rawLower);
+
+  const isMeatItem =
+    !rawLower.includes('chay') &&
+    (item.category === 'Thịt' ||
+     item.category === 'Hải sản' ||
+     item.category === 'Thịt & Hải sản' ||
+     rawLower.includes('ba chỉ') ||
+     rawLower.includes('ba rọi') ||
+     rawLower.includes('thịt heo') ||
+     rawLower.includes('thịt lợn') ||
+     rawLower.includes('thịt bò') ||
+     rawLower.includes('thịt gà') ||
+     rawLower.includes('thịt vịt') ||
+     rawLower.includes('thịt') ||
+     rawLower.includes('sườn') ||
+     rawLower.includes('bò') ||
+     rawLower.includes('gà') ||
+     rawLower.includes('heo') ||
+     rawLower.includes('cá') ||
+     rawLower.includes('tôm') ||
+     rawLower.includes('mực') ||
+     rawLower.includes('cua'));
+
+  const preppedSynergy = allPantryItems
+    .filter(i => i.id !== item.id && !isCondiment(i.name))
+    .map(other => ({
+      item: other,
+      tokens: getSmartDistinctiveTokens(other.name.toLowerCase().trim())
+    }));
+
+  const candidates: { recipe: Recipe; score: number; synergyCount: number }[] = [];
+  const synergyCounts: Record<string, number> = {};
 
   for (const recipe of allRecipes) {
-    const match = matchRecipeWithPantryItem(recipe, item);
+    // Strict invariant: Meat items must NEVER suggest vegetarian dishes
+    if (isMeatItem && (recipe.category === 'mon-chay' || (recipe.tags && recipe.tags.some(t => t.toLowerCase().includes('chay'))))) {
+      continue;
+    }
+
+    const recipeKeywords = getRecipeKeywords(recipe);
+    const hasAnyToken = tokens.some(t => recipeKeywords.includes(t));
+    if (!hasAnyToken) continue;
+
+    const rootName = item.name.toLowerCase().replace(/\d+/g, '').trim();
+    const cacheKey = `${recipe.id}:${rootName}:${item.isLeftover ? 1 : 0}:${item.notes || ''}`;
+    let match = recipeMatchCache.get(cacheKey);
+    if (match === undefined) {
+      match = matchRecipeWithPantryItem(recipe, item);
+      recipeMatchCache.set(cacheKey, match);
+    }
+
     if (match.matched) {
       let score = match.score;
 
@@ -1851,38 +2055,161 @@ export function findLeftoverRecipeSuggestions(
         score += 40;
       }
 
-      // Synergy: check if other items in fridge can also be used in this recipe
-      for (const otherItem of allPantryItems) {
-        if (otherItem.id !== item.id && !isCondiment(otherItem.name)) {
-          const otherMatch = matchRecipeWithPantryItem(recipe, otherItem);
-          if (otherMatch.matched) {
-            score += 50; // Synergy bonus
-          }
-        }
+      // Boost recipes where the selected ingredient is actually featured in the dish title!
+      const titleLower = recipe.title.toLowerCase();
+      if (tokens.some(t => titleLower.includes(t))) {
+        score += 150;
+      }
+      if (!titleLower.startsWith('mâm cơm')) {
+        score += 40;
       }
 
-      candidates.push({ recipe, score });
+      // Synergy: check if other items in fridge can also be used in this recipe
+      let synergyCount = 0;
+      for (const { item: otherItem, tokens: otherTokens } of preppedSynergy) {
+        if (!otherTokens.some(t => recipeKeywords.includes(t))) continue;
+
+        const otherRootName = otherItem.name.toLowerCase().replace(/\d+/g, '').trim();
+        const otherCacheKey = `${recipe.id}:${otherRootName}:${otherItem.isLeftover ? 1 : 0}:${otherItem.notes || ''}`;
+        let otherMatch = recipeMatchCache.get(otherCacheKey);
+        if (otherMatch === undefined) {
+          otherMatch = matchRecipeWithPantryItem(recipe, otherItem);
+          recipeMatchCache.set(otherCacheKey, otherMatch);
+        }
+        if (otherMatch.matched) {
+          synergyCount++;
+        }
+      }
+      score += Math.min(synergyCount, 3) * 20;
+
+      synergyCounts[recipe.id] = synergyCount;
+      candidates.push({ recipe, score, synergyCount });
     }
   }
 
   // Sort descending by score
   candidates.sort((a, b) => b.score - a.score);
 
-  const total = candidates.length;
-  if (total === 0) return [];
+  const totalEligible = candidates.length;
+  if (totalEligible === 0) return { results: [], totalEligible: 0, synergyCounts: {} };
 
   const safeOffset = Math.max(0, Math.floor(offset || 0));
-  const start = safeOffset % total;
+  const start = safeOffset % totalEligible;
   const results: Recipe[] = [];
   const seenIds = new Set<string>();
 
-  for (let i = 0; i < total && results.length < limit; i++) {
-    const c = candidates[(start + i) % total];
+  for (let i = 0; i < totalEligible && results.length < limit; i++) {
+    const c = candidates[(start + i) % totalEligible];
     if (!seenIds.has(c.recipe.id)) {
       seenIds.add(c.recipe.id);
       results.push(c.recipe);
     }
   }
 
-  return results;
+  return { results, totalEligible, synergyCounts };
 }
+
+/**
+ * Single-Item Matcher with Reload & Synergy support (backwards-compatible):
+ */
+export function findLeftoverRecipeSuggestions(
+  item: PantryItem,
+  allRecipes: Recipe[],
+  limit = 4,
+  offset = 0,
+  allPantryItems: PantryItem[] = []
+): Recipe[] {
+  return findLeftoverRecipeSuggestionsWithCount(item, allRecipes, limit, offset, allPantryItems).results;
+}
+
+/**
+ * Fast Cookability Check for Pantry Items:
+ * Checks whether an item has at least one valid recipe suggestion in MealWise.
+ * Base condiments, seasonings, or items without matching recipes return false.
+ */
+const cookableItemCache = new Map<string, boolean>();
+
+export function clearCookableItemCache(): void {
+  cookableItemCache.clear();
+}
+
+export function hasCookableRecipes(
+  item: PantryItem,
+  allRecipes: Recipe[]
+): boolean {
+  if (!item || !item.name) return false;
+
+  // 1. Base condiments and seasonings are never standalone cooking staples
+  if (isCondiment(item.name) || item.category === 'Gia vị') {
+    return false;
+  }
+
+  const rawLower = item.name.toLowerCase().trim();
+  const rootName = rawLower.replace(/\d+/g, '').trim();
+  const cacheKey = `${rootName}:${item.isLeftover ? 1 : 0}:${allRecipes ? allRecipes.length : 0}`;
+
+  const cached = cookableItemCache.get(cacheKey);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  if (!allRecipes || allRecipes.length === 0) {
+    cookableItemCache.set(cacheKey, false);
+    return false;
+  }
+
+  const tokens = getSmartDistinctiveTokens(rawLower);
+  if (tokens.length === 0) {
+    cookableItemCache.set(cacheKey, false);
+    return false;
+  }
+
+  const isMeatItem =
+    !rawLower.includes('chay') &&
+    (item.category === 'Thịt' ||
+      item.category === 'Hải sản' ||
+      item.category === 'Thịt & Hải sản' ||
+      rawLower.includes('ba chỉ') ||
+      rawLower.includes('ba rọi') ||
+      rawLower.includes('thịt heo') ||
+      rawLower.includes('thịt lợn') ||
+      rawLower.includes('thịt bò') ||
+      rawLower.includes('thịt gà') ||
+      rawLower.includes('thịt vịt') ||
+      rawLower.includes('thịt') ||
+      rawLower.includes('sườn') ||
+      rawLower.includes('bò') ||
+      rawLower.includes('gà') ||
+      rawLower.includes('heo') ||
+      rawLower.includes('cá') ||
+      rawLower.includes('tôm') ||
+      rawLower.includes('mực') ||
+      rawLower.includes('cua'));
+
+  // Quick check against recipes: exit immediately on FIRST positive match!
+  for (const recipe of allRecipes) {
+    if (isMeatItem && (recipe.category === 'mon-chay' || (recipe.tags && recipe.tags.some(t => t.toLowerCase().includes('chay'))))) {
+      continue;
+    }
+
+    const recipeKeywords = getRecipeKeywords(recipe);
+    const hasAnyToken = tokens.some(t => recipeKeywords.includes(t));
+    if (!hasAnyToken) continue;
+
+    const matchKey = `${recipe.id}:${rootName}:${item.isLeftover ? 1 : 0}:${item.notes || ''}`;
+    let match = recipeMatchCache.get(matchKey);
+    if (match === undefined) {
+      match = matchRecipeWithPantryItem(recipe, item);
+      recipeMatchCache.set(matchKey, match);
+    }
+
+    if (match.matched) {
+      cookableItemCache.set(cacheKey, true);
+      return true;
+    }
+  }
+
+  cookableItemCache.set(cacheKey, false);
+  return false;
+}
+

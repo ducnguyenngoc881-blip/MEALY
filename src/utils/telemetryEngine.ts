@@ -310,7 +310,7 @@ export function getRegisteredAccounts(): RegisteredUserRecord[] {
       },
       {
         id: 'usr-user-3',
-        name: 'Nam Nguyễn (Shopper)',
+        name: 'Nam Nguyễn',
         email: 'nam.nguyen88@gmail.com',
         role: 'user',
         registeredAt: '18/09/2026',

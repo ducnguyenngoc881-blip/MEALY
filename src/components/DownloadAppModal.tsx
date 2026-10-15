@@ -209,8 +209,8 @@ export const DownloadAppModal: React.FC = () => {
               </p>
               <ol className="list-decimal list-inside space-y-1.5 text-[11px] text-stone-600 dark:text-stone-300 leading-relaxed">
                 <li>Mở liên kết này trong trình duyệt <strong>Safari</strong> trên iPhone.</li>
-                <li>Bấm vào biểu tượng <strong>Chia sẻ (Share) 📤</strong> ở thanh công cụ dưới cùng.</li>
-                <li>Cuộn xuống và chọn <strong>&quot;Thêm vào Màn hình chính&quot; (Add to Home Screen) ➕</strong>.</li>
+                <li>Bấm vào biểu tượng <strong>Chia sẻ 📤</strong> ở thanh công cụ dưới cùng.</li>
+                <li>Cuộn xuống và chọn <strong>&quot;Thêm vào Màn hình chính&quot; ➕</strong>.</li>
                 <li>Biểu tượng <strong>MealWise</strong> sẽ xuất hiện trên màn hình iPhone và hoạt động mượt mà như một ứng dụng gốc!</li>
               </ol>
             </div>

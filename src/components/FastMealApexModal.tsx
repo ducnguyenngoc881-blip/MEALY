@@ -1286,10 +1286,6 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
                           ? 'border-amber-400/50 shadow-lg shadow-amber-500/20'
                           : 'border-white/15 hover:border-amber-400/50'
                       }`}>
-                        {selectedTier === 'gold' && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent apex-gold-shine pointer-events-none" />
-                        )}
-
                         <div className="space-y-2">
                           <div className="relative w-full h-28 sm:h-24 rounded-xl overflow-hidden bg-slate-800">
                             <SafeImage 

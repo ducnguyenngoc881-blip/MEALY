@@ -9,92 +9,107 @@
   :root.dark {
     color-scheme: dark;
   }
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overscroll-behavior-y: contain;
+  }
   * {
     -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   body {
-    @apply bg-[#FAF8F5] text-stone-900 dark:bg-[#121110] dark:text-[#F5F2EB] overflow-x-hidden min-h-[100dvh] transition-colors duration-200;
+    @apply bg-[#F8FAFC] text-[#1E293B] dark:bg-[#12161F] dark:text-[#F8FAFC] overflow-x-hidden min-h-[100dvh] transition-colors duration-200;
     font-family: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overscroll-behavior-y: contain;
   }
   button, a, select, input {
     touch-action: manipulation;
   }
 }
 
-/* Custom scrollbar in warm ceramic & amber */
+/* Custom scrollbar in cool flat matte slate */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(245, 241, 235, 0.9);
+  background: #F8FAFC;
 }
 .dark ::-webkit-scrollbar-track {
-  background: rgba(28, 26, 24, 0.7);
+  background: #12161F;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(180, 168, 150, 0.6);
+  background: #CBD5E1;
   border-radius: 9999px;
 }
 .dark ::-webkit-scrollbar-thumb {
-  background: rgba(68, 64, 60, 0.8);
+  background: #475569;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(120, 113, 108, 0.9);
+  background: #94A3B8;
 }
 
 @layer components {
-  /* Warm Culinary Glassmorphism with light ceramic & dark hearth awareness */
+  /* Flat Matte Exia Repair III surface tokens (60% Dominant Base) */
   .glass-panel {
-    background: rgba(255, 255, 255, 0.94);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid #EBE5DC;
-    box-shadow: 0 1px 3px 0 rgba(28, 25, 23, 0.04);
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04);
   }
 
   .dark .glass-panel {
-    background: rgba(28, 26, 24, 0.88);
+    background: rgba(26, 32, 44, 0.94);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid #2D3748;
     box-shadow: none;
   }
 
   .glass-panel-light {
-    background: rgba(250, 248, 245, 0.88);
+    background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid #EBE5DC;
+    border: 1px solid #E2E8F0;
   }
 
   .dark .glass-panel-light {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(26, 32, 44, 0.6);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid #2D3748;
   }
 
   .glass-card {
-    background: #ffffff;
+    background: #FFFFFF;
     backdrop-filter: blur(16px);
-    border: 1px solid #EBE5DC;
-    box-shadow: 0 4px 14px -2px rgba(28, 25, 23, 0.05), 0 2px 4px -2px rgba(28, 25, 23, 0.03);
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.04), 0 2px 4px -2px rgba(15, 23, 42, 0.02);
   }
 
   .dark .glass-card {
-    background: linear-gradient(135deg, rgba(28, 26, 24, 0.9) 0%, rgba(18, 17, 16, 0.95) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #1A202C;
+    border: 1px solid #2D3748;
     box-shadow: none;
   }
 
   .glass-card:hover {
-    border-color: rgba(120, 113, 108, 0.45);
-    box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.08);
+    border-color: #CBD5E1;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
   }
 
   .dark .glass-card:hover {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: #4A5568;
     box-shadow: none;
   }
 }
@@ -213,13 +228,9 @@
   animation: apexCardFlip 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes apexGoldShine {
-  0% { transform: translateX(-150%) skewX(-20deg); }
-  100% { transform: translateX(250%) skewX(-20deg); }
-}
-
+/* Flat matte: eliminated metallic gold shine sweep */
 .apex-gold-shine {
-  animation: apexGoldShine 2.2s infinite ease-in-out;
+  display: none !important;
 }
 
 @keyframes apexRaysSpin {
@@ -259,6 +270,16 @@
 
 .apex-energy-fill {
   animation: energyBarFill 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 

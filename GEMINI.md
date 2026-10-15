@@ -3,7 +3,7 @@
 ## User Preferences & Operational Rules
 - **Language Consistency**: Always communicate with the user in English unless explicitly asked otherwise.
 - **Application Link Requirement**: Every single time the app or dev server is started, restarted, or confirmed running, ALWAYS provide a prominent clickable markdown link for the user to open the app directly: [http://localhost:5173/](http://localhost:5173/).
-- **Bilingual Cleanliness**: Never place tautological/redundant English and Vietnamese words directly next to each other (e.g. no "Salad Xà Lách", no "Canh súp", use parentheses for recognized Western titles like "Bánh Mì Nướng Kiểu Pháp (French Toast)").
+- **Bilingual Cleanliness & Strict No-English-Explanation in Parentheses**: Never place tautological/redundant English and Vietnamese words directly next to each other (e.g. no "Salad Xà Lách", no "Canh súp", only use parentheses for recognized Western culinary titles like "Bánh Mì Nướng Kiểu Pháp (French Toast)"). Crucially, NEVER add English explanations, tags, or jargon in parentheses next to Vietnamese UI labels, titles, badges, modals, or buttons (e.g., strictly write "Sảnh Đi Chợ Chung" (NEVER "Sảnh Đi Chợ Chung (Lobby)"), "Phòng Mua Chung" (NEVER "Phòng Mua Chung (Live Sync)"), "Xem Lại Hướng Dẫn" (NEVER "Xem Lại Hướng Dẫn (Tutorial)"), "Xem Lại Khảo Sát Khẩu Vị" (NEVER "Xem Lại Khảo Sát Khẩu Vị (Onboarding)"), "Website Quản Trị" (NEVER "Website Quản Trị (Desktop Web Portal)"), "Mở Hòm Bữa Cơm" (NEVER "Mở Hòm Bữa Cơm (Apex Pack)"), "Vòng Quay Bàn Nhậu" (NEVER "Vòng Quay Bàn Nhậu (Drinking Roulette)"), "Tập Gym / Giàu Đạm" (NEVER "Tập Gym / Giàu Đạm (Protein)")). All UI strings must remain clean, uncluttered, and authentically in Vietnamese.
 - **Food Photography Purity**: Ensure all dish and meal images depict appetizing food, ingredients, or drinks. Never use images depicting human faces or non-food subjects.
 - **Native Mobile Device Priority (Android & iOS)**: MealWise is strictly built as a mobile app for mobile devices (Android and iOS), NOT a desktop browser website. All UI layouts, thumb-zone navigation, tap targets (44px+), safe area insets (notches, swipe bars), push notifications, and account/storage flows must be conceived, designed, and optimized specifically for mobile smartphones.
 - **Folder & Target Opening Discipline**: Always and exclusively open, serve, and test from the active latest project workspace (`d:\New folder\Remotion` / [http://localhost:5173/](http://localhost:5173/)). The Desktop backup folders (`C:\Users\EXIA\Desktop\MealWise-PC-Build` and `MealWise-App`) are strictly write-only destinations for backing up artifacts when completing a build. NEVER open or instruct the user to open the backup folders unless the user explicitly requests to open them.
@@ -12,4 +12,18 @@
 - **React Rules of Hooks Invariant**: In all React components and modals, all hooks (`useState`, `useMemo`, `useCallback`, `useEffect`, `useRef`) must be placed unconditionally at the top of the component body, strictly BEFORE any conditional checks or early returns (e.g., `if (!selectedRecipe) return null;`). Never place hooks after an early return.
 - **Windows PowerShell Execution Discipline**: In Windows PowerShell terminal environments, NEVER chain commands using Bash-style `&&` syntax. Execute commands sequentially or delimit statements using semicolons (`;`).
 - **Guest Account Feature Gating**: If the user is an unregistered guest (`!isRegistered`), Collaborative Grocery Sharing (Đi chợ chung / Chia sẻ mua chung) must be strictly locked. Guests cannot create or host collaborative shopping rooms. The button in the grocery interface must display a lock badge (`Đi Chợ Chung 🔒`) and prompt the user to register/login when tapped.
+
+## Remotion Video & Motion Design Standards (remotion-studio-pro)
+- **10 Golden Motion Rules**:
+  1. *Never Linear*: Always specify easing bezier curves or spring physics (`theme.spring` / `theme.ease`). Linear interpolation is forbidden. Always pass `{ extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }`.
+  2. *Multi-Property Entrances*: Animate opacity + translateY + scale simultaneously; never use bare fades.
+  3. *Stagger Everything*: Sequential elements (words: 2–3 frames; cards: 4–5 frames) must enter with staggered offsets.
+  4. *Crisp Exits*: Exit animations must be noticeably faster than entrances (~10 frames vs ~20 frames).
+  5. *5-Layer Scene Architecture*: Background Mesh (`<BgMesh />`) -> Video / Raw Assets (`<OffthreadVideo>`) -> Graphics & Typography -> Color Grade (`<ColorGrade />`) -> Grain & Vignette (`<ProceduralGrain />` + `<Vignette />`).
+  6. *Ken Burns on Stills*: Still images must always feature slow continuous zoom (1.0 -> 1.08) and subtle panning.
+  7. *OffthreadVideo Invariant*: Never use `<Video>`; always use `<OffthreadVideo>` for frame accuracy and zero frame drops.
+  8. *Idle Breathing*: Elements lingering on screen for >2 seconds must feature subtle sine-wave floating/breathing micro-motion (`<Breathing />`).
+  9. *Centralized Design Tokens*: Import all colors, font stacks, and spring configs from `src/theme.ts`.
+  10. *Verification Loop*: Before finalizing renders, extract milestone frames with `npm run verify` and visually verify composition spacing and typography.
+
 

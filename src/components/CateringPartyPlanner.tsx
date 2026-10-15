@@ -21,6 +21,7 @@ import {
   Search, 
   X, 
   ArrowRight,
+  ArrowLeft,
   Clock,
   Flame,
   ChefHat,
@@ -706,7 +707,7 @@ export const CateringPartyPlanner: React.FC = () => {
 
   if (!isRegistered) {
     return (
-      <div className="space-y-4 max-w-lg mx-auto pb-24 animate-in fade-in duration-300">
+      <div className="space-y-4 max-w-lg mx-auto animate-in fade-in duration-300">
         <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-600/5 dark:from-[#1A1918] dark:via-amber-950/20 dark:to-[#1A1918] border border-amber-500/30 text-center shadow-lg relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
           
@@ -775,9 +776,20 @@ export const CateringPartyPlanner: React.FC = () => {
       {/* Top Banner & Mode Toggle */}
       <div className="p-3.5 sm:p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[11px] font-bold mb-1">
-            <ChefHat className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-            <span>Mâm Cỗ & Dịch Vụ Catering</span>
+          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+            <button
+              type="button"
+              onClick={() => setActiveTab('account')}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 text-[11px] font-extrabold transition-all border border-stone-200/80 dark:border-stone-700/60 cursor-pointer active:scale-95 shadow-2xs"
+              title="Quay lại cài đặt tài khoản"
+            >
+              <ArrowLeft className="w-3 h-3 text-stone-500" />
+              <span>Cài Đặt Tài Khoản</span>
+            </button>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 text-[11px] font-bold">
+              <ChefHat className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>Mâm Cỗ & Dịch Vụ Catering</span>
+            </div>
           </div>
           <h1 className="text-lg sm:text-xl font-black text-stone-900 dark:text-white tracking-tight">
             Quản Lý & Thiết Kế Thực Đơn Tiệc
@@ -1050,7 +1062,7 @@ export const CateringPartyPlanner: React.FC = () => {
                 {/* 2. Raw Food Cost */}
                 <div className="p-2.5 rounded-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] flex flex-col justify-center shadow-2xs">
                   <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase">
-                    💵 Chi Phí Nguyên Liệu (Food Cost)
+                    💵 Chi Phí Nguyên Liệu
                   </span>
                   <span className="text-sm sm:text-base font-black text-amber-700 dark:text-amber-400 mt-0.5">
                     {roundedFoodCost.toLocaleString('vi-VN')} đ

@@ -418,3 +418,54 @@ export const GroceryScrollIcon: React.FC<NavIconProps> = ({ className = 'w-4 h-4
     <line x1="8.5" y1="13" x2="13" y2="13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
   </svg>
 );
+
+/**
+ * 10. Công Thức (Sổ Tay Công Thức Bếp):
+ * Artisanal culinary recipe notebook with bookmark ribbon.
+ * Replaces generic document book.
+ */
+export const RecipeBookNavIcon: React.FC<NavIconProps> = ({ className = 'w-5 h-5', active = false }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className}
+    aria-hidden="true"
+  >
+    {active && (
+      <path 
+        d="M5 4.5C5 3.5 5.8 2.5 7 2.5H19V20.5H7C5.8 20.5 5 19.5 5 18.5V4.5Z" 
+        className="fill-stone-400/25 dark:fill-stone-500/25" 
+      />
+    )}
+    {/* Book Cover / Spine */}
+    <path 
+      d="M5 4.5C5 3.4 5.9 2.5 7 2.5H19V21.5H7C5.9 21.5 5 20.6 5 19.5V4.5Z" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+    {/* Book Spine Fold */}
+    <path 
+      d="M5 18.5C5 17.4 5.9 16.5 7 16.5H19" 
+      stroke="currentColor" 
+      strokeWidth="1.75" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+    {/* Hanging Bookmark Ribbon */}
+    <path 
+      d="M10 2.5V8.5L12 7L14 8.5V2.5" 
+      fill="currentColor" 
+      fillOpacity={active ? "0.8" : "0.3"}
+      stroke="currentColor" 
+      strokeWidth="1.2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+    {/* Page Recipe Lines */}
+    <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+    <line x1="9" y1="15" x2="13" y2="15" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+  </svg>
+);

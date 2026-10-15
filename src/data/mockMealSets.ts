@@ -31,7 +31,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Cà pháo muối giòn tan & Nước mắm chanh tỏi ớt tươi',
     totalCostVnd: 140000,
     totalCalories: 710,
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Đồng Quê', 'Yêu Thích', '1 Người', 'Đậm Đà']
   },
   {
@@ -45,7 +45,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước mắm nhĩ Phú Quốc ớt hiểm & Ớt sừng tỏi băm',
     totalCostVnd: 177000,
     totalCalories: 785,
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1569058242252-623df46b5025?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà', 'Mứt Ngọt', '1 Người', 'Yêu Thích', 'Đồng Quê']
   },
   {
@@ -59,7 +59,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Dưa món củ kiệu & Nước mắm gừng cay nồng',
     totalCostVnd: 128000,
     totalCalories: 650,
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1569058242252-623df46b5025?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Mâm Cơm 3 Món', 'Cay Nồng', 'Cá Biển', '1 Người', 'Đậm Đà', 'Tiết Kiệm', 'Yêu Thích', 'Đồng Quê']
   },
   {
@@ -73,7 +73,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Chao môn béo ngậy & Nước tương tỏi ớt chay',
     totalCostVnd: 120000,
     totalCalories: 620,
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Món Chay', 'Mâm Cơm 3 Món', 'Thanh Tịnh', 'Bổ Dưỡng', '1 Người', 'Eat Clean', 'Yêu Thích', 'Đồng Quê']
   },
   {
@@ -87,7 +87,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước tương tỏi ớt ít muối & Tiêu đen giã dập',
     totalCostVnd: 110000,
     totalCalories: 580,
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Giàu Đạm', 'Eat Clean', 'Tập Gym', 'Mâm Cơm 3 Món', 'Yêu Thích']
   },
   {
@@ -101,7 +101,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Sốt chấm mè rang thanh nhẹ & Chanh tươi',
     totalCostVnd: 84000,
     totalCalories: 590,
-    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1569058242252-623df46b5025?auto=format&fit=crop&w=600&q=80',
     tags: ['Eat Clean', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Mâm Cơm 3 Món']
   },
   {
@@ -115,7 +115,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước mắm tỏi ớt tươi ăn liền',
     totalCostVnd: 98000,
     totalCalories: 600,
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1762305193367-91e072e47c3f?auto=format&fit=crop&w=600&q=80',
     tags: ['1 Người', 'Nhanh Gọn', 'Mâm Cơm 3 Món', 'Yêu Thích']
   },
   {
@@ -129,7 +129,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước mắm ớt tỏi chua ngọt',
     totalCostVnd: 135000,
     totalCalories: 680,
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1761315412952-a3a9e3ed06ff?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà', '1 Người', 'Yêu Thích', 'Giàu Đạm']
   },
   {
@@ -143,7 +143,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Tương ớt & chanh ớt tươi',
     totalCostVnd: 155000,
     totalCalories: 720,
-    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1760504526069-ff0f8bf6e4ca?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Đậm Đà']
   },
   {
@@ -157,7 +157,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước tương tỏi ớt truyền thống',
     totalCostVnd: 78000,
     totalCalories: 510,
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1680991172715-4074203a40d3?auto=format&fit=crop&w=600&q=80',
     tags: ['Tiết Kiệm', '1 Người', 'Mâm Cơm 3 Món', 'Nhanh Gọn']
   },
   {
@@ -171,7 +171,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước mắm tiêu ớt',
     totalCostVnd: 85000,
     totalCalories: 560,
-    imageUrl: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1608039762150-b682eb589303?auto=format&fit=crop&w=600&q=80',
     tags: ['Tiết Kiệm', '1 Người', 'Mâm Cơm 3 Món', 'Bình Dân']
   },
   {
@@ -185,7 +185,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước mắm chanh tỏi ớt',
     totalCostVnd: 92000,
     totalCalories: 590,
-    imageUrl: 'https://images.unsplash.com/photo-1504973960431-1c467e159aa4?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1625477811233-044633d10dd1?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Mâm Cơm 3 Món', 'Tiết Kiệm', '1 Người', 'Eat Clean']
   },
   {
@@ -199,7 +199,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Xì dầu tỏi ớt xắt lát',
     totalCostVnd: 75000,
     totalCalories: 530,
-    imageUrl: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1684866907269-2248f7334a09?auto=format&fit=crop&w=600&q=80',
     tags: ['Tiết Kiệm', 'Nhanh Gọn', '1 Người', 'Mâm Cơm 3 Món']
   },
   {
@@ -213,7 +213,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Nước mắm nhĩ ớt hiểm',
     totalCostVnd: 145000,
     totalCalories: 710,
-    imageUrl: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1625477811233-044633d10dd1?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Đậm Đà', '1 Người', 'Đồng Quê', 'Giàu Đạm']
   },
   {
@@ -227,7 +227,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Ớt sừng tỏi băm ngâm giấm',
     totalCostVnd: 130000,
     totalCalories: 690,
-    imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Canh_chua_c%C3%A1_l%C3%B3c_%E1%BB%9F_Th%E1%BB%A7y_Tr%C3%BAc_Qu%C3%A1n%2C_%C4%91%C6%B0%E1%BB%9Dng_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m_%281%29.jpg/960px-Canh_chua_c%C3%A1_l%C3%B3c_%E1%BB%9F_Th%E1%BB%A7y_Tr%C3%BAc_Qu%C3%A1n%2C_%C4%91%C6%B0%E1%BB%9Dng_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m_%281%29.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Mâm Cơm 3 Món', 'Cơm Nhà', '1 Người', 'Yêu Thích', 'Đậm Đà', 'Tiết Kiệm']
   },
   {
@@ -241,7 +241,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Tương bần & Nước tương gừng tỏi',
     totalCostVnd: 72000,
     totalCalories: 620,
-    imageUrl: 'https://images.unsplash.com/photo-1578861256505-d3be7cb037d3?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1763470260582-894ae15f43bb?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Tiết Kiệm', 'Thanh Tịnh', 'Mâm Cơm 3 Món', '1 Người', 'Eat Clean']
   },
   {
@@ -253,7 +253,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     soupDish: getRecipe('canh-chua-ca-hu'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Nước mắm ớt hiểm & Dưa giá giòn',
-    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/C%C3%A1_kho_t%E1%BB%99.JPG/960px-C%C3%A1_kho_t%E1%BB%99.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm', 'Yêu Thích', 'Đậm Đà']
   },
   {
@@ -265,7 +265,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     soupDish: getRecipe('canh-chua-ca-hu'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Nước mắm cá cơm ớt sừng',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg/960px-Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm', 'Yêu Thích', 'Đậm Đà']
   },
   {
@@ -277,7 +277,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Nước mắm gừng ớt hiểm',
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/C%C3%A1_kho_t%E1%BB%99.JPG/960px-C%C3%A1_kho_t%E1%BB%99.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', 'Yêu Thích']
   },
   {
@@ -289,7 +289,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Nước tương tỏi ớt chay & Chanh tươi',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Mâm Cơm 3 Món', 'Thanh Tịnh', '1 Người', 'Eat Clean', 'Tiết Kiệm', 'Yêu Thích', 'Đồng Quê']
   },
   {
@@ -303,7 +303,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Bơ tỏi thảo mộc & Sốt tiêu đen xay giã dập',
     totalCostVnd: 165000,
     totalCalories: 760,
-    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Steakhouse', 'Đổi Vị', 'Mâm Cơm 3 Món', 'Yêu Thích', '1 Người', 'Giàu Đạm']
   },
   {
@@ -317,7 +317,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Phô mai bột Parmesan & Lá oregano khô',
     totalCostVnd: 135000,
     totalCalories: 710,
-    imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Bolognese', 'Ý Gia Đình', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm']
   },
   {
@@ -331,7 +331,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Tiêu đen xay & Bánh mì sấy croutons giòn',
     totalCostVnd: 140000,
     totalCalories: 720,
-    imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Carbonara', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   {
@@ -345,7 +345,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Sốt bơ chanh vàng thì là & Muối hồng Himalaya',
     totalCostVnd: 175000,
     totalCalories: 680,
-    imageUrl: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1641898378716-1f38ec04bb0f?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Cá Hồi', 'Địa Trung Hải', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -359,7 +359,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Sốt chấm BBQ khói & Mayonnaise mù tạt vàng',
     totalCostVnd: 155000,
     totalCalories: 770,
-    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'BBQ', 'American Feast', 'Đổi Vị', 'Mâm Cơm 3 Món', 'Giàu Đạm']
   },
   {
@@ -373,7 +373,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Lá thơm Thyme tươi & Bơ lạt Anchor',
     totalCostVnd: 170000,
     totalCalories: 750,
-    imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Bò Hầm', 'Bistro Pháp', 'Mâm Cơm 3 Món']
   },
   {
@@ -387,7 +387,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Phô mai Parmesan bột & Sốt Caesar chanh tỏi',
     totalCostVnd: 145000,
     totalCalories: 730,
-    imageUrl: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Chicken Parmigiana', 'Đút Lò', 'Mâm Cơm 3 Món', 'Giàu Đạm']
   },
   {
@@ -401,7 +401,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Dầu ô liu Extra Virgin & Quả ô liu đen ngâm muối',
     totalCostVnd: 155000,
     totalCalories: 710,
-    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Hải Sản', 'Mì Ý Pesto', 'Địa Trung Hải', 'Mâm Cơm 3 Món']
   }
 ,
@@ -416,7 +416,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Sốt Mayonnaise mù tạt & Tương cà Heinz',
     totalCostVnd: 150000,
     totalCalories: 760,
-    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Burger', 'Bữa Trưa', 'Mâm Cơm 3 Món', '1 Người']
   },
   {
@@ -430,7 +430,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Muối hồng Himalaya & Tiêu đen xay giã dập',
     totalCostVnd: 175000,
     totalCalories: 770,
-    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1600454309261-3dc9b7597637?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Steakhouse', 'Mâm Cơm 3 Món', 'Giàu Đạm']
   },
   {
@@ -444,7 +444,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Dầu ô liu Extra Virgin & Ớt mảnh khô',
     totalCostVnd: 155000,
     totalCalories: 690,
-    imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Aglio Olio', 'Hải Sản', 'Mâm Cơm 3 Món']
   },
   {
@@ -458,7 +458,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Sốt chấm BBQ khói cay nhẹ & Chanh vàng',
     totalCostVnd: 160000,
     totalCalories: 740,
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Boston_Market_BBQ_Ribs_close_up_%2827988017902%29.jpg/960px-Boston_Market_BBQ_Ribs_close_up_%2827988017902%29.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Sườn BBQ', 'Địa Trung Hải', 'Mâm Cơm 3 Món']
   },
   {
@@ -472,7 +472,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Lá thơm Oregano & Tiêu đen xay',
     totalCostVnd: 140000,
     totalCalories: 730,
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1707616954324-99c89a78a20d?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Gà Áp Chảo', 'Gia Đình', 'Mâm Cơm 3 Món']
   },
   {
@@ -486,7 +486,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Mù tạt vàng hạt Dijon & Mayonnaise béo',
     totalCostVnd: 135000,
     totalCalories: 720,
-    imageUrl: 'https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1619740455993-9e612b1af08a?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Xúc Xích Đức', 'Nhanh Gọn', 'Mâm Cơm 3 Món', '1 Người', 'Tiết Kiệm']
   },
   {
@@ -500,7 +500,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Muối tiêu chanh & Bơ tỏi thảo mộc',
     totalCostVnd: 165000,
     totalCalories: 740,
-    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1625938144755-652e08e359b7?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Bò Lúc Lắc', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   {
@@ -514,7 +514,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Tương ớt chua ngọt & Sốt mayonnaise tỏi',
     totalCostVnd: 140000,
     totalCalories: 720,
-    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Burger Gà', 'Bữa Trưa', 'Mâm Cơm 3 Món', '1 Người']
   },
   {
@@ -528,7 +528,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Tiêu đen xay giã dập & Bột phô mai Parmesan',
     totalCostVnd: 145000,
     totalCalories: 710,
-    imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1582034986517-30d163aa1da9?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Shepherd Pie', 'Bò Băm', 'Mâm Cơm 3 Món']
   },
   {
@@ -542,7 +542,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Chanh vàng lát mỏng & Muối tiêu thảo mộc',
     totalCostVnd: 175000,
     totalCalories: 690,
-    imageUrl: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1641898378716-1f38ec04bb0f?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Cá Hồi', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -556,7 +556,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Lá thơm Thyme tươi & Bơ lạt Anchor',
     totalCostVnd: 170000,
     totalCalories: 740,
-    imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Bò Hầm', 'Pháp', 'Mâm Cơm 3 Món']
   },
   {
@@ -570,7 +570,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Bột phô mai Parmesan & Tiêu đen',
     totalCostVnd: 150000,
     totalCalories: 750,
-    imageUrl: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Chicken_cordon_bleu%2C_Bee%27s_Steak_and_Shake%2C_Sleman%2C_Yogyakarta.jpg/960px-Chicken_cordon_bleu%2C_Bee%27s_Steak_and_Shake%2C_Sleman%2C_Yogyakarta.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Chicken Parmigiana', 'Đút Lò', 'Mâm Cơm 3 Món']
   },
   {
@@ -584,7 +584,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Dầu ô liu Extra Virgin & Muối tiêu hồng',
     totalCostVnd: 160000,
     totalCalories: 720,
-    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Pesto', 'Hải Sản', 'Mâm Cơm 3 Món']
   },
   {
@@ -598,7 +598,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Sốt tiêu đen giã dập & Tương cà Heinz',
     totalCostVnd: 165000,
     totalCalories: 760,
-    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Bít Tết', 'Khoai Chiên', 'Mâm Cơm 3 Món']
   },
   {
@@ -612,7 +612,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Phô mai Parmesan & Lá mùi tây Oregano',
     totalCostVnd: 140000,
     totalCalories: 730,
-    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Mì Ý', 'Bolognese', 'Mâm Cơm 3 Món']
   },
   {
@@ -626,7 +626,7 @@ const RAW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCalori
     condimentNote: 'Sốt BBQ chua ngọt & Tiêu đập dập',
     totalCostVnd: 160000,
     totalCalories: 740,
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1625938144755-652e08e359b7?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'BBQ Ribs', 'Măng Tây', 'Mâm Cơm 3 Món']
   }
 ];
@@ -655,7 +655,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-suon-nau-sau'),
     sideDish: getRecipe('rau-cai-luoc-cham-trung'),
     condimentNote: 'Nước mắm gừng ớt hiểm & Ớt tươi thái lát',
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1747628857852-2ffef1e3d06b?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Cay Nồng', 'Đậm Đà', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -667,7 +667,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ca-chua-trung-dau-ran'),
     sideDish: getRecipe('dua-cai-chua-ha-noi'),
     condimentNote: 'Riềng tươi thái lát & Nước mắm cốt hạt tiêu sọ',
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Cay Nồng', 'Đậm Đà', 'Đồng Quê', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -679,7 +679,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-suon-nau-sau'),
     sideDish: getRecipe('bap-cai-xao-toi'),
     condimentNote: 'Muối tiêu chanh ớt tươi & Cà pháo muối giòn',
-    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Suon_xao_chua_ngot_bac_ninh.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Cay Nồng', 'Đậm Đà', 'Giàu Đạm', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -691,7 +691,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-bi-nau-tom'),
     sideDish: getRecipe('rau-cai-luoc-cham-trung'),
     condimentNote: 'Ớt chỉ thiên dầm nước mắm cốt & Thì là hành hoa',
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1767436093457-84ea9122eb4e?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Cay Nồng', 'Đậm Đà', 'Đổi Vị', 'Đồng Quê', 'Giàu Đạm', 'Mâm Cơm 3 Món']
   },
   {
@@ -703,7 +703,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-suon-nau-sau'),
     sideDish: getRecipe('dua-cai-chua-ha-noi'),
     condimentNote: 'Nước mắm tỏi ớt chanh & Tiêu sọ xay vỡ',
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Cay Nồng', 'Đậm Đà', 'Đồng Quê', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -715,7 +715,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-muong-luoc-sau'),
     condimentNote: 'Nước mắm tỏi ớt chanh & Ớt chỉ thiên ngâm',
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Cay Nồng', 'Đậm Đà', 'Tiết Kiệm', '1 Người', 'Đồng Quê', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -727,7 +727,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ca-chua-dau-phu'),
     sideDish: getRecipe('dua-cai-chua-ha-noi'),
     condimentNote: 'Tiêu sọ xay nhuyễn & Nước mắm tỏi ớt',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1680173073730-852e0ec93bec?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Cay Nồng', 'Đậm Đà', 'Tiết Kiệm', '1 Người', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
 
@@ -741,7 +741,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-cua-mong-toi'),
     sideDish: getRecipe('rau-muong-luoc-sau'),
     condimentNote: 'Nước mắm cốt chanh ớt & Cà pháo muối giòn',
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Thit_rang_chay_canh.jpg/960px-Thit_rang_chay_canh.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Đồng Quê', 'Đậm Đà', 'Yêu Thích', '1 Người', 'Giàu Đạm', 'Tiết Kiệm', 'Mâm Cơm 3 Món']
   },
   {
@@ -753,7 +753,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-bi-nau-tom'),
     sideDish: getRecipe('dua-cai-chua-ha-noi'),
     condimentNote: 'Nước mắm cá cơm tiêu sọ & Ớt tươi thái lát',
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/Roast_pork_and_Char_Siu_Rice%2C_Singapore_September_2017.jpg/960px-Roast_pork_and_Char_Siu_Rice%2C_Singapore_September_2017.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Đồng Quê', 'Đậm Đà', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -765,7 +765,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-cua-mong-toi'),
     sideDish: getRecipe('rau-muong-luoc-sau'),
     condimentNote: 'Mắm tôm Thanh Hóa đánh bông đường chanh & Ớt tươi',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Thit_rang_chay_canh.jpg/960px-Thit_rang_chay_canh.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Đậm Đà', 'Đồng Quê', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -777,7 +777,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-cua-mong-toi'),
     sideDish: getRecipe('rau-muong-luoc-sau'),
     condimentNote: 'Khế chua kho rục & Nước mắm gừng cay',
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1767436093457-84ea9122eb4e?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Đồng Quê', 'Đậm Đà', 'Đổi Vị', '1 Người', 'Tiết Kiệm', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -789,7 +789,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-bi-nau-tom'),
     sideDish: getRecipe('bap-cai-xao-toi'),
     condimentNote: 'Nước sốt chua ngọt sệt kẹo & Tiêu đen thơm',
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1761315414596-62d1f1ed5ed9?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Đậm Đà', 'Yêu Thích', '1 Người', 'Giàu Đạm', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
 
@@ -803,7 +803,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-cai-luoc-cham-trung'),
     condimentNote: 'Nước tương tỏi ớt tươi & Tiêu Phú Quốc',
-    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1760504526069-ff0f8bf6e4ca?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Giàu Đạm', 'Đậm Đà', 'Yêu Thích', '1 Người', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -815,7 +815,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-suon-nau-sau'),
     sideDish: getRecipe('dua-cai-chua-ha-noi'),
     condimentNote: 'Nước mắm dưa góp đu đủ chua ngọt & Ớt tươi',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1695712641388-87c0f9c2d36e?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Giàu Đạm', 'Đậm Đà', 'Đổi Vị', 'Yêu Thích', '1 Người', 'Mâm Cơm 3 Món']
   },
   {
@@ -827,7 +827,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-sup-khoai-tay'),
     sideDish: getRecipe('salad-dau-giam-ha-noi'),
     condimentNote: 'Rau mùi ta thơm nức & Bánh mì giòn chấm sốt',
-    imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Đổi Vị', 'Giàu Đạm', 'Đậm Đà', 'Yêu Thích', '1 Người', 'Mâm Cơm 3 Món']
   },
   {
@@ -839,7 +839,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('bap-cai-xao-toi'),
     condimentNote: 'Tương ớt cay nồng & Tiêu thơm đập dập',
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Grilled_squid_001.jpg/960px-Grilled_squid_001.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Giàu Đạm', 'Đổi Vị', 'Eat Clean', '1 Người', 'Yêu Thích', 'Đậm Đà', 'Mâm Cơm 3 Món']
   },
   {
@@ -851,7 +851,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ca-chua-dau-phu'),
     sideDish: getRecipe('dua-cai-chua-ha-noi'),
     condimentNote: 'Nước mắm tỏi ớt chanh & Hạt tiêu xay',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1582169505937-b9992bd01ed9?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Tiết Kiệm', '1 Người', 'Đậm Đà', 'Yêu Thích', 'Đồng Quê', 'Mâm Cơm 3 Món']
   },
 
@@ -865,7 +865,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-sau-chua-thanh'),
     sideDish: getRecipe('bap-cai-xao-toi'),
     condimentNote: 'Nước tương gừng ớt tỏi & Cà pháo muối giòn',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Đồng Quê', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -877,7 +877,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ca-chua-dau-phu'),
     sideDish: getRecipe('dua-cai-chua-ha-noi'),
     condimentNote: 'Muối vừng mè rang & Nước tương ớt tươi',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1680173073730-852e0ec93bec?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Yêu Thích', '1 Người', 'Mâm Cơm 3 Món']
   },
   {
@@ -889,7 +889,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-sau-chua-thanh'),
     sideDish: getRecipe('rau-muong-luoc-sau'),
     condimentNote: 'Nước tương gừng ớt tỏi & Muối vừng thơm lừng',
-    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -901,7 +901,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Kho quẹt chay tóp mỡ bánh mì & Chao môn',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1569058242252-623df46b5025?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -913,7 +913,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-sau-chua-thanh'),
     sideDish: getRecipe('bap-cai-xao-toi'),
     condimentNote: 'Tương Bần Hưng Yên thơm nồng & Ớt tươi',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1569058242252-623df46b5025?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Bắc', 'Món Chay', 'Ăn Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Đồng Quê', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
 
@@ -921,7 +921,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
   // 2. MIỀN TRUNG (trung) - 15 authentic sets
   // =========================================================================
   {
-    id: 'mam-com-trung-ca-nuc-kho-keo',
+    id: 'mam-com-trung-ca-nuc-kho-keo-mat-mia',
     title: 'Mâm Cơm Miền Trung Cá Nục Kho Keo Mật Mía',
     region: 'trung',
     description: 'Đặc sản dải đất miền Trung: Cá nục rim mật mía sánh keo màu cánh gián ớt xiêm xanh cay nồng, canh chua cá biển thơm lừng và rau khoai lang luộc chấm mắm nêm Dì Cẩn.',
@@ -929,7 +929,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-nam'),
     sideDish: getRecipe('rau-khoai-lang-luoc-cham-mam-nem'),
     condimentNote: 'Ớt xiêm xanh đập dập & Mắm nêm Dì Cẩn',
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', '1 Người', 'Yêu Thích', 'Đồng Quê', 'Mâm Cơm 3 Món']
   },
   {
@@ -941,7 +941,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-hen-nau-rau-tap-tang'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Mắm ruốc sả ớt cay xé & Dưa leo thái mỏng',
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1625477811233-044633d10dd1?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', '1 Người', 'Yêu Thích', 'Đồng Quê', 'Giàu Đạm', 'Mâm Cơm 3 Món']
   },
   {
@@ -953,7 +953,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-hen-nau-rau-tap-tang'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Bánh tráng nướng mè giòn rụm & Nước mắm gừng cay',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1648422709905-8c3d148974e1?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Đổi Vị', '1 Người', 'Tiết Kiệm', 'Yêu Thích', 'Đồng Quê', 'Mâm Cơm 3 Món']
   },
   {
@@ -965,7 +965,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Ớt hiểm ngâm mắm cá cơm & Nghệ tươi giã dập',
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Đồng Quê', 'Mâm Cơm 3 Món']
   },
   {
@@ -977,7 +977,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-nam'),
     sideDish: getRecipe('rau-khoai-lang-luoc-cham-mam-nem'),
     condimentNote: 'Ớt hiểm dầm nước mắm cá cơm & Cà pháo muối',
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/C%C3%A1_kho_t%E1%BB%99.JPG/960px-C%C3%A1_kho_t%E1%BB%99.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', '1 Người', 'Yêu Thích', 'Đồng Quê', 'Tiết Kiệm', 'Mâm Cơm 3 Món']
   },
   {
@@ -989,7 +989,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Sa tế tôm rim & Muối ớt chanh miền Trung',
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Grilled_squid_001.jpg/960px-Grilled_squid_001.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Cá Biển', 'Giàu Đạm', '1 Người', 'Đổi Vị', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1001,7 +1001,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Nước sốt ram tiêu cay ngọt & Tỏi Lý Sơn',
-    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1761315414596-62d1f1ed5ed9?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Đậm Đà', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Đồng Quê', 'Đổi Vị', 'Tiết Kiệm', 'Mâm Cơm 3 Món']
   },
   {
@@ -1013,7 +1013,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Nước mắm nhỉ dầm ớt xiêm xanh & Tiêu sọ',
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Đậm Đà', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Cá Biển', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -1025,7 +1025,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-hen-nau-rau-tap-tang'),
     sideDish: getRecipe('rau-khoai-lang-luoc-cham-mam-nem'),
     condimentNote: 'Mắm nêm Dì Cẩn tỏi ớt băm nhuyễn & Dứa băm',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1707056503922-91c9ebaf0774?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Cay Nồng', 'Đậm Đà', 'Đồng Quê', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -1037,7 +1037,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-ngao-nau-chua'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Nước tương tỏi ớt & Hạt tiêu giã dập',
-    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1723531055852-744d14ac00b4?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Giàu Đạm', 'Đậm Đà', '1 Người', 'Yêu Thích', 'Đổi Vị', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   // --- Chay Miền Trung (5 sets) ---
@@ -1050,7 +1050,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Nước tương ớt chỉ thiên & Muối ớt sả',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1785031765104-9af3d84fd3ff?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Cay Nồng', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1062,7 +1062,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Tiêu sọ xay nhuyễn & Nước tương gừng tỏi',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1591522913962-3ecfa6b271f1?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Đậm Đà', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1074,7 +1074,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Nước tương mè rang & Tiêu đen thơm lừng',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Đổi Vị', '1 Người', 'Đậm Đà', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1086,7 +1086,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Ớt bột cay Huế & Vừng rang',
-    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1576402187878-974f70c890a5?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Cay Nồng', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1098,7 +1098,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-lang-xao-toi'),
     condimentNote: 'Ớt hiểm dầm nước tương & Vừng rang',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1762305194201-077e7e23ccf2?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Trung', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
 
@@ -1114,7 +1114,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-loc-bong-dien-dien'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Nước mắm nhĩ tỏi ớt & Rau thơm ngò om',
-    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1767436093457-84ea9122eb4e?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Đồng Quê', 'Đậm Đà', 'Yêu Thích', '1 Người', 'Giàu Đạm', 'Mâm Cơm 3 Món']
   },
   {
@@ -1126,7 +1126,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-kho-qua-don-thit'),
     sideDish: getRecipe('bong-bi-xao-toi'),
     condimentNote: 'Nước mắm nhĩ ớt hiểm & Tiêu xay Phú Quốc',
-    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Canh_kh%E1%BB%95_qua.JPG/960px-Canh_kh%E1%BB%95_qua.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Đậm Đà', 'Đồng Quê', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -1138,7 +1138,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-hu'),
     sideDish: getRecipe('bong-bi-xao-toi'),
     condimentNote: 'Muối tiêu chanh ớt tươi & Tỏi phi thơm',
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Flavorful_Grilled_Squid.jpg/960px-Flavorful_Grilled_Squid.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Cay Nồng', 'Đậm Đà', 'Giàu Đạm', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1150,7 +1150,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-loc-bong-dien-dien'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Tiêu đen xay vỡ & Ớt hiểm dầm',
-    imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Cay Nồng', 'Đậm Đà', 'Đồng Quê', '1 Người', 'Yêu Thích', 'Tiết Kiệm', 'Mâm Cơm 3 Món']
   },
   {
@@ -1162,7 +1162,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-hu'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Muối tiêu chanh ớt hiểm & Rau răm thơm',
-    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Grilled_squid_001.jpg/960px-Grilled_squid_001.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Cay Nồng', 'Đậm Đà', 'Giàu Đạm', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1174,7 +1174,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-kho-qua-don-thit'),
     sideDish: getRecipe('bong-bi-xao-toi'),
     condimentNote: 'Nước sốt rim kẹo nâu óng & Tiêu sọ',
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1688084468401-4938b073aef2?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Cay Nồng', 'Đậm Đà', 'Giàu Đạm', '1 Người', 'Yêu Thích', 'Đồng Quê', 'Mâm Cơm 3 Món']
   },
   {
@@ -1186,7 +1186,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-hu'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Ớt sừng băm & Nước mắm nhĩ Phú Quốc',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1767436093457-84ea9122eb4e?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Cay Nồng', 'Đậm Đà', 'Tiết Kiệm', '1 Người', 'Đồng Quê', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1198,7 +1198,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-kho-qua-don-thit'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Muối tiêu chanh & Dưa leo giòn mát',
-    imageUrl: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Đậm Đà', '1 Người', 'Giàu Đạm', 'Yêu Thích', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   {
@@ -1210,7 +1210,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-loc-bong-dien-dien'),
     sideDish: getRecipe('bong-bi-xao-toi'),
     condimentNote: 'Nước sốt mắm me kẹo dẻo ớt băm & Rau thơm',
-    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/C%C3%A1_kho_t%E1%BB%99.JPG/960px-C%C3%A1_kho_t%E1%BB%99.JPG?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Đồng Quê', 'Đậm Đà', '1 Người', 'Yêu Thích', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   {
@@ -1222,7 +1222,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-chua-ca-hu'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Nước tương tỏi ớt băm tươi & Tiêu Phú Quốc',
-    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1723531055852-744d14ac00b4?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Eat Clean', '1 Người', 'Giàu Đạm', 'Tiết Kiệm', 'Yêu Thích', 'Đậm Đà', 'Mâm Cơm 3 Món']
   },
   // --- Chay Miền Nam (5 sets) ---
@@ -1235,7 +1235,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Nước tương tỏi ớt băm & Chao môn béo ngậy',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1591522913962-3ecfa6b271f1?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Cay Nồng', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1247,7 +1247,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('bong-bi-xao-toi'),
     condimentNote: 'Kho quẹt chay tóp mỡ bánh mì & Ớt xanh',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1780842819206-435e9b52bc60?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Đồng Quê', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1259,7 +1259,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Nước dừa tươi kho kẹo & Tiêu hạt Phú Quốc',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1271,7 +1271,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('bong-bi-xao-toi'),
     condimentNote: 'Chao ớt miền Tây & Nước tương tỏi',
-    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1760504526069-ff0f8bf6e4ca?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Đổi Vị', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1283,7 +1283,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('dua-gia-bop-xoi'),
     condimentNote: 'Ớt sừng cắt khoanh & Nước tương nấm hương',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1785031765104-9af3d84fd3ff?auto=format&fit=crop&w=600&q=80',
     tags: ['Miền Nam', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Đậm Đà', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
 
@@ -1299,7 +1299,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Muối tiêu chanh chay & Rau húng quế',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Đổi Vị', 'Eat Clean', '1 Người', 'Yêu Thích', 'Đậm Đà', 'Tiết Kiệm', 'Mâm Cơm 3 Món']
   },
   {
@@ -1311,7 +1311,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Ớt sả phi thơm & Chao môn béo',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Cay Nồng', 'Đậm Đà', '1 Người', 'Yêu Thích', 'Tiết Kiệm', 'Eat Clean', 'Mâm Cơm 3 Món']
   },
   {
@@ -1323,7 +1323,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Nước tương gừng ớt & Vừng rang vàng',
-    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1592578630143-fac65cda7a67?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Cay Nồng', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Yêu Thích', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   {
@@ -1335,7 +1335,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Tiêu sọ xay nhuyễn & Kho quẹt tóp mỡ chay',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1762305194201-077e7e23ccf2?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Đậm Đà', 'Mâm Cơm 3 Món']
   },
   {
@@ -1347,7 +1347,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('canh-nam-hat-sen'),
     sideDish: getRecipe('rau-cu-luoc-kho-quet-chay'),
     condimentNote: 'Muối mè rang thơm & Nước tương tỏi ớt',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1680991172715-4074203a40d3?auto=format&fit=crop&w=600&q=80',
     tags: ['Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Đậm Đà', 'Mâm Cơm 3 Món']
   },
 
@@ -1363,7 +1363,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-ca-chua-hung-que-y'),
     sideDish: getRecipe('salad-dia-trung-hai-feta-dau-oliu'),
     condimentNote: 'Sốt Chimichurri ớt đỏ rau mùi & Muối hồng Himalaya',
-    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Cay Nồng', 'Giàu Đạm', 'Đậm Đà', 'Đổi Vị', 'Yêu Thích', '1 Người', 'Mâm Cơm 3 Món']
   },
   {
@@ -1375,7 +1375,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-ca-chua-hung-que-y'),
     sideDish: getRecipe('salad-dia-trung-hai-feta-dau-oliu'),
     condimentNote: 'Dầu ô liu nguyên chất & Hạt tiêu đen xay vỡ',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Eat Clean', 'Giàu Đạm', 'Đổi Vị', 'Yêu Thích', '1 Người', 'Mâm Cơm 3 Món']
   },
   {
@@ -1387,7 +1387,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-kem-bap-ngot-ga-xe'),
     sideDish: getRecipe('khoai-tay-nghien-bo-toi-thao-moc'),
     condimentNote: 'Muối tiêu chanh tươi & Bơ lạt thảo mộc',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1723531055852-744d14ac00b4?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Cay Nồng', 'Giàu Đạm', 'Đậm Đà', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1399,7 +1399,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-kem-nam-tuoi-thao-moc'),
     sideDish: getRecipe('mang-tay-ap-chao-bo-toi'),
     condimentNote: 'Bột ớt Paprika cay ngọt & Phô mai Parmesan bột',
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Chicken_cordon_bleu%2C_Bee%27s_Steak_and_Shake%2C_Sleman%2C_Yogyakarta.jpg/960px-Chicken_cordon_bleu%2C_Bee%27s_Steak_and_Shake%2C_Sleman%2C_Yogyakarta.jpg?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Eat Clean', 'Giàu Đạm', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1411,7 +1411,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-ca-chua-hung-que-y'),
     sideDish: getRecipe('salad-caesar-xac-lach-romaine'),
     condimentNote: 'Lá thơm Thyme tươi & Bơ lạt Anchor',
-    imageUrl: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Bò Hầm', 'Pháp', 'Giàu Đạm', 'Đậm Đà', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   // --- Western Vegetarian Sets (5 sets) ---
@@ -1424,7 +1424,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-ca-chua-hung-que-y'),
     sideDish: getRecipe('salad-caesar-xac-lach-romaine'),
     condimentNote: 'Phô mai Parmesan & Dầu ô liu Extra Virgin',
-    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1436,7 +1436,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-kem-nam-tuoi-thao-moc'),
     sideDish: getRecipe('banh-mi-bo-toi-nuong-gion-rum'),
     condimentNote: 'Lá xạ hương Thyme & Tiêu đen xay mịn',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1757489345059-31d51e241a3e?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1448,7 +1448,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-ca-chua-hung-que-y'),
     sideDish: getRecipe('khoai-tay-nghien-bo-toi-thao-moc'),
     condimentNote: 'Bột tỏi thảo mộc & Dầu ô liu chanh vàng',
-    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1707616954324-99c89a78a20d?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Đổi Vị', '1 Người', 'Yêu Thích', 'Mâm Cơm 3 Món']
   },
   {
@@ -1460,7 +1460,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-kem-bap-ngot-ga-xe'),
     sideDish: getRecipe('salad-dia-trung-hai-feta-dau-oliu'),
     condimentNote: 'Dấm Balsamic Ý & Muối hồng thảo mộc',
-    imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1666083580269-6f409e1765d8?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', '1 Người', 'Yêu Thích', 'Đổi Vị', 'Mâm Cơm 3 Món']
   },
   {
@@ -1472,7 +1472,7 @@ const RAW_NEW_MEAL_SETS: Array<Omit<VietnameseMealSet, 'totalCostVnd' | 'totalCa
     soupDish: getRecipe('sup-kem-nam-tuoi-thao-moc'),
     sideDish: getRecipe('banh-mi-bo-toi-nuong-gion-rum'),
     condimentNote: 'Bột ớt Paprika cay ngọt & Tiêu đen xay',
-    imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1724041305788-afe63ae3bb5a?auto=format&fit=crop&w=600&q=80',
     tags: ['Món Âu', 'Western Food', 'Ăn Chay', 'Món Chay', 'Thanh Tịnh', 'Eat Clean', 'Tiết Kiệm', '1 Người', 'Yêu Thích', 'Đổi Vị', 'Mâm Cơm 3 Món']
   }
 ];

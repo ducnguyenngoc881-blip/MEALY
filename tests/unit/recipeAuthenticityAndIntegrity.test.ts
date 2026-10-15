@@ -5,7 +5,9 @@ import {
   LEFTOVER_RECIPES, 
   WESTERN_RECIPES, 
   recipesDatabase, 
-  westernDishes500 
+  westernDishes500,
+  vietnameseDishesPart1,
+  vietnameseDishesPart2
 } from '../../src/data/mockRecipes';
 import { Recipe, Ingredient, CookingInstruction } from '../../src/types';
 import { 
@@ -178,8 +180,8 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
   // --------------------------------------------------------------------------
   // Test 1: Zero retail packaging fraction units across all active recipes
   // --------------------------------------------------------------------------
-  it('should have zero retail packaging fraction units across all 1,245 recipes in mockRecipes (Test 1)', () => {
-    expect(mockRecipes.length).toBe(1245);
+  it('should have zero retail packaging fraction units across all 2,245 recipes in mockRecipes (Test 1)', () => {
+    expect(mockRecipes.length).toBe(2245);
 
     const violations: { recipeId: string; ingredient: string; reason: string }[] = [];
 
@@ -196,7 +198,7 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
       });
     });
 
-    // Zero packaging violations across all 1,245 recipes
+    // Zero packaging violations across all 2,245 recipes
     expect(violations.length).toBe(0);
 
     // Adversarial verification: Confirm validator flags synthetic bad units
@@ -429,12 +431,14 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
   // --------------------------------------------------------------------------
   it('should ensure zero null or empty ingredient/instruction arrays across the entire database (Test 6)', () => {
     // Check total dataset and individual dataset partitions
-    expect(mockRecipes.length).toBe(1245);
+    expect(mockRecipes.length).toBe(2245);
     expect(INITIAL_RECIPES.length).toBe(13);
     expect(LEFTOVER_RECIPES.length).toBe(5);
     expect(WESTERN_RECIPES.length).toBe(17);
     expect(recipesDatabase.length).toBe(710);
     expect(westernDishes500.length).toBe(500);
+    expect(vietnameseDishesPart1.length).toBe(500);
+    expect(vietnameseDishesPart2.length).toBe(500);
 
     let emptyIngredientRecipeCount = 0;
     let emptyInstructionRecipeCount = 0;
@@ -532,8 +536,8 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
   // --------------------------------------------------------------------------
   // Test 9: Catalog-Wide Zero Dead / Blacklisted Image URLs (Spec 1)
   // --------------------------------------------------------------------------
-  it('should assert 0 dead URLs, 0 blacklisted placeholder IDs, 0 human faces, and 0 cloche fallbacks across all 1,245 recipes in mockRecipes (both static and resolved) (Spec 1)', () => {
-    expect(mockRecipes.length).toBe(1245);
+  it('should assert 0 dead URLs, 0 blacklisted placeholder IDs, 0 human faces, and 0 cloche fallbacks across all 2,245 recipes in mockRecipes (both static and resolved) (Spec 1)', () => {
+    expect(mockRecipes.length).toBe(2245);
 
     const violations: { id: string; title: string; badId: string; type: string }[] = [];
 
@@ -597,12 +601,13 @@ describe('Unit: Recipe Authenticity, Culinary Integrity & Scaling Invariants (Do
     const omeletteDish = mockRecipes.find(r => r.id === 'western-bfast-433');
     expect(omeletteDish).toBeDefined();
     expect(omeletteDish?.title).toBe('Trứng Cuộn Omelette Xúc Xích Đức & Bánh Mì Bơ');
-    expect(omeletteDish?.imageUrl).toContain('photo-1584776296944-ab6fb57b0bdd');
+    expect(omeletteDish?.imageUrl).toContain('Classic_argentine_omelette');
+    expect(omeletteDish?.imageUrl).not.toContain('photo-1584776296944-ab6fb57b0bdd');
     expect(omeletteDish?.imageUrl).not.toContain('photo-1621996346565-e3d5d6281292');
     expect(omeletteDish?.imageUrl).not.toContain('photo-1586190848861-99aa4a171e90');
 
     const resolvedOmelette = getDishImageUrl(omeletteDish!.title, omeletteDish!.category, omeletteDish!.imageUrl);
-    expect(resolvedOmelette).toContain('photo-1584776296944-ab6fb57b0bdd');
+    expect(resolvedOmelette).toContain('Classic_argentine_omelette');
 
     // 4. Also assert across all 44 meal sets in mockMealSets
     expect(mockMealSets.length).toBe(44);

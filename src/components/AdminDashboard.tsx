@@ -149,7 +149,7 @@ export const AdminDashboard: React.FC = () => {
       'Video Thưởng WinMart Tươi Ngon (30s)',
       30,
       8,
-      'Thành viên thử nghiệm (Simulated User)'
+      'Thành viên thử nghiệm'
     );
     recordTelemetryEvent('auth', 'Thành viên thử nghiệm xem 1 video quảng cáo đối tác WinMart (30s, +8h Premium)', 'Thành viên thử nghiệm');
     setSimulationStatus(`📺 Đã ghi nhận 1 lượt xem quảng cáo thử nghiệm: "${record.adTitle}" (+8h Ad-Free)`);
@@ -328,7 +328,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Teammate Multi-User Simulation Handlers
   const handleSimulateTeammate = (actionType: 'join_collab' | 'check_item' | 'plan_weekly' | 'add_fridge') => {
-    const names = ['Nam Nguyễn (Shopper)', 'Thu Hà (Mẹ 2 con)', 'Tuấn Anh (Đồng đội)', 'Hương Ly (Cộng sự)'];
+    const names = ['Nam Nguyễn', 'Thu Hà (Mẹ 2 con)', 'Tuấn Anh (Đồng đội)', 'Hương Ly (Cộng sự)'];
     const randomName = names[Math.floor(Math.random() * names.length)];
     const ev = simulateTeammateAction(actionType, randomName);
 
@@ -696,7 +696,7 @@ export const AdminDashboard: React.FC = () => {
           <div>
             <h2 className="text-base font-black tracking-tight text-white flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-amber-500" />
-              Biểu Đồ Tần Suất Hoạt Động Theo Khung Giờ (24H Activity Timeline)
+              Biểu Đồ Tần Suất Hoạt Động Theo Khung Giờ
             </h2>
             <p className="text-xs text-stone-400 mt-0.5">
               Phân bổ số lượng sự kiện thực tế trong 24 giờ qua từ toàn bộ các tác vụ của người dùng.
@@ -936,7 +936,7 @@ export const AdminDashboard: React.FC = () => {
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-amber-400" />
-                  Thực Đơn Tuần Thực Tế (Weekly Plan State)
+                  Thực Đơn Tuần Thực Tế
                 </h3>
                 <p className="text-xs text-stone-400 mt-0.5">
                   Số liệu tính toán trực tiếp từ 21 bữa ăn đang lưu trong hệ thống.
@@ -983,7 +983,7 @@ export const AdminDashboard: React.FC = () => {
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <Refrigerator className="w-5 h-5 text-emerald-400" />
-                  Tủ Lạnh & Đồ Ăn Thừa (Pantry Live Inventory)
+                  Tủ Lạnh & Đồ Ăn Thừa
                 </h3>
                 <p className="text-xs text-stone-400 mt-0.5">
                   Số lượng nguyên liệu và món thừa thực tế đang được bảo quản.
@@ -1045,7 +1045,7 @@ export const AdminDashboard: React.FC = () => {
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <ShoppingCart className="w-5 h-5 text-emerald-400" />
-                  Phòng Đi Chợ Chung Thời Gian Thực (Active Collab Cart)
+                  Phòng Đi Chợ Chung Thời Gian Thực
                 </h3>
                 <p className="text-xs text-stone-400 mt-0.5">
                   Đồng bộ giỏ hàng và danh sách người tham gia theo mã phòng.
@@ -1133,7 +1133,7 @@ export const AdminDashboard: React.FC = () => {
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <Store className="w-5 h-5 text-emerald-400" />
-                  Phân Bổ Kênh Mua Sắm Thực Tế (Retail Partner Channels)
+                  Phân Bổ Kênh Mua Sắm Thực Tế
                 </h3>
                 <p className="text-xs text-stone-400 mt-0.5">
                   Tỷ lệ thành phần nguyên liệu cần mua dựa trên thực đơn tuần hiện hành.
@@ -1358,21 +1358,21 @@ export const AdminDashboard: React.FC = () => {
               <div className="space-y-3">
                 {[
                   {
-                    name: 'Video Thưởng Tự Nguyện (Rewarded 30s)',
+                    name: 'Video Thưởng Tự Nguyện (30s)',
                     count: adMetrics.rewardedVideoAds,
                     percent: adMetrics.totalAds > 0 ? Math.round((adMetrics.rewardedVideoAds / adMetrics.totalAds) * 100) : 100,
                     color: 'from-amber-500 to-orange-400',
                     reward: '+8 giờ không quảng cáo / video'
                   },
                   {
-                    name: 'Quảng Cáo Chuyển Trang (Interstitial)',
+                    name: 'Quảng Cáo Chuyển Trang',
                     count: adMetrics.interstitialAds,
                     percent: adMetrics.totalAds > 0 ? Math.round((adMetrics.interstitialAds / adMetrics.totalAds) * 100) : 0,
                     color: 'from-blue-500 to-indigo-400',
                     reward: 'Tự động đóng sau 5 giây'
                   },
                   {
-                    name: 'Biểu Ngữ Tiêu Chuẩn (Banner Impressions)',
+                    name: 'Biểu Ngữ Tiêu Chuẩn',
                     count: adMetrics.bannerImpressions,
                     percent: adMetrics.totalAds > 0 ? Math.max(0, 100 - (Math.round((adMetrics.rewardedVideoAds / adMetrics.totalAds) * 100) + Math.round((adMetrics.interstitialAds / adMetrics.totalAds) * 100))) : 0,
                     color: 'from-emerald-500 to-teal-400',
@@ -1562,7 +1562,7 @@ export const AdminDashboard: React.FC = () => {
                     </span>
                     {s.isCurrentTab && (
                       <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">
-                        Tab Hiện Tại (Admin)
+                        Tab Hiện Tại
                       </span>
                     )}
                   </div>
@@ -1632,7 +1632,7 @@ export const AdminDashboard: React.FC = () => {
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-purple-400" />
-                  Sổ Bộ Tài Khoản Thành Viên (Registered Users Registry)
+                  Sổ Bộ Tài Khoản Thành Viên
                 </h3>
                 <p className="text-xs text-stone-400 mt-0.5">
                   Danh sách tài khoản đã đăng ký và lưu trữ trong hệ thống MealWise.
@@ -1696,7 +1696,7 @@ export const AdminDashboard: React.FC = () => {
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
               </span>
               <h3 className="text-base font-black text-white">
-                Dòng Sự Kiện Thời Gian Thực (Authentic User Actions Stream)
+                Dòng Sự Kiện Thời Gian Thực
               </h3>
             </div>
 

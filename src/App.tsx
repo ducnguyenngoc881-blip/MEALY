@@ -14,6 +14,7 @@ import { ShareCollabCartModal } from './components/ShareCollabCartModal';
 import { FridgeView } from './components/FridgeView';
 import { AuthModal } from './components/AuthModal';
 import { DownloadAppModal } from './components/DownloadAppModal';
+import { InteractiveTutorialModal } from './components/InteractiveTutorialModal';
 
 // Code-split secondary views and heavy interactive modals for ultra-fast initial page load
 const CateringPartyPlanner = lazy(() => import('./components/CateringPartyPlanner').then(m => ({ default: m.CateringPartyPlanner })));
@@ -73,6 +74,7 @@ const GlobalModals: React.FC = () => {
       <ShareCollabCartModal />
       <AuthModal />
       <DownloadAppModal />
+      <InteractiveTutorialModal />
     </>
   );
 };
@@ -84,7 +86,7 @@ const AppShell: React.FC = () => {
   // DEDICATED DESKTOP ADMIN WEB PORTAL (STANDALONE DESKTOP WEBSITE)
   if (isAdminView) {
     return (
-      <div className="min-h-screen w-full bg-[#0D0C0B] text-stone-100 font-sans selection:bg-amber-500 selection:text-stone-950">
+      <div className="min-h-screen w-full bg-[#12161F] text-[#F8FAFC] font-sans selection:bg-[#2563EB] selection:text-white">
         <Suspense fallback={<TabSuspenseFallback />}>
           <AdminDashboard />
         </Suspense>
@@ -95,11 +97,11 @@ const AppShell: React.FC = () => {
 
   // PURE MOBILE APP SHELL (STRICTLY MOBILE PHONE CONTAINER)
   return (
-    <div className="min-h-screen bg-[#F3EFE9] dark:bg-[#0D0C0B] text-stone-900 dark:text-[#F5F2EB] font-sans selection:bg-amber-500 selection:text-stone-950 transition-colors duration-200">
+    <div className="min-h-screen bg-[#F1F5F9] dark:bg-[#0B0E14] text-[#1E293B] dark:text-[#F8FAFC] font-sans selection:bg-[#2563EB] selection:text-white transition-colors duration-200">
       {/* Mobile-first natural container: 100% on real phone, centered max-w-lg on desktop */}
-      <div className="w-full sm:max-w-md md:max-w-lg mx-auto min-h-[100dvh] bg-[#FAF8F5] dark:bg-[#121110] shadow-2xl relative flex flex-col sm:border-x sm:border-[#E8E2D8] sm:dark:border-[#252220]">
+      <div className="w-full sm:max-w-md md:max-w-lg mx-auto min-h-[100dvh] bg-[#F8FAFC] dark:bg-[#12161F] shadow-2xl relative flex flex-col sm:border-x sm:border-[#E2E8F0] sm:dark:border-[#2D3748]">
         <Navbar />
-        <main className="flex-1 px-3 sm:px-4 py-3 pb-24">
+        <main className="flex-1 px-3 sm:px-4 pt-3 pb-[76px]">
           <MainContent />
         </main>
         <Sidebar />

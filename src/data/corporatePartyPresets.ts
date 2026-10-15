@@ -58,7 +58,7 @@ export const CORPORATE_PARTY_PRESETS: CorporatePartyPreset[] = [
     title: '🎂 Tiệc Sinh Nhật Nhân Viên & Kỷ Niệm Phòng Ban',
     categoryTag: 'Sinh Nhật Nhân Viên & Kỷ Niệm',
     description: 'Tiệc mừng sinh nhật thành viên phòng ban: Bánh kem tươi, bánh mì sandwich nhỏ, trà hoa quả và tháp bánh ngọt.',
-    image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
     suggestedPerHeadBudgetVnd: 150000,
     defaultGuestCount: 20,
     menuRecipes: [INITIAL_RECIPES[3], INITIAL_RECIPES[5]],

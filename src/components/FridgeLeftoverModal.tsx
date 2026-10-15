@@ -11,9 +11,10 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useMealWise } from '../context/MealWiseContext';
-import { PantryItem } from '../types';
+import { PantryItem, Recipe } from '../types';
 import { 
   findLeftoverRecipeSuggestions,
+  findLeftoverRecipeSuggestionsWithCount,
   matchRecipeWithPantryItem,
   isCondiment
 } from '../utils/fridgeMatcher';
@@ -64,10 +65,13 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
   const [discountVnd, setDiscountVnd] = useState<number>(20000);
   const [nameError, setNameError] = useState<string | null>(null);
 
-  const modalTotalEligible = useMemo(() => {
-    if (!selectedItemForRecipe) return 0;
-    return findLeftoverRecipeSuggestions(selectedItemForRecipe, recipes, 9999, 0, pantryItems).length;
-  }, [selectedItemForRecipe, recipes, pantryItems]);
+  const singleItemData = useMemo(() => {
+    if (!isOpen || !selectedItemForRecipe) return { results: [] as Recipe[], totalEligible: 0 };
+    return findLeftoverRecipeSuggestionsWithCount(selectedItemForRecipe, recipes, 4, modalReloadOffset, pantryItems);
+  }, [isOpen, selectedItemForRecipe, recipes, modalReloadOffset, pantryItems]);
+
+  const modalTotalEligible = singleItemData.totalEligible;
+  const suggestedRecipes = singleItemData.results;
 
   if (!isOpen) return null;
 
@@ -127,10 +131,6 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
     setIsAddingOpen(false);
   };
 
-  // Find recipes that can use this ingredient
-  const suggestedRecipes = selectedItemForRecipe 
-    ? findLeftoverRecipeSuggestions(selectedItemForRecipe, recipes, 4, modalReloadOffset, pantryItems)
-    : [];
 
   const handleReloadModalSuggestions = () => {
     if (modalTotalEligible <= 4) return;
@@ -538,10 +538,10 @@ export const FridgeLeftoverModal: React.FC<FridgeLeftoverModalProps> = ({ isOpen
                           }
                         }}
                         className="text-[11px] font-bold text-slate-400 hover:text-rose-500 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-rose-500/10 transition-colors"
-                        title="Đã nấu hết hoặc dọn đi"
+                        title="Xóa khỏi tủ lạnh"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
-                        <span>Đã dùng hết</span>
+                        <span>Xóa</span>
                       </button>
                     </div>
                   </div>

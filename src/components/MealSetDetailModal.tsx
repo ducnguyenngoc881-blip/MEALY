@@ -4,6 +4,7 @@ import { X, Sparkles, Utensils, DollarSign, Flame, Calendar, PlusCircle, Check, 
 import { MealSlot, isMealSet } from '../types';
 import { SafeImage } from './SafeImage';
 import { isHotpotOrFeast } from '../utils/textUtils';
+import { scaleCost, getDailyBudgetTarget } from '../utils/currency';
 
 const cleanDishTitle = (title: string) => {
   if (!title) return '';
@@ -20,7 +21,9 @@ export const MealSetDetailModal: React.FC = () => {
     setWeeklyPlan,
     addMealSetToSlot,
     swapDishInMealSet,
-    showToast
+    showToast,
+    servings,
+    onboardingData
   } = useMealWise();
 
   const [dragY, setDragY] = useState<number>(0);
@@ -75,7 +78,40 @@ export const MealSetDetailModal: React.FC = () => {
   const handleSwapSpecificDish = (dishType: 'mainDish' | 'soupDish' | 'sideDish', e: React.MouseEvent) => {
     e.stopPropagation();
     if (!selectedMealSet) return;
-    const updated = swapDishInMealSet(selectedMealSet, dishType);
+
+    // Calculate budget limit based on assigned day or general target
+    const safeServings = Number.isFinite(servings) && servings > 0 ? Math.min(20, Math.max(1, Math.round(servings))) : 4;
+    const currentBudgetLevel = onboardingData?.budgetLevel || 'vua-phai';
+    const dailyBudgetTarget = getDailyBudgetTarget(currentBudgetLevel, safeServings, onboardingData?.specialNeeds);
+    
+    // Find if assigned to any day in weekly plan
+    const assignedDay = weeklyPlan.find(day => 
+      (['breakfast', 'lunch', 'dinner', 'snack'] as MealSlot[]).some(s => {
+        const m = day.meals[s];
+        return m && isMealSet(m) && m.id === selectedMealSet.id;
+      })
+    );
+
+    let maxAllowedDishCostUnscaled: number | undefined;
+    if (assignedDay) {
+      let otherSlotsScaledCost = 0;
+      (['breakfast', 'lunch', 'dinner', 'snack'] as MealSlot[]).forEach(s => {
+        const m = assignedDay.meals[s];
+        const isSkipLunch = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
+        const isBantruLunch = s === 'lunch' && Boolean(assignedDay.skippedSlots?.lunch ?? (isSkipLunch && ['mon','tue','wed','thu','fri'].includes(assignedDay.dayId)));
+        if (m && !assignedDay.skippedSlots?.[s] && !isBantruLunch) {
+          if (isMealSet(m)) otherSlotsScaledCost += scaleCost(m.totalCostVnd, safeServings);
+          else otherSlotsScaledCost += scaleCost(m.estimatedCostVnd || 35000, safeServings);
+        }
+      });
+      const otherDish1 = dishType === 'mainDish' ? selectedMealSet.soupDish : selectedMealSet.mainDish;
+      const otherDish2 = dishType === 'sideDish' ? selectedMealSet.soupDish : selectedMealSet.sideDish;
+      const otherTwoDishesScaled = scaleCost((otherDish1?.estimatedCostVnd || 0) + (otherDish2?.estimatedCostVnd || 0), safeServings);
+      const remainingScaled = Math.max(0, dailyBudgetTarget - (otherSlotsScaledCost + otherTwoDishesScaled));
+      maxAllowedDishCostUnscaled = Math.floor(remainingScaled / (safeServings / 4));
+    }
+
+    const updated = swapDishInMealSet(selectedMealSet, dishType, undefined, maxAllowedDishCostUnscaled);
     setSelectedMealSet(updated);
 
     // Synchronize with weekly plan if this meal set is assigned in any slot
@@ -93,7 +129,7 @@ export const MealSetDetailModal: React.FC = () => {
     }));
 
     const dishLabel = dishType === 'mainDish' ? 'Món Mặn' : dishType === 'soupDish' ? 'Món Canh' : 'Món Rau';
-    showToast(`🔄 Đã đổi ${dishLabel} thành "${updated[dishType].title}"!`);
+    showToast(`🔄 Đã đổi ${dishLabel} thành "${updated[dishType].title}" chuẩn ngân sách!`);
   };
 
   const calculatedTotalCost = (selectedMealSet.mainDish?.estimatedCostVnd || 0) + 
