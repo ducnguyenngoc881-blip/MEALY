@@ -873,35 +873,7 @@ export const FridgeView: React.FC = () => {
     <div className="space-y-3.5 animate-fadeIn">
       {/* Top Banner & Header */}
       <div className="p-3 sm:p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2.5 sm:space-y-3 shadow-xs">
-        {/* Responsive Header Action Row */}
-        <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-1.5 sm:gap-2">
-          {/* Status Counter Badge */}
-          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10.5px] sm:text-[11px] font-bold shrink-0">
-            <span className="text-xs sm:text-sm shrink-0">🧊</span>
-            <span className="hidden sm:inline whitespace-nowrap">Tủ Lạnh & Đồ Thừa</span>
-            <span className="sm:hidden whitespace-nowrap">Tủ Lạnh</span>
-            <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-slate-200/80 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-[10px] font-black shrink-0">
-              {pantryItems.length}
-            </span>
-          </div>
-
-          {/* Action Button: Đối Chiếu Đi Chợ */}
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 ml-auto">
-            <button
-              type="button"
-              onClick={() => setActiveTab('grocery')}
-              className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-[10.5px] sm:text-[11px] font-bold transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
-              title="Chuyển sang danh sách đi chợ để đối chiếu nguyên liệu"
-            >
-              <ShoppingCart className="w-3.5 h-3.5 shrink-0 text-[#1D4ED8] dark:text-blue-400" />
-              <span>Đối Chiếu</span>
-              <span className="hidden sm:inline">&nbsp;Đi Chợ</span>
-              <ArrowRight className="w-3 h-3 shrink-0" />
-            </button>
-          </div>
-        </div>
-
-        <div className="pt-0.5">
+        <div>
           <h1 className="text-base sm:text-lg md:text-xl font-black tracking-tight text-slate-900 dark:text-white leading-snug text-balance">
             Tủ Lạnh & Đồ Ăn Thừa <span className="whitespace-nowrap text-cyan-600 dark:text-cyan-400">Thông Minh</span>
           </h1>
