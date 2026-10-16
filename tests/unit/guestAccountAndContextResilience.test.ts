@@ -62,25 +62,20 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     expect(content.includes('Đăng Ký Miễn Phí Để Mở Khóa')).toBe(true);
   });
 
-  it('GUEST-03: Grocery List is locked entirely for guest accounts and triggers registration', () => {
+  it('GUEST-03: Collaborative Grocery List is unlocked for guests while Custom Family Recipes & Voice Notes are gated for registered members', () => {
     const groceryFilePath = path.join(srcDir, 'components', 'GroceryList.tsx');
     const content = fs.readFileSync(groceryFilePath, 'utf-8');
-    // Verify full grocery screen guest lock
-    expect(content.includes('if (!isRegistered && !isWebGuestViewer)')).toBe(true);
-    expect(content.includes('Danh Sách Đi Chợ Tự Động')).toBe(true);
-    expect(content.includes('Tự Gom Nguyên Liệu')).toBe(true);
+    // Verify collaborative grocery sharing is unlocked for all users including guests
     expect(content.includes('startCollabRoom(allList')).toBe(true);
     expect(content.includes('Chia Sẻ Mua Chung')).toBe(true);
-    expect(content.includes('Mua Chung')).toBe(true);
-    // Verify guest lock enforcement
-    expect(content.includes('Đi Chợ Chung 🔒')).toBe(true);
-    expect(content.includes("openAuthModal('register')")).toBe(true);
-    expect(content.includes('isCollabActive = Boolean((isRegistered || isWebGuestViewer) && collabRoom?.roomId)')).toBe(true);
+    expect(content.includes('isCollabActive = Boolean(collabRoom?.roomId)')).toBe(true);
 
-    const contextFilePath = path.join(srcDir, 'context', 'MealWiseContext.tsx');
-    const contextContent = fs.readFileSync(contextFilePath, 'utf-8');
-    expect(contextContent.includes('if (!isRegistered) {')).toBe(true);
-    expect(contextContent.includes("openAuthModal('register')")).toBe(true);
+    // Verify Custom Family Recipes & Voice Notes in RecipeCatalog are gated for guests
+    const recipeCatalogPath = path.join(srcDir, 'components', 'RecipeCatalog.tsx');
+    const catalogContent = fs.readFileSync(recipeCatalogPath, 'utf-8');
+    expect(catalogContent.includes('Thêm Món Mới 🔒')).toBe(true);
+    expect(catalogContent.includes('Món Của Tôi 🔒')).toBe(true);
+    expect(catalogContent.includes("openAuthModal('register')")).toBe(true);
   });
 
   it('GUEST-04: Sidebar displays lock badge on Tiệc tab for guests', () => {
@@ -114,11 +109,10 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     // Guest locked features verification
     expect(content.includes('!isRegistered ?')).toBe(true);
     expect(content.includes('Tính Năng Dành Cho Thành Viên')).toBe(true);
-    expect(content.includes('Đi Chợ Thông Minh')).toBe(true);
+    expect(content.includes('Sổ Bếp & Ghi Âm')).toBe(true);
     expect(content.includes('Lên Thực Đơn Tiệc')).toBe(true);
-    expect(content.includes('Mở Khóa Đi Chợ')).toBe(true);
+    expect(content.includes('Mở Khóa Sổ Bếp')).toBe(true);
     expect(content.includes('Mở Khóa Thực Đơn Tiệc')).toBe(true);
-    expect(content.includes('Đăng Ký Tài Khoản Miễn Phí (Mở Khóa Toàn Bộ)')).toBe(true);
   });
 
   it('GUEST-08: AuthModal distinguishes registration vs login and passes isNewRegistration to loginUser', () => {

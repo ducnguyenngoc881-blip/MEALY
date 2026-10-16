@@ -67,12 +67,11 @@ export const Sidebar: React.FC = () => {
 
   const visibleNavItems = allNavItems;
 
-  // Compatibility badge resolver for guests (party moved to Account; grocery gated)
+  // Compatibility badge resolver for guests (party moved to Account)
   const getBadgeLabel = (item: { id: ActiveTab; label: string }) => {
     const isGated = isWebGuestViewer && item.id !== 'grocery';
     if (isGated) return `${item.label} 🔒`;
     if (item.id === 'party' && !isRegistered) return 'Tiệc 🔒';
-    if (item.id === 'grocery' && !isRegistered) return 'Đi Chợ 🔒';
     return item.label;
   };
 

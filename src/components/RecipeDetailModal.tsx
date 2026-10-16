@@ -25,12 +25,23 @@ import {
   FileText,
   Gamepad2,
   Dices,
-  Pencil
+  Share2
 } from 'lucide-react';
 import { SafeImage } from './SafeImage';
-import { Ingredient, CookingInstruction } from '../types';
+import { Ingredient, CookingInstruction, Recipe } from '../types';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
 import { recordAdImpression, recordVolunteerAdWatched, isUserAdFree } from '../utils/adTrackingService';
+
+export async function shareCustomRecipe(
+  recipe: Recipe,
+  showToast: (msg: string, type?: 'success' | 'warning' | 'error' | 'info') => void
+) {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('mealwise:open-share-recipe', { detail: recipe }));
+    return;
+  }
+  showToast('⚠️ Không thể mở bảng chia sẻ lúc này.', 'warning');
+}
 
 // Gen Z Easter Egg Funny Quotes for "Nấu rảnh tay"
 const GEN_Z_HANDS_FREE_QUOTES = [
@@ -105,7 +116,7 @@ function findPantryMatchForIngredient(
 }
 
 export const RecipeDetailModal: React.FC = () => {
-  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast, user, pantryItems, removePantryItem } = useMealWise();
+  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast, user, pantryItems, removePantryItem, addCustomRecipe, customRecipes } = useMealWise();
   const [dragY, setDragY] = useState<number>(0);
   const touchStartY = useRef<number | null>(null);
 
@@ -553,6 +564,75 @@ export const RecipeDetailModal: React.FC = () => {
     setTimerTipIndex(prev => (prev + 1) % loadingScreenTips.length);
   };
 
+  // Automatically receive & open a shared custom family dish from URL (?sharedDish=...)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const sharedParam = params.get('sharedDish');
+    if (!sharedParam) return;
+
+    try {
+      const jsonStr = decodeURIComponent(escape(atob(decodeURIComponent(sharedParam))));
+      const parsed = JSON.parse(jsonStr);
+      if (parsed && parsed.t) {
+        const importedRecipe: Recipe = {
+          id: `shared-custom-${Date.now()}`,
+          title: String(parsed.t),
+          category: parsed.c || 'mon-man',
+          region: parsed.r || 'toan-quoc',
+          cookTimeMinutes: Number(parsed.m) || 25,
+          prepTimeMinutes: 10,
+          servings: 4,
+          difficulty: 'Dễ',
+          calories: Number(parsed.k) || 450,
+          estimatedCostVnd: Number(parsed.v) || 65000,
+          imageUrl: parsed.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80',
+          description: parsed.n ? `Công thức chia sẻ — ${parsed.n}` : 'Món ngon gia đình được chia sẻ từ Sổ Bếp MealWise.',
+          tags: ['Món Bếp Nhà', 'Được Chia Sẻ'],
+          isCustom: true,
+          authorName: parsed.a || 'Đầu Bếp MealWise',
+          authorNote: parsed.n || 'Công thức gia đình chia sẻ',
+          chefTip: parsed.p || '',
+          ingredients: Array.isArray(parsed.i)
+            ? parsed.i.map((ing: any) => ({
+                name: String(ing.n || 'Nguyên liệu'),
+                amount: Number(ing.a) || 1,
+                unit: String(ing.u || 'phần'),
+                category: ing.c || 'gia-vi'
+              }))
+            : [],
+          instructions: [
+            {
+              step: 1,
+              title: 'Sơ chế nguyên liệu',
+              content: 'Chuẩn bị các nguyên liệu theo định lượng đã chia sẻ.'
+            },
+            {
+              step: 2,
+              title: 'Chế biến theo bí quyết gia đình',
+              content: parsed.p || 'Nấu chín vừa lửa và nêm nếm hợp khẩu vị gia đình.'
+            }
+          ]
+        };
+
+        const alreadyExists = (customRecipes || []).some(
+          r => r.title.toLowerCase().trim() === importedRecipe.title.toLowerCase().trim()
+        );
+        if (!alreadyExists && typeof addCustomRecipe === 'function') {
+          addCustomRecipe(importedRecipe);
+        }
+        setSelectedRecipe(importedRecipe);
+        showToast(`🎁 Đã nhận món "${importedRecipe.title}" và lưu vào Sổ Bếp Gia Đình!`, 'success');
+
+        // Clean ?sharedDish from URL bar without reloading
+        const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    } catch (e) {
+      console.error('Failed to decode sharedDish URL parameter', e);
+    }
+  }, []);
+
   if (!selectedRecipe) return null;
 
   const scaledCost = Math.round(((selectedRecipe.estimatedCostVnd || 30000) * servings) / (selectedRecipe.servings || 4));
@@ -850,16 +930,14 @@ export const RecipeDetailModal: React.FC = () => {
                   <span>Trở về</span>
                 </button>
                 <span className="text-stone-300 dark:text-stone-700 shrink-0">•</span>
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500 dark:text-stone-400 truncate">
-                  {selectedRecipe.category === 'mon-man' && 'Món Mặn'}
-                  {selectedRecipe.category === 'mon-canh' && 'Món Canh'}
-                  {selectedRecipe.category === 'mon-rau' && 'Món Rau'}
-                  {selectedRecipe.category === 'mon-chay' && 'Món Chay'}
-                  {selectedRecipe.category === 'an-sang' && 'Bữa Sáng'}
-                </span>
-                <span className="text-stone-300 dark:text-stone-700 shrink-0">•</span>
-                <span className="text-xs font-bold text-stone-600 dark:text-stone-400 shrink-0">
-                  {selectedRecipe.region === 'bac' ? 'Miền Bắc' : selectedRecipe.region === 'nam' ? 'Miền Nam' : selectedRecipe.region === 'trung' ? 'Miền Trung' : 'Toàn Quốc'}
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500 dark:text-stone-400 shrink-0">
+                  {selectedRecipe.category === 'mon-man' ? 'Món Mặn'
+                    : selectedRecipe.category === 'mon-canh' ? 'Món Canh'
+                    : selectedRecipe.category === 'mon-rau' ? 'Món Rau'
+                    : selectedRecipe.category === 'mon-chay' ? 'Món Chay'
+                    : selectedRecipe.category === 'an-sang' ? 'Bữa Sáng'
+                    : selectedRecipe.category === 'trang-mieng' ? 'Tráng Miệng'
+                    : 'Món Bếp Nhà'}
                 </span>
               </>
             )}
@@ -869,18 +947,12 @@ export const RecipeDetailModal: React.FC = () => {
             {selectedRecipe.isCustom && (
               <button
                 type="button"
-                onClick={() => {
-                  const recipeToEdit = selectedRecipe;
-                  setSelectedRecipe(null);
-                  setIsHandsFreeMode(false);
-                  setIsTimerOpen(false);
-                  window.dispatchEvent(new CustomEvent('mealwise:edit-custom-recipe', { detail: recipeToEdit }));
-                }}
-                className="px-2.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700 hover:bg-amber-100 transition-all cursor-pointer min-h-[36px]"
-                title="Chỉnh sửa món ăn này"
+                onClick={() => shareCustomRecipe(selectedRecipe, showToast)}
+                className="px-2.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border bg-blue-50 dark:bg-blue-950/50 text-[#1D4ED8] dark:text-blue-300 border-blue-200 dark:border-blue-800 hover:bg-blue-100 transition-all cursor-pointer min-h-[36px]"
+                title="Chia sẻ công thức món bếp nhà cho người thân"
               >
-                <Pencil className="w-3.5 h-3.5 shrink-0" />
-                <span className="text-[11px]">Sửa món</span>
+                <Share2 className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-[11px]">Chia sẻ</span>
               </button>
             )}
             {/* Actionable Countdown Timer Quick Trigger Button */}

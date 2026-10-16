@@ -34,6 +34,13 @@ import {
   saveUserPartition,
   updateGuestSession
 } from '../services/userDatabase';
+import {
+  loadAccountCustomRecipes,
+  saveAccountCustomRecipes,
+  enqueueRecipeCloudMutation,
+  syncAccountRecipesWithCloud,
+  getRecipeCloudAdapter
+} from '../services/recipeCloudSyncService';
 import { 
   generateCollabRoomId, 
   createOrSyncCollabRoom, 
@@ -99,6 +106,10 @@ interface MealWiseContextType {
   setShowOnboarding: (show: boolean) => void;
   completeOnboarding: (data: Partial<OnboardingData>, options?: { regeneratePlan?: boolean }) => void;
   resetOnboarding: () => void;
+  showWelcomeModal: boolean;
+  setShowWelcomeModal: (show: boolean) => void;
+  openWelcomeModal: () => void;
+  completeWelcomeModal: () => void;
   isTutorialOpen: boolean;
   setIsTutorialOpen: (open: boolean) => void;
   startTutorial: () => void;
@@ -350,14 +361,21 @@ const DEFAULT_PARTY_PLAN: CustomPartyPlan = {
   staffNotes: 'Khách yêu cầu chuẩn bị đồ ăn trước 11:30 trưa. Bố trí bàn tiệc gần cửa sổ thoáng mát.'
 };
 
-const loadCustomRecipesFromStorage = (): Recipe[] => {
-  if (typeof window === 'undefined') return [];
+const getStoredUserEmail = (): string | null => {
+  if (typeof window === 'undefined') return null;
   try {
-    const saved = localStorage.getItem('mealwise_custom_recipes');
-    return saved ? JSON.parse(saved) : [];
+    const raw = localStorage.getItem('mealwise_registered_user');
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed?.email || null;
   } catch {
-    return [];
+    return null;
   }
+};
+
+const loadCustomRecipesFromStorage = (email?: string | null): Recipe[] => {
+  const targetEmail = email !== undefined ? email : getStoredUserEmail();
+  return loadAccountCustomRecipes(targetEmail);
 };
 
 export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -365,24 +383,38 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const recipes = useMemo(() => [...customRecipes, ...mockRecipes], [customRecipes]);
 
   const addCustomRecipe = useCallback((newRecipe: Recipe) => {
+    const activeEmail = getStoredUserEmail();
     setCustomRecipes(prev => {
       const updated = [newRecipe, ...prev.filter(r => r.id !== newRecipe.id)];
-      try {
-        localStorage.setItem('mealwise_custom_recipes', JSON.stringify(updated));
-      } catch (err) {
-        console.error('Failed to save custom recipe to localStorage', err);
-      }
+      saveAccountCustomRecipes(activeEmail, updated);
+      enqueueRecipeCloudMutation(activeEmail, {
+        type: 'upsert',
+        recipeId: newRecipe.id,
+        recipe: newRecipe,
+        timestamp: Date.now()
+      });
+      void syncAccountRecipesWithCloud(activeEmail, updated);
       return updated;
     });
   }, []);
 
   const deleteCustomRecipe = useCallback((recipeId: string) => {
+    const activeEmail = getStoredUserEmail();
     setCustomRecipes(prev => {
       const updated = prev.filter(r => r.id !== recipeId);
-      try {
-        localStorage.setItem('mealwise_custom_recipes', JSON.stringify(updated));
-      } catch (err) {
-        console.error('Failed to remove custom recipe from localStorage', err);
+      saveAccountCustomRecipes(activeEmail, updated);
+      enqueueRecipeCloudMutation(activeEmail, {
+        type: 'delete',
+        recipeId,
+        timestamp: Date.now()
+      });
+      const adapter = getRecipeCloudAdapter();
+      if (activeEmail && adapter.isConfigured()) {
+        if (adapter.deleteUserRecipe) {
+          void adapter.deleteUserRecipe(activeEmail, recipeId);
+        } else {
+          void adapter.pushUserRecipes(activeEmail, updated);
+        }
       }
       return updated;
     });
@@ -503,6 +535,25 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setGuestSession(getOrCreateGuestSession());
   }, []);
 
+  // Account-Scoped Custom Recipes & Cloud Sync Hydration on Login / Logout
+  useEffect(() => {
+    const email = user?.email || null;
+    const localAccountRecipes = loadAccountCustomRecipes(email);
+    setCustomRecipes(localAccountRecipes);
+
+    if (email) {
+      let cancelled = false;
+      syncAccountRecipesWithCloud(email, localAccountRecipes, user?.id).then(res => {
+        if (!cancelled && res.recipes) {
+          setCustomRecipes(res.recipes);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+  }, [user?.email, user?.id]);
+
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('register');
 
@@ -525,6 +576,41 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
     return false; // Registered users: never auto-open on launch!
   });
+
+  // First-Launch Welcome Onboarding Modal (Dribbble 3-Slide Visual Onboarding v2)
+  // Auto-opens on launch when mealwise_welcome_onboarding_seen_v2 !== 'true'
+  // (including when upgrading from v1 even if a user session exists),
+  // unless a deep-link query/hash is active or running in headless WebDriver.
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      const search = window.location.search || '';
+      if (search.includes('welcome=1')) {
+        return true;
+      }
+      const seenV2 = localStorage.getItem('mealwise_welcome_onboarding_seen_v2') === 'true';
+      if (seenV2) return false;
+      const hasDeepLink = Boolean(search || window.location.hash);
+      if (hasDeepLink) return false;
+      const isWebDriver = typeof navigator !== 'undefined' && Boolean(navigator.webdriver);
+      if (isWebDriver) return false;
+      return true;
+    } catch {
+      return false;
+    }
+  });
+
+  const openWelcomeModal = useCallback(() => {
+    setShowWelcomeModal(true);
+  }, []);
+
+  const completeWelcomeModal = useCallback(() => {
+    try {
+      localStorage.setItem('mealwise_welcome_onboarding_seen_v2', 'true');
+      localStorage.setItem('mealwise_welcome_onboarding_seen_v1', 'true');
+    } catch {}
+    setShowWelcomeModal(false);
+  }, []);
 
 
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -591,6 +677,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         if (modalParam === 'minigames') setIsMinigameHubOpen(true);
         if (modalParam === 'roulette') setIsDrinkRouletteOpen(true);
         if (modalParam === 'apex') setIsApexModalOpen(true);
+        if (modalParam === 'welcome' || params.get('welcome') === '1') setShowWelcomeModal(true);
       } catch {}
     };
 
@@ -607,6 +694,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             if (e.data.modal === 'minigames') setIsMinigameHubOpen(true);
             if (e.data.modal === 'roulette') setIsDrinkRouletteOpen(true);
             if (e.data.modal === 'apex') setIsApexModalOpen(true);
+            if (e.data.modal === 'welcome') setShowWelcomeModal(true);
           }
         }
       } catch {}
@@ -1587,23 +1675,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {}
   }, [collabCheckedMap]);
 
-  // Guest Account Feature Gating: Unregistered guests cannot maintain a collab room
-  useEffect(() => {
-    if (!isRegistered && !isWebGuestViewer && collabRoom) {
-      setCollabRoom(null);
-      setCollabCheckedMap({});
-      setCollabParticipants({});
-      try {
-        localStorage.removeItem('mealwise_collab_room');
-        localStorage.removeItem('mealwise_collab_checked');
-      } catch {}
-    }
-  }, [isRegistered, isWebGuestViewer, collabRoom]);
-
   // Real-time subscription to room events (SSE + BroadcastChannel + Polling)
   useEffect(() => {
     if (!collabRoom?.roomId) return;
-    if (!isRegistered && !isWebGuestViewer) return;
 
     const unsubscribe = subscribeToCollabRoom(collabRoom.roomId, (event: any) => {
       if (event.type === 'toggle' && event.itemId && event.state) {
@@ -1667,14 +1741,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => clearInterval(interval);
   }, [collabRoom, showToast]);
 
-  // Start a new collaborative room (strictly for registered members; locked for guests)
+  // Start a new collaborative room (unlocked for both guests and registered members)
   const startCollabRoom = useCallback(async (items: CollabCartItem[], title?: string): Promise<string> => {
-    if (!isRegistered) {
-      showToast('🔒 Vui lòng đăng ký tài khoản thành viên để mở khóa tính năng Đi Chợ Chung!', 'warning');
-      openAuthModal('register');
-      return '';
-    }
-
     const roomId = generateCollabRoomId();
     const initialChecked: Record<string, CollabCheckState> = {};
 
@@ -2434,11 +2502,64 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       totalCost: d.unscaledDayCost
     }));
 
+    // Weave user's own custom recipes ("Món Của Tôi" / saved community chef dishes) into the 7-day schedule
+    if (customRecipes.length > 0 && suggestedPlan.length > 0) {
+      const maxCustomToInject = Math.min(2, customRecipes.length);
+      for (let i = 0; i < maxCustomToInject; i++) {
+        const customDish = customRecipes[(nextCount + i) % customRecipes.length];
+        const targetDayIdx = ((nextCount * 2) + i * 3) % suggestedPlan.length;
+        const dayObj = suggestedPlan[targetDayIdx];
+        if (!dayObj) continue;
+
+        if (customDish.category === 'an-sang' && !dayObj.skippedSlots?.breakfast) {
+          dayObj.meals.breakfast = {
+            id: `custom-set-${customDish.id}`,
+            title: customDish.title,
+            description: customDish.authorNote || customDish.description || 'Món ngon từ Sổ Bếp Gia Đình',
+            region: customDish.region || 'toan-quoc',
+            totalCost: customDish.estimatedCostVnd || 45000,
+            totalCalories: customDish.calories || 420,
+            prepTimeMinutes: (customDish.prepTimeMinutes || 10) + (customDish.cookTimeMinutes || 20),
+            servings: safeServings,
+            tags: ['Món Bếp Nhà ⭐️', ...(customDish.tags || [])],
+            imageUrl: customDish.imageUrl,
+            dishes: { main: customDish }
+          };
+        } else {
+          const targetSlotKey: 'dinner' | 'lunch' = !dayObj.skippedSlots?.dinner ? 'dinner' : 'lunch';
+          const existingMeal = dayObj.meals[targetSlotKey];
+          if (existingMeal) {
+            const updatedDishes = { ...existingMeal.dishes };
+            if (customDish.category === 'mon-canh') {
+              updatedDishes.soup = customDish;
+            } else if (customDish.category === 'mon-rau') {
+              updatedDishes.veggie = customDish;
+            } else {
+              updatedDishes.main = customDish;
+            }
+            const newDishesArr = [updatedDishes.main, updatedDishes.soup, updatedDishes.veggie].filter(Boolean) as Recipe[];
+            const recomputedCost = newDishesArr.reduce((sum, r) => sum + (r.estimatedCostVnd || 45000), 0);
+            const recomputedCal = newDishesArr.reduce((sum, r) => sum + (r.calories || 350), 0);
+            dayObj.meals[targetSlotKey] = {
+              ...existingMeal,
+              title: updatedDishes.main ? `Mâm Cơm Bếp Nhà: ${updatedDishes.main.title}` : existingMeal.title,
+              totalCost: recomputedCost,
+              totalCalories: recomputedCal,
+              imageUrl: customDish.imageUrl || existingMeal.imageUrl,
+              tags: Array.from(new Set(['Món Bếp Nhà ⭐️', ...(existingMeal.tags || [])])),
+              dishes: updatedDishes
+            };
+          }
+        }
+      }
+    }
+
     setWeeklyPlan(suggestedPlan);
     setIsWeeklyShoppingCompleted(false);
     try {
       localStorage.setItem('mealwise_weekly_plan', JSON.stringify(suggestedPlan));
       localStorage.removeItem('mealwise_weekly_shopping_completed');
+      localStorage.removeItem('mealwise_deleted_grocery_items');
     } catch (e) {
       console.error('Failed to save autoFill weekly plan to localStorage', e);
     }
@@ -2476,6 +2597,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       localStorage.setItem('mealwise_weekly_plan', JSON.stringify(emptyPlan));
       localStorage.removeItem('mealwise_weekly_shopping_completed');
+      localStorage.removeItem('mealwise_deleted_grocery_items');
     } catch (e) {
       console.error('Failed to clear mealwise_weekly_plan in localStorage', e);
     }
@@ -2489,6 +2611,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       localStorage.setItem('mealwise_weekly_plan', JSON.stringify(defaults));
       localStorage.removeItem('mealwise_weekly_shopping_completed');
+      localStorage.removeItem('mealwise_deleted_grocery_items');
     } catch (e) {
       console.error('Failed to reset mealwise_weekly_plan in localStorage', e);
     }
@@ -2917,6 +3040,10 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setShowOnboarding: setShowOnboardingSafe,
         completeOnboarding,
         resetOnboarding,
+        showWelcomeModal,
+        setShowWelcomeModal,
+        openWelcomeModal,
+        completeWelcomeModal,
         isTutorialOpen,
         setIsTutorialOpen,
         startTutorial,
@@ -3080,6 +3207,10 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     setShowOnboarding: () => {},
     completeOnboarding: () => {},
     resetOnboarding: () => {},
+    showWelcomeModal: false,
+    setShowWelcomeModal: () => {},
+    openWelcomeModal: () => {},
+    completeWelcomeModal: () => {},
     isTutorialOpen: false,
     setIsTutorialOpen: () => {},
     startTutorial: () => {},

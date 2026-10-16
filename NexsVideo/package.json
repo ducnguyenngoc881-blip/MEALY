@@ -1,0 +1,43 @@
+{
+  "name": "NexsVideo",
+  "version": "1.0.0",
+  "description": "My Remotion video",
+  "repository": {},
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "@remotion/gif": "^4.0.534",
+    "@remotion/media-utils": "^4.0.534",
+    "@remotion/motion-blur": "^4.0.534",
+    "@remotion/paths": "^4.0.534",
+    "@remotion/shapes": "^4.0.534",
+    "@remotion/transitions": "^4.0.534",
+    "google-tts-api": "^2.0.2",
+    "lucide-react": "^1.55.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.534",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.39.5",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev": "remotion studio",
+    "studio": "remotion studio",
+    "build": "remotion bundle",
+    "render": "remotion render src/index.ts Group1 out/video.mp4 --codec h264 --crf 18",
+    "render:fast": "remotion render src/index.ts Group1 out/fast_preview.mp4 --codec h264 --crf 24 --concurrency 4",
+    "render:pro": "remotion render src/index.ts Group1 out/master.mp4 --codec h264 --crf 16",
+    "render:transparent": "remotion render src/index.ts Group1 out/transparent.mov --codec prores --prores-profile 4444",
+    "verify": "node scripts/verify-frames.mjs",
+    "tts": "node generate_tts.js",
+    "upgrade": "remotion upgrade",
+    "lint": "eslint src && tsc"
+  }
+}

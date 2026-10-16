@@ -37,6 +37,8 @@ import './unit/groceryAggregationConsolidated.test';
 import './unit/partyCalendar.test';
 import './unit/interactiveTutorial.test';
 import './unit/weekdayLunchRoutine.test';
+import './unit/moodboardAndDesignLanguage.test';
+import './unit/welcomeOnboarding.test';
 
 // 2. Comprehensive 1000+ Scenario Matrices (Screens 1 to 9)
 import './unit/scenarioMatrixScreens1to3.test';

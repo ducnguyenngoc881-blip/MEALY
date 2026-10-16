@@ -12,6 +12,7 @@ import {
   LogIn
 } from 'lucide-react';
 import { RiceBowlNavIcon } from './icons/NavIcons';
+import { MealWiseLogoMark } from './icons/MealWiseLogo';
 import { ActiveTab } from '../types';
 
 export const Navbar: React.FC = () => {
@@ -64,7 +65,7 @@ export const Navbar: React.FC = () => {
     <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 dark:bg-[#12161F]/90 backdrop-blur-xl border-b border-[#E2E8F0]/70 dark:border-[#2D3748]/70 shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
       <div className="h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
         
-        {/* Left: Brand Logo & Title */}
+        {/* Left: Brand Logo & Wordmark */}
         <button
           type="button"
           onClick={() => {
@@ -74,21 +75,16 @@ export const Navbar: React.FC = () => {
             }
             setActiveTab('meal-sets');
           }} 
-          className="flex items-center gap-1.5 sm:gap-2 cursor-pointer group shrink-0 text-left focus:outline-none"
-          title="Trang chủ: Mâm Cơm Việt"
+          className="flex items-center gap-2 cursor-pointer group shrink-0 text-left focus:outline-none"
+          title="MealWise • Mâm Cơm Việt — Về trang Hôm Nay"
           aria-label="MealWise - Về trang Hôm Nay"
         >
-          <div className="w-8 h-8 rounded-xl bg-blue-600 text-white border border-blue-500 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs">
-            <RiceBowlNavIcon active={true} className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-stone-200 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs">
+            <RiceBowlNavIcon className="w-4 h-4 text-stone-100 dark:text-stone-900" active={true} />
           </div>
-          <div className="leading-tight">
-            <span className="text-sm font-black text-stone-900 dark:text-white tracking-tight block whitespace-nowrap">
-              MealWise
-            </span>
-            <span className="text-[9px] text-stone-500 dark:text-stone-400 font-extrabold block -mt-0.5 whitespace-nowrap tracking-wide uppercase">
-              Mâm Cơm Việt
-            </span>
-          </div>
+          <span className="text-[15px] font-black text-stone-900 dark:text-white tracking-tight whitespace-nowrap">
+            MealWise
+          </span>
         </button>
 
         {/* Center: Active Screen Badge Pill (hidden on clean mobile feed) */}
@@ -116,21 +112,23 @@ export const Navbar: React.FC = () => {
           )}
           {/* Authentication & Profile Control */}
           {!isRegistered ? (
-            <button
-              type="button"
-              onClick={() => openAuthModal('register')}
-              className="group relative flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white border border-blue-500/80 shadow-sm hover:shadow active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0"
-              title="Đăng ký hoặc đăng nhập tài khoản MealWise"
-              aria-label="Đăng ký hoặc đăng nhập tài khoản"
-            >
-              <div className="w-6 h-6 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center shadow-2xs shrink-0 group-hover:rotate-12 transition-transform duration-200">
-                <UserPlus className="w-3 h-3 stroke-[2.5]" />
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-xs font-black tracking-tight whitespace-nowrap">Đăng Nhập</span>
-                <span className="text-[10px] font-bold text-amber-300 dark:text-amber-700 hidden min-[360px]:inline">/ Đăng Ký</span>
-              </div>
-            </button>
+            activeTab !== 'account' ? (
+              <button
+                type="button"
+                onClick={() => openAuthModal('register')}
+                className="group relative flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white border border-blue-500/80 shadow-sm hover:shadow active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0"
+                title="Đăng ký hoặc đăng nhập tài khoản MealWise"
+                aria-label="Đăng ký hoặc đăng nhập tài khoản"
+              >
+                <div className="w-6 h-6 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center shadow-2xs shrink-0 group-hover:rotate-12 transition-transform duration-200">
+                  <UserPlus className="w-3 h-3 stroke-[2.5]" />
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs font-black tracking-tight whitespace-nowrap">Đăng Nhập</span>
+                  <span className="text-[10px] font-bold text-amber-300 dark:text-amber-700 hidden min-[360px]:inline">/ Đăng Ký</span>
+                </div>
+              </button>
+            ) : null
           ) : user?.role === 'admin' ? (
             <button
               type="button"

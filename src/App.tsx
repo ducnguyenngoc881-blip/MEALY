@@ -3,6 +3,7 @@ import { MealWiseProvider, useMealWise } from './context/MealWiseContext';
 import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
 import { OnboardingModal } from './components/OnboardingModal';
+import { WelcomeOnboardingModal } from './components/WelcomeOnboardingModal';
 import { MealSetExplorer } from './components/MealSetExplorer';
 import { WeeklyBoard } from './components/WeeklyBoard';
 import { GroceryList } from './components/GroceryList';
@@ -15,6 +16,7 @@ import { FridgeView } from './components/FridgeView';
 import { AuthModal } from './components/AuthModal';
 import { DownloadAppModal } from './components/DownloadAppModal';
 import { InteractiveTutorialModal } from './components/InteractiveTutorialModal';
+import { ShareRecipeSocialModal } from './components/ShareRecipeSocialModal';
 
 // Code-split secondary views and heavy interactive modals for ultra-fast initial page load
 const CateringPartyPlanner = lazy(() => import('./components/CateringPartyPlanner').then(m => ({ default: m.CateringPartyPlanner })));
@@ -61,9 +63,11 @@ const GlobalModals: React.FC = () => {
   } = useMealWise();
   return (
     <>
+      <WelcomeOnboardingModal />
       <OnboardingModal />
       <MealSetDetailModal />
       <RecipeDetailModal />
+      <ShareRecipeSocialModal />
       <Suspense fallback={null}>
         {isApexModalOpen && <FastMealApexModal isOpen={isApexModalOpen} onClose={closeApexModal} />}
         {isMinigameHubOpen && <MinigameHubModal isOpen={isMinigameHubOpen} onClose={closeMinigameHub} />}
@@ -80,7 +84,11 @@ const GlobalModals: React.FC = () => {
 };
 
 const AppShell: React.FC = () => {
-  const { activeTab, user } = useMealWise();
+  const mealWise = useMealWise();
+  if (typeof window !== 'undefined') {
+    (window as any).__mealwise = mealWise;
+  }
+  const { activeTab, user } = mealWise;
   const isAdminView = activeTab === 'admin' && user?.role === 'admin';
 
   // DEDICATED DESKTOP ADMIN WEB PORTAL (STANDALONE DESKTOP WEBSITE)

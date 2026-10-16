@@ -110,7 +110,7 @@ export function canonicalizeIngredientName(rawName: string): string {
   if (lower.includes('bột ngọt') || lower.includes('mì chính')) return 'Bột ngọt';
 
   // 2. Pasta / Spaghetti / Noodles (e.g., Mì Ý sợi dài Spaghetti, Spaghetti lúa mì cứng -> unified)
-  if (lower.includes('spaghetti') || lower.includes('mì ý')) return 'Mì Ý';
+  if (lower.includes('spaghetti') || lower.includes('mì ý')) return 'Mì Ý (Spaghetti)';
   if (lower.includes('penne') || lower.includes('nui') || lower.includes('pasta') || lower.includes('fusilli')) return 'Nui';
   if (lower.includes('mì trứng')) return 'Mì trứng';
   if (lower.includes('bún tươi') || lower === 'bún') return 'Bún tươi';

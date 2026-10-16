@@ -298,6 +298,7 @@ export function inferItemCompartment(item: PantryItem): 'freezer' | 'fridge' | '
     nameLower.includes('kem hộp') ||
     nameLower.includes('kem lạnh') ||
     nameLower.includes('kem đá') ||
+    nameLower.startsWith('kem ') ||
     nameLower.includes('chả giò đông') ||
     nameLower.includes('viên lẩu') ||
     nameLower.includes('cá viên') ||
@@ -885,7 +886,7 @@ export const FridgeView: React.FC = () => {
           </div>
 
           {/* Action Buttons: Đối Chiếu Đi Chợ and Dọn Sạch */}
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 ml-auto">
             <button
               type="button"
               onClick={() => setActiveTab('grocery')}
@@ -2220,8 +2221,9 @@ export const FridgeView: React.FC = () => {
                         </div>
 
                         <div className="min-w-0 flex-1 space-y-1">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#1D4ED8] dark:text-blue-300 text-[10px] font-black">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 w-full sm:w-auto">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#1D4ED8] dark:text-blue-300 text-[10px] font-black">
                               {categoryLabel}
                             </span>
                             {synergyCount > 0 && (
@@ -2230,6 +2232,7 @@ export const FridgeView: React.FC = () => {
                               </span>
                             )}
                           </div>
+                        </div>
 
                           <h4 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#1D4ED8] dark:group-hover:text-blue-400 transition-colors leading-snug">
                             {cleanDishTitle}

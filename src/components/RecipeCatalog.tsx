@@ -28,11 +28,13 @@ import {
   Square,
   Play,
   Pause,
-  Volume2
+  Volume2,
+  Share2
 } from 'lucide-react';
 import { Recipe, Ingredient, MealCategory, Region, MealSlot } from '../types';
 import { matchesRecipeSearch, matchesSearchTerm, normalizeSearchString } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
+import { shareCustomRecipe } from './RecipeDetailModal';
 
 const BASE_VIETNAMESE_INGREDIENTS: Ingredient[] = [
   // Rau củ & Rau thơm
@@ -151,7 +153,7 @@ const BASE_VIETNAMESE_INGREDIENTS: Ingredient[] = [
 ];
 
 export const RecipeCatalog: React.FC = () => {
-  const { recipes, customRecipes, addCustomRecipe, deleteCustomRecipe, setSelectedRecipe, addRecipeToSlot, weeklyPlan, viewMode, openConfirmModal } = useMealWise();
+  const { recipes, customRecipes, addCustomRecipe, deleteCustomRecipe, setSelectedRecipe, addRecipeToSlot, weeklyPlan, viewMode, openConfirmModal, isRegistered, openAuthModal, showToast, user } = useMealWise();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
@@ -304,9 +306,44 @@ export const RecipeCatalog: React.FC = () => {
     if (!file) return;
     const reader = new FileReader();
     reader.onloadend = () => {
-      if (typeof reader.result === 'string') {
-        setNewImageUrl(reader.result);
-      }
+      if (typeof reader.result !== 'string') return;
+      const rawDataUrl = reader.result;
+      // Client-side HTML5 Canvas smart compression (max 1080px, JPEG quality 0.82 -> ~120-180 KB)
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const maxDim = 1080;
+          let targetW = img.width;
+          let targetH = img.height;
+          if (targetW > maxDim || targetH > maxDim) {
+            if (targetW >= targetH) {
+              targetH = Math.round((targetH * maxDim) / targetW);
+              targetW = maxDim;
+            } else {
+              targetW = Math.round((targetW * maxDim) / targetH);
+              targetH = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = targetW;
+          canvas.height = targetH;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, targetW, targetH);
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+            setNewImageUrl(compressedDataUrl);
+            showToast('📸 Đã tối ưu ảnh món ăn sắc nét & nhẹ máy!', 'info');
+            return;
+          }
+        } catch {
+          // Fallback to rawDataUrl if canvas fails
+        }
+        setNewImageUrl(rawDataUrl);
+      };
+      img.onerror = () => {
+        setNewImageUrl(rawDataUrl);
+      };
+      img.src = rawDataUrl;
     };
     reader.readAsDataURL(file);
   };
@@ -354,6 +391,7 @@ export const RecipeCatalog: React.FC = () => {
           ],
       tags: ['Món Của Tôi', newAuthorNote.trim()].filter(Boolean),
       chefTip: newSecretTips.trim() || undefined,
+      authorName: user?.name || 'Đầu Bếp Tại Gia',
       authorNote: newAuthorNote.trim() || (newAuthorVoiceUrl ? 'Lời nhắn từ người nấu' : undefined),
       authorVoiceUrl: newAuthorVoiceUrl || undefined,
       authorVoiceDurationSec: newAuthorVoiceDurationSec || undefined,
@@ -594,6 +632,11 @@ export const RecipeCatalog: React.FC = () => {
   const hasActiveFilters = searchQuery.trim() !== '' || selectedCategory !== 'all' || selectedRegion !== 'all';
 
   const openCreateScreen = () => {
+    if (!isRegistered) {
+      showToast('🔒 Sổ Bếp Gia Đình & Ghi Âm Lời Dặn chỉ dành cho Thành Viên! Vui lòng đăng ký tài khoản miễn phí để lưu giữ món ngon.', 'warning');
+      openAuthModal('register');
+      return;
+    }
     stopAllVoicePlayback();
     setEditingRecipeId(null);
     setCreateStep(1);
@@ -617,6 +660,11 @@ export const RecipeCatalog: React.FC = () => {
   };
 
   const handleEditCustomRecipe = (recipe: Recipe) => {
+    if (!isRegistered) {
+      showToast('🔒 Sổ Bếp Gia Đình & Ghi Âm Lời Dặn chỉ dành cho Thành Viên! Vui lòng đăng ký tài khoản miễn phí.', 'warning');
+      openAuthModal('register');
+      return;
+    }
     stopAllVoicePlayback();
     setEditingRecipeId(recipe.id);
     setCreateStep(1);
@@ -1500,11 +1548,15 @@ export const RecipeCatalog: React.FC = () => {
           <button
             type="button"
             onClick={openCreateScreen}
-            className="px-4 py-2.5 rounded-2xl bg-[#1D4ED8] hover:bg-blue-800 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shrink-0 shadow-xs transition-all cursor-pointer"
-            title="Thêm công thức món ăn của riêng bạn"
+            className={`px-4 py-2.5 rounded-2xl active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shrink-0 shadow-xs transition-all cursor-pointer ${
+              isRegistered
+                ? 'bg-[#1D4ED8] hover:bg-blue-800'
+                : 'bg-slate-800 hover:bg-slate-900 dark:bg-slate-800 dark:hover:bg-slate-700 border border-amber-400/50'
+            }`}
+            title={isRegistered ? 'Thêm công thức món ăn của riêng bạn' : 'Đăng ký tài khoản miễn phí để mở khóa Sổ Bếp Gia Đình & Ghi Âm Lời Dặn'}
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>Thêm Món Mới</span>
+            <span>{isRegistered ? 'Thêm Món Mới' : 'Thêm Món Mới 🔒'}</span>
           </button>
         </div>
 
@@ -1538,7 +1590,7 @@ export const RecipeCatalog: React.FC = () => {
         <div className="flex flex-wrap gap-1.5">
           {[
             { id: 'all', label: 'Tất Cả Món' },
-            { id: 'mon-cua-toi', label: 'Món Của Tôi ⭐️' },
+            { id: 'mon-cua-toi', label: isRegistered ? 'Món Của Tôi ⭐️' : 'Món Của Tôi 🔒' },
             { id: 'mon-man', label: 'Món Mặn' },
             { id: 'mon-canh', label: 'Món Canh' },
             { id: 'mon-rau', label: 'Món Rau' },
@@ -1613,10 +1665,12 @@ export const RecipeCatalog: React.FC = () => {
             </div>
             <div>
               <h3 className="text-base font-black text-slate-900 dark:text-white">
-                Chưa Có Món Nào Trong Sổ Bếp Gia Đình
+                {isRegistered ? 'Chưa Có Món Nào Trong Sổ Bếp Gia Đình' : 'Mở Khóa Sổ Bếp Gia Đình & Ghi Âm Lời Dặn 🔒'}
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Mỗi gia đình đều có những hương vị độc nhất từ bàn tay của mẹ hoặc người thân. Hãy ghi lại công thức để lưu giữ trọn đời và dễ dàng xếp vào thực đơn hàng tuần!
+                {isRegistered
+                  ? 'Mỗi gia đình đều có những hương vị độc nhất từ bàn tay của mẹ hoặc người thân. Hãy ghi lại công thức để lưu giữ trọn đời và dễ dàng xếp vào thực đơn hàng tuần!'
+                  : 'Đăng ký tài khoản miễn phí để tạo công thức gia truyền, thu âm giọng nói dặn dò của mẹ hoặc người thân, và đồng bộ sổ bếp riêng của gia đình bạn trên mọi thiết bị!'}
               </p>
             </div>
             <button
@@ -1625,7 +1679,7 @@ export const RecipeCatalog: React.FC = () => {
               className="px-5 py-2.5 rounded-2xl bg-[#1D4ED8] hover:bg-blue-800 active:scale-95 text-white font-black text-xs shadow-xs transition-all cursor-pointer inline-flex items-center gap-2"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Ghi Lại Món Đầu Tiên</span>
+              <span>{isRegistered ? 'Ghi Lại Món Đầu Tiên' : 'Đăng Ký Mở Khóa Miễn Phí 🔒'}</span>
             </button>
           </div>
         ) : (
@@ -1673,8 +1727,8 @@ export const RecipeCatalog: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-1.5 min-w-0 flex-1">
                     {recipe.isCustom && (
                       <span className="px-2.5 py-0.5 rounded-full bg-amber-500/90 backdrop-blur-md text-slate-950 text-[10px] font-black border border-amber-300 shadow-xs flex items-center gap-1 shrink-0">
-                        <span>⭐️</span>
-                        <span>Món Bếp Nhà</span>
+                        <span>👨‍🍳</span>
+                        <span className="truncate max-w-[110px]">{recipe.authorName || 'Món Bếp Nhà'}</span>
                       </span>
                     )}
                     <span className="px-2.5 py-0.5 rounded-full bg-slate-950/60 backdrop-blur-md text-white text-[10px] font-bold border border-white/10 shadow-xs shrink-0">
@@ -1692,6 +1746,18 @@ export const RecipeCatalog: React.FC = () => {
                   <div className="flex items-center gap-1.5 shrink-0 pointer-events-auto">
                     {recipe.isCustom && (
                       <>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            shareCustomRecipe(recipe, showToast);
+                          }}
+                          className="w-9 h-9 rounded-2xl bg-slate-950/60 hover:bg-[#1D4ED8] active:scale-90 backdrop-blur-md text-white/90 hover:text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation"
+                          title="Chia Sẻ Món Bếp Nhà"
+                          aria-label={`Chia Sẻ Món: ${recipe.title}`}
+                        >
+                          <Share2 className="w-4 h-4" />
+                        </button>
                         <button
                           type="button"
                           onClick={(e) => {

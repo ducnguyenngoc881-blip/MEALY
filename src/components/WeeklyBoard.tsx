@@ -29,6 +29,7 @@ import { matchesSearchTerm, matchesMealSetSearch, matchesRecipeSearch, isHotpotO
 import { SafeImage } from './SafeImage';
 import { roundToThousand, scaleCost, getDailyBudgetTarget } from '../utils/currency';
 import { estimateRecipeProtein, estimateMealSetProtein, calculateGymProteinTarget } from '../utils/nutritionMath';
+import { decomposeBundledIngredients, normalizeIngredientUnitAndAmount, isCommonPantryStaple, isGroceryItemMatch } from '../utils/ingredientNormalizer';
 
 const DAY_LABELS: { [key: string]: { short: string; full: string } } = {
   mon: { short: 'T2', full: 'Thứ Hai' },
@@ -67,7 +68,9 @@ export const WeeklyBoard: React.FC = () => {
     openConfirmModal,
     isRegistered,
     openAuthModal,
-    isWeeklyShoppingCompleted
+    extraGroceryItems,
+    isWeeklyShoppingCompleted,
+    setIsWeeklyShoppingCompleted
   } = useMealWise();
 
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
@@ -186,25 +189,93 @@ export const WeeklyBoard: React.FC = () => {
   // Calculate overall weekly totals
   const totalWeeklyMeals = weeklyPlan.reduce((sum, day) => sum + getDayMainMealsCount(day), 0);
 
-  const isWeeklyShoppingDone = useMemo(() => {
-    if (totalWeeklyMeals === 0) return false;
-    if (isWeeklyShoppingCompleted) return true;
+  const { isWeeklyShoppingDone, remainingGroceryCount } = useMemo(() => {
+    if (totalWeeklyMeals === 0) return { isWeeklyShoppingDone: false, remainingGroceryCount: 0 };
+
+    let deletedList: string[] = [];
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        if (localStorage.getItem('mealwise_weekly_shopping_completed') === 'true') return true;
         const deletedRaw = localStorage.getItem('mealwise_deleted_grocery_items');
         if (deletedRaw) {
-          const deleted = JSON.parse(deletedRaw);
-          if (Array.isArray(deleted) && deleted.length > 0) {
-            return true;
-          }
+          const parsed = JSON.parse(deletedRaw);
+          if (Array.isArray(parsed)) deletedList = parsed;
         }
       }
     } catch {
       // Fallback
     }
-    return false;
-  }, [totalWeeklyMeals, isWeeklyShoppingCompleted, generationCount]);
+
+    const isDeleted = (cleanName: string, rawNames: string[] = []) => {
+      if (deletedList.length === 0) return false;
+      const candidates = [cleanName, ...rawNames].filter(Boolean);
+      return deletedList.some(del => candidates.some(cand => isGroceryItemMatch(del, cand)));
+    };
+
+    const itemsMap: Record<string, { cleanName: string; rawNames: string[] }> = {};
+    const collectIng = (rawName: string, rawAmount: number | string, rawUnit: string, rawCat: any, isExtra = false) => {
+      if (!isExtra && isCommonPantryStaple(rawName, rawCat)) return;
+      const numAmt = typeof rawAmount === 'number' ? rawAmount : (parseFloat(String(rawAmount)) || 1);
+      const subItems = decomposeBundledIngredients(rawName, numAmt, rawUnit, rawCat, 0);
+      subItems.forEach(ing => {
+        const norm = normalizeIngredientUnitAndAmount(ing.name, ing.amount, ing.unit);
+        const key = norm.cleanName.toLowerCase();
+        if (!itemsMap[key]) {
+          itemsMap[key] = { cleanName: norm.cleanName, rawNames: isExtra ? [rawName] : [] };
+        } else if (isExtra && !itemsMap[key].rawNames.includes(rawName)) {
+          itemsMap[key].rawNames.push(rawName);
+        }
+      });
+    };
+
+    weeklyPlan.forEach(day => {
+      if (!day || !day.meals) return;
+      const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(day.dayId);
+      const isSkipLunch = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
+      const isBantru = Boolean(day.skippedSlots?.lunch ?? (isSkipLunch && isWkday));
+      (Object.entries(day.meals) as [MealSlot, any][]).forEach(([slot, meal]) => {
+        if (!meal) return;
+        if (slot === 'lunch' && isBantru) return;
+        if (day.skippedSlots?.[slot]) return;
+        if ('mainDish' in meal) {
+          const set = meal as VietnameseMealSet;
+          [set.mainDish, set.soupDish, set.sideDish].filter(Boolean).forEach(dish => {
+            (dish!.ingredients || []).forEach(ing => collectIng(ing.name, ing.amount, ing.unit, ing.category, false));
+          });
+        } else {
+          const rec = meal as Recipe;
+          (rec.ingredients || []).forEach(ing => collectIng(ing.name, ing.amount, ing.unit, ing.category, false));
+        }
+      });
+    });
+
+    if (Array.isArray(extraGroceryItems)) {
+      extraGroceryItems.forEach(item => collectIng(item.name, item.amount, item.unit, item.category, true));
+    }
+
+    const allEntries = Object.values(itemsMap);
+    const unboughtEntries = allEntries.filter(entry => !isDeleted(entry.cleanName, entry.rawNames));
+    const unboughtCount = unboughtEntries.length;
+
+    // If there are still unbought items in the grocery list, shopping is NOT done!
+    if (allEntries.length > 0 && unboughtCount > 0) {
+      return { isWeeklyShoppingDone: false, remainingGroceryCount: unboughtCount };
+    }
+
+    if (allEntries.length > 0 && unboughtCount === 0) {
+      return { isWeeklyShoppingDone: true, remainingGroceryCount: 0 };
+    }
+
+    return { isWeeklyShoppingDone: Boolean(isWeeklyShoppingCompleted), remainingGroceryCount: 0 };
+  }, [weeklyPlan, extraGroceryItems, onboardingData?.weekdayLunchRoutine, totalWeeklyMeals, isWeeklyShoppingCompleted, generationCount]);
+
+  useEffect(() => {
+    if (remainingGroceryCount > 0 && isWeeklyShoppingCompleted) {
+      setIsWeeklyShoppingCompleted(false);
+      try {
+        localStorage.removeItem('mealwise_weekly_shopping_completed');
+      } catch {}
+    }
+  }, [remainingGroceryCount, isWeeklyShoppingCompleted, setIsWeeklyShoppingCompleted]);
 
   const isWeekendDay = (): boolean => {
     const day = new Date().getDay(); // 0 = Chủ Nhật, 6 = Thứ Bảy
@@ -699,7 +770,7 @@ export const WeeklyBoard: React.FC = () => {
                     title="Thực đơn đang khóa an toàn để bảo vệ nguyên liệu đã mua trong tủ lạnh."
                   >
                     <Lock className="w-2.5 h-2.5 text-amber-600 dark:text-amber-400" />
-                    <span>Khóa An Toàn</span>
+                    <span>Khóa An Toàn Tuần Này</span>
                   </span>
                 ) : isWeeklyShoppingDone && isWeekendDay() ? (
                   <span
@@ -707,7 +778,7 @@ export const WeeklyBoard: React.FC = () => {
                     title="Cuối tuần: bạn có thể tự do lên thực đơn mới cho tuần sau."
                   >
                     <Sparkles className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
-                    <span>Mở Đổi Tuần Mới</span>
+                    <span>Cuối Tuần: Mở Đổi Thực Đơn</span>
                   </span>
                 ) : null}
               </div>

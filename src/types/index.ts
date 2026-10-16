@@ -36,6 +36,7 @@ export interface Recipe {
   instructions: CookingInstruction[];
   tags: string[];
   chefTip?: string;
+  authorName?: string;
   authorNote?: string;
   authorVoiceUrl?: string;
   authorVoiceDurationSec?: number;

@@ -12,3 +12,8 @@ test-output.txt
 Thumbs.db
 .DS_Store
 .github/
+*.ipa
+*.aab
+releases/
+NexsVideo/out/
+screenshots/

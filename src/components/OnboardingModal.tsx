@@ -23,6 +23,7 @@ export const OnboardingModal: React.FC = () => {
     weeklyPlan, 
     isRegistered,
     setIsTutorialOpen,
+    openWelcomeModal,
     user 
   } = useMealWise();
   const [step, setStep] = useState<number>(1);
@@ -108,31 +109,42 @@ export const OnboardingModal: React.FC = () => {
             </div>
           </div>
 
-          {/* High-contrast "Bỏ qua" button (WCAG AA >= 4.5:1) */}
-          <button
-            onClick={() => {
-              setShowOnboarding(false);
-              try {
-                // If user was already onboarded and was just editing/reviewing config, never launch tutorial
-                if (onboardingData?.completed || user?.onboardingCompleted) {
-                  return;
-                }
-                let emailLower = user?.email?.toLowerCase().trim();
-                const userTutorialKey = emailLower ? `mealwise_tutorial_completed_${emailLower}` : null;
-                const isUserTutorialDone = userTutorialKey
-                  ? localStorage.getItem(userTutorialKey) === 'true'
-                  : localStorage.getItem('mealwise_tutorial_completed') === 'true';
-                if (!isUserTutorialDone) {
-                  setTimeout(() => {
-                    setIsTutorialOpen(true);
-                  }, 500);
-                }
-              } catch {}
-            }}
-            className="text-xs font-bold text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 transition-colors border border-stone-200 dark:border-stone-700"
-          >
-            Bỏ qua
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={openWelcomeModal}
+              title="Giới Thiệu MealWise"
+              className="text-xs font-bold text-[#1D4ED8] dark:text-blue-400 px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 transition-colors border border-blue-200/70 dark:border-blue-800/60 cursor-pointer"
+            >
+              Giới Thiệu MealWise
+            </button>
+
+            {/* High-contrast "Bỏ qua" button (WCAG AA >= 4.5:1) */}
+            <button
+              onClick={() => {
+                setShowOnboarding(false);
+                try {
+                  // If user was already onboarded and was just editing/reviewing config, never launch tutorial
+                  if (onboardingData?.completed || user?.onboardingCompleted) {
+                    return;
+                  }
+                  let emailLower = user?.email?.toLowerCase().trim();
+                  const userTutorialKey = emailLower ? `mealwise_tutorial_completed_${emailLower}` : null;
+                  const isUserTutorialDone = userTutorialKey
+                    ? localStorage.getItem(userTutorialKey) === 'true'
+                    : localStorage.getItem('mealwise_tutorial_completed') === 'true';
+                  if (!isUserTutorialDone) {
+                    setTimeout(() => {
+                      setIsTutorialOpen(true);
+                    }, 500);
+                  }
+                } catch {}
+              }}
+              className="text-xs font-bold text-stone-700 hover:text-stone-900 dark:text-stone-200 dark:hover:text-white px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 transition-colors border border-stone-200 dark:border-stone-700"
+            >
+              Bỏ qua
+            </button>
+          </div>
         </div>
 
         {/* Scrollable Question Content (flex-1 overflow-y-auto) */}

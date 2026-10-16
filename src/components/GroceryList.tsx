@@ -1018,8 +1018,7 @@ export const GroceryList: React.FC = () => {
   });
 
   // Effective list: if connected to a collaborative room, use room items (preserves items for User B)
-  // Strictly locked for unregistered guest accounts
-  const isCollabActive = Boolean((isRegistered || isWebGuestViewer) && collabRoom?.roomId);
+  const isCollabActive = Boolean(collabRoom?.roomId);
   const effectiveList: ProcessedGroceryItem[] = (isCollabActive && collabRoom?.items && collabRoom.items.length > 0)
     ? collabRoom.items
         .filter(it => !isItemDeleted(it.name, (it as any).extraOriginalNames))
@@ -1091,16 +1090,23 @@ export const GroceryList: React.FC = () => {
   ).length;
 
   const isWeeklyShoppingDone = Boolean(
-    isWeeklyShoppingCompleted ||
-    (totalWeeklyMeals > 0 && totalPlanIngredientsCount > 0 && planBoughtCount === totalPlanIngredientsCount) ||
-    (totalWeeklyMeals > 0 && deletedItemNames.length > 0 && allList.length === 0)
+    totalWeeklyMeals > 0 &&
+    allList.length === 0 &&
+    (isWeeklyShoppingCompleted ||
+     (totalPlanIngredientsCount > 0 && planBoughtCount === totalPlanIngredientsCount) ||
+     deletedItemNames.length > 0)
   );
 
   useEffect(() => {
     if (isWeeklyShoppingDone && !isWeeklyShoppingCompleted) {
       setIsWeeklyShoppingCompleted(true);
+    } else if (!isWeeklyShoppingDone && isWeeklyShoppingCompleted && allList.length > 0) {
+      setIsWeeklyShoppingCompleted(false);
+      try {
+        localStorage.removeItem('mealwise_weekly_shopping_completed');
+      } catch {}
     }
-  }, [isWeeklyShoppingDone, isWeeklyShoppingCompleted, setIsWeeklyShoppingCompleted]);
+  }, [isWeeklyShoppingDone, isWeeklyShoppingCompleted, allList.length, setIsWeeklyShoppingCompleted]);
 
   // Filter by grocery aisle AND collaborative assignment
   const displayedList = effectiveList.filter(item => {
@@ -1360,10 +1366,15 @@ export const GroceryList: React.FC = () => {
       return next;
     });
 
+    const isAllItemsBought = checkedItems.length >= effectiveList.length;
     setIsStockFridgeModalOpen(false);
-    setIsWeeklyShoppingCompleted(true);
+    setIsWeeklyShoppingCompleted(isAllItemsBought);
     try {
-      localStorage.setItem('mealwise_weekly_shopping_completed', 'true');
+      if (isAllItemsBought) {
+        localStorage.setItem('mealwise_weekly_shopping_completed', 'true');
+      } else {
+        localStorage.removeItem('mealwise_weekly_shopping_completed');
+      }
     } catch {}
     showToast(`✓ Đã cất ${checkedItems.length} món vào Tủ Lạnh Thông Minh!`, 'success');
     setActiveTab('pantry');
@@ -1571,70 +1582,6 @@ export const GroceryList: React.FC = () => {
       </div>
     );
   };
-
-  // Guest Account Feature Gating: Lock grocery shopping entirely for unregistered guests
-  if (!isRegistered && !isWebGuestViewer) {
-    return (
-      <div className="space-y-4 max-w-lg mx-auto animate-in fade-in duration-300">
-        <div className="p-6 rounded-3xl bg-white dark:bg-[#1A202C] border border-[#E2E8F0] dark:border-[#2D3748] text-center shadow-xs relative overflow-hidden">
-          <div className="w-16 h-16 mx-auto mb-3.5 rounded-3xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
-            <Lock className="w-8 h-8" />
-          </div>
-
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/50 text-[11px] font-black uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5" /> Tính Năng Thành Viên
-          </span>
-
-          <h2 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white tracking-tight mb-2">
-            Danh Sách Đi Chợ Tự Động
-          </h2>
-
-          <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-md mx-auto leading-relaxed mb-6">
-            Đăng ký tài khoản miễn phí để mở khóa tính năng tự động cộng dồn nguyên liệu cả tuần theo khẩu phần, phân loại theo 5 quầy siêu thị, ước tính chi phí và chia sẻ giỏ hàng mua chung thời gian thực.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-left mb-6">
-            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
-              <span className="text-lg block mb-1">🛒</span>
-              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Tự Gom Nguyên Liệu</h4>
-              <p className="text-[11px] text-stone-500 dark:text-stone-400">Tự cộng dồn từng gram thịt, mớ rau từ thực đơn tuần, tránh lãng phí.</p>
-            </div>
-
-            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
-              <span className="text-lg block mb-1">🏪</span>
-              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Phân Quầy & Báo Giá</h4>
-              <p className="text-[11px] text-stone-500 dark:text-stone-400">Phân 5 quầy siêu thị kèm so sánh giá WinMart, chợ dân sinh.</p>
-            </div>
-
-            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220]">
-              <span className="text-lg block mb-1">👥</span>
-              <h4 className="text-xs font-black text-stone-900 dark:text-white mb-0.5">Đi Chợ Chung Live</h4>
-              <p className="text-[11px] text-stone-500 dark:text-stone-400">Mua sắm cùng gia đình với mã phòng real-time, chia người mua món.</p>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <button
-              type="button"
-              onClick={() => openAuthModal('register')}
-              className="w-full py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-sm shadow-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>Đăng Ký Miễn Phí Để Mở Khóa</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => openAuthModal('login')}
-              className="w-full py-2.5 px-4 rounded-xl text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-200 font-bold text-xs transition-colors cursor-pointer"
-            >
-              Đã có tài khoản? Đăng nhập ngay
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
@@ -2820,16 +2767,11 @@ export const GroceryList: React.FC = () => {
 
         {/* Collaborative Share & Zalo Export Buttons Grid */}
         <div className="grid grid-cols-2 gap-2">
-          {/* Button 1: Collaborative Live Share (Locked for Guests) */}
+          {/* Button 1: Collaborative Live Share (Unlocked for all users) */}
           <button
             type="button"
             data-tutorial-target="collab-lobby-btn"
             onClick={async () => {
-              if (!isRegistered) {
-                showToast('🔒 Tính năng Đi Chợ Chung thời gian thực chỉ dành cho Thành Viên! Vui lòng đăng ký tài khoản miễn phí.', 'warning');
-                openAuthModal('register');
-                return;
-              }
               if (collabRoom) {
                 const nextState = !isLobbyOpen;
                 setIsLobbyOpen(nextState);
@@ -2846,37 +2788,21 @@ export const GroceryList: React.FC = () => {
                 }, 50);
               }
             }}
-            className={
-              !isRegistered
-                ? "py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/80 shadow-xs"
-                : "py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-md font-black"
-            }
-            title={
-              !isRegistered
-                ? 'Tính năng đi chợ chung thời gian thực dành cho thành viên (Bấm để đăng ký mở khóa)'
-                : collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng mua chung'
-            }
+            className="py-2.5 px-2 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+            title={collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng đi chợ chung'}
+            aria-label="Chia Sẻ Mua Chung"
           >
-            {!isRegistered ? (
-              <>
-                <CollabBasketIcon className="w-4 h-4 shrink-0 text-stone-500 dark:text-stone-400" />
-                <span className="truncate font-bold">Đi Chợ Chung 🔒</span>
-              </>
-            ) : (
-              <>
-                <Users className="w-4 h-4 shrink-0" />
-                <span className="truncate">
-                  {collabRoom
-                    ? (isLobbyOpen ? 'Đóng Sảnh' : 'Mua Chung')
-                    : 'Chia Sẻ Mua Chung'}
-                </span>
-                {collabRoom && (
-                  <span className="relative flex h-2 w-2 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-                  </span>
-                )}
-              </>
+            <Users className="w-4 h-4 shrink-0" />
+            <span className="truncate">
+              {collabRoom
+                ? (isLobbyOpen ? 'Đóng Sảnh' : 'Mua Chung')
+                : 'Đi Chợ Chung'}
+            </span>
+            {collabRoom && (
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
             )}
           </button>
 

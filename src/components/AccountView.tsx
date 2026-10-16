@@ -220,7 +220,8 @@ export const AccountView: React.FC = () => {
     guestSession,
     setActiveTab,
     openMinigameHub,
-    startTutorial
+    startTutorial,
+    openWelcomeModal
   } = useMealWise();
   const [isAdSequenceOpen, setIsAdSequenceOpen] = useState(false);
   const isLight = theme === 'light';
@@ -460,20 +461,20 @@ export const AccountView: React.FC = () => {
             <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col justify-between gap-2">
               <div>
                 <h3 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1">
-                  <ShoppingCart className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Đi Chợ Thông Minh</span>
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                  <span>Sổ Bếp & Ghi Âm</span>
                 </h3>
                 <p className="text-[10.5px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">
-                  Gom nguyên liệu 7 ngày, phân 5 quầy & mua chung.
+                  Lưu công thức gia truyền & ghi âm lời dặn của mẹ.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => openAuthModal('register')}
-                title="Mở Khóa Đi Chợ"
-                className="w-full py-1.5 px-2 rounded-lg bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-black text-[10.5px] flex items-center justify-center gap-1 cursor-pointer"
+                title="Mở Khóa Sổ Bếp Gia Đình"
+                className="w-full py-1.5 px-2 rounded-lg bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 border border-blue-500/30 font-black text-[10.5px] flex items-center justify-center gap-1 cursor-pointer"
               >
-                <span>Mở Khóa Đi Chợ</span>
+                <span>Mở Khóa Sổ Bếp</span>
                 <ChevronRight className="w-3 h-3" />
               </button>
             </div>
@@ -500,22 +501,15 @@ export const AccountView: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 pt-0.5">
+          <div className="pt-1 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"
-              onClick={() => openAuthModal('register')}
-              title="Đăng Ký Tài Khoản Miễn Phí (Mở Khóa Toàn Bộ)"
-              className="flex-1 py-2.5 px-4 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+              onClick={openWelcomeModal}
+              title="Giới Thiệu Ứng Dụng"
+              className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Đăng Ký Miễn Phí</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => openAuthModal('login')}
-              className="py-2 px-3 text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors cursor-pointer"
-            >
-              Đăng nhập
+              <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
+              <span>Giới Thiệu Ứng Dụng</span>
             </button>
           </div>
         </div>
@@ -620,6 +614,16 @@ export const AccountView: React.FC = () => {
               <span className="truncate">Hướng Dẫn</span>
             </button>
           </div>
+
+          <button
+            type="button"
+            onClick={openWelcomeModal}
+            title="Giới Thiệu Ứng Dụng"
+            className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
+            <span>Giới Thiệu Ứng Dụng</span>
+          </button>
         </div>
       )}
 
