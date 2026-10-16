@@ -1620,48 +1620,29 @@ export const GroceryList: React.FC = () => {
 
       {/* Header Banner */}
       <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[11px] font-bold shrink-0">
-            <ShoppingCart className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400" />
-            <span>Tự Động Gom Nguyên Liệu</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {/* Smart Fridge & Leftovers Button */}
-            <button
-              type="button"
-              onClick={() => {
-                if (isWebGuestViewer) {
-                  openDownloadAppModal('Tủ Lạnh & Gợi Ý Món Vét Tủ');
-                  return;
-                }
-                setActiveTab('pantry');
-              }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
-              title="Xem tủ lạnh, kiểm tra đồ thừa và nguyên liệu sẵn có"
-            >
-              <span className="text-xs">🧊</span>
-              <span>Tủ Lạnh & Đồ Thừa</span>
-              {isWebGuestViewer && <span className="text-[9px] text-amber-600 dark:text-amber-400 font-black">🔒 App</span>}
-              {!isWebGuestViewer && (
-                <span className="px-1.5 py-0.2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-[10px] font-black">
-                  {pantryItems.length}
-                </span>
-              )}
-            </button>
-
-            {/* Online Price Simulation Button */}
-            <button
-              type="button"
-              onClick={() => setShowPriceSimulation(prev => !prev)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0"
-              title="Mô phỏng và so sánh giỏ hàng online giữa các chuỗi siêu thị"
-            >
-              <TrendingUp className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
-              <span>Mô Phỏng Giá Online</span>
-              {showPriceSimulation ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-            </button>
-          </div>
+        <div className="flex items-center justify-between gap-2">
+          {/* Smart Fridge & Leftovers Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (isWebGuestViewer) {
+                openDownloadAppModal('Tủ Lạnh & Gợi Ý Món Vét Tủ');
+                return;
+              }
+              setActiveTab('pantry');
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-[11px] font-bold transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
+            title="Xem tủ lạnh, kiểm tra đồ thừa và nguyên liệu sẵn có"
+          >
+            <span className="text-xs">🧊</span>
+            <span>Tủ Lạnh & Đồ Thừa</span>
+            {isWebGuestViewer && <span className="text-[9px] text-amber-600 dark:text-amber-400 font-black">🔒 App</span>}
+            {!isWebGuestViewer && (
+              <span className="px-1.5 py-0.2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-[10px] font-black">
+                {pantryItems.length}
+              </span>
+            )}
+          </button>
         </div>
 
         <div>
