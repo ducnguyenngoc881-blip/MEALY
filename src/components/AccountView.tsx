@@ -159,7 +159,7 @@ export function importMealWiseBackup(jsonContent: string): { success: boolean; e
   );
 
   if (!hasRecognizedKey) {
-    return { success: false, error: 'Tệp sao lưu không chứa bất kỳ khóa dữ liệu MealWise hợp lệ nào.' };
+    return { success: false, error: 'Tệp sao lưu không chứa bất kỳ khóa dữ liệu Mealy hợp lệ nào.' };
   }
 
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {

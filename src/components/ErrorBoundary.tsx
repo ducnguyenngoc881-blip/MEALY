@@ -66,7 +66,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </h2>
             
             <p className="text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
-              MealWise gặp trục trặc khi tải màn hình này. Dữ liệu của bạn vẫn an toàn và không bị mất.
+              Mealy gặp trục trặc khi tải màn hình này. Dữ liệu của bạn vẫn an toàn và không bị mất.
             </p>
 
             {this.state.error?.message && (

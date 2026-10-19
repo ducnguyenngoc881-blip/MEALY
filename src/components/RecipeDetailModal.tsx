@@ -25,7 +25,8 @@ import {
   FileText,
   Gamepad2,
   Dices,
-  Share2
+  Share2,
+  Lock
 } from 'lucide-react';
 import { SafeImage } from './SafeImage';
 import { Ingredient, CookingInstruction, Recipe } from '../types';
@@ -54,7 +55,7 @@ const GEN_Z_HANDS_FREE_QUOTES = [
   "Flex nhẹ khả năng đa nhiệm: Vừa hóng drama vừa luộc rau xanh mướt không bị úa 🥬🔥",
   "Hệ tư tưởng nấu ăn mới: Thong dong như idol Kpop, món ngon ra lò xịn đét 🎤🥘",
   "Ủa alo, rảnh tay thế này làm một con nhảy biến hình xong là đồ ăn chín vừa đẹp! 💃🍲",
-  "Bật mood thảnh thơi: Việc gì khó có MealWise lo, việc bạn là slay và măm măm ✨😋",
+  "Bật mood thảnh thơi: Việc gì khó có Mealy lo, việc bạn là slay và măm măm ✨😋",
   "Trạng thái hiện tại: Đầu óc trên mây, tay bấm điện thoại, mâm cơm vẫn chuẩn cơm mẹ nấu! 🚀🍛",
   "Không áp lực, chỉ có ẩm thực! Vừa nghe lofi vừa nấu ăn đỉnh chóp hết nấc 🎧🍳"
 ];
@@ -116,7 +117,8 @@ function findPantryMatchForIngredient(
 }
 
 export const RecipeDetailModal: React.FC = () => {
-  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast, user, pantryItems, removePantryItem, addCustomRecipe, customRecipes } = useMealWise();
+  const { selectedRecipe, setSelectedRecipe, selectedMealSet, addExtraGroceryItems, showToast, user, pantryItems, removePantryItem, addCustomRecipe, customRecipes, activeTab, activePlanScope } = useMealWise();
+  const isNextWeekPlanView = activeTab === 'weekly' && activePlanScope === 'next';
   const [dragY, setDragY] = useState<number>(0);
   const touchStartY = useRef<number | null>(null);
 
@@ -138,6 +140,10 @@ export const RecipeDetailModal: React.FC = () => {
 
   // Interactive Ingredient Checklist State
   const [checkedIngredients, setCheckedIngredients] = useState<Record<string, boolean>>({});
+
+  // Equivalent Exchange State (e.g. Olive Oil -> Household Cooking Oil) & Next Week Warning Override
+  const [swappedEquivalentIngredients, setSwappedEquivalentIngredients] = useState<Record<number, boolean>>({});
+  const [isNextWeekWarningDismissed, setIsNextWeekWarningDismissed] = useState<boolean>(false);
 
   // 2-Step Recipe Navigation: Step 1 (Ingredients) -> Step 2 (Cooking Instructions)
   const [cookingPhase, setCookingPhase] = useState<1 | 2>(1);
@@ -251,6 +257,8 @@ export const RecipeDetailModal: React.FC = () => {
       setIsHandsFreeMode(false);
       setActiveStepIndex(0);
       setShowHandsFreeIngredients(false);
+      setIsNextWeekWarningDismissed(false);
+      setSwappedEquivalentIngredients({});
 
       // Restore saved ingredient checklist from localStorage & auto-tick fridge items
       try {
@@ -587,10 +595,10 @@ export const RecipeDetailModal: React.FC = () => {
           calories: Number(parsed.k) || 450,
           estimatedCostVnd: Number(parsed.v) || 65000,
           imageUrl: parsed.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80',
-          description: parsed.n ? `Công thức chia sẻ — ${parsed.n}` : 'Món ngon gia đình được chia sẻ từ Sổ Bếp MealWise.',
+          description: parsed.n ? `Công thức chia sẻ — ${parsed.n}` : 'Món ngon gia đình được chia sẻ từ Sổ Bếp Mealy.',
           tags: ['Món Bếp Nhà', 'Được Chia Sẻ'],
           isCustom: true,
-          authorName: parsed.a || 'Đầu Bếp MealWise',
+          authorName: parsed.a || 'Đầu Bếp Mealy',
           authorNote: parsed.n || 'Công thức gia đình chia sẻ',
           chefTip: parsed.p || '',
           ingredients: Array.isArray(parsed.i)
@@ -764,6 +772,10 @@ export const RecipeDetailModal: React.FC = () => {
 
   const toggleStepCompleted = (stepNum: number, e?: React.MouseEvent) => {
     e?.stopPropagation();
+    if (isNextWeekPlanView && !isNextWeekWarningDismissed) {
+      showToast('⚠️ Món ăn này thuộc Thực Đơn Tuần Sau — hãy bấm nút Tiếp tục ở Bước 1 nếu bạn muốn nấu ngay!', 'warning');
+      return;
+    }
     setCompletedSteps(prev => {
       const willBeCompleted = !prev[stepNum];
       const next = { ...prev, [stepNum]: willBeCompleted };
@@ -825,11 +837,12 @@ export const RecipeDetailModal: React.FC = () => {
     }
   };
 
-  // 1-Click push scaled ingredients to extraGroceryItems
+  // 1-Click push scaled ingredients to extraGroceryItems (excludes olive oil if swapped to household cooking oil)
   const handlePushToGrocery = () => {
     if (!selectedRecipe) return;
     const factor = Math.max(0.1, servings / (selectedRecipe.servings || 4));
-    const newItems: ExtraGroceryItem[] = selectedRecipe.ingredients.map(ing => {
+    const filteredIngredients = selectedRecipe.ingredients.filter((_, idx) => !swappedEquivalentIngredients[idx]);
+    const newItems: ExtraGroceryItem[] = filteredIngredients.map(ing => {
       const numAmount = typeof ing.amount === 'number' ? ing.amount : parseFloat(String(ing.amount).replace(',', '.')) || 1;
       const scaledAmount = Math.round(numAmount * factor * 10) / 10;
       const costPortion = Math.round(((selectedRecipe.estimatedCostVnd || 30000) * factor) / (selectedRecipe.ingredients.length || 1));
@@ -1754,6 +1767,8 @@ export const RecipeDetailModal: React.FC = () => {
                           const key = `${ing.name}_${originalIndex}`;
                           const isChecked = !!checkedIngredients[key];
                           const scaledAmountStr = formatScaledAmount(ing.amount);
+                          const isOliveOil = /dầu\s*(ô\s*liu|ô-liu|oliu|olive)/i.test(ing.name || '');
+                          const isSwappedToCookingOil = Boolean(swappedEquivalentIngredients[originalIndex]);
 
                           return (
                             <div 
@@ -1782,7 +1797,9 @@ export const RecipeDetailModal: React.FC = () => {
                                   <span className={`font-semibold min-w-0 leading-relaxed transition-all ${
                                     isChecked ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-stone-100'
                                   }`}>
-                                    {ing.name}
+                                    {isOliveOil && isSwappedToCookingOil
+                                      ? 'Dầu ăn thực vật (Thay tương đương Dầu ô liu)'
+                                      : ing.name}
                                   </span>
                                   {pantryIngredientMatches[originalIndex]?.inFridge && (
                                     <span 
@@ -1791,6 +1808,40 @@ export const RecipeDetailModal: React.FC = () => {
                                     >
                                       <span>🧊 Có sẵn trong tủ</span>
                                     </span>
+                                  )}
+                                  {isOliveOil && (
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const willSwap = !isSwappedToCookingOil;
+                                        setSwappedEquivalentIngredients(prev => ({ ...prev, [originalIndex]: willSwap }));
+                                        setCheckedIngredients(prev => {
+                                          const next = { ...prev, [key]: willSwap };
+                                          try {
+                                            localStorage.setItem(`mealwise_recipe_ing_${selectedRecipe.id}`, JSON.stringify(next));
+                                          } catch {}
+                                          return next;
+                                        });
+                                        showToast(
+                                          willSwap
+                                            ? '🔄 Đã đổi tương đương sang Dầu ăn thường có sẵn trong bếp!'
+                                            : '↩️ Đã chuyển lại nguyên liệu gốc: Dầu ô liu.'
+                                        );
+                                      }}
+                                      className={`inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-md border transition-colors cursor-pointer shrink-0 ${
+                                        isSwappedToCookingOil
+                                          ? 'bg-emerald-100/90 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
+                                          : 'bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border-amber-300/80 dark:border-amber-700/70'
+                                      }`}
+                                      title="Dầu ô liu không phổ biến ở mọi gia đình, có thể dùng Dầu ăn thông thường để thay thế tương đương 1:1"
+                                    >
+                                      <span>
+                                        {isSwappedToCookingOil
+                                          ? '🧂 Đã thay bằng Dầu ăn có sẵn (Bấm để hoàn tác)'
+                                          : '🔄 Thay tương đương: Dùng Dầu ăn có sẵn'}
+                                      </span>
+                                    </button>
                                   )}
                                 </div>
                               </div>
@@ -1807,29 +1858,59 @@ export const RecipeDetailModal: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Step 1 Primary Confirmation CTA: User confirms having all ingredients -> Proceed to Step 2 */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    checkAllIngredients();
-                    setCookingPhase(2);
-                    showToast('✨ Đã chuẩn bị đủ nguyên liệu! Bắt đầu chế biến món ăn.');
-                  }}
-                  className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-black text-xs shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer transition-all min-h-[46px]"
-                >
-                  <Check className="w-4 h-4 stroke-[3]" />
-                  <span>Tôi Đã Chuẩn Bị Đủ Nguyên Liệu — Bắt Đầu Nấu ➔</span>
-                </button>
+                {/* Step 1 Primary Confirmation CTA & 1-Click Push to Grocery List (Single Warning Override Button when viewing Next Week tab) */}
+                {isNextWeekPlanView && !isNextWeekWarningDismissed ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsNextWeekWarningDismissed(true);
+                      showToast('✓ Đã mở khóa nấu & đi chợ cho món thuộc Thực Đơn Tuần Sau!');
+                    }}
+                    className="w-full p-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100/90 dark:bg-amber-950/50 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/80 text-amber-950 dark:text-amber-100 shadow-xs active:scale-[0.98] transition-all cursor-pointer text-left flex items-center justify-between gap-3"
+                  >
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                        <Lock className="w-4 h-4 text-amber-700 dark:text-amber-300" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-black text-amber-950 dark:text-amber-100 leading-snug">
+                          ⚠️ Món ăn này thuộc Thực Đơn Tuần Sau
+                        </p>
+                        <p className="text-[11px] font-semibold text-amber-800 dark:text-amber-300/90 mt-0.5 leading-snug">
+                          Bạn có muốn tiếp tục bắt đầu nấu hoặc đi chợ món này ngay không?
+                        </p>
+                      </div>
+                    </div>
+                    <span className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-stone-950 font-black text-[11px] shrink-0 shadow-2xs">
+                      Tiếp tục ➔
+                    </span>
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        checkAllIngredients();
+                        setCookingPhase(2);
+                        showToast('✨ Đã chuẩn bị đủ nguyên liệu! Bắt đầu chế biến món ăn.');
+                      }}
+                      className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-black text-xs shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer transition-all min-h-[46px]"
+                    >
+                      <Check className="w-4 h-4 stroke-[3]" />
+                      <span>Tôi Đã Chuẩn Bị Đủ Nguyên Liệu — Bắt Đầu Nấu ➔</span>
+                    </button>
 
-                {/* 1-Click Push to Grocery List (min 44px tap target) */}
-                <button
-                  type="button"
-                  onClick={handlePushToGrocery}
-                  className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[40px]"
-                >
-                  <ShoppingCart className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300 shrink-0" />
-                  <span>🛒 Đi Chợ Món Này ({servings} người • {selectedRecipe.ingredients.length} nguyên liệu)</span>
-                </button>
+                    {/* 1-Click Push to Grocery List (min 44px tap target) */}
+                    <button
+                      type="button"
+                      onClick={handlePushToGrocery}
+                      className="w-full py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[40px]"
+                    >
+                      <ShoppingCart className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300 shrink-0" />
+                      <span>🛒 Đi Chợ Món Này ({servings} người • {selectedRecipe.ingredients.length} nguyên liệu)</span>
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
@@ -2026,7 +2107,7 @@ export const RecipeDetailModal: React.FC = () => {
               `Quảng Cáo Hoàn Thành Món: ${selectedRecipe.title} (30s)`,
               30,
               4,
-              user?.name || 'Thành Viên MealWise'
+              user?.name || 'Thành Viên Mealy'
             );
             try {
               recordVolunteerAdWatched(1);
@@ -2072,7 +2153,7 @@ export const RecipeDetailModal: React.FC = () => {
                   #VẫnNấuNgon
                 </span>
                 <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-100/80 dark:bg-amber-900/40 px-2 py-0.5 rounded-full">
-                  #MealWiseGenZ
+                  #MealyGenZ
                 </span>
               </div>
             </div>

@@ -33,8 +33,8 @@ describe('Unit: First-Launch Welcome Onboarding Modal (Dribbble 3-Slide Visual M
     expect(content).toContain('-rotate-3');
     expect(content).toContain('rotate-2');
 
-    // Slide 1: MealWise intro & 3-dish Vietnamese meal sets
-    expect(content).toContain('Chào Mừng Đến Với MealWise');
+    // Slide 1: Mealy intro & 3-dish Vietnamese meal sets
+    expect(content).toContain('Chào Mừng Đến Với Mealy');
     expect(content).toContain('Hết Đau Đầu Nghĩ');
     expect(content).toContain('"Hôm Nay Ăn Gì?"');
     expect(content).toContain('Mặn • Canh • Rau');
@@ -181,7 +181,7 @@ describe('Unit: First-Launch Welcome Onboarding Modal (Dribbble 3-Slide Visual M
 
     const onboardingContent = fs.readFileSync(path.join(srcDir, 'components', 'OnboardingModal.tsx'), 'utf-8');
     expect(onboardingContent).toContain('openWelcomeModal');
-    expect(onboardingContent).toContain('Giới Thiệu MealWise');
+    expect(onboardingContent).toContain('Giới Thiệu Mealy');
   });
 });
 

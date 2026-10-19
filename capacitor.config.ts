@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.mealwise.app',
-  appName: 'MealWise',
+  appName: 'Mealy',
   webDir: 'dist'
 };
 

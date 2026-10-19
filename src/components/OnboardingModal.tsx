@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { OnboardingData } from '../types';
 import { getDailyBudgetTarget } from '../utils/currency';
+import { MealyLogoMark } from './icons/MealWiseLogo';
 
 export const OnboardingModal: React.FC = () => {
   const { 
@@ -96,8 +97,8 @@ export const OnboardingModal: React.FC = () => {
         {/* Top Header Bar (shrink-0) */}
         <div className="px-4 sm:px-6 pt-3.5 pb-2.5 flex items-center justify-between shrink-0 border-b border-stone-100 dark:border-stone-800/60">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 flex items-center justify-center shadow-xs shrink-0">
-              <UtensilsCrossed className="w-4 h-4 sm:w-5 sm:h-5 font-bold" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl overflow-hidden flex items-center justify-center shadow-xs shrink-0">
+              <MealyLogoMark className="w-9 h-9 sm:w-10 sm:h-10" />
             </div>
             <div>
               <span className="text-[10px] sm:text-xs font-extrabold text-stone-500 dark:text-stone-400 uppercase tracking-wider block">
@@ -113,10 +114,10 @@ export const OnboardingModal: React.FC = () => {
             <button
               type="button"
               onClick={openWelcomeModal}
-              title="Giới Thiệu MealWise"
+              title="Giới Thiệu Mealy"
               className="text-xs font-bold text-[#1D4ED8] dark:text-blue-400 px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 transition-colors border border-blue-200/70 dark:border-blue-800/60 cursor-pointer"
             >
-              Giới Thiệu MealWise
+              Giới Thiệu Mealy
             </button>
 
             {/* High-contrast "Bỏ qua" button (WCAG AA >= 4.5:1) */}
@@ -159,7 +160,7 @@ export const OnboardingModal: React.FC = () => {
                   Khẩu vị Vùng Miền Gia Đình
                 </h3>
                 <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
-                  Chọn vị chuẩn gu của gia đình bạn để MealWise gợi ý mâm cơm tròn vị nhất.
+                  Chọn vị chuẩn gu của gia đình bạn để Mealy gợi ý mâm cơm tròn vị nhất.
                 </p>
               </div>
 
@@ -225,7 +226,7 @@ export const OnboardingModal: React.FC = () => {
                   Số Lượng Thành Viên
                 </h3>
                 <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
-                  MealWise sẽ tính toán định lượng nguyên liệu và khẩu phần đi chợ phù hợp.
+                  Mealy sẽ tính toán định lượng nguyên liệu và khẩu phần đi chợ phù hợp.
                 </p>
               </div>
 
@@ -628,7 +629,7 @@ export const OnboardingModal: React.FC = () => {
               <div className="p-3 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-xs text-stone-700 dark:text-stone-300 flex items-start gap-2.5">
                 <span className="text-base shrink-0 mt-0.5">💡</span>
                 <p className="leading-relaxed">
-                  <strong>Cách tính ngân sách của MealWise:</strong> Giá trên mâm là chi phí cho 1 bữa ăn chính (trưa hoặc tối). Hạn mức tính cho cả ngày gồm <strong>trọn gói 3 bữa (1 bữa sáng & 2 mâm cơm trưa + tối)</strong> cho {tempData.familySize || 4} người ăn.
+                  <strong>Cách tính ngân sách của Mealy:</strong> Giá trên mâm là chi phí cho 1 bữa ăn chính (trưa hoặc tối). Hạn mức tính cho cả ngày gồm <strong>trọn gói 3 bữa (1 bữa sáng & 2 mâm cơm trưa + tối)</strong> cho {tempData.familySize || 4} người ăn.
                 </p>
               </div>
 

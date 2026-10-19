@@ -81,7 +81,7 @@ export const Toast: React.FC = () => {
                       ? 'text-emerald-400 bg-emerald-500/15 border-emerald-500/30' 
                       : 'text-sky-400 bg-sky-500/15 border-sky-500/30'
               }`}>
-                {isLockOrWarning ? (/🔒|khóa/i.test(toastMessage) ? 'Khóa Tính Năng' : 'Cảnh Báo') : isError ? 'Lưu Ý' : isSuccess ? 'Thành Công' : 'MealWise'}
+                {isLockOrWarning ? (/🔒|khóa/i.test(toastMessage) ? 'Khóa Tính Năng' : 'Cảnh Báo') : isError ? 'Lưu Ý' : isSuccess ? 'Thành Công' : 'Mealy'}
               </span>
               <span className="text-[10px] font-medium text-stone-400">Vừa xong</span>
             </div>

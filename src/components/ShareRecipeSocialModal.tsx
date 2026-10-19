@@ -58,7 +58,7 @@ export function buildSocialPostCaption(recipe: Recipe, chefName: string, shareUr
 
   return [
     `👨‍🍳 GÓC BẾP ĐẦU BẾP: ${recipe.title.toUpperCase()}`,
-    `✍️ Sáng tạo bởi: Đầu bếp ${chefName} • Cộng Đồng Đầu Bếp MealWise`,
+    `✍️ Sáng tạo bởi: Đầu bếp ${chefName} • Cộng Đồng Đầu Bếp Mealy`,
     `⏱️ ${recipe.cookTimeMinutes || 25} phút • 💰 ${(recipe.estimatedCostVnd || 65000).toLocaleString('vi-VN')}đ • 🔥 ${recipe.calories || 450} kcal${noteLine}${voiceLine}`,
     ``,
     `🛒 Nguyên liệu chuẩn bị:`,
@@ -67,10 +67,10 @@ export function buildSocialPostCaption(recipe: Recipe, chefName: string, shareUr
     `✨ Bí quyết để món ngon tròn vị:`,
     tipText,
     ``,
-    `📲 Lưu ngay công thức này vào Sổ Bếp MealWise của bạn tại đây:`,
+    `📲 Lưu ngay công thức này vào Sổ Bếp Mealy của bạn tại đây:`,
     shareUrl,
     ``,
-    `#MealWise #CongDongDauBep #YeuBep #MamComViet #SoBepGiaDinh`
+    `#Mealy #CongDongDauBep #YeuBep #MamComViet #SoBepGiaDinh`
   ].join('\n');
 }
 
@@ -405,7 +405,7 @@ export const ShareRecipeSocialModal: React.FC = () => {
 
     ctx.fillStyle = isDark ? '#FFFFFF' : '#0F172A';
     ctx.font = '900 26px Inter, sans-serif';
-    ctx.fillText('MealWise — Mâm Cơm Việt & Sổ Bếp Cộng Đồng', imgX, footerY + 34);
+    ctx.fillText('Mealy — Mâm Cơm Việt & Sổ Bếp Cộng Đồng', imgX, footerY + 34);
 
     ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
     ctx.font = '600 21px Inter, sans-serif';
@@ -413,7 +413,7 @@ export const ShareRecipeSocialModal: React.FC = () => {
 
     ctx.fillStyle = '#1D4ED8';
     ctx.font = '800 20px Inter, sans-serif';
-    ctx.fillText('#MealWise   #CongDongDauBep   #YeuBep   #MamComViet', imgX, footerY + 108);
+    ctx.fillText('#Mealy   #CongDongDauBep   #YeuBep   #MamComViet', imgX, footerY + 108);
 
     // Draw QR Matrix on Bottom Right
     const qrBoxSize = 116;
@@ -607,7 +607,7 @@ export const ShareRecipeSocialModal: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                   <span className="text-[9.5px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 block">
-                    Cộng Đồng Đầu Bếp MealWise
+                    Cộng Đồng Đầu Bếp Mealy
                   </span>
                   <h3 className={`text-xs font-black truncate ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
                     Đầu bếp: {displayChefName}
@@ -735,14 +735,14 @@ export const ShareRecipeSocialModal: React.FC = () => {
                 <div className="flex items-center gap-1.5">
                   <Users className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
                   <span className="text-xs font-black truncate">
-                    MealWise — Sổ Bếp Cộng Đồng
+                    Mealy — Sổ Bếp Cộng Đồng
                   </span>
                 </div>
                 <p className={`text-[10.5px] mt-0.5 ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>
                   Quét mã QR hoặc bấm link để lưu công thức vào máy
                 </p>
                 <p className="text-[10px] font-extrabold text-[#1D4ED8] dark:text-blue-400 mt-0.5">
-                  #MealWise #CongDongDauBep #YeuBep
+                  #Mealy #CongDongDauBep #YeuBep
                 </p>
               </div>
 

@@ -652,7 +652,7 @@ export const CateringPartyPlanner: React.FC = () => {
     }
 
     quote += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-    quote += `✨ Bếp MealWise hân hạnh đồng hành phục vụ sự kiện trọn vẹn!`;
+    quote += `✨ Bếp Mealy hân hạnh đồng hành phục vụ sự kiện trọn vẹn!`;
 
     const success = await copyTextToClipboard(quote);
     if (success) {

@@ -78,7 +78,7 @@ export const ShareCollabCartModal: React.FC = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `MealWise - Đi Chợ Cùng Nhau (${collabRoom.roomId})`,
+          title: `Mealy - Đi Chợ Cùng Nhau (${collabRoom.roomId})`,
           text: `Cùng đi chợ và tick chọn nguyên liệu theo thời gian thực nhé!`,
           url: shareUrl
         });

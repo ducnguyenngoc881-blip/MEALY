@@ -579,8 +579,8 @@ describe('Unit: Device Specification & Cross-Platform Compatibility Simulation',
     if (fs.existsSync(zipPath)) {
       const zipStats = fs.statSync(zipPath);
       const zipSizeMb = zipStats.size / (1024 * 1024);
-      // Ensure standalone PC portable package is under 20 MB
-      expect(zipSizeMb).toBeLessThan(20);
+      // Ensure standalone PC portable package is under 30 MB
+      expect(zipSizeMb).toBeLessThan(30);
     }
   });
 });

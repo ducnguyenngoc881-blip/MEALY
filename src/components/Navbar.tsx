@@ -65,7 +65,7 @@ export const Navbar: React.FC = () => {
     <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 dark:bg-[#12161F]/90 backdrop-blur-xl border-b border-[#E2E8F0]/70 dark:border-[#2D3748]/70 shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
       <div className="h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
         
-        {/* Left: Brand Logo & Wordmark */}
+        {/* Left: Brand Logo & Wordmark (Mealy / MealWise • Mâm Cơm Việt) */}
         <button
           type="button"
           onClick={() => {
@@ -76,14 +76,14 @@ export const Navbar: React.FC = () => {
             setActiveTab('meal-sets');
           }} 
           className="flex items-center gap-2 cursor-pointer group shrink-0 text-left focus:outline-none"
-          title="MealWise • Mâm Cơm Việt — Về trang Hôm Nay"
-          aria-label="MealWise - Về trang Hôm Nay"
+          title="Mealy • MealWise • Mâm Cơm Việt — Về trang Hôm Nay"
+          aria-label="Mealy - Về trang Hôm Nay"
         >
-          <div className="w-8 h-8 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 border border-stone-800 dark:border-stone-200 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs">
-            <RiceBowlNavIcon className="w-4 h-4 text-stone-100 dark:text-stone-900" active={true} />
+          <div className="w-8 h-8 rounded-xl bg-[#0F172A] border border-slate-800 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs overflow-hidden">
+            <MealWiseLogoMark className="w-7 h-7" />
           </div>
           <span className="text-[15px] font-black text-stone-900 dark:text-white tracking-tight whitespace-nowrap">
-            MealWise
+            Mealy
           </span>
         </button>
 

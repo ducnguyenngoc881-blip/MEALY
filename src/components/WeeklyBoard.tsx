@@ -23,7 +23,10 @@ import {
   AlertTriangle,
   Apple,
   Eye,
-  Lock
+  Lock,
+  History,
+  Pin,
+  RotateCcw
 } from 'lucide-react';
 import { matchesSearchTerm, matchesMealSetSearch, matchesRecipeSearch, isHotpotOrFeast } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
@@ -44,6 +47,14 @@ const DAY_LABELS: { [key: string]: { short: string; full: string } } = {
 export const WeeklyBoard: React.FC = () => {
   const { 
     weeklyPlan, 
+    activePlanScope,
+    setActivePlanScope,
+    currentWeekPlan,
+    nextWeekPlan,
+    promoteNextWeekToCurrent,
+    previousWeeklyPlan,
+    previousPlanSavedAt,
+    restorePreviousWeeklyPlan,
     recipes, 
     mealSets,
     autoFillWeeklyMenu, 
@@ -81,6 +92,12 @@ export const WeeklyBoard: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [revealedLunchDays, setRevealedLunchDays] = useState<Record<string, boolean>>({});
   const [lunchPickModeModalDayId, setLunchPickModeModalDayId] = useState<string | null>(null);
+  const [keepWeekendLocked, setKeepWeekendLocked] = useState<boolean>(() => {
+    const d = new Date().getDay();
+    return d === 0 || d === 6;
+  });
+  const [isPreviousPlanModalOpen, setIsPreviousPlanModalOpen] = useState<boolean>(false);
+  const [isCurrentWeekendPeekOpen, setIsCurrentWeekendPeekOpen] = useState<boolean>(false);
 
 
   // Servings sanitization & scale (bounds [1..20], NaN protection, removing 0.5 floor distortion)
@@ -305,7 +322,8 @@ export const WeeklyBoard: React.FC = () => {
 
   const executeAutoFillWeekly = () => {
     setIsGenerating(true);
-    autoFillWeeklyMenu();
+    const shouldPreserveWeekend = activePlanScope === 'current' && keepWeekendLocked;
+    autoFillWeeklyMenu(undefined, { preserveWeekend: shouldPreserveWeekend });
     setTimeout(() => {
       setIsGenerating(false);
     }, 250);
@@ -751,20 +769,44 @@ export const WeeklyBoard: React.FC = () => {
     <div className="space-y-4">
       
       {/* Top Banner & Quick Controls - Cohesive Native Mobile Hierarchy */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
+      <div className={`rounded-3xl border shadow-xs overflow-hidden transition-colors duration-300 ${
+        activePlanScope === 'next'
+          ? 'bg-gradient-to-b from-emerald-50/40 via-white to-white dark:from-emerald-950/25 dark:via-slate-900 dark:to-slate-900 border-emerald-200/90 dark:border-emerald-800/70'
+          : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+      }`}>
         
-        {/* 1. Header Bar: Eyebrow + Title on Left, Goal Pill & Clear Action on Right */}
-        <div className="p-3.5 sm:p-4 pb-3 flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800/80">
+        {/* 1. Header Bar: Eyebrow + Title on Left */}
+        <div className={`p-3.5 sm:p-4 pb-3 flex items-center justify-between gap-2 border-b transition-colors duration-300 ${
+          activePlanScope === 'next'
+            ? 'border-emerald-100/90 dark:border-emerald-900/50'
+            : 'border-slate-100 dark:border-slate-800/80'
+        }`}>
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-9 h-9 rounded-2xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/60 flex items-center justify-center shrink-0">
-              <Calendar className="w-4 h-4 text-[#1D4ED8] dark:text-blue-400" />
+            <div className={`w-9 h-9 rounded-2xl border flex items-center justify-center shrink-0 transition-colors duration-300 ${
+              activePlanScope === 'next'
+                ? 'bg-emerald-100/80 dark:bg-emerald-950/70 border-emerald-200 dark:border-emerald-800/70'
+                : 'bg-blue-50 dark:bg-blue-950/60 border-blue-100 dark:border-blue-900/60'
+            }`}>
+              <Calendar className={`w-4 h-4 transition-colors duration-300 ${
+                activePlanScope === 'next'
+                  ? 'text-emerald-700 dark:text-emerald-400'
+                  : 'text-[#1D4ED8] dark:text-blue-400'
+              }`} />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider leading-tight">
-                  Kế Hoạch 7 Ngày
+                <span className={`text-[10px] font-extrabold uppercase tracking-wider leading-tight transition-colors duration-300 ${
+                  activePlanScope === 'next'
+                    ? 'text-emerald-700 dark:text-emerald-400'
+                    : 'text-slate-400 dark:text-slate-500'
+                }`}>
+                  {activePlanScope === 'next' ? 'Kế Hoạch 7 Ngày • Chuẩn Bị Tuần Sau' : 'Kế Hoạch 7 Ngày'}
                 </span>
-                {isPlanSoftLocked ? (
+                {activePlanScope === 'next' ? (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-100/90 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/70 text-[9.5px] font-black shrink-0">
+                    <span>Sắp Tới</span>
+                  </span>
+                ) : isPlanSoftLocked ? (
                   <span
                     className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 text-[9.5px] font-bold shrink-0"
                     title="Thực đơn đang khóa an toàn để bảo vệ nguyên liệu đã mua trong tủ lạnh."
@@ -783,141 +825,59 @@ export const WeeklyBoard: React.FC = () => {
                 ) : null}
               </div>
               <h1 className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white leading-tight truncate">
-                Thực Đơn Tuần
+                {activePlanScope === 'next' ? 'Thực Đơn Tuần Sau' : 'Thực Đơn Tuần'}
               </h1>
             </div>
           </div>
-
-          <div className="flex items-center gap-1.5 shrink-0">
-            {/* Quick Target Chip (Clickable to change goal) */}
-            {onboardingData && onboardingData.completed && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (!isRegistered) {
-                    openAuthModal('register');
-                    return;
-                  }
-                  setShowOnboarding(true);
-                }}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-extrabold border border-slate-200/80 dark:border-slate-700/60 transition-colors cursor-pointer truncate max-w-[155px]"
-                title={isRegistered ? 'Đổi mục tiêu' : 'Đổi mục tiêu 🔒'}
-                aria-label={isRegistered ? 'Đổi mục tiêu' : 'Đổi mục tiêu 🔒'}
-              >
-                <span className="text-[11px] shrink-0">🎯</span>
-                <span className="truncate">
-                  {onboardingData.regionPreference === 'bac' ? 'Vị Bắc' : onboardingData.regionPreference === 'nam' ? 'Vị Nam' : onboardingData.regionPreference === 'trung' ? 'Vị Trung' : '3 Miền'}
-                </span>
-                {!isRegistered && <span className="text-[9px] text-amber-600 dark:text-amber-400 font-bold shrink-0">🔒</span>}
-              </button>
-            )}
-
-            {/* Delete Menu Button */}
-            <button
-              type="button"
-              onClick={() => {
-                if (isPlanSoftLocked) {
-                  openConfirmModal({
-                    title: 'Thực Đơn Đang Khóa An Toàn',
-                    message: 'Bạn đã hoàn thành đi chợ và cất đầy đủ nguyên liệu tuần này vào tủ lạnh. Việc xóa toàn bộ thực đơn sẽ làm mất kế hoạch nấu nướng khớp với thực phẩm trong tủ. Bạn có chắc chắn muốn xóa không?',
-                    confirmLabel: 'Vẫn Xóa Thực Đơn',
-                    cancelLabel: 'Giữ Lại',
-                    isDanger: true,
-                    onConfirm: () => {
-                      clearWeeklyMenu();
-                    }
-                  });
-                  return;
-                }
-                openConfirmModal({
-                  title: 'Xóa Thực Đơn Tuần',
-                  message: 'Bạn có chắc chắn muốn xóa toàn bộ các món ăn đã lên kế hoạch cho cả tuần không?',
-                  confirmLabel: 'Xóa thực đơn',
-                  cancelLabel: 'Giữ lại',
-                  isDanger: true,
-                  onConfirm: () => {
-                    clearWeeklyMenu();
-                  }
-                });
-              }}
-              className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-rose-500/20 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-300 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-center transition-colors cursor-pointer shrink-0"
-              title="Xóa thực đơn tuần"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          </div>
         </div>
 
-        {/* 2. Body: Unified Servings & Weekly Budget Telemetry Sub-Card + Action Row */}
+        {/* 2. Body: Multi-Week Switcher & Weekly Budget Telemetry Sub-Card + Action Row */}
         <div className="p-3.5 sm:p-4 pt-3 space-y-3">
-          <div className="p-3 rounded-2xl bg-slate-50/90 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-2.5">
-            
-            {/* Row A: Servings Stepper Control */}
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center shrink-0">
-                  <Users className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400" />
-                </div>
-                <div className="min-w-0">
-                  <span className="text-xs font-extrabold text-slate-800 dark:text-slate-100 block leading-tight truncate">
-                    Khẩu phần gia đình
-                  </span>
-                  <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block leading-tight truncate">
-                    Tự động tính định lượng & ngân sách
-                  </span>
-                </div>
-              </div>
+          {/* Multi-Week Switcher (Tuần Này vs Tuần Sau) */}
+          <div className={`grid grid-cols-2 gap-1.5 p-1 rounded-2xl border transition-colors duration-300 ${
+            activePlanScope === 'next'
+              ? 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-200/80 dark:border-emerald-800/60'
+              : 'bg-slate-100 dark:bg-slate-800/80 border-slate-200/80 dark:border-slate-700/70'
+          }`}>
+            <button
+              type="button"
+              onClick={() => setActivePlanScope('current')}
+              className={`py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                activePlanScope === 'current'
+                  ? 'bg-white dark:bg-slate-900 text-[#1D4ED8] dark:text-blue-400 shadow-xs border border-slate-200/60 dark:border-slate-700'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <span>📅 Tuần Này</span>
+            </button>
 
-              {/* Servings Stepper with accessible touch targets >= 32px (w-8 h-8) and bounds [1..20] */}
-              <div className="flex items-center gap-0.5 bg-white dark:bg-slate-900 rounded-xl p-0.5 border border-slate-200 dark:border-slate-700 shadow-2xs shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setServings(Math.max(1, safeServings - 1))}
-                  disabled={safeServings <= 1}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 transition-colors cursor-pointer font-black text-sm"
-                  aria-label="Giảm khẩu phần"
-                  title="Giảm 1 người"
-                >
-                  -
-                </button>
-                <div className="flex items-baseline px-1">
-                  <input
-                    type="number"
-                    min={1}
-                    max={20}
-                    value={safeServings}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value, 10);
-                      if (!isNaN(val)) setServings(Math.max(1, Math.min(20, val)));
-                    }}
-                    className="w-6 h-8 text-center text-xs font-black text-slate-900 dark:text-white bg-transparent border-none focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    aria-label="Số người ăn"
-                  />
-                  <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 pr-0.5 select-none">
-                    người
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setServings(Math.min(20, safeServings + 1))}
-                  disabled={safeServings >= 20}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 transition-colors cursor-pointer font-black text-sm"
-                  aria-label="Tăng khẩu phần"
-                  title="Tăng 1 người"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-
-            <div className="border-t border-slate-200/70 dark:border-slate-700/60" />
-
-            {/* Row B: Compact Progress & Financial Health Strip */}
+            <button
+              type="button"
+              onClick={() => setActivePlanScope('next')}
+              className={`py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                activePlanScope === 'next'
+                  ? 'bg-emerald-600 text-white dark:bg-emerald-600 dark:text-white shadow-xs border border-emerald-700/50'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <span>🛒 Tuần Sau</span>
+            </button>
+          </div>
+          <div className={`p-3 rounded-2xl border space-y-2.5 transition-colors duration-300 ${
+            activePlanScope === 'next'
+              ? 'bg-emerald-50/40 dark:bg-emerald-950/20 border-emerald-200/70 dark:border-emerald-800/50'
+              : 'bg-slate-50/90 dark:bg-slate-800/50 border-slate-200/80 dark:border-slate-700/80'
+          }`}>
+            {/* Compact Progress & Financial Health Strip */}
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-2 text-xs">
                 <span className="font-extrabold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                  <span className={`w-2 h-2 rounded-full ${totalWeeklyMeals === 21 ? 'bg-emerald-500' : 'bg-[#1D4ED8] animate-pulse'}`} />
-                  <span>{totalWeeklyMeals} / 21 bữa đã xếp</span>
+                  <span className={`w-2 h-2 rounded-full ${
+                    totalWeeklyMeals === 21 || activePlanScope === 'next'
+                      ? 'bg-emerald-500'
+                      : 'bg-[#1D4ED8] animate-pulse'
+                  }`} />
+                  <span>{totalWeeklyMeals} / 21 bữa {activePlanScope === 'next' ? 'tuần sau' : 'đã xếp'}</span>
                 </span>
 
                 <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
@@ -961,7 +921,7 @@ export const WeeklyBoard: React.FC = () => {
               <div className="w-full h-2 rounded-full bg-slate-200/80 dark:bg-slate-700/80 overflow-hidden">
                 <div 
                   className={`h-full transition-all duration-500 rounded-full ${
-                    totalWeeklyMeals === 21 ? 'bg-emerald-500' : 'bg-[#1D4ED8]'
+                    totalWeeklyMeals === 21 || activePlanScope === 'next' ? 'bg-emerald-600' : 'bg-[#1D4ED8]'
                   }`}
                   style={{ width: `${Math.min(100, Math.round((totalWeeklyMeals / 21) * 100))}%` }}
                 />
@@ -976,10 +936,20 @@ export const WeeklyBoard: React.FC = () => {
               data-tutorial-target="weekly-autofill-btn"
               onClick={handleAutoFillWeekly}
               disabled={isGenerating}
-              className="flex-1 min-h-[44px] flex items-center justify-center gap-1.5 py-2.5 px-3.5 bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-xs rounded-2xl shadow-xs active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
+              className={`flex-1 min-h-[44px] flex items-center justify-center gap-1.5 py-2.5 px-3.5 text-white font-black text-xs rounded-2xl shadow-xs active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer ${
+                activePlanScope === 'next'
+                  ? 'bg-emerald-600 hover:bg-emerald-700'
+                  : 'bg-[#1D4ED8] hover:bg-blue-800'
+              }`}
             >
               <Sparkles className={`w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0 ${isGenerating ? 'animate-spin' : ''}`} />
-              <span>{isGenerating ? 'Đang Tạo Thực Đơn...' : 'Gợi Ý 1-Click Cả Tuần'}</span>
+              <span>
+                {isGenerating
+                  ? 'Đang Tạo Thực Đơn...'
+                  : activePlanScope === 'next'
+                    ? 'Gợi Ý 1-Click Tuần Sau'
+                    : 'Gợi Ý 1-Click Cả Tuần'}
+              </span>
             </button>
 
             <button
@@ -1008,7 +978,7 @@ export const WeeklyBoard: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <span>Đi Chợ</span>
+                  <span>{activePlanScope === 'next' ? 'Đi Chợ Tuần Sau' : 'Đi Chợ'}</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </>
               )}
@@ -1018,7 +988,11 @@ export const WeeklyBoard: React.FC = () => {
       </div>
 
       {/* NATIVE MOBILE HORIZONTAL DAY PICKER STRIP (T2 -> CN) */}
-      <div className="bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+      <div className={`p-1.5 rounded-2xl border shadow-xs transition-colors duration-300 ${
+        activePlanScope === 'next'
+          ? 'bg-emerald-50/35 dark:bg-emerald-950/20 border-emerald-200/80 dark:border-emerald-800/60'
+          : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+      }`}>
         <div className="grid grid-cols-7 gap-1">
           {weeklyPlan.map((day, index) => {
             const active = selectedDayIndex === index;
@@ -1034,7 +1008,9 @@ export const WeeklyBoard: React.FC = () => {
                 onClick={() => setSelectedDayIndex(index)}
                 className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center transition-all min-h-[54px] relative cursor-pointer ${
                   active
-                    ? 'bg-[#1D4ED8] text-white dark:bg-blue-600 dark:text-white font-black shadow-xs scale-[1.02]'
+                    ? activePlanScope === 'next'
+                      ? 'bg-emerald-600 text-white dark:bg-emerald-600 dark:text-white font-black shadow-xs scale-[1.02]'
+                      : 'bg-[#1D4ED8] text-white dark:bg-blue-600 dark:text-white font-black shadow-xs scale-[1.02]'
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
                 }`}
               >
@@ -1042,7 +1018,11 @@ export const WeeklyBoard: React.FC = () => {
                   {dayMeta.short}
                 </span>
                 
-                <span className={`text-[10px] mt-1 font-bold leading-none ${active ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'}`}>
+                <span className={`text-[10px] mt-1 font-bold leading-none ${
+                  active
+                    ? activePlanScope === 'next' ? 'text-emerald-100' : 'text-blue-100'
+                    : 'text-slate-400 dark:text-slate-500'
+                }`}>
                   {mealsCount}/3
                 </span>
 
@@ -1062,22 +1042,39 @@ export const WeeklyBoard: React.FC = () => {
         key={`${activeDay.dayId}-${generationCount}`}
         onTouchStart={handleDayTouchStart}
         onTouchEnd={handleDayTouchEnd}
-        className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-all duration-200 animate-fade-in"
+        className={`p-4 rounded-3xl border shadow-xs space-y-4 transition-all duration-200 animate-fade-in ${
+          activePlanScope === 'next'
+            ? 'bg-gradient-to-b from-emerald-50/30 via-white to-white dark:from-emerald-950/20 dark:via-slate-900 dark:to-slate-900 border-emerald-200/80 dark:border-emerald-800/60'
+            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+        }`}
       >
         
         {/* Day Header & Quick Day Refresh Action */}
-        <div className="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2.5">
+        <div className={`flex items-center justify-between gap-2 border-b pb-2.5 ${
+          activePlanScope === 'next'
+            ? 'border-emerald-100/80 dark:border-emerald-900/50'
+            : 'border-slate-100 dark:border-slate-800'
+        }`}>
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">
               <h2 className="text-base font-black text-slate-900 dark:text-slate-100">
                 {activeDay.dayName}
               </h2>
+              {activePlanScope === 'next' && (
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100/90 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-extrabold border border-emerald-300/70 dark:border-emerald-800/60">
+                  Tuần sau
+                </span>
+              )}
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-extrabold border border-slate-200 dark:border-slate-700">
                 {getDayMainMealsCount(activeDay)}/3 bữa
               </span>
             </div>
             <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
-              {isSingleDishMode ? 'Thực đơn món đơn tiện lợi' : 'Mâm cơm gia đình chuẩn vị'}
+              {activePlanScope === 'next'
+                ? 'Thực đơn chuẩn bị trước cho tuần tới'
+                : isSingleDishMode
+                  ? 'Thực đơn món đơn tiện lợi'
+                  : 'Mâm cơm gia đình chuẩn vị'}
             </span>
           </div>
 
@@ -1087,7 +1084,11 @@ export const WeeklyBoard: React.FC = () => {
             className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-200/80 dark:border-slate-700/60 transition-all active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-2xs"
             title="Đổi lại toàn bộ món ăn trong ngày này"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400" />
+            <RefreshCw className={`w-3.5 h-3.5 ${
+              activePlanScope === 'next'
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-[#1D4ED8] dark:text-blue-400'
+            }`} />
             <span>Đổi Ngày</span>
           </button>
         </div>
@@ -2439,6 +2440,283 @@ export const WeeklyBoard: React.FC = () => {
           </div>
         );
       })()}
+
+      {/* MODAL: Xem Món Thứ 7 & Chủ Nhật Tuần Này (Khi đang ở tab Chuẩn Bị Tuần Sau) */}
+      {isCurrentWeekendPeekOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-fade-in"
+          onClick={() => setIsCurrentWeekendPeekOpen(false)}
+        >
+          <div
+            className="w-full max-w-md max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 bg-emerald-50/60 dark:bg-emerald-950/30">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block">
+                  Thực Đơn Đang Nấu Cuối Tuần Này
+                </span>
+                <h3 className="text-base font-black text-slate-900 dark:text-white">
+                  Món Thứ Bảy & Chủ Nhật Tuần Này
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsCurrentWeekendPeekOpen(false)}
+                className="w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-4 overflow-y-auto space-y-4">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                Bạn đang lên kế hoạch đi chợ cho tuần sau nhưng thực đơn <strong>Thứ Bảy & Chủ Nhật tuần này</strong> vẫn được giữ nguyên tại đây. Chạm vào món bất kỳ để xem công thức nấu ngay:
+              </p>
+
+              {currentWeekPlan
+                .filter(d => d.dayId === 'sat' || d.dayId === 'sun')
+                .map(day => (
+                  <div
+                    key={day.dayId}
+                    className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2.5"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-black text-[#1D4ED8] dark:text-blue-400">
+                        📅 {day.dayName}
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-400">
+                        Chạm món để xem cách nấu
+                      </span>
+                    </div>
+                    <div className="space-y-1.5">
+                      {(['breakfast', 'lunch', 'dinner'] as MealSlot[]).map(slot => {
+                        const meal = day.meals[slot];
+                        const slotLabel = slot === 'breakfast' ? 'Sáng' : slot === 'lunch' ? 'Trưa' : 'Tối';
+                        if (!meal) {
+                          return (
+                            <div key={slot} className="text-xs text-slate-400 flex items-center justify-between py-1 px-2 rounded-lg bg-white/60 dark:bg-slate-900/40">
+                              <span className="font-bold">{slotLabel}:</span>
+                              <span>Chưa xếp món</span>
+                            </div>
+                          );
+                        }
+                        return (
+                          <button
+                            key={slot}
+                            type="button"
+                            onClick={() => {
+                              if (isMealSet(meal)) setSelectedMealSet(meal);
+                              else setSelectedRecipe(meal);
+                            }}
+                            className="w-full text-left py-2 px-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-blue-50/60 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between gap-2 transition-colors cursor-pointer"
+                          >
+                            <div className="min-w-0">
+                              <span className="text-[10px] font-extrabold uppercase text-slate-400 mr-1.5">
+                                {slotLabel}:
+                              </span>
+                              <span className="text-xs font-black text-slate-900 dark:text-white">
+                                {meal.title}
+                              </span>
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+            <div className="p-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsCurrentWeekendPeekOpen(false);
+                  setActivePlanScope('current');
+                  setSelectedDayIndex(5); // Jump directly to Saturday
+                }}
+                className="flex-1 py-2.5 px-3 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white text-xs font-black transition-colors cursor-pointer"
+              >
+                Mở Bảng Tuần Này (Thứ 7 & CN)
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsCurrentWeekendPeekOpen(false)}
+                className="py-2.5 px-4 rounded-xl bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold cursor-pointer"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Thực Đơn Cũ Vừa Đổi & Khôi Phục Món Cuối Tuần */}
+      {isPreviousPlanModalOpen && previousWeeklyPlan && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-fade-in"
+          onClick={() => setIsPreviousPlanModalOpen(false)}
+        >
+          <div
+            className="w-full max-w-md max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 bg-amber-50/70 dark:bg-amber-950/30">
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <History className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                    Bản Lưu Tự Động Trước Khi Đổi
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-900 dark:text-white mt-0.5">
+                  Xem Lại Thực Đơn Cũ
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPreviousPlanModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-4 overflow-y-auto space-y-4">
+              {previousPlanSavedAt && (
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  Đã lưu tự động lúc {new Date(previousPlanSavedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })} • Chạm vào món ăn bất kỳ để xem lại công thức nấu ngay.
+                </p>
+              )}
+
+              {/* Highlighted Weekend Section (Thứ Bảy & Chủ Nhật) */}
+              <div className="p-3.5 rounded-2xl bg-amber-50/60 dark:bg-amber-950/20 border-2 border-amber-200 dark:border-amber-800/60 space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-black text-amber-900 dark:text-amber-300">
+                    📌 Món Thứ 7 & Chủ Nhật Cũ
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      restorePreviousWeeklyPlan(true);
+                      setIsPreviousPlanModalOpen(false);
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-black flex items-center gap-1 shadow-2xs cursor-pointer"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Khôi Phục T7 & CN</span>
+                  </button>
+                </div>
+
+                {previousWeeklyPlan
+                  .filter(d => d.dayId === 'sat' || d.dayId === 'sun')
+                  .map(day => (
+                    <div key={day.dayId} className="space-y-1.5 pt-1 border-t border-amber-200/60 dark:border-amber-800/40">
+                      <span className="text-[11px] font-black text-slate-800 dark:text-slate-200 block">
+                        {day.dayName}
+                      </span>
+                      {(['breakfast', 'lunch', 'dinner'] as MealSlot[]).map(slot => {
+                        const meal = day.meals[slot];
+                        if (!meal) return null;
+                        const slotLabel = slot === 'breakfast' ? 'Sáng' : slot === 'lunch' ? 'Trưa' : 'Tối';
+                        return (
+                          <button
+                            key={slot}
+                            type="button"
+                            onClick={() => {
+                              if (isMealSet(meal)) setSelectedMealSet(meal);
+                              else setSelectedRecipe(meal);
+                            }}
+                            className="w-full text-left py-1.5 px-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-amber-100/50 dark:hover:bg-slate-800 border border-amber-200/70 dark:border-slate-700 flex items-center justify-between gap-2 transition-colors cursor-pointer"
+                          >
+                            <div className="min-w-0 truncate">
+                              <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 mr-1.5">
+                                {slotLabel}:
+                              </span>
+                              <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                                {meal.title}
+                              </span>
+                            </div>
+                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+              </div>
+
+              {/* Weekday Section (Thứ Hai -> Thứ Sáu) */}
+              <div className="space-y-2.5">
+                <span className="text-xs font-black text-slate-700 dark:text-slate-300 block">
+                  Các Ngày Trong Tuần (Thứ 2 – Thứ 6)
+                </span>
+                {previousWeeklyPlan
+                  .filter(d => d.dayId !== 'sat' && d.dayId !== 'sun')
+                  .map(day => (
+                    <div
+                      key={day.dayId}
+                      className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-1.5"
+                    >
+                      <span className="text-xs font-black text-slate-800 dark:text-slate-200 block">
+                        {day.dayName}
+                      </span>
+                      {(['breakfast', 'lunch', 'dinner'] as MealSlot[]).map(slot => {
+                        const meal = day.meals[slot];
+                        if (!meal) return null;
+                        const slotLabel = slot === 'breakfast' ? 'Sáng' : slot === 'lunch' ? 'Trưa' : 'Tối';
+                        return (
+                          <button
+                            key={slot}
+                            type="button"
+                            onClick={() => {
+                              if (isMealSet(meal)) setSelectedMealSet(meal);
+                              else setSelectedRecipe(meal);
+                            }}
+                            className="w-full text-left py-1.5 px-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-blue-50/50 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between gap-2 transition-colors cursor-pointer"
+                          >
+                            <div className="min-w-0 truncate">
+                              <span className="text-[10px] font-bold text-slate-400 mr-1.5">
+                                {slotLabel}:
+                              </span>
+                              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                {meal.title}
+                              </span>
+                            </div>
+                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            <div className="p-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  restorePreviousWeeklyPlan(true);
+                  setIsPreviousPlanModalOpen(false);
+                }}
+                className="flex-1 py-2.5 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-black transition-colors cursor-pointer text-center"
+              >
+                Khôi Phục T7 & CN
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  restorePreviousWeeklyPlan(false);
+                  setIsPreviousPlanModalOpen(false);
+                }}
+                className="flex-1 py-2.5 px-2.5 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white text-xs font-black transition-colors cursor-pointer text-center"
+              >
+                Khôi Phục Cả 7 Ngày
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

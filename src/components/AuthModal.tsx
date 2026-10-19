@@ -14,6 +14,7 @@ import {
   ShoppingCart, 
   AlertCircle
 } from 'lucide-react';
+import { MealyLogoMark } from './icons/MealWiseLogo';
 
 export const AuthModal: React.FC = () => {
   const { 
@@ -53,7 +54,7 @@ export const AuthModal: React.FC = () => {
     }
 
     setEmailError(null);
-    const displayName = name.trim() || cleanEmail.split('@')[0] || 'Thành Viên MealWise';
+    const displayName = name.trim() || cleanEmail.split('@')[0] || 'Thành Viên Mealy';
     loginUser({
       name: displayName,
       email: cleanEmail
@@ -87,15 +88,15 @@ export const AuthModal: React.FC = () => {
 
         {/* Header */}
         <div className="flex items-center gap-3 pr-8">
-          <div className="w-10 h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-950 flex items-center justify-center shrink-0 shadow-xs">
-            <UserCheck className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-2xl bg-[#0F172A] border border-slate-800 flex items-center justify-center shrink-0 shadow-xs overflow-hidden">
+            <MealyLogoMark className="w-8 h-8" />
           </div>
           <div>
             <h3 className="text-base sm:text-lg font-black text-stone-900 dark:text-white">
               {authModalMode === 'register' ? 'Đăng Ký Thành Viên' : 'Đăng Nhập Tài Khoản'}
             </h3>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-              Mở khóa toàn bộ tính năng độc quyền trên MealWise
+              Mở khóa toàn bộ tính năng độc quyền trên Mealy
             </p>
           </div>
         </div>
@@ -261,7 +262,7 @@ export const AuthModal: React.FC = () => {
         </form>
 
         <p className="text-[11px] text-center text-stone-500 dark:text-stone-400">
-          MealWise cam kết bảo mật 100% dữ liệu cá nhân của bạn.
+          Mealy cam kết bảo mật 100% dữ liệu cá nhân của bạn.
         </p>
       </div>
     </div>

@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#D97706" />
+    <meta name="theme-color" content="#2563EB" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="MealWise" />
+    <meta name="apple-mobile-web-app-title" content="Mealy" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/icon.svg" />
-    <title>MealWise - Hôm nay ăn gì? • Lên thực đơn tuần & Sổ tay công thức</title>
+    <title>Mealy - Hôm nay ăn gì? • Lên thực đơn tuần & Sổ tay công thức</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -83,19 +83,20 @@
   <body class="bg-ceramic-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100 font-sans antialiased selection:bg-amber-500 selection:text-stone-950 transition-colors duration-200">
     <div id="root">
       <div id="app-splash" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #FAF8F5; color: #1c1917; font-family: -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', sans-serif; padding: 20px; text-align: center;">
-        <div style="width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px -5px rgba(217, 119, 6, 0.4); margin-bottom: 16px; animation: mw-pulse 1.8s ease-in-out infinite;">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-            <line x1="6" y1="1" x2="6" y2="4"></line>
-            <line x1="10" y1="1" x2="10" y2="4"></line>
-            <line x1="14" y1="1" x2="14" y2="4"></line>
+        <div style="width: 68px; height: 68px; border-radius: 20px; background: #0F172A; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 28px -6px rgba(37, 99, 235, 0.35); margin-bottom: 16px; animation: mw-pulse 1.8s ease-in-out infinite; overflow: hidden;">
+          <svg width="58" height="58" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 94 38 C 93 21 105 11 121 11 C 122 27 110 38 94 38 Z" fill="#10B981" />
+            <path d="M 24 29 C 21 29 20 38 24 39 L 136 50 C 138 50 138 46 136 45 Z" fill="#2563EB" />
+            <path d="M 22 46 C 19 46 19 56 23 56 L 135 60 C 137 60 137 56 135 55 Z" fill="#2563EB" />
+            <path d="M 27 76 C 27 112 48 132 58 136 L 59 144 C 59 146 61 148 64 148 L 96 148 C 99 148 101 146 101 144 L 102 136 C 112 132 133 112 133 76 L 126 76 C 124 106 105 125 80 125 C 55 125 36 106 34 76 Z" fill="#2563EB" />
+            <path d="M 52 114 L 55 82 C 56 68 70 68 72 82 L 75 104 C 76 112 83 112 84 104 L 90 60 C 92 43 107 43 108 60 L 111 114" stroke="#0F172A" stroke-width="18" stroke-linecap="square" stroke-linejoin="round" />
+            <path d="M 52 114 L 55 82 C 56 68 70 68 72 82 L 75 104 C 76 112 83 112 84 104 L 90 60 C 92 43 107 43 108 60 L 111 114" stroke="#FFFFFF" stroke-width="12.5" stroke-linecap="butt" stroke-linejoin="round" />
           </svg>
         </div>
-        <h1 style="font-size: 19px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px 0; color: #1c1917;">MealWise • Mâm Cơm Việt</h1>
+        <h1 style="font-size: 19px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px 0; color: #1c1917;">Mealy • Mâm Cơm Việt</h1>
         <p style="font-size: 13px; color: #78716c; margin: 0 0 20px 0; font-weight: 500;">Đang khởi động thực đơn & nguyên liệu thông minh...</p>
         <div style="width: 140px; height: 4px; background: #e7e5e4; border-radius: 9999px; overflow: hidden; position: relative;">
-          <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 45%; background: #D97706; border-radius: 9999px; animation: mw-load 1.2s ease-in-out infinite alternate;"></div>
+          <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 45%; background: #2563EB; border-radius: 9999px; animation: mw-load 1.2s ease-in-out infinite alternate;"></div>
         </div>
       </div>
       <style>

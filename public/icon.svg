@@ -1,40 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#10b981" />
-      <stop offset="50%" stop-color="#059669" />
-      <stop offset="100%" stop-color="#047857" />
-    </linearGradient>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fef08a" />
-      <stop offset="50%" stop-color="#f59e0b" />
-      <stop offset="100%" stop-color="#d97706" />
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.3"/>
-    </filter>
-  </defs>
-  <!-- App Background -->
-  <rect width="512" height="512" rx="112" fill="url(#bg)" />
-  <!-- Inner Ring -->
-  <circle cx="256" cy="256" r="180" fill="none" stroke="#ffffff" stroke-width="6" stroke-opacity="0.25" stroke-dasharray="8 8" />
-  
-  <!-- Steaming Rice Bowl & Utensils Icon -->
-  <g filter="url(#shadow)" transform="translate(256, 270)">
-    <!-- Bowl Base -->
-    <path d="M -110,-20 C -100,80 100,80 110,-20 Z" fill="#ffffff" />
-    <ellipse cx="0" cy="-20" rx="110" ry="24" fill="url(#gold)" />
-    <!-- Rice mound -->
-    <path d="M -90,-20 Q 0,-70 90,-20 Z" fill="#ffffff" />
-    <!-- Bowl Foot -->
-    <rect x="-40" y="65" width="80" height="15" rx="5" fill="#e2e8f0" />
-    
-    <!-- Steam waves -->
-    <path d="M -40,-90 Q -25,-120 -40,-150" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-opacity="0.85" />
-    <path d="M 0,-100 Q 15,-130 0,-165" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-opacity="0.95" />
-    <path d="M 40,-90 Q 55,-120 40,-150" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-opacity="0.85" />
-  </g>
-  <!-- Sparkling Stars -->
-  <path d="M 370,120 L 378,138 L 396,146 L 378,154 L 370,172 L 362,154 L 344,146 L 362,138 Z" fill="#fef08a" />
-  <path d="M 130,150 L 135,162 L 147,167 L 135,172 L 130,184 L 125,172 L 113,167 L 125,162 Z" fill="#fef08a" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="512" height="512">
+  <!-- Dark Navy Squircle Background -->
+  <rect width="160" height="160" rx="36" fill="#0F172A" />
+
+  <!-- Top-Right Fresh Green Leaf -->
+  <path
+    d="M 94 38 C 93 21 105 11 121 11 C 122 27 110 38 94 38 Z"
+    fill="#10B981"
+  />
+
+  <!-- Upper Chopstick (Tapered left-to-right, angled slightly downward) -->
+  <path
+    d="M 24 29 C 21 29 20 38 24 39 L 136 50 C 138 50 138 46 136 45 Z"
+    fill="#2563EB"
+  />
+
+  <!-- Lower Chopstick (Tapered left-to-right, horizontal) -->
+  <path
+    d="M 22 46 C 19 46 19 56 23 56 L 135 60 C 137 60 137 56 135 55 Z"
+    fill="#2563EB"
+  />
+
+  <!-- Royal Blue Bowl Silhouette with Footed Base -->
+  <path
+    d="M 27 76 C 27 112 48 132 58 136 L 59 144 C 59 146 61 148 64 148 L 96 148 C 99 148 101 146 101 144 L 102 136 C 112 132 133 112 133 76 L 126 76 C 124 106 105 125 80 125 C 55 125 36 106 34 76 Z"
+    fill="#2563EB"
+  />
+
+  <!-- Dark Navy Outline Separation around Noodle M over Lower Chopstick -->
+  <path
+    d="M 52 114 L 55 82 C 56 68 70 68 72 82 L 75 104 C 76 112 83 112 84 104 L 90 60 C 92 43 107 43 108 60 L 111 114"
+    stroke="#0F172A"
+    stroke-width="18"
+    stroke-linecap="square"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  <!-- White Noodle "M" Monogram -->
+  <path
+    d="M 52 114 L 55 82 C 56 68 70 68 72 82 L 75 104 C 76 112 83 112 84 104 L 90 60 C 92 43 107 43 108 60 L 111 114"
+    stroke="#FFFFFF"
+    stroke-width="12.5"
+    stroke-linecap="butt"
+    stroke-linejoin="round"
+    fill="none"
+  />
 </svg>

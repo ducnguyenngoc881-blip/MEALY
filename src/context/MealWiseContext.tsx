@@ -93,6 +93,14 @@ interface MealWiseContextType {
   mealSets: VietnameseMealSet[];
   weeklyPlan: DailyMealPlan[];
   setWeeklyPlan: React.Dispatch<React.SetStateAction<DailyMealPlan[]>>;
+  activePlanScope: 'current' | 'next';
+  setActivePlanScope: (scope: 'current' | 'next') => void;
+  currentWeekPlan: DailyMealPlan[];
+  nextWeekPlan: DailyMealPlan[];
+  promoteNextWeekToCurrent: () => void;
+  previousWeeklyPlan: DailyMealPlan[] | null;
+  previousPlanSavedAt: string | null;
+  restorePreviousWeeklyPlan: (onlyWeekend?: boolean) => void;
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
   viewMode: ViewMode;
@@ -130,7 +138,7 @@ interface MealWiseContextType {
   removeMealFromSlot: (dayId: string, slot: MealSlot) => void;
   toggleSkipSlot: (dayId: string, slot: MealSlot, customNote?: string) => void;
   generationCount: number;
-  autoFillWeeklyMenu: (customPreferences?: OnboardingData, options?: { seed?: number; cycleIndex?: number }) => void;
+  autoFillWeeklyMenu: (customPreferences?: OnboardingData, options?: { seed?: number; cycleIndex?: number; preserveWeekend?: boolean }) => void;
   recalibrateDayMenu: (dayId: string) => boolean;
   recalibrateWeeklyMenu: () => void;
   clearWeeklyMenu: () => void;
@@ -1165,7 +1173,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   // Helper to build default weekly plan with authentic preset Mâm Cơm sets
-  const buildDefaultWeeklyPlan = (): DailyMealPlan[] => {
+  const buildDefaultWeeklyPlan = (customSeed?: number): DailyMealPlan[] => {
     const routine = onboardingData?.weekdayLunchRoutine || 'ban-tru-di-lam';
     const generated = generateBudgetCompliantWeeklyPlan({
       servings: 4,
@@ -1173,7 +1181,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       regionPreference: 'toan-quoc',
       specialNeeds: [],
       mealFormat: 'meal-set',
-      weekdayLunchRoutine: routine
+      weekdayLunchRoutine: routine,
+      seed: customSeed
     });
     return generated.map(d => ({
       dayId: d.dayId,
@@ -1189,8 +1198,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }));
   };
 
-  // Build weekly plan with localStorage persistence & hydration
-  const [weeklyPlan, setWeeklyPlan] = useState<DailyMealPlan[]>(() => {
+  const hasAnyMealsInPlan = (plan: DailyMealPlan[] | null | undefined): boolean => {
+    if (!Array.isArray(plan)) return false;
+    return plan.some(d => Boolean(d?.meals?.breakfast || d?.meals?.lunch || d?.meals?.dinner));
+  };
+
+  // Current Week Plan ('Tuần Này')
+  const [currentWeekPlan, setCurrentWeekPlan] = useState<DailyMealPlan[]>(() => {
     try {
       const saved = localStorage.getItem('mealwise_weekly_plan');
       if (saved) {
@@ -1205,18 +1219,162 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return buildDefaultWeeklyPlan();
   });
 
+  // Next Week Plan ('Tuần Sau') — allows weekend grocery shopping & planning without overwriting This Weekend
+  const [nextWeekPlan, setNextWeekPlan] = useState<DailyMealPlan[]>(() => {
+    try {
+      const saved = localStorage.getItem('mealwise_next_weekly_plan');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load mealwise_next_weekly_plan from localStorage', e);
+    }
+    return buildDefaultWeeklyPlan(77777);
+  });
+
+  // Active Plan Scope ('current' = Tuần Này, 'next' = Tuần Sau)
+  const [activePlanScope, setActivePlanScopeState] = useState<'current' | 'next'>(() => {
+    try {
+      const saved = localStorage.getItem('mealwise_active_plan_scope');
+      if (saved === 'next' || saved === 'current') return saved;
+    } catch {}
+    return 'current';
+  });
+
+  const setActivePlanScope = useCallback((scope: 'current' | 'next') => {
+    setActivePlanScopeState(scope);
+    try {
+      localStorage.setItem('mealwise_active_plan_scope', scope);
+    } catch {}
+  }, []);
+
+  // Previous Weekly Plan Snapshot (for 1-Tap Undo / Viewing This Weekend's Old Recipes)
+  const [previousWeeklyPlanState, setPreviousWeeklyPlanState] = useState<{
+    plan: DailyMealPlan[];
+    savedAt: string;
+  } | null>(() => {
+    try {
+      const saved = localStorage.getItem('mealwise_previous_weekly_plan');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.plan) && parsed.plan.length > 0) {
+          return parsed;
+        }
+      }
+    } catch {}
+    return null;
+  });
+
+  const savePlanSnapshot = useCallback((planToBackup: DailyMealPlan[]) => {
+    if (!hasAnyMealsInPlan(planToBackup)) return;
+    const now = new Date();
+    const savedAt = `${now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })} • ${now.toLocaleDateString('vi-VN')}`;
+    const snapshot = {
+      plan: JSON.parse(JSON.stringify(planToBackup)) as DailyMealPlan[],
+      savedAt
+    };
+    setPreviousWeeklyPlanState(snapshot);
+    try {
+      localStorage.setItem('mealwise_previous_weekly_plan', JSON.stringify(snapshot));
+    } catch {}
+  }, []);
+
+  const previousWeeklyPlan = previousWeeklyPlanState?.plan || null;
+  const previousPlanSavedAt = previousWeeklyPlanState?.savedAt || null;
+
+  // Unified weeklyPlan & setWeeklyPlan that delegate to the active scope ('current' vs 'next')
+  const weeklyPlan = activePlanScope === 'next' ? nextWeekPlan : currentWeekPlan;
+
+  const setWeeklyPlan: React.Dispatch<React.SetStateAction<DailyMealPlan[]>> = useCallback((action) => {
+    if (activePlanScope === 'next') {
+      setNextWeekPlan(action);
+    } else {
+      setCurrentWeekPlan(action);
+    }
+  }, [activePlanScope]);
+
+  const restorePreviousWeeklyPlan = useCallback((onlyWeekend?: boolean) => {
+    if (!previousWeeklyPlanState?.plan || previousWeeklyPlanState.plan.length === 0) return;
+    const backup = previousWeeklyPlanState.plan;
+
+    if (onlyWeekend) {
+      const satBackup = backup.find(d => d.dayId === 'sat');
+      const sunBackup = backup.find(d => d.dayId === 'sun');
+      setWeeklyPlan(prev => prev.map(d => {
+        if (d.dayId === 'sat' && satBackup) return JSON.parse(JSON.stringify(satBackup));
+        if (d.dayId === 'sun' && sunBackup) return JSON.parse(JSON.stringify(sunBackup));
+        return d;
+      }));
+      showToast('🎉 Đã khôi phục thực đơn Thứ Bảy & Chủ Nhật từ bản lưu vừa rồi!');
+    } else {
+      const restored = JSON.parse(JSON.stringify(backup)) as DailyMealPlan[];
+      setWeeklyPlan(restored);
+      showToast('🎉 Đã khôi phục lại toàn bộ thực đơn 7 ngày vừa rồi!');
+    }
+  }, [previousWeeklyPlanState, setWeeklyPlan, showToast]);
+
+  // Promote Next Week Plan ('Tuần Sau') into Current Week Plan ('Tuần Này')
+  const promoteNextWeekToCurrent = useCallback(() => {
+    if (hasAnyMealsInPlan(currentWeekPlan)) {
+      savePlanSnapshot(currentWeekPlan);
+    }
+    const promoted = JSON.parse(JSON.stringify(nextWeekPlan)) as DailyMealPlan[];
+    setCurrentWeekPlan(promoted);
+    const freshNext = buildDefaultWeeklyPlan(Date.now() + 99999);
+    setNextWeekPlan(freshNext);
+    setActivePlanScope('current');
+    try {
+      localStorage.setItem('mealwise_weekly_plan', JSON.stringify(promoted));
+      localStorage.setItem('mealwise_next_weekly_plan', JSON.stringify(freshNext));
+    } catch {}
+    showToast('🎉 Đã chuyển thực đơn Tuần Sau sang Tuần Này (Thực đơn cũ đã được lưu vào Thực Đơn Cũ)!');
+  }, [currentWeekPlan, nextWeekPlan, savePlanSnapshot, setActivePlanScope]);
+
+  // Auto-Rollover on Monday: When a new calendar week starts on Monday and user was on 'next' scope, promote automatically
   useEffect(() => {
     try {
-      localStorage.setItem('mealwise_weekly_plan', JSON.stringify(weeklyPlan));
+      const now = new Date();
+      const day = now.getDay(); // 1 = Monday
+      const diffToMonday = day === 0 ? -6 : 1 - day;
+      const monday = new Date(now);
+      monday.setDate(now.getDate() + diffToMonday);
+      const mondayKey = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+      const lastMondayKey = localStorage.getItem('mealwise_current_week_monday');
+
+      if (lastMondayKey && lastMondayKey !== mondayKey && activePlanScope === 'next' && hasAnyMealsInPlan(nextWeekPlan)) {
+        if (hasAnyMealsInPlan(currentWeekPlan)) {
+          savePlanSnapshot(currentWeekPlan);
+        }
+        setCurrentWeekPlan(nextWeekPlan);
+        setActivePlanScope('current');
+      }
+      localStorage.setItem('mealwise_current_week_monday', mondayKey);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('mealwise_weekly_plan', JSON.stringify(currentWeekPlan));
       if (user?.id) {
-        saveUserPartition(user.id, { weeklyPlan: weeklyPlan as any });
+        saveUserPartition(user.id, { weeklyPlan: currentWeekPlan as any });
       } else {
-        saveGuestPartition({ weeklyPlan: weeklyPlan as any });
+        saveGuestPartition({ weeklyPlan: currentWeekPlan as any });
       }
     } catch (e) {
       console.error('Failed to persist mealwise_weekly_plan to localStorage', e);
     }
-  }, [weeklyPlan, user?.id]);
+  }, [currentWeekPlan, user?.id]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('mealwise_next_weekly_plan', JSON.stringify(nextWeekPlan));
+    } catch (e) {
+      console.error('Failed to persist mealwise_next_weekly_plan to localStorage', e);
+    }
+  }, [nextWeekPlan]);
 
   // Reconcile existing stored weekly plan with user weekday lunch routine
   useEffect(() => {
@@ -1225,7 +1383,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (!isSkipRoutine) return;
     const noteText = routine === 'hop-com-van-phong' ? 'Mang cơm hộp văn phòng' : 'Con học bán trú • Bố mẹ ăn ngoài';
 
-    setWeeklyPlan(prev => {
+    const applySkipRoutine = (prev: DailyMealPlan[]) => {
       let changed = false;
       const nextPlan = prev.map(day => {
         const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(day.dayId);
@@ -1241,14 +1399,17 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return day;
       });
       return changed ? nextPlan : prev;
-    });
+    };
+
+    setCurrentWeekPlan(applySkipRoutine);
+    setNextWeekPlan(applySkipRoutine);
   }, [onboardingData?.weekdayLunchRoutine]);
 
   const loginUser = useCallback((profile: { name: string; email: string }, isNewRegistration?: boolean) => {
     const rawEmail = profile.email.trim();
     const emailLower = rawEmail.toLowerCase();
     const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
-    const defaultDisplayName = isAdmin ? 'MealWise Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên MealWise');
+    const defaultDisplayName = isAdmin ? 'Mealy Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên Mealy');
     const displayName = profile.name.trim() || defaultDisplayName;
 
     const isNew = Boolean(isNewRegistration);
@@ -1346,7 +1507,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (migrated) {
       showToast(`🎉 Chào mừng ${displayName}! Đã giữ lại thực đơn tuần và tủ lạnh từ phiên dùng thử!`);
     } else {
-      showToast(isNew ? `🎉 Chào mừng ${displayName} gia nhập MealWise!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
+      showToast(isNew ? `🎉 Chào mừng ${displayName} gia nhập Mealy!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
     }
   }, [weeklyPlan, pantryItems, showToast]);
 
@@ -2281,6 +2442,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       let otherSlotsScaledCost = 0;
       (Object.keys(day.meals) as MealSlot[]).forEach(s => {
         if (s === slot) return;
+        const m = day.meals[s];
         const isUserSkipLunch = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
         const isBantruLunch = s === 'lunch' && Boolean(day.skippedSlots?.lunch ?? (isUserSkipLunch && ['mon','tue','wed','thu','fri'].includes(day.dayId)));
         if (m && !day.skippedSlots?.[s] && !isBantruLunch) {
@@ -2440,8 +2602,11 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const autoFillWeeklyMenu = (
     customPreferences?: OnboardingData,
-    options?: { seed?: number; cycleIndex?: number }
+    options?: { seed?: number; cycleIndex?: number; preserveWeekend?: boolean }
   ) => {
+    // Save snapshot of current plan before overwriting (for 1-tap undo & weekend recipe viewing)
+    savePlanSnapshot(weeklyPlan);
+
     const nextCount = (options?.cycleIndex ?? generationCount) + 1;
     setGenerationCount(nextCount);
 
@@ -2489,7 +2654,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       previousPlanSlotIds
     });
 
-    const suggestedPlan: DailyMealPlan[] = generatedDays.map(d => ({
+    let suggestedPlan: DailyMealPlan[] = generatedDays.map(d => ({
       dayId: d.dayId,
       dayName: d.dayName,
       meals: {
@@ -2554,10 +2719,26 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
     }
 
+    // If preserveWeekend is enabled, keep existing Saturday ('sat') and Sunday ('sun') meals untouched
+    if (options?.preserveWeekend && Array.isArray(weeklyPlan)) {
+      const existingSat = weeklyPlan.find(d => d.dayId === 'sat');
+      const existingSun = weeklyPlan.find(d => d.dayId === 'sun');
+      suggestedPlan = suggestedPlan.map(d => {
+        if (d.dayId === 'sat' && existingSat && (existingSat.meals.breakfast || existingSat.meals.lunch || existingSat.meals.dinner)) {
+          return JSON.parse(JSON.stringify(existingSat));
+        }
+        if (d.dayId === 'sun' && existingSun && (existingSun.meals.breakfast || existingSun.meals.lunch || existingSun.meals.dinner)) {
+          return JSON.parse(JSON.stringify(existingSun));
+        }
+        return d;
+      });
+    }
+
     setWeeklyPlan(suggestedPlan);
     setIsWeeklyShoppingCompleted(false);
     try {
-      localStorage.setItem('mealwise_weekly_plan', JSON.stringify(suggestedPlan));
+      const storageKey = activePlanScope === 'next' ? 'mealwise_next_weekly_plan' : 'mealwise_weekly_plan';
+      localStorage.setItem(storageKey, JSON.stringify(suggestedPlan));
       localStorage.removeItem('mealwise_weekly_shopping_completed');
       localStorage.removeItem('mealwise_deleted_grocery_items');
     } catch (e) {
@@ -2568,7 +2749,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const isEatClean = specialNeeds.includes('eat-clean');
     const isChay = specialNeeds.includes('chay');
 
-    if (isGym) {
+    if (options?.preserveWeekend) {
+      showToast('📌 Đã đổi mới Thứ 2 → Thứ 6 và giữ nguyên thực đơn Thứ 7 & Chủ Nhật!');
+    } else if (isGym) {
       showToast(`🏋️ Đã tạo thực đơn 7 ngày Giàu Đạm chuẩn Gym cho ${safeServings} người (chuẩn ngân sách)!`);
     } else if (isEatClean) {
       showToast(`🥗 Đã tạo thực đơn 7 ngày Eat Clean thanh lành & kiểm soát calo cho ${safeServings} người (chuẩn ngân sách)!`);
@@ -2587,6 +2770,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const clearWeeklyMenu = () => {
+    savePlanSnapshot(weeklyPlan);
     const emptyPlan = INITIAL_DAYS.map(d => ({
       dayId: d.dayId,
       dayName: d.dayName,
@@ -2595,21 +2779,24 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setWeeklyPlan(emptyPlan);
     setIsWeeklyShoppingCompleted(false);
     try {
-      localStorage.setItem('mealwise_weekly_plan', JSON.stringify(emptyPlan));
+      const storageKey = activePlanScope === 'next' ? 'mealwise_next_weekly_plan' : 'mealwise_weekly_plan';
+      localStorage.setItem(storageKey, JSON.stringify(emptyPlan));
       localStorage.removeItem('mealwise_weekly_shopping_completed');
       localStorage.removeItem('mealwise_deleted_grocery_items');
     } catch (e) {
       console.error('Failed to clear mealwise_weekly_plan in localStorage', e);
     }
-    showToast('🧹 Đã xóa toàn bộ thực đơn tuần.');
+    showToast('🧹 Đã xóa thực đơn (Đã lưu bản sao trong Thực Đơn Cũ để xem lại bất kỳ lúc nào).');
   };
 
   const resetWeeklyMenu = () => {
+    savePlanSnapshot(weeklyPlan);
     const defaults = buildDefaultWeeklyPlan();
     setWeeklyPlan(defaults);
     setIsWeeklyShoppingCompleted(false);
     try {
-      localStorage.setItem('mealwise_weekly_plan', JSON.stringify(defaults));
+      const storageKey = activePlanScope === 'next' ? 'mealwise_next_weekly_plan' : 'mealwise_weekly_plan';
+      localStorage.setItem(storageKey, JSON.stringify(defaults));
       localStorage.removeItem('mealwise_weekly_shopping_completed');
       localStorage.removeItem('mealwise_deleted_grocery_items');
     } catch (e) {
@@ -2945,6 +3132,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const recalibrateWeeklyMenu = () => {
+    savePlanSnapshot(weeklyPlan);
     const safeServings = Number.isFinite(servings) && servings > 0 
       ? Math.min(20, Math.max(1, Math.round(servings))) 
       : (onboardingData?.familySize || 4);
@@ -3002,7 +3190,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     setWeeklyPlan(updatedPlan);
     try {
-      localStorage.setItem('mealwise_weekly_plan', JSON.stringify(updatedPlan));
+      const storageKey = activePlanScope === 'next' ? 'mealwise_next_weekly_plan' : 'mealwise_weekly_plan';
+      localStorage.setItem(storageKey, JSON.stringify(updatedPlan));
     } catch {}
 
     const dailyBudgetTarget = getDailyBudgetTarget(budgetLevel, safeServings, onboardingData?.specialNeeds);
@@ -3027,6 +3216,14 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         mealSets,
         weeklyPlan,
         setWeeklyPlan,
+        activePlanScope,
+        setActivePlanScope,
+        currentWeekPlan,
+        nextWeekPlan,
+        promoteNextWeekToCurrent,
+        previousWeeklyPlan,
+        previousPlanSavedAt,
+        restorePreviousWeeklyPlan,
         activeTab,
         setActiveTab,
         viewMode,
@@ -3194,6 +3391,14 @@ const getSafeFallbackMealWiseContext = (): MealWiseContextType => {
     mealSets: mockMealSets,
     weeklyPlan: defaultWeeklyPlan,
     setWeeklyPlan: () => {},
+    activePlanScope: 'current',
+    setActivePlanScope: () => {},
+    currentWeekPlan: defaultWeeklyPlan,
+    nextWeekPlan: defaultWeeklyPlan,
+    promoteNextWeekToCurrent: () => {},
+    previousWeeklyPlan: null,
+    previousPlanSavedAt: null,
+    restorePreviousWeeklyPlan: () => {},
     activeTab: 'meal-sets',
     setActiveTab: () => {},
     viewMode: 'mobile',

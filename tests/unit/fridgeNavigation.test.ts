@@ -581,6 +581,40 @@ describe('Unit: Smart Fridge & Leftover Navigation (User Priority Feature)', () 
     expect(testIsWeekend(4)).toBe(false); // Thursday
     expect(testIsWeekend(5)).toBe(false); // Friday
   });
+
+  it('FRIDGE-22: Multi-week switcher (Tuần Này / Chuẩn Bị Tuần Sau), Weekend Pin Protection (preserveWeekend), and Previous Plan Snapshot Restore', () => {
+    const contextPath = path.resolve(process.cwd(), 'src/context/MealWiseContext.tsx');
+    const weeklyBoardPath = path.resolve(process.cwd(), 'src/components/WeeklyBoard.tsx');
+    const groceryListPath = path.resolve(process.cwd(), 'src/components/GroceryList.tsx');
+
+    const contextCode = fs.readFileSync(contextPath, 'utf-8');
+    const weeklyBoardCode = fs.readFileSync(weeklyBoardPath, 'utf-8');
+    const groceryListCode = fs.readFileSync(groceryListPath, 'utf-8');
+
+    // 1. Multi-week scope (Tuần Này vs Tuần Sau) & Monday auto-rollover
+    expect(contextCode).toContain("activePlanScope: 'current' | 'next'");
+    expect(contextCode).toContain('promoteNextWeekToCurrent');
+    expect(contextCode).toContain('mealwise_next_weekly_plan');
+    expect(weeklyBoardCode).toContain('📅 Tuần Này');
+    expect(weeklyBoardCode).toContain('🛒 Tuần Sau');
+    expect(groceryListCode).toContain('📅 Giỏ Tuần Này');
+    expect(groceryListCode).toContain('🛒 Giỏ Tuần Sau');
+
+    // 2. Smart Weekend Protection (preserveWeekend keeps sat & sun untouched)
+    expect(contextCode).toContain('preserveWeekend?: boolean');
+    expect(contextCode).toContain("if (options?.preserveWeekend)");
+    expect(contextCode).toContain("d.dayId === 'sat' && existingSat");
+    expect(contextCode).toContain("d.dayId === 'sun' && existingSun");
+    expect(weeklyBoardCode).toContain('keepWeekendLocked');
+    expect(weeklyBoardCode).toContain('autoFillWeeklyMenu(undefined, { preserveWeekend: shouldPreserveWeekend })');
+
+    // 3. 1-Tap Previous Plan Snapshot Viewer & Restore (Weekend only or full 7 days)
+    expect(contextCode).toContain('previousWeeklyPlan');
+    expect(contextCode).toContain('restorePreviousWeeklyPlan');
+    expect(weeklyBoardCode).toContain('Thực Đơn Cũ');
+    expect(weeklyBoardCode).toContain('restorePreviousWeeklyPlan(true)');
+    expect(weeklyBoardCode).toContain('restorePreviousWeeklyPlan(false)');
+  });
 });
 
 

@@ -506,7 +506,7 @@ export function generateZaloShoppingText(
     }
   });
 
-  text += "\n✨ Xuất tự động từ MealWise — Trợ Lý Đi Chợ Mâm Cơm Việt";
+  text += "\n✨ Xuất tự động từ Mealy — Trợ Lý Đi Chợ Mâm Cơm Việt";
   return text;
 }
 
@@ -534,6 +534,8 @@ export const COMMON_PANTRY_SPICES: CommonPantrySpice[] = [
 export const GroceryList: React.FC = () => {
   const { 
     weeklyPlan, 
+    activePlanScope,
+    setActivePlanScope,
     servings,
     onboardingData,
     extraGroceryItems, 
@@ -1271,7 +1273,7 @@ export const GroceryList: React.FC = () => {
     if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
       try {
         await navigator.share({
-          title: 'Danh sách đi chợ MealWise',
+          title: 'Danh sách đi chợ Mealy',
           text: text
         });
         setCopied(true);
@@ -1506,6 +1508,31 @@ export const GroceryList: React.FC = () => {
                   <span>🧊 Có sẵn: {inFridge.quantity}</span>
                 </span>
               )}
+
+              {/dầu\s*(ô\s*liu|ô-liu|oliu|olive)/i.test(item.name || '') && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleToggle(item);
+                    if (!isChecked) {
+                      showToast('🔄 Đã đánh dấu dùng Dầu ăn có sẵn trong bếp thay thế tương đương cho Dầu ô liu!');
+                    }
+                  }}
+                  className={`inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-md border transition-colors cursor-pointer shrink-0 ${
+                    isChecked
+                      ? 'bg-emerald-100/90 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
+                      : 'bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border-amber-300/80 dark:border-amber-700/70'
+                  }`}
+                  title="Dầu ô liu không phổ biến ở mọi gia đình, có thể dùng Dầu ăn thông thường để thay thế tương đương"
+                >
+                  <span>
+                    {isChecked
+                      ? '🧂 Đã thay bằng Dầu ăn có sẵn'
+                      : '🔄 Thay tương đương: Dùng Dầu ăn có sẵn'}
+                  </span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -1603,7 +1630,7 @@ export const GroceryList: React.FC = () => {
                 </span>
               </div>
               <p className="text-[11px] text-stone-600 dark:text-stone-400 mt-0.5 leading-snug">
-                Bạn đang xem & cùng tích chọn mua chung. Để tự động lên thực đơn 7 ngày, mâm cơm 3 món & quản lý tủ lạnh, hãy cài app MealWise.
+                Bạn đang xem & cùng tích chọn mua chung. Để tự động lên thực đơn 7 ngày, mâm cơm 3 món & quản lý tủ lạnh, hãy cài app Mealy.
               </p>
             </div>
           </div>
@@ -1613,20 +1640,46 @@ export const GroceryList: React.FC = () => {
             className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer self-start sm:self-auto"
           >
             <Smartphone className="w-3.5 h-3.5" />
-            <span>Tải App MealWise</span>
+            <span>Tải App Mealy</span>
           </button>
         </div>
       )}
 
       {/* Header Banner */}
       <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
-        <div>
-          <h1 className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
-            Danh Sách Đi Chợ Thông Minh
-          </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
-            Tự động gộp nguyên liệu trùng lặp, chuẩn hóa đơn vị và phân luồng theo quầy mua sắm tối ưu.
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h1 className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
+              Danh Sách Đi Chợ Thông Minh
+            </h1>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
+              Tự động gộp nguyên liệu trùng lặp, chuẩn hóa đơn vị và phân luồng theo quầy mua sắm tối ưu.
+            </p>
+          </div>
+          <div className="inline-flex items-center p-0.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0">
+            <button
+              type="button"
+              onClick={() => setActivePlanScope('current')}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-black transition-all cursor-pointer ${
+                activePlanScope === 'current'
+                  ? 'bg-white dark:bg-slate-900 text-[#1D4ED8] dark:text-blue-400 shadow-2xs'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+              }`}
+            >
+              📅 Giỏ Tuần Này
+            </button>
+            <button
+              type="button"
+              onClick={() => setActivePlanScope('next')}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-black transition-all cursor-pointer ${
+                activePlanScope === 'next'
+                  ? 'bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-2xs'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+              }`}
+            >
+              🛒 Giỏ Tuần Sau
+            </button>
+          </div>
         </div>
 
         {/* Compact 1-Tap Pantry Spices Strip (Zero Vertical Expansion) */}
@@ -1845,7 +1898,7 @@ export const GroceryList: React.FC = () => {
           <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-[11px] text-amber-900 dark:text-amber-200 flex items-center gap-2">
             <Gift className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
             <span>
-              💡 <strong>Mẹo tiết kiệm MealWise:</strong> Đi chợ dân sinh cho thịt cá tươi, và đặt Bách Hóa Xanh/WinMart cho gia vị đồ khô để vừa tươi ngon vừa tiết kiệm tối đa!
+              💡 <strong>Mẹo tiết kiệm Mealy:</strong> Đi chợ dân sinh cho thịt cá tươi, và đặt Bách Hóa Xanh/WinMart cho gia vị đồ khô để vừa tươi ngon vừa tiết kiệm tối đa!
             </span>
           </div>
         </div>

@@ -24,7 +24,7 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     cardPlacement: 'below',
     badge: 'Bước 1 / 8 • Thực Đơn Tuần',
     title: 'Gợi Ý Thực Đơn 1-Click Cả Tuần',
-    description: 'MealWise tự động lên thực đơn 7 ngày chuẩn dinh dưỡng và ngân sách. Bấm "Gợi ý 1-click" để đổi mới toàn bộ 21 bữa ăn bất cứ lúc nào!',
+    description: 'Mealy tự động lên thực đơn 7 ngày chuẩn dinh dưỡng và ngân sách. Bấm "Gợi ý 1-click" để đổi mới toàn bộ 21 bữa ăn bất cứ lúc nào!',
     tip: 'Chi phí và calo được tự động tính toán chuẩn theo số người ăn.'
   },
   {
@@ -101,7 +101,7 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     cardPlacement: 'below',
     badge: 'Bước 8 / 8 • Tủ Lạnh Thông Minh',
     title: 'Phân Loại 3 Ngăn & Nấu Tận Dụng Đồ Thừa',
-    description: 'Thực phẩm được tự động phân vào 3 ngăn (Đông, Mát, Rau củ). MealWise sẽ nhắc bạn ăn đồ sắp hết hạn và gợi ý nấu đồ thừa không lãng phí!',
+    description: 'Thực phẩm được tự động phân vào 3 ngăn (Đông, Mát, Rau củ). Mealy sẽ nhắc bạn ăn đồ sắp hết hạn và gợi ý nấu đồ thừa không lãng phí!',
     tip: 'Bấm vào món đồ thừa để xem công thức biến tấu bữa ăn siêu ngon.'
   }
 ];
@@ -302,7 +302,7 @@ export const InteractiveTutorialModal: React.FC = () => {
     if (isSkipped) {
       showToast('Đã đóng hướng dẫn. Bạn có thể xem lại bất kỳ lúc nào tại mục Tài Khoản.');
     } else {
-      showToast('🎉 Chúc mừng bạn đã hoàn thành hướng dẫn cơ bản của MealWise!');
+      showToast('🎉 Chúc mừng bạn đã hoàn thành hướng dẫn cơ bản của Mealy!');
     }
   }, [user, setIsTutorialOpen, setActiveTab, showToast]);
 

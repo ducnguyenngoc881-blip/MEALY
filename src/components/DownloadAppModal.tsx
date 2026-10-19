@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Apple
 } from 'lucide-react';
+import { MealyLogoMark } from './icons/MealWiseLogo';
 
 export const DownloadAppModal: React.FC = () => {
   const { 
@@ -34,7 +35,7 @@ export const DownloadAppModal: React.FC = () => {
     // Programmatically trigger download of MealWise.apk
     const link = document.createElement('a');
     link.href = '/MealWise.apk';
-    link.download = 'MealWise.apk';
+    link.download = 'Mealy.apk';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -55,13 +56,13 @@ export const DownloadAppModal: React.FC = () => {
         {/* Header */}
         <div className="flex items-start justify-between gap-3 pb-3 border-b border-stone-100 dark:border-stone-800">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-xs">
-              <Smartphone className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-2xl bg-[#0F172A] border border-slate-800 flex items-center justify-center shrink-0 shadow-xs overflow-hidden">
+              <MealyLogoMark className="w-10 h-10" />
             </div>
             <div>
               <div className="flex items-center gap-1.5 flex-wrap">
                 <h3 className="text-base font-black text-stone-900 dark:text-white leading-tight">
-                  Tải Ứng Dụng MealWise
+                  Tải Ứng Dụng Mealy
                 </h3>
                 <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
                   Mobile App
@@ -94,14 +95,14 @@ export const DownloadAppModal: React.FC = () => {
             <strong className="underline decoration-amber-500 underline-offset-2">
               {downloadAppFeatureName || 'Lên Thực Đơn & Tủ Lạnh Thông Minh'}
             </strong>{' '}
-            được thiết kế và tối ưu độc quyền trên Ứng dụng điện thoại MealWise.
+            được thiết kế và tối ưu độc quyền trên Ứng dụng điện thoại Mealy.
           </p>
         </div>
 
         {/* What You Get in the Mobile App */}
         <div className="space-y-2">
           <p className="text-[11px] font-black uppercase tracking-wider text-stone-500 dark:text-stone-400">
-            Có gì trong ứng dụng MealWise?
+            Có gì trong ứng dụng Mealy?
           </p>
 
           <div className="grid grid-cols-2 gap-2">
@@ -186,7 +187,7 @@ export const DownloadAppModal: React.FC = () => {
                 className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 active:scale-95 transition-all cursor-pointer"
               >
                 <Download className="w-4 h-4" />
-                <span>{downloadStarted ? '✓ Đang tải file cài đặt...' : 'Tải File Cài Đặt Android (MealWise.apk)'}</span>
+                <span>{downloadStarted ? '✓ Đang tải file cài đặt...' : 'Tải File Cài Đặt Android (Mealy.apk)'}</span>
               </button>
 
               <div className="flex items-center justify-center gap-3 text-[10.5px] text-stone-500 dark:text-stone-400">
@@ -211,7 +212,7 @@ export const DownloadAppModal: React.FC = () => {
                 <li>Mở liên kết này trong trình duyệt <strong>Safari</strong> trên iPhone.</li>
                 <li>Bấm vào biểu tượng <strong>Chia sẻ 📤</strong> ở thanh công cụ dưới cùng.</li>
                 <li>Cuộn xuống và chọn <strong>&quot;Thêm vào Màn hình chính&quot; ➕</strong>.</li>
-                <li>Biểu tượng <strong>MealWise</strong> sẽ xuất hiện trên màn hình iPhone và hoạt động mượt mà như một ứng dụng gốc!</li>
+                <li>Biểu tượng <strong>Mealy</strong> sẽ xuất hiện trên màn hình iPhone và hoạt động mượt mà như một ứng dụng gốc!</li>
               </ol>
             </div>
           )}

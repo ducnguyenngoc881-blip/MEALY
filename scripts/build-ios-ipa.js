@@ -61,7 +61,7 @@ infoPlist = infoPlist
   .replace(/\$\(CAPACITOR_DEBUG\)/g, 'false')
   .replace(/\$\(EXECUTABLE_NAME\)/g, 'App')
   .replace(/\$\(PRODUCT_BUNDLE_IDENTIFIER\)/g, 'com.mealwise.app')
-  .replace(/\$\(PRODUCT_NAME\)/g, 'MealWise')
+  .replace(/\$\(PRODUCT_NAME\)/g, 'Mealy')
   .replace(/\$\(MARKETING_VERSION\)/g, '2.0.0')
   .replace(/\$\(CURRENT_PROJECT_VERSION\)/g, '1')
   .replace(/\$\(PRODUCT_MODULE_NAME\)/g, 'App');

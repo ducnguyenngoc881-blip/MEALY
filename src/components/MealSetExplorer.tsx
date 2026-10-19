@@ -363,7 +363,7 @@ export const MealSetExplorer: React.FC = () => {
               onClick={openWelcomeModal}
               data-testid="hero-open-welcome-btn"
               className="px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/60 dark:hover:bg-blue-900/70 text-[#1D4ED8] dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/60 text-[11px] font-extrabold inline-flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0"
-              title="Xem giới thiệu MealWise"
+              title="Xem giới thiệu Mealy"
             >
               <Sparkles className="w-3.5 h-3.5 shrink-0" />
               <span>Giới Thiệu</span>

@@ -11,6 +11,7 @@ import {
   Check,
   Users
 } from 'lucide-react';
+import { MealyLogoMark } from './icons/MealWiseLogo';
 
 interface WelcomeSlide {
   id: number;
@@ -24,7 +25,7 @@ interface WelcomeSlide {
 const WELCOME_SLIDES: WelcomeSlide[] = [
   {
     id: 1,
-    tag: 'Chào Mừng Đến Với MealWise',
+    tag: 'Chào Mừng Đến Với Mealy',
     titlePrefix: 'Hết Đau Đầu Nghĩ ',
     titleHighlight: '"Hôm Nay Ăn Gì?"',
     subtitle: 'Gợi ý mâm cơm 3 món Mặn • Canh • Rau cân bằng dinh dưỡng từ hơn 2.200 món ngon mỗi ngày.'
@@ -205,11 +206,11 @@ export const WelcomeOnboardingModal: React.FC<WelcomeOnboardingModalProps> = ({
 
         {/* Floating Top-Left Brand Pill */}
         <div className="absolute top-4 left-4 z-30 inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border border-slate-200/70 dark:border-slate-700/70 shadow-sm">
-          <span className="w-6 h-6 rounded-full bg-[#1D4ED8] text-white flex items-center justify-center shrink-0">
-            <UtensilsCrossed className="w-3.5 h-3.5 stroke-[2.25]" />
+          <span className="w-6 h-6 rounded-lg bg-[#0F172A] flex items-center justify-center shrink-0 overflow-hidden">
+            <MealyLogoMark className="w-5 h-5" />
           </span>
           <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white">
-            MealWise
+            Mealy
           </span>
         </div>
 

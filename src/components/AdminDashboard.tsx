@@ -35,6 +35,7 @@ import {
   LayoutDashboard,
   Globe
 } from 'lucide-react';
+import { MealyLogoMark } from './icons/MealWiseLogo';
 import { 
   TelemetryEvent, 
   ActiveSession, 
@@ -354,17 +355,17 @@ export const AdminDashboard: React.FC = () => {
           {/* Brand Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-stone-950 font-black shadow-lg shadow-amber-500/20">
-                <UtensilsCrossed className="w-5 h-5 text-stone-950" />
+              <div className="w-10 h-10 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-900/20 shrink-0">
+                <MealyLogoMark className="w-10 h-10" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-black text-white text-base tracking-tight">MealWise</span>
+                  <span className="font-black text-white text-base tracking-tight">Mealy</span>
                   <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] font-black uppercase tracking-wider">
                     Cloud
                   </span>
                 </div>
-                <p className="text-[11px] text-stone-400 font-mono">Desktop Web Portal</p>
+                <p className="text-[11px] text-stone-400 font-mono">Website Quản Trị</p>
               </div>
             </div>
 
@@ -562,7 +563,7 @@ export const AdminDashboard: React.FC = () => {
         {/* Sticky Desktop Top Header */}
         <header className="h-16 px-6 lg:px-8 border-b border-stone-800 bg-[#121110]/90 backdrop-blur-md flex items-center justify-between sticky top-0 z-20">
           <div className="flex items-center gap-2 text-xs">
-            <span className="text-stone-400 font-medium">MealWise Cloud</span>
+            <span className="text-stone-400 font-medium">Mealy Cloud</span>
             <span className="text-stone-400">/</span>
             <span className="text-amber-400 font-bold capitalize">
               {adminTab === 'overview' && 'Tổng Quan'}
@@ -1635,7 +1636,7 @@ export const AdminDashboard: React.FC = () => {
                   Sổ Bộ Tài Khoản Thành Viên
                 </h3>
                 <p className="text-xs text-stone-400 mt-0.5">
-                  Danh sách tài khoản đã đăng ký và lưu trữ trong hệ thống MealWise.
+                  Danh sách tài khoản đã đăng ký và lưu trữ trong hệ thống Mealy.
                 </p>
               </div>
               <span className="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-mono font-bold">

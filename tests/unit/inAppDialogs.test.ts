@@ -82,7 +82,7 @@ describe('Unit: In-App Confirmation Modal & Dialog Shield (Zero Chrome Popups)',
     const weeklyBoardPath = path.join(componentsDir, 'WeeklyBoard.tsx');
     const content = fs.readFileSync(weeklyBoardPath, 'utf-8');
     expect(content.includes('openConfirmModal')).toBe(true);
-    expect(content.includes('Xóa Thực Đơn Tuần')).toBe(true);
+    expect(content.includes('Thực Đơn Đang Khóa An Toàn')).toBe(true);
   });
 
   it('DIALOG-10: Main entry point installs Dialog Shield to block native popups', () => {

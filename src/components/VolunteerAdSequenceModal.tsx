@@ -380,7 +380,7 @@ export const VolunteerAdSequenceModal: React.FC<VolunteerAdSequenceModalProps> =
               <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
                 {completionSubtitle || (singleAdMode
                   ? 'Bạn đã hoàn tất tất cả các bước chế biến món ăn và xem quảng cáo tài trợ. Chúc bạn và gia đình có một bữa cơm thơm ngon tròn vị!'
-                  : 'Bạn đã hoàn thành 3 video ngắn. Sự ủng hộ của bạn giúp MealWise tiếp tục duy trì và phát triển!')}
+                  : 'Bạn đã hoàn thành 3 video ngắn. Sự ủng hộ của bạn giúp Mealy tiếp tục duy trì và phát triển!')}
               </p>
             </div>
 
