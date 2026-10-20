@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: mealy-api-server
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node server-production.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5173
+      - key: BREVO_API_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false

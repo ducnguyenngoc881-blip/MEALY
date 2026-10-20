@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.mealwise.app',
+  appId: 'vn.greenfi.mealy',
   appName: 'Mealy',
   webDir: 'dist'
 };

@@ -337,6 +337,9 @@ export interface RegisteredUser {
   lastLoginAt?: string;
   role?: 'user' | 'admin';
   onboardingCompleted?: boolean;
+  passwordHash?: string;
+  otpVerified?: boolean;
+  otpVerifiedAt?: string;
 }
 
 export interface GuestUserSession {

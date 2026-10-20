@@ -829,6 +829,24 @@ export const WeeklyBoard: React.FC = () => {
               </h1>
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (!isRegistered) {
+                openAuthModal('register');
+                return;
+              }
+              setShowOnboarding(true);
+            }}
+            title={isRegistered ? 'Đổi mục tiêu' : 'Đổi mục tiêu 🔒'}
+            aria-label={isRegistered ? 'Đổi mục tiêu' : 'Đổi mục tiêu 🔒'}
+            className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-[11px] font-bold flex items-center gap-1 shrink-0 transition-all active:scale-95 cursor-pointer"
+          >
+            <Users className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
+            <span>{safeServings} người</span>
+            {!isRegistered && <Lock className="w-3 h-3 text-amber-500 shrink-0" />}
+          </button>
         </div>
 
         {/* 2. Body: Multi-Week Switcher & Weekly Budget Telemetry Sub-Card + Action Row */}

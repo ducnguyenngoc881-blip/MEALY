@@ -30,6 +30,10 @@ import {
   WholeFridgeSuggestionResult
 } from '../utils/fridgeMatcher';
 import { normalizeSearchString, matchesFoodSearch } from '../utils/textUtils';
+import {
+  lookupProductByBarcodeOrName,
+  VIETNAMESE_SUPERMARKET_BARCODES
+} from '../services/freePublicApis';
 
 export interface PresetPantrySuggestion {
   name: string;
@@ -563,6 +567,37 @@ export const FridgeView: React.FC = () => {
   const [discountVnd, setDiscountVnd] = useState<number>(20000);
   const [nameError, setNameError] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [barcodeQuery, setBarcodeQuery] = useState('');
+  const [isLookingUpBarcode, setIsLookingUpBarcode] = useState(false);
+
+  const handleBarcodeLookup = async (customQuery?: string) => {
+    const q = (customQuery ?? barcodeQuery).trim();
+    if (!q) {
+      showToast('⚠️ Vui lòng nhập mã vạch (VD: 893...) hoặc tên sản phẩm để tra cứu!', 'warning');
+      return;
+    }
+    setIsLookingUpBarcode(true);
+    try {
+      const found = await lookupProductByBarcodeOrName(q);
+      if (found) {
+        setName(found.name);
+        setCategory(found.category);
+        setCompartment(found.compartment);
+        setQuantity(found.quantity);
+        setDaysLeft(found.daysLeft);
+        setIsLeftover(false);
+        setNotes(found.note);
+        setDiscountVnd(found.estimatedDiscountVnd);
+        setNameError(null);
+        setBarcodeQuery(found.barcode);
+        showToast(`✨ Đã tra cứu & điền tự động: ${found.name} (${found.brand})`);
+      } else {
+        showToast('ℹ️ Không tìm thấy mã vạch này, bạn có thể nhập tên món trực tiếp bên dưới.', 'warning');
+      }
+    } finally {
+      setIsLookingUpBarcode(false);
+    }
+  };
 
   useEffect(() => {
     try {
@@ -1624,6 +1659,47 @@ export const FridgeView: React.FC = () => {
 
             {/* Modal Form Body */}
             <form onSubmit={handleSaveItem} noValidate className="p-4 space-y-3">
+              {/* OpenFoodFacts Barcode & Packaged Product Lookup */}
+              <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-extrabold text-slate-700 dark:text-slate-300">
+                    🏷️ Tra Mã Vạch Siêu Thị
+                  </span>
+                  <span className="text-[9.5px] font-bold text-emerald-600 dark:text-emerald-400">
+                    Điền tự động
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    value={barcodeQuery}
+                    onChange={e => setBarcodeQuery(e.target.value)}
+                    placeholder="Nhập mã vạch 893... hoặc tên hãng"
+                    className="flex-1 min-w-0 px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    disabled={isLookingUpBarcode}
+                    onClick={() => handleBarcodeLookup()}
+                    className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-black shrink-0 cursor-pointer transition-all active:scale-95"
+                  >
+                    {isLookingUpBarcode ? 'Đang tra...' : 'Tra mã'}
+                  </button>
+                </div>
+                <div className="flex items-center gap-1 flex-wrap pt-0.5">
+                  {VIETNAMESE_SUPERMARKET_BARCODES.slice(0, 3).map(sample => (
+                    <button
+                      key={sample.barcode}
+                      type="button"
+                      onClick={() => handleBarcodeLookup(sample.barcode)}
+                      className="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-[9.5px] font-bold text-slate-600 dark:text-slate-300 hover:border-emerald-500 cursor-pointer truncate"
+                    >
+                      {sample.brand} • {sample.barcode.slice(0, 7)}...
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* 1-Tap Shelf Compartment Selector */}
               <div className="space-y-1">
                 <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block">

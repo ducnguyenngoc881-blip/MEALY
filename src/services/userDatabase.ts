@@ -237,14 +237,65 @@ export function saveUserPartition(userId: string, data: Partial<UserAppDataParti
       updatedAt: Date.now()
     };
     localStorage.setItem(key, JSON.stringify(next));
+
+    if (typeof fetch === 'function') {
+      const users = getAllRegisteredUsers();
+      const owner = users.find(u => u.id === userId);
+      if (owner?.email) {
+        fetch('/api/db/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: owner.email,
+            profile: next,
+            mealPlan: next.weeklyPlan,
+            favorites: next.favoriteRecipeIds
+          })
+        }).catch(() => {});
+      }
+    }
   } catch {}
+}
+
+/**
+ * Compute a deterministic lightweight hash for local password verification
+ */
+export function hashUserPassword(password: string): string {
+  const clean = password.trim();
+  let h1 = 0xdeadbeef ^ clean.length;
+  let h2 = 0x41c6ce57 ^ clean.length;
+  for (let i = 0; i < clean.length; i++) {
+    const ch = clean.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return `mw_${(h2 >>> 0).toString(36)}_${(h1 >>> 0).toString(36)}`;
+}
+
+/**
+ * Verify a user's password against their stored hash (if set)
+ */
+export function verifyUserPassword(email: string, password?: string): { valid: boolean; user: RegisteredUser | null } {
+  const existing = getRegisteredUserByEmail(email);
+  if (!existing) {
+    return { valid: true, user: null };
+  }
+  if (existing.passwordHash && password !== undefined && password.trim().length > 0) {
+    const hashed = hashUserPassword(password);
+    if (hashed !== existing.passwordHash) {
+      return { valid: false, user: existing };
+    }
+  }
+  return { valid: true, user: existing };
 }
 
 /**
  * Register a new user account with optional guest data migration
  */
 export function registerUserInDatabase(
-  profile: { name: string; email: string; role?: 'user' | 'admin' },
+  profile: { name: string; email: string; role?: 'user' | 'admin'; password?: string },
   options?: {
     migrateGuestData?: boolean;
     guestData?: UserAppDataPartition;
@@ -255,6 +306,7 @@ export function registerUserInDatabase(
   const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
   const role: 'user' | 'admin' = isAdmin ? 'admin' : (profile.role || 'user');
   const nowStr = new Date().toLocaleDateString('vi-VN');
+  const passwordHash = profile.password && profile.password.trim() ? hashUserPassword(profile.password) : undefined;
 
   const users = getAllRegisteredUsers();
   const existingIdx = users.findIndex(u => u.email.trim().toLowerCase() === emailLower);
@@ -270,7 +322,8 @@ export function registerUserInDatabase(
       id: userId,
       name: profile.name.trim() || users[existingIdx].name,
       role,
-      lastLoginAt: nowStr
+      lastLoginAt: nowStr,
+      ...(passwordHash ? { passwordHash } : {})
     };
     if (options?.onboardingCompleted !== undefined) {
       user.onboardingCompleted = options.onboardingCompleted;
@@ -287,7 +340,8 @@ export function registerUserInDatabase(
       role,
       registeredAt: nowStr,
       lastLoginAt: nowStr,
-      onboardingCompleted: options?.onboardingCompleted ?? (isAdmin ? true : false)
+      onboardingCompleted: options?.onboardingCompleted ?? (isAdmin ? true : false),
+      ...(passwordHash ? { passwordHash } : {})
     };
     users.unshift(user);
   }
@@ -295,6 +349,19 @@ export function registerUserInDatabase(
   try {
     localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
   } catch {}
+
+  if (typeof window !== 'undefined' && typeof fetch === 'function') {
+    fetch(existingIdx >= 0 ? '/api/auth/login' : '/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: user.email,
+        name: user.name,
+        password: profile.password || '',
+        authProvider: 'email'
+      })
+    }).catch(() => {});
+  }
 
   // Sync with telemetry registry
   recordUserInRegistry({

@@ -19,6 +19,12 @@ import {
 import { VietnameseMealSet, MealSlot } from '../types';
 import { matchesMealSetSearch } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
+import {
+  fetchLiveWeatherMealAdvice,
+  getFallbackWeatherAdvice,
+  VIETNAM_CITIES,
+  WeatherMealAdvice
+} from '../services/freePublicApis';
 
 export const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Yêu Thích', 'Tiết Kiệm', 'Đổi Vị', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
 
@@ -114,8 +120,20 @@ export const MealSetExplorer: React.FC = () => {
   const [assignDragY, setAssignDragY] = useState<number>(0);
   const [isHeroCollapsed, setIsHeroCollapsed] = useState<boolean>(false);
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState<boolean>(false);
+  const [weatherCityId, setWeatherCityId] = useState<string>('hanoi');
+  const [weatherAdvice, setWeatherAdvice] = useState<WeatherMealAdvice>(() => getFallbackWeatherAdvice('hanoi'));
   const assignTouchStartY = useRef<number | null>(null);
   const tagDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    fetchLiveWeatherMealAdvice(weatherCityId).then(advice => {
+      if (active) setWeatherAdvice(advice);
+    });
+    return () => {
+      active = false;
+    };
+  }, [weatherCityId]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -367,6 +385,31 @@ export const MealSetExplorer: React.FC = () => {
             >
               <Sparkles className="w-3.5 h-3.5 shrink-0" />
               <span>Giới Thiệu</span>
+            </button>
+          </div>
+
+          {/* Live Weather Culinary Advice Strip (Open-Meteo Free API) */}
+          <div className="px-3.5 sm:px-4 py-2 bg-slate-50/90 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                const idx = VIETNAM_CITIES.findIndex(c => c.id === weatherCityId);
+                const nextCity = VIETNAM_CITIES[(idx + 1) % VIETNAM_CITIES.length];
+                setWeatherCityId(nextCity.id);
+              }}
+              className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-200 hover:text-[#1D4ED8] dark:hover:text-blue-400 transition-colors cursor-pointer min-w-0 flex-1 text-left"
+              title="Chạm để đổi tỉnh/thành phố"
+            >
+              <span className="text-sm shrink-0">{weatherAdvice.icon}</span>
+              <span className="truncate">{weatherAdvice.culinaryAdvice}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSelectedTag(weatherAdvice.recommendedTag)}
+              className="px-2.5 py-1 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold shrink-0 whitespace-nowrap cursor-pointer transition-all active:scale-95"
+            >
+              Chọn vị {weatherAdvice.recommendedTag}
             </button>
           </div>
 

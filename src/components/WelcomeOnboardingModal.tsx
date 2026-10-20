@@ -205,7 +205,7 @@ export const WelcomeOnboardingModal: React.FC<WelcomeOnboardingModalProps> = ({
         />
 
         {/* Floating Top-Left Brand Pill */}
-        <div className="absolute top-4 left-4 z-30 inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border border-slate-200/70 dark:border-slate-700/70 shadow-sm">
+        <div className="absolute top-[calc(0.75rem+env(safe-area-inset-top,0px))] left-4 z-30 inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border border-slate-200/70 dark:border-slate-700/70 shadow-sm">
           <span className="w-6 h-6 rounded-lg bg-[#0F172A] flex items-center justify-center shrink-0 overflow-hidden">
             <MealyLogoMark className="w-5 h-5" />
           </span>
@@ -219,13 +219,13 @@ export const WelcomeOnboardingModal: React.FC<WelcomeOnboardingModalProps> = ({
           type="button"
           onClick={handleSkipOrExplore}
           data-testid="welcome-skip-btn"
-          className="absolute top-4 right-4 z-30 min-h-[44px] px-4 py-2 rounded-full bg-white/85 hover:bg-white dark:bg-slate-900/85 dark:hover:bg-slate-800 backdrop-blur-md text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700/70 shadow-sm text-xs font-extrabold transition-all active:scale-95 cursor-pointer flex items-center justify-center"
+          className="absolute top-[calc(0.75rem+env(safe-area-inset-top,0px))] right-4 z-30 min-h-[44px] px-4 py-2 rounded-full bg-white/85 hover:bg-white dark:bg-slate-900/85 dark:hover:bg-slate-800 backdrop-blur-md text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700/70 shadow-sm text-xs font-extrabold transition-all active:scale-95 cursor-pointer flex items-center justify-center"
         >
           Bỏ qua
         </button>
 
         {/* TOP 62%: RICH VISUAL HERO STAGE (Photography + Floating Tilted UI Collage) */}
-        <div className="relative flex-1 min-h-[340px] sm:min-h-[370px] pt-16 pb-2 px-5 flex items-center justify-center overflow-hidden">
+        <div className="relative flex-1 min-h-[340px] sm:min-h-[370px] pt-[calc(4rem+env(safe-area-inset-top,0px))] pb-2 px-5 flex items-center justify-center overflow-hidden">
           <div className="relative w-full max-w-[340px] h-[315px] sm:h-[335px] flex items-center justify-center">
             {/* SLIDE 1 VISUAL */}
             <div

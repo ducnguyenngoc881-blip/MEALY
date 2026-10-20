@@ -155,7 +155,7 @@ export const Navbar: React.FC = () => {
               title={`Tài khoản: ${user?.name || user?.email || 'Thành viên'}. Bấm để xem thông tin cá nhân`}
             >
               {/* Circular Avatar Monogram with Online Green Dot */}
-              <div className="relative w-6.5 h-6.5 rounded-full bg-blue-600 text-white dark:bg-blue-600 dark:text-white flex items-center justify-center text-[11px] font-black shadow-xs shrink-0 ring-1 ring-black/5 dark:ring-white/10 group-hover:scale-105 transition-transform duration-200">
+              <div className="relative w-[26px] h-[26px] rounded-full bg-blue-600 text-white dark:bg-blue-600 dark:text-white flex items-center justify-center text-[11px] font-black shadow-xs shrink-0 ring-1 ring-black/5 dark:ring-white/10 group-hover:scale-105 transition-transform duration-200">
                 {user?.name ? user.name.trim().charAt(0).toUpperCase() : <User className="w-3 h-3" />}
                 <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-1.5 ring-white dark:ring-stone-900" />
               </div>

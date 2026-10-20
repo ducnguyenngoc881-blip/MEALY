@@ -10,6 +10,12 @@ import {
   formatAdFreeTime,
   AdTrackingState 
 } from '../utils/adTrackingService';
+import {
+  calculateAccountSecurityScore,
+  getSecurityAuditEvents,
+  clearSecurityAuditEvents,
+  SecurityAuditEvent
+} from '../services/otpSecurityService';
 
 export interface MealWiseStateBackup {
   version: 1;
@@ -159,7 +165,7 @@ export function importMealWiseBackup(jsonContent: string): { success: boolean; e
   );
 
   if (!hasRecognizedKey) {
-    return { success: false, error: 'Tệp sao lưu không chứa bất kỳ khóa dữ liệu Mealy hợp lệ nào.' };
+    return { success: false, error: 'Tệp sao lưu không chứa bất kỳ khóa dữ liệu MealWise hợp lệ nào.' };
   }
 
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
@@ -216,6 +222,7 @@ export const AccountView: React.FC = () => {
     user,
     isRegistered,
     logoutUser,
+    deleteAccount,
     openAuthModal,
     guestSession,
     setActiveTab,
@@ -224,7 +231,21 @@ export const AccountView: React.FC = () => {
     openWelcomeModal
   } = useMealWise();
   const [isAdSequenceOpen, setIsAdSequenceOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isSecurityAuditOpen, setIsSecurityAuditOpen] = useState(false);
+  const [auditLogs, setAuditLogs] = useState<SecurityAuditEvent[]>(() => getSecurityAuditEvents(user?.email));
   const isLight = theme === 'light';
+
+  const securityReport = calculateAccountSecurityScore({
+    email: user?.email,
+    otpVerified: user?.otpVerified,
+    hasPassword: isRegistered,
+    isRegistered
+  });
+
+  useEffect(() => {
+    setAuditLogs(getSecurityAuditEvents(user?.email));
+  }, [user?.email, user?.otpVerified, isSecurityAuditOpen]);
 
   // Volunteer Ads & Ad-Free Tracking State
   const [adTracking, setAdTracking] = useState<AdTrackingState>(loadAdTrackingState);
@@ -260,9 +281,16 @@ export const AccountView: React.FC = () => {
                 {user?.name || 'Tài Khoản Khách'}
               </h1>
               {isRegistered ? (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Đã Đăng Ký
-                </span>
+                <>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Đã Đăng Ký
+                  </span>
+                  {user?.otpVerified && (
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Bảo Mật OTP
+                    </span>
+                  )}
+                </>
               ) : (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
                   <Lock className="w-3 h-3 text-slate-500" /> Khách
@@ -732,6 +760,118 @@ export const AccountView: React.FC = () => {
           </span>
         </button>
       </div>
+
+      {/* Bảo Mật & Quyền Riêng Tư */}
+      <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="text-xs font-extrabold text-slate-900 dark:text-white truncate">
+              Bảo Mật & Quyền Riêng Tư
+            </span>
+          </div>
+          {user?.otpVerified && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-black shrink-0">
+              <span>Đã xác thực Email</span>
+            </span>
+          )}
+        </div>
+
+        <div className={`grid gap-2 ${isRegistered && user?.role !== 'admin' ? 'grid-cols-3' : 'grid-cols-2'}`}>
+          <button
+            type="button"
+            onClick={() => openAuthModal(isRegistered ? 'login' : 'register')}
+            className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+          >
+            <KeyRound className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="truncate">
+              {isRegistered ? 'Đổi Mật Khẩu' : 'Xác Thực OTP'}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsPrivacyModalOpen(true)}
+            className="py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="truncate">Chính Sách Bảo Mật</span>
+          </button>
+
+          {isRegistered && user?.role !== 'admin' && (
+            <button
+              type="button"
+              onClick={() => {
+                openConfirmModal({
+                  title: 'Xóa Tài Khoản Vĩnh Viễn',
+                  message: 'Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản và toàn bộ dữ liệu cá nhân (thực đơn tuần, tủ lạnh, công thức đã lưu) trên thiết bị này? Hành động này không thể hoàn tác.',
+                  confirmLabel: 'Xóa Tài Khoản',
+                  cancelLabel: 'Giữ Lại',
+                  isDanger: true,
+                  onConfirm: deleteAccount
+                });
+              }}
+              className="py-2 px-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/60 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Xóa Tài Khoản</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* In-App Privacy Policy & Terms Modal */}
+      {isPrivacyModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setIsPrivacyModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-3.5 max-h-[85dvh] overflow-y-auto text-slate-900 dark:text-white"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <h3 className="text-base font-black">Chính Sách Bảo Mật & Điều Khoản</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPrivacyModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center cursor-pointer"
+                aria-label="Đóng"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              <p>
+                <strong>1. Lưu trữ dữ liệu ưu tiên trên thiết bị:</strong> Thực đơn tuần, nguyên liệu tủ lạnh, giỏ đi chợ và sổ bếp gia đình của bạn được lưu trữ cục bộ an toàn ngay trên thiết bị di động.
+              </p>
+              <p>
+                <strong>2. Quyền truy cập Micro:</strong> Mealy chỉ sử dụng quyền ghi âm khi bạn chủ động bấm nút thu âm lời dặn nấu ăn trong Sổ Bếp Gia Đình. Bản ghi âm chỉ phục vụ cho công thức của bạn.
+              </p>
+              <p>
+                <strong>3. Chia sẻ giỏ đi chợ mua chung:</strong> Khi bạn tạo phòng đi chợ chung, danh sách nguyên liệu trong phòng đó sẽ tự động hủy sau tối đa 1 giờ để bảo vệ quyền riêng tư.
+              </p>
+              <p>
+                <strong>4. Quyền xóa tài khoản & dữ liệu:</strong> Bạn có toàn quyền xóa vĩnh viễn tài khoản và toàn bộ dữ liệu cá nhân bất kỳ lúc nào ngay trong mục Tài Khoản mà không cần liên hệ bộ phận hỗ trợ.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsPrivacyModalOpen(false)}
+              className="w-full py-2.5 px-4 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-xs cursor-pointer"
+            >
+              Đã Hiểu & Đóng
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 3-Video Sequence Player Modal */}
       <VolunteerAdSequenceModal

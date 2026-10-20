@@ -40,10 +40,18 @@ export function buildSharedDishUrl(recipe: Recipe, chefNameOverride?: string): s
       img: recipe.imageUrl && !recipe.imageUrl.startsWith('data:') ? recipe.imageUrl : ''
     };
     const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(compactPayload)))));
-    const origin = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : 'https://mealwise.vn/';
-    return `${origin}?sharedDish=${encoded}`;
+    const rawOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://exia9526.github.io';
+    const isCapacitorNativeOrigin =
+      rawOrigin.startsWith('capacitor://') ||
+      rawOrigin.startsWith('file://') ||
+      rawOrigin === 'https://localhost' ||
+      rawOrigin === 'http://localhost';
+    const baseUrl = isCapacitorNativeOrigin
+      ? 'https://exia9526.github.io/MEALY/'
+      : (typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : 'https://exia9526.github.io/MEALY/');
+    return `${baseUrl}?sharedDish=${encoded}`;
   } catch {
-    return typeof window !== 'undefined' ? window.location.href : 'https://mealwise.vn/';
+    return typeof window !== 'undefined' ? window.location.href : 'https://exia9526.github.io/MEALY/';
   }
 }
 

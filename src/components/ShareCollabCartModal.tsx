@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
 import { X, Copy, Check, Users, Share2, Sparkles, MessageCircle, ExternalLink, QrCode, Palette } from 'lucide-react';
 import { encodeRoomDataForUrl, SHOPPER_PALETTE, formatTtlRemaining } from '../services/collabGroceryService';
+import { generateVietQrBillUrl, VIETQR_SUPPORTED_BANKS } from '../services/freePublicApis';
 
 export const ShareCollabCartModal: React.FC = () => {
   const { 
@@ -18,14 +19,27 @@ export const ShareCollabCartModal: React.FC = () => {
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [copiedZalo, setCopiedZalo] = useState<boolean>(false);
   const [showQr, setShowQr] = useState<boolean>(true);
+  const [showVietQrSplit, setShowVietQrSplit] = useState<boolean>(false);
+  const [bankBin, setBankBin] = useState<string>(VIETQR_SUPPORTED_BANKS[0].bin);
+  const [bankAccountNo, setBankAccountNo] = useState<string>('');
+  const [splitCount, setSplitCount] = useState<number>(2);
 
   if (!isShareModalOpen || !collabRoom) return null;
 
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173';
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
-  
-  // Clean, short, beautiful share URL without massive payload wall of text
-  const shareUrl = `${origin}${pathname}?collab_cart=${encodeURIComponent(collabRoom.roomId)}`;
+  const rawOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://exia9526.github.io';
+  const rawPathname = typeof window !== 'undefined' ? window.location.pathname : '/MEALY/';
+  const isCapacitorNativeOrigin =
+    rawOrigin.startsWith('capacitor://') ||
+    rawOrigin.startsWith('file://') ||
+    rawOrigin === 'https://localhost' ||
+    rawOrigin === 'http://localhost';
+
+  const origin = isCapacitorNativeOrigin ? 'https://exia9526.github.io' : rawOrigin;
+  const pathname = isCapacitorNativeOrigin ? '/MEALY/' : rawPathname;
+  const encodedPayload = isCapacitorNativeOrigin ? `&payload=${encodeURIComponent(encodeRoomDataForUrl(collabRoom))}` : '';
+
+  // Clean, short, beautiful share URL (with portable payload fallback on native mobile devices)
+  const shareUrl = `${origin}${pathname}?collab_cart=${encodeURIComponent(collabRoom.roomId)}${encodedPayload}`;
   const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(shareUrl)}`;
 
   const handleCopyLink = async () => {
@@ -303,6 +317,121 @@ export const ShareCollabCartModal: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* VietQR Bill Splitting Section */}
+        {(() => {
+          const totalRoomCostVnd = collabRoom.items.reduce((sum, item) => sum + (item.cost || 0), 0);
+          const vietQr = generateVietQrBillUrl({
+            bankBin,
+            accountNo: bankAccountNo,
+            accountName: collabUserName,
+            totalAmountVnd: totalRoomCostVnd,
+            splitCount,
+            roomId: collabRoom.roomId
+          });
+          return (
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span>💳</span>
+                  <span>Chia Tiền Đi Chợ Bằng Mã QR Ngân Hàng</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowVietQrSplit(prev => !prev)}
+                  className="text-[10.5px] font-extrabold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer shrink-0"
+                >
+                  {showVietQrSplit ? 'Thu gọn' : 'Tạo mã chia tiền'}
+                </button>
+              </div>
+
+              {showVietQrSplit && (
+                <div className="space-y-2.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">
+                        Ngân hàng nhận
+                      </label>
+                      <select
+                        value={bankBin}
+                        onChange={e => setBankBin(e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-100"
+                      >
+                        {VIETQR_SUPPORTED_BANKS.map(b => (
+                          <option key={b.bin} value={b.bin}>
+                            {b.shortName}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">
+                        Chia cho mấy người?
+                      </label>
+                      <div className="grid grid-cols-4 gap-1">
+                        {[2, 3, 4, 5].map(num => (
+                          <button
+                            key={num}
+                            type="button"
+                            onClick={() => setSplitCount(num)}
+                            className={`py-1.5 rounded-lg text-xs font-black border cursor-pointer ${
+                              splitCount === num
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                            }`}
+                          >
+                            {num}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">
+                      Số tài khoản nhận tiền đi chợ
+                    </label>
+                    <input
+                      type="text"
+                      value={bankAccountNo}
+                      onChange={e => setBankAccountNo(e.target.value)}
+                      placeholder="Nhập số tài khoản ngân hàng của bạn..."
+                      className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-mono text-slate-800 dark:text-slate-100"
+                    />
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-slate-400 font-medium">
+                      Tổng giỏ ({totalRoomCostVnd.toLocaleString('vi-VN')} đ ÷ {splitCount} người):
+                    </span>
+                    <span className="font-black text-emerald-600 dark:text-emerald-400">
+                      {vietQr.perPersonAmountVnd.toLocaleString('vi-VN')} đ/người
+                    </span>
+                  </div>
+
+                  {bankAccountNo.trim().length >= 6 && (
+                    <div className="flex flex-col items-center justify-center pt-1 space-y-1.5">
+                      <div className="p-2 bg-white rounded-2xl shadow-xs border border-slate-200">
+                        <img
+                          src={vietQr.qrImageUrl}
+                          alt="Mã QR chuyển khoản chia tiền đi chợ"
+                          className="w-40 h-auto rounded-lg block"
+                          loading="lazy"
+                          onError={e => {
+                            (e.target as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 text-center">
+                        Quét bằng ứng dụng Ngân hàng bất kỳ để chuyển {vietQr.perPersonAmountVnd.toLocaleString('vi-VN')} đ
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* How it works banner */}
         <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 space-y-1.5">

@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
+    "nodemailer": "^10.1.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -28,6 +29,7 @@
     "@capacitor/cli": "^8.5.2",
     "@capacitor/core": "^8.5.2",
     "@capacitor/ios": "^8.5.2",
+    "@types/nodemailer": "^8.0.2",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",

@@ -22,16 +22,45 @@ function collabSyncPlugin(): Plugin {
           }
         }
 
-        if (req.url && req.url.startsWith('/api/collab/')) {
+        if (
+          req.url &&
+          (req.url.startsWith('/api/collab/') ||
+            req.url.startsWith('/api/auth/') ||
+            req.url.startsWith('/api/db/') ||
+            req.url.startsWith('/api/health'))
+        ) {
           try {
             const handled = await handleCollabRequest(req, res);
             if (handled) return;
           } catch (e) {
-            console.error('Error in Vite collab handler', e);
+            console.error('Error in Vite API handler', e);
           }
         }
         next();
       });
+    },
+    closeBundle() {
+      const distDir = path.resolve(__dirname, 'dist');
+      const devOnlyPaths = [
+        'moodboard.html',
+        'mockups',
+        'dribbble-showcase.html',
+        'master-blend-showcase.html',
+        'minimalism-showcase.html',
+        'mockup-showcase.html',
+        'MealWise.apk',
+        'MealWise.ipa',
+        'Mealy.apk',
+        'Mealy.ipa'
+      ];
+      for (const rel of devOnlyPaths) {
+        const target = path.join(distDir, rel);
+        try {
+          if (fs.existsSync(target)) {
+            fs.rmSync(target, { recursive: true, force: true });
+          }
+        } catch {}
+      }
     }
   };
 }
