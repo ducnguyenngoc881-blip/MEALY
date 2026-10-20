@@ -193,7 +193,7 @@ export const DownloadAppModal: React.FC = () => {
               <div className="flex items-center justify-center gap-3 text-[10.5px] text-stone-500 dark:text-stone-400">
                 <span className="flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  Bản sạch 100% không quảng cáo
+                  Miễn phí tải về • Hỗ trợ bởi đối tác tài trợ
                 </span>
                 <span>•</span>
                 <span>Dung lượng: ~13 MB</span>

@@ -17,6 +17,7 @@ import { AuthModal } from './components/AuthModal';
 import { DownloadAppModal } from './components/DownloadAppModal';
 import { InteractiveTutorialModal } from './components/InteractiveTutorialModal';
 import { ShareRecipeSocialModal } from './components/ShareRecipeSocialModal';
+import { ThirdPartyAdBanner } from './components/ThirdPartyAdBanner';
 
 // Code-split secondary views and heavy interactive modals for ultra-fast initial page load
 const CateringPartyPlanner = lazy(() => import('./components/CateringPartyPlanner').then(m => ({ default: m.CateringPartyPlanner })));
@@ -109,6 +110,7 @@ const AppShell: React.FC = () => {
       {/* Mobile-first natural container: 100% on real phone, centered max-w-lg on desktop */}
       <div className="w-full sm:max-w-md md:max-w-lg mx-auto min-h-[100dvh] bg-[#F8FAFC] dark:bg-[#12161F] shadow-2xl relative flex flex-col sm:border-x sm:border-[#E2E8F0] sm:dark:border-[#2D3748]">
         <Navbar />
+        <ThirdPartyAdBanner userRole={user?.role} userName={user?.name || 'Thành viên Mealy'} />
         <main className="flex-1 px-3 sm:px-4 pt-3 pb-[76px]">
           <MainContent />
         </main>

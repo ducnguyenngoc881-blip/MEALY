@@ -28,6 +28,17 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Mealy sử dụng micro để bạn ghi âm lời dặn nấu ăn trong Sổ Bếp Gia Đình.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Mealy sử dụng mã định danh quảng cáo để hiển thị ưu đãi nguyên liệu nấu ăn và nội dung tài trợ từ đối tác bên thứ ba, giúp duy trì ứng dụng miễn phí.</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

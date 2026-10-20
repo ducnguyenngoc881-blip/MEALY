@@ -369,3 +369,125 @@ export function formatAdFreeShort(remainingMs: number): string {
   }
   return `${minutes} phút`;
 }
+
+export interface ThirdPartyAdCampaign {
+  id: string;
+  sponsorName: string;
+  headline: string;
+  subtext: string;
+  ctaText: string;
+  targetUrl: string;
+  badgeText: string;
+  cpcVnd: number;
+  cpmVnd: number;
+  active: boolean;
+}
+
+export interface ThirdPartyAdConfig {
+  enabled: boolean;
+  networkProvider: 'admob' | 'adsense' | 'hybrid_partner';
+  admobAndroidAppId: string;
+  admobIosAppId: string;
+  bannerUnitId: string;
+  rewardedUnitId: string;
+  interstitialUnitId: string;
+  showBottomBanner: boolean;
+  allowPersonalizedAds: boolean;
+  campaigns: ThirdPartyAdCampaign[];
+}
+
+const AD_CONFIG_STORAGE_KEY = 'mealwise_third_party_ad_config_v1';
+
+export const DEFAULT_THIRD_PARTY_CAMPAIGNS: ThirdPartyAdCampaign[] = [
+  {
+    id: 'camp-winmart-fresh',
+    sponsorName: 'WinMart+',
+    headline: 'Thịt Sạch MEATDeli & Rau Củ VietGAP Giảm 20%',
+    subtext: 'Giao nguyên liệu nấu ăn tận bếp trong 2 giờ cho thành viên Mealy',
+    ctaText: 'Nhận Ưu Đãi',
+    targetUrl: 'https://winmart.vn',
+    badgeText: 'Tài trợ • WinMart',
+    cpcVnd: 1500,
+    cpmVnd: 35000,
+    active: true
+  },
+  {
+    id: 'camp-bhx-combo',
+    sponsorName: 'Bách Hóa Xanh',
+    headline: 'Combo Đi Chợ Mâm Cơm 3 Món Chỉ Từ 69.000đ',
+    subtext: 'Tặng mã miễn phí giao hàng cho đơn đầu tiên từ thực đơn tuần',
+    ctaText: 'Mua Ngay',
+    targetUrl: 'https://www.bachhoaxanh.com',
+    badgeText: 'Đối tác • Bách Hóa Xanh',
+    cpcVnd: 1400,
+    cpmVnd: 32000,
+    active: true
+  },
+  {
+    id: 'camp-grabmart-kitchen',
+    sponsorName: 'GrabMart',
+    headline: 'Đi Chợ Online Siêu Tốc 30 Phút • Giảm Ngay 40k',
+    subtext: 'Đồng bộ giỏ hàng nguyên liệu tươi sống từ các siêu thị gần bạn',
+    ctaText: 'Mở GrabMart',
+    targetUrl: 'https://www.grab.com/vn/mart/',
+    badgeText: 'Quảng cáo • GrabMart',
+    cpcVnd: 1800,
+    cpmVnd: 40000,
+    active: true
+  },
+  {
+    id: 'camp-chinsu-seasoning',
+    sponsorName: 'Chin-Su Việt Nam',
+    headline: 'Bộ Gia Vị Chuẩn Cơm Nhà • Đậm Đà Vị Việt',
+    subtext: 'Nước mắm cá cơm Phú Quốc & hạt nêm ngọt thanh tự nhiên',
+    ctaText: 'Khám Phá',
+    targetUrl: 'https://masanconsumer.com',
+    badgeText: 'Tài trợ • Chin-Su',
+    cpcVnd: 1200,
+    cpmVnd: 28000,
+    active: true
+  }
+];
+
+export function loadThirdPartyAdConfig(): ThirdPartyAdConfig {
+  const defaultConfig: ThirdPartyAdConfig = {
+    enabled: true,
+    networkProvider: 'hybrid_partner',
+    admobAndroidAppId: 'ca-app-pub-3940256099942544~3347511713',
+    admobIosAppId: 'ca-app-pub-3940256099942544~1458002511',
+    bannerUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    rewardedUnitId: 'ca-app-pub-3940256099942544/5224354917',
+    interstitialUnitId: 'ca-app-pub-3940256099942544/1033173712',
+    showBottomBanner: true,
+    allowPersonalizedAds: true,
+    campaigns: DEFAULT_THIRD_PARTY_CAMPAIGNS
+  };
+
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return defaultConfig;
+  }
+
+  try {
+    const raw = localStorage.getItem(AD_CONFIG_STORAGE_KEY);
+    if (!raw) return defaultConfig;
+    const parsed = JSON.parse(raw);
+    return {
+      ...defaultConfig,
+      ...parsed,
+      campaigns: Array.isArray(parsed.campaigns) && parsed.campaigns.length > 0
+        ? parsed.campaigns
+        : DEFAULT_THIRD_PARTY_CAMPAIGNS
+    };
+  } catch {
+    return defaultConfig;
+  }
+}
+
+export function saveThirdPartyAdConfig(config: ThirdPartyAdConfig): void {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(AD_CONFIG_STORAGE_KEY, JSON.stringify(config));
+    window.dispatchEvent(new CustomEvent('mealwise:ad_config_updated', { detail: config }));
+  } catch {}
+}
+

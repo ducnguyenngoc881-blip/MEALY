@@ -56,7 +56,10 @@ import {
   recordAdImpression, 
   recordVolunteerAdWatched, 
   AdTimeframe,
-  formatAdFreeTime
+  formatAdFreeTime,
+  loadThirdPartyAdConfig,
+  saveThirdPartyAdConfig,
+  ThirdPartyAdConfig
 } from '../utils/adTrackingService';
 import { 
   getScreenTimeStats, 
@@ -88,6 +91,20 @@ export const AdminDashboard: React.FC = () => {
   // Ad & Screen Time Timeframe Filter: 'day' | 'month' | 'year' | 'lifetime'
   const [adTimeframe, setAdTimeframe] = useState<AdTimeframe>('day');
   const [sessionDurationSec, setSessionDurationSec] = useState<number>(() => getCurrentSessionSeconds());
+  const [adConfig, setAdConfig] = useState<ThirdPartyAdConfig>(() => loadThirdPartyAdConfig());
+
+  const handleUpdateAdConfig = (patch: Partial<ThirdPartyAdConfig>) => {
+    const next = { ...adConfig, ...patch };
+    setAdConfig(next);
+    saveThirdPartyAdConfig(next);
+  };
+
+  const handleToggleCampaign = (campaignId: string) => {
+    const nextCampaigns = adConfig.campaigns.map(c =>
+      c.id === campaignId ? { ...c, active: !c.active } : c
+    );
+    handleUpdateAdConfig({ campaigns: nextCampaigns });
+  };
 
   // Real data state
   const [sessions, setSessions] = useState<ActiveSession[]>([]);
@@ -1333,6 +1350,124 @@ export const AdminDashboard: React.FC = () => {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>👑 Hoàn Thành Chuỗi 3 Video (Kích Hoạt Premium)</span>
               </button>
+            </div>
+          </div>
+
+          {/* 3rd-Party Ad Network & Partner Sponsorship Control Panel */}
+          <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-800 pb-3">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-emerald-400" />
+                  Cấu Hình Quảng Cáo Bên Thứ 3 & Nguồn Kinh Phí Vận Hành
+                </h3>
+                <p className="text-xs text-stone-400 mt-0.5">
+                  Cho phép mạng quảng cáo bên thứ 3 (Google AdMob / Đối tác siêu thị) hiển thị biểu ngữ và video tài trợ để tạo nguồn kinh phí duy trì ứng dụng miễn phí.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleUpdateAdConfig({ enabled: !adConfig.enabled })}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                    adConfig.enabled
+                      ? 'bg-emerald-500 text-stone-950 shadow-sm'
+                      : 'bg-stone-800 text-stone-400 border border-stone-700'
+                  }`}
+                >
+                  {adConfig.enabled ? '✓ Đang Bật Quảng Cáo Bên Thứ 3' : 'Đang Tắt Quảng Cáo'}
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div className="p-3.5 rounded-2xl bg-stone-950/80 border border-stone-800 space-y-1.5">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-400 block">
+                  Mã Google AdMob (Android / iOS)
+                </span>
+                <input
+                  type="text"
+                  value={adConfig.admobAndroidAppId}
+                  onChange={e => handleUpdateAdConfig({ admobAndroidAppId: e.target.value })}
+                  className="w-full px-2.5 py-1.5 rounded-xl bg-stone-900 border border-stone-700 text-stone-200 font-mono text-[11px]"
+                  placeholder="ca-app-pub-xxxx~yyyy"
+                />
+                <span className="text-[10px] text-stone-500 block">
+                  Tích hợp quyền AD_ID & SKAdNetwork chuẩn cửa hàng ứng dụng
+                </span>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-stone-950/80 border border-stone-800 space-y-1.5">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-400 block">
+                  Mã Đơn Vị Biểu Ngữ & Video Thưởng
+                </span>
+                <input
+                  type="text"
+                  value={adConfig.rewardedUnitId}
+                  onChange={e => handleUpdateAdConfig({ rewardedUnitId: e.target.value })}
+                  className="w-full px-2.5 py-1.5 rounded-xl bg-stone-900 border border-stone-700 text-stone-200 font-mono text-[11px]"
+                  placeholder="ca-app-pub-xxxx/zzzz"
+                />
+                <span className="text-[10px] text-stone-500 block">
+                  Tự động phân phối khi người dùng chưa kích hoạt miễn quảng cáo
+                </span>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-stone-950/80 border border-stone-800 flex flex-col justify-between gap-2">
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-400 block">
+                    Chế Độ Hiển Thị Biểu Ngữ Đầu Trang
+                  </span>
+                  <p className="text-[11px] text-stone-300 mt-1">
+                    Hiển thị biểu ngữ tài trợ từ đối tác bên thứ 3 trên màn hình chính.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleUpdateAdConfig({ showBottomBanner: !adConfig.showBottomBanner })}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition-all ${
+                    adConfig.showBottomBanner
+                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
+                      : 'bg-stone-800 text-stone-400 border border-stone-700'
+                  }`}
+                >
+                  {adConfig.showBottomBanner ? 'Đang Hiển Thị Biểu Ngữ Đối Tác' : 'Đã Ẩn Biểu Ngữ'}
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+              {adConfig.campaigns.map(camp => (
+                <div
+                  key={camp.id}
+                  className={`p-3 rounded-2xl border transition-all ${
+                    camp.active
+                      ? 'bg-stone-950/90 border-amber-500/30'
+                      : 'bg-stone-950/40 border-stone-800 opacity-60'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-400">
+                      {camp.sponsorName}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleCampaign(camp.id)}
+                      className={`px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer ${
+                        camp.active
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          : 'bg-stone-800 text-stone-400'
+                      }`}
+                    >
+                      {camp.active ? 'Đang chạy' : 'Tạm dừng'}
+                    </button>
+                  </div>
+                  <p className="text-xs font-bold text-white line-clamp-1">{camp.headline}</p>
+                  <p className="text-[10px] text-stone-400 mt-1 font-mono">
+                    eCPM: {camp.cpmVnd.toLocaleString('vi-VN')}đ • CPC: {camp.cpcVnd.toLocaleString('vi-VN')}đ
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
