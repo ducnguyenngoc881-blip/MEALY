@@ -4,7 +4,7 @@ android {
     namespace = "com.mealwise.app"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.mealwise.app"
+        applicationId "vn.greenfi.mealy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
