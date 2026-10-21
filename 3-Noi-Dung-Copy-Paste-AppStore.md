@@ -47,30 +47,30 @@ Trợ lý mâm cơm 3 món, lên thực đơn 7 ngày, tủ lạnh thông minh &
 ```text
 Mealy là trợ lý lên thực đơn cơm nhà và đi chợ thông minh được thiết kế chuyên biệt cho gia đình Việt Nam, người đi làm bận rộn và người sống một mình.
 
-BỘ 6 TÍNH NĂNG TRỌNG TÂM TRÊN MEALY (TƯƠNG ỨNG POSTER 1 - 6):
+BỘ 6 TÍNH NĂNG TRỌNG TÂM TRÊN MEALY:
 
-1. Khám Phá Mâm Cơm 3 Món Chuẩn Vị 3 Miền (Poster 1)
+1. Khám Phá Mâm Cơm 3 Món Chuẩn Vị 3 Miền
 • Hàng trăm gợi ý mâm cơm gia đình đủ đầy gồm Món Mặn - Món Canh - Món Rau hài hòa dinh dưỡng.
 • Hỗ trợ bộ lọc thông minh theo khẩu vị Miền Bắc, Miền Trung, Miền Nam, món chay thanh tịnh, thực đơn giàu đạm tập Gym và chế độ Eat Clean.
 
-2. Lên Kế Hoạch Thực Đơn 7 Ngày Tự Động Theo Ngân Sách (Poster 2)
+2. Lên Kế Hoạch Thực Đơn 7 Ngày Tự Động Theo Ngân Sách
 • Tự động cân đối thực đơn cả tuần (Sáng - Trưa - Tối) bám sát ngân sách mục tiêu mỗi ngày của gia đình từ 1 đến 20 người.
 • Linh hoạt đánh dấu lịch bữa trưa bán trú hoặc mang cơm hộp văn phòng từ Thứ Hai đến Thứ Sáu.
 • Đổi món lẻ hoặc đổi nguyên ngày chỉ với 1 chạm mà không lo vượt trần chi tiêu.
 
-3. Đi Chợ Chung Thời Gian Thực & Giỏ Đi Chợ Tự Động (Poster 3)
+3. Đi Chợ Chung Thời Gian Thực & Giỏ Đi Chợ Tự Động
 • Tự động tổng hợp và cộng gộp khối lượng nguyên liệu từ thực đơn cả tuần theo từng khu vực quầy hàng (Thịt cá, Rau củ, Gia vị, Đồ khô).
 • Tạo phòng Đi Chợ Chung bằng mã QR hoặc liên kết để vợ chồng, thành viên gia đình cùng nhặt đồ và đánh dấu trực tiếp theo thời gian thực.
 
-4. Nhắc Hạn Tủ Lạnh Thông Minh & Gợi Ý Món Sẵn Có (Poster 4)
+4. Nhắc Hạn Tủ Lạnh Thông Minh & Gợi Ý Món Sẵn Có
 • Quản lý thực phẩm đang có trong ngăn mát, ngăn đông kèm cảnh báo nguyên liệu sắp hết hạn trực quan.
 • Tự động đối chiếu và gợi ý ngay các món ăn có thể nấu liền từ nguyên liệu sẵn có trong tủ lạnh để tránh lãng phí.
 
-5. Nấu Ăn Thảnh Thơi Từng Bước Chuẩn Vị & Sổ Bếp Gia Đình (Poster 5)
+5. Nấu Ăn Thảnh Thơi Từng Bước Chuẩn Vị & Sổ Bếp Gia Đình
 • Hướng dẫn nấu ăn chi tiết từng bước rõ ràng, định lượng chuẩn xác kèm bộ hẹn giờ nấu thông minh.
 • Lưu trữ công thức nấu ăn bí truyền riêng của gia đình kèm tính năng ghi âm lời dặn nấu nướng.
 
-6. Trọn Vẹn Hương Vị Mâm Cỗ Sum Vầy & Thực Đơn Tiệc (Poster 6)
+6. Trọn Vẹn Hương Vị Mâm Cỗ Sum Vầy & Thực Đơn Tiệc
 • Gợi ý các bộ thực đơn mâm cỗ truyền thống, tiệc cuối tuần, liên hoan gia đình sang trọng và ấm cúng.
 • Tự động nhân định lượng nguyên liệu theo số mâm hoặc số lượng khách mời nhanh chóng.
 ```
