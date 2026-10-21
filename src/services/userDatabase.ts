@@ -449,3 +449,91 @@ export function getUserDatabaseStats(): UserDatabaseStats {
     conversionRatePercent
   };
 }
+
+// ============================================================================
+// SERVER-BACKED ACCOUNT IDENTIFICATION & CLOUD DATABASE SYNC
+// ============================================================================
+
+/**
+ * Compute a deterministic, permanent Member Code (e.g. ML-4829) from user email/phone
+ */
+export function getMemberCodeForEmail(emailOrId?: string | null): string {
+  const clean = String(emailOrId || 'mealy').trim().toLowerCase();
+  let hash = 2166136261;
+  for (let i = 0; i < clean.length; i++) {
+    hash ^= clean.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  const num = (Math.abs(hash) % 9000) + 1000;
+  return `ML-${num}`;
+}
+
+/**
+ * Push a registered user's profile and data partition to the server-side account database
+ */
+export async function syncAccountPartitionWithServer(
+  user: RegisteredUser,
+  partition: Partial<UserAppDataPartition>,
+  password?: string
+): Promise<{ ok: boolean; memberCode?: string; syncedAt?: string }> {
+  if (typeof window === 'undefined' || typeof fetch === 'undefined' || !user?.email) {
+    return { ok: false };
+  }
+  try {
+    const res = await fetch('/api/auth/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: user.email,
+        user,
+        password,
+        partition
+      })
+    });
+    if (!res.ok) return { ok: false };
+    const data = await res.json();
+    if (data?.ok && user.id && partition) {
+      saveUserPartition(user.id, partition);
+    }
+    return {
+      ok: Boolean(data?.ok),
+      memberCode: data?.memberCode || getMemberCodeForEmail(user.email),
+      syncedAt: data?.syncedAt
+    };
+  } catch {
+    return { ok: false };
+  }
+}
+
+/**
+ * Fetch a registered user's profile and saved data partition from the server database
+ */
+export async function fetchAccountFromServer(email: string): Promise<{
+  ok: boolean;
+  user?: RegisteredUser & { memberCode?: string };
+  partition?: UserAppDataPartition | null;
+}> {
+  if (typeof window === 'undefined' || typeof fetch === 'undefined' || !email) {
+    return { ok: false };
+  }
+  try {
+    const res = await fetch(`/api/auth/me?email=${encodeURIComponent(email.trim())}`);
+    if (!res.ok) return { ok: false };
+    const data = await res.json();
+    if (data?.ok && data.user) {
+      // Cache partition locally for offline resilience
+      if (data.user.id && data.partition) {
+        saveUserPartition(data.user.id, data.partition);
+      }
+      return {
+        ok: true,
+        user: data.user,
+        partition: data.partition || null
+      };
+    }
+    return { ok: false };
+  } catch {
+    return { ok: false };
+  }
+}
+

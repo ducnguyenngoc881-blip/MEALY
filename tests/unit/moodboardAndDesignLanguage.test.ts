@@ -25,7 +25,10 @@ describe('Unit: Mood Board & Design Language Specification (v4.0)', () => {
   });
 
   it('verifies dual-font stack and 7-level mobile typography hierarchy in src/theme.ts', () => {
-    expect(theme.typography.fontSans.includes('Be Vietnam Pro')).toBe(true);
+    expect(theme.typography.fontSans.includes('Manrope')).toBe(true);
+    expect(theme.typography.fontSans.includes('Inter')).toBe(true);
+    expect(theme.typography.fontHeading.includes('Manrope')).toBe(true);
+    expect(theme.typography.fontBody.includes('Inter')).toBe(true);
     expect(theme.typography.fontMono.includes('JetBrains Mono')).toBe(true);
 
     const h = theme.typography.hierarchy;

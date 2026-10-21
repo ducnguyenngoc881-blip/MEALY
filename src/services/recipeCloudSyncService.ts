@@ -1,4 +1,17 @@
 import { Recipe } from '../types';
+import { LEGACY_CUSTOM_PRESET_IMAGE_URLS } from '../utils/dishImageResolver';
+
+function sanitizeLoadedCustomRecipes(recipes: Recipe[]): Recipe[] {
+  if (!Array.isArray(recipes)) return [];
+  return recipes.map(r => {
+    if (!r) return r;
+    const rawImg = (r.imageUrl || '').trim();
+    if (rawImg && LEGACY_CUSTOM_PRESET_IMAGE_URLS.has(rawImg)) {
+      return { ...r, imageUrl: '' };
+    }
+    return r;
+  });
+}
 
 /**
  * MealWise Cloud & Account-Scoped Recipe Sync Framework
@@ -63,7 +76,7 @@ export function loadAccountCustomRecipes(email?: string | null): Recipe[] {
   if (!cleanEmail) {
     try {
       const guestSaved = localStorage.getItem(GUEST_SESSION_KEY);
-      return guestSaved ? JSON.parse(guestSaved) : [];
+      return guestSaved ? sanitizeLoadedCustomRecipes(JSON.parse(guestSaved)) : [];
     } catch {
       return [];
     }
@@ -74,7 +87,7 @@ export function loadAccountCustomRecipes(email?: string | null): Recipe[] {
     const accountSaved = localStorage.getItem(accountKey);
     if (accountSaved !== null) {
       const parsed = JSON.parse(accountSaved);
-      if (Array.isArray(parsed)) return parsed;
+      if (Array.isArray(parsed)) return sanitizeLoadedCustomRecipes(parsed);
     }
 
     // One-time migration from legacy unscoped `mealwise_custom_recipes` into this member's account
@@ -82,9 +95,10 @@ export function loadAccountCustomRecipes(email?: string | null): Recipe[] {
     if (legacySaved) {
       const legacyParsed = JSON.parse(legacySaved);
       if (Array.isArray(legacyParsed) && legacyParsed.length > 0) {
-        localStorage.setItem(accountKey, JSON.stringify(legacyParsed));
+        const sanitized = sanitizeLoadedCustomRecipes(legacyParsed);
+        localStorage.setItem(accountKey, JSON.stringify(sanitized));
         localStorage.removeItem(LEGACY_GLOBAL_KEY);
-        return legacyParsed;
+        return sanitized;
       }
     }
   } catch (e) {

@@ -78,7 +78,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
       }}
     >
       <div 
-        className="relative w-full max-w-lg bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-lg sm:max-w-xl md:max-w-2xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER BAR */}

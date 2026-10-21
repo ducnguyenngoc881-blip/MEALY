@@ -110,7 +110,7 @@ export const ShareCollabCartModal: React.FC = () => {
       aria-modal="true"
     >
       <div 
-        className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-scale-up text-slate-900 dark:text-white"
+        className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md sm:max-w-lg md:max-w-xl w-full p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-scale-up text-slate-900 dark:text-white"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}

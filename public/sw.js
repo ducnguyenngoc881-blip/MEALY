@@ -1,5 +1,5 @@
 // MealWise Progressive Web App Service Worker (100% Offline Mode Support)
-const CACHE_NAME = 'mealwise-offline-v7';
+const CACHE_NAME = 'mealwise-offline-v14';
 
 const PRECACHE_URLS = [
   '/',

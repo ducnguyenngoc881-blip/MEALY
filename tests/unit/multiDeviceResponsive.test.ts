@@ -396,7 +396,7 @@ describe('Unit: MultiDeviceResponsive - Zero Horizontal Overflow Invariants acro
 
   it('App root container clamps mobile-first natural container (max-w-lg mx-auto) across all 7 viewports', () => {
     const appCode = fs.readFileSync(path.join(srcDir, 'App.tsx'), 'utf-8');
-    expect(appCode).toContain('sm:max-w-md md:max-w-lg mx-auto');
+    expect(appCode).toContain('sm:max-w-xl md:max-w-3xl lg:max-w-4xl mx-auto');
   });
 
   it('FridgeView maintains zero horizontal overflow invariant across all 7 viewports', () => {
@@ -408,7 +408,7 @@ describe('Unit: MultiDeviceResponsive - Zero Horizontal Overflow Invariants acro
 
   it('Navbar maintains zero horizontal overflow invariant across all 7 viewports', () => {
     const navbarCode = fs.readFileSync(path.join(srcDir, 'components/Navbar.tsx'), 'utf-8');
-    expect(navbarCode).toContain('max-w-lg mx-auto');
+    expect(navbarCode).toContain('mx-auto');
     expect(navbarCode).not.toContain('xs:');
     expect(navbarCode).toContain('w-full');
   });
@@ -437,7 +437,7 @@ describe('Unit: MultiDeviceResponsive - Zero Horizontal Overflow Invariants acro
 
   it('CateringPartyPlanner maintains zero horizontal overflow invariant across all 7 viewports', () => {
     const cateringCode = fs.readFileSync(path.join(srcDir, 'components/CateringPartyPlanner.tsx'), 'utf-8');
-    expect(cateringCode).toContain('w-full sm:max-w-md md:max-w-lg');
+    expect(cateringCode).toContain('w-full sm:max-w-xl md:max-w-3xl lg:max-w-4xl');
     expect(cateringCode).not.toMatch(/\bw-\[(3[3-9]\d|[4-9]\d\d|\d{4,})px\](?!.*max-w)/);
     expect(cateringCode).not.toContain('xs:');
   });
@@ -485,7 +485,7 @@ describe('Unit: MultiDeviceResponsive - Zero Horizontal Overflow Invariants acro
   it('RecipeDetailModal maintains zero horizontal overflow invariant across all 7 viewports', () => {
     const recipeCode = fs.readFileSync(path.join(srcDir, 'components/RecipeDetailModal.tsx'), 'utf-8');
     expect(recipeCode).toContain('max-w-lg');
-    expect(recipeCode).toContain('max-h-[90vh]');
+    expect(recipeCode).toContain('max-h-[92vh]');
     expect(recipeCode).toContain('overflow-y-auto');
   });
 

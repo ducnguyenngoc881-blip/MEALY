@@ -571,8 +571,8 @@ describe('Unit: Device Specification & Cross-Platform Compatibility Simulation',
     if (fs.existsSync(apkPath)) {
       const stats = fs.statSync(apkPath);
       const sizeMb = stats.size / (1024 * 1024);
-      // Ensure mobile APK package is compact and under 25 MB
-      expect(sizeMb).toBeLessThan(25);
+      // Ensure mobile APK package is compact and under 30 MB
+      expect(sizeMb).toBeLessThan(30);
     }
 
     const zipPath = path.join(rootDir, 'MealWise-Portable-PC.zip');

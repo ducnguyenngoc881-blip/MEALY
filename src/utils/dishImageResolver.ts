@@ -61,7 +61,12 @@ export const OVERUSED_PLACEHOLDER_IDS = [
 export function isDeadOrPlaceholderUrl(url?: string | null): boolean {
   if (!url || typeof url !== 'string') return true;
   const trimmed = url.trim();
-  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://') && !trimmed.startsWith('data:image/')) {
+  if (
+    !trimmed.startsWith('http://') &&
+    !trimmed.startsWith('https://') &&
+    !trimmed.startsWith('data:image/') &&
+    !trimmed.startsWith('/')
+  ) {
     return true;
   }
   if (trimmed.startsWith('data:image/svg+xml')) {
@@ -135,6 +140,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 8. banh_trang_tron (Authentic Vietnamese Mixed Rice Paper Salad)
   banh_trang_tron: [
+    '/dish-images/dish-banh-trang-tron.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/8/82/Banh_trang_tron_%28mua_tai_truong_thpt_giadinh%29.jpg?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/b/b3/Banhtrangtron.jpg?auto=format&fit=crop&w=600&q=80',
@@ -143,6 +149,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 9. nem_chua_ran (Authentic Vietnamese Fried Fermented Pork & Chả Giò)
   nem_chua_ran: [
+    '/dish-images/dish-nem-ran-cha-gio.jpg',
     'https://upload.wikimedia.org/wikipedia/commons/2/26/Nem-chua-ran2.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1695712641388-87c0f9c2d36e?auto=format&fit=crop&w=600&q=80',
@@ -175,6 +182,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 13. bun_cha (Authentic Bún Chả Hà Nội)
   bun_cha: [
+    '/dish-images/dish-bun-cha-ha-noi.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/B%C3%BAn_ch%E1%BA%A3_H%C3%A0_N%E1%BB%99i_%28th%E1%BB%8Bt_n%C6%B0%E1%BB%9Bng%29_t%E1%BA%A1i_Nguy%E1%BB%85n_S%C6%A1n%2C_T%C3%A2n_Ph%C3%BA_%281%29.jpg/960px-B%C3%BAn_ch%E1%BA%A3_H%C3%A0_N%E1%BB%99i_%28th%E1%BB%8Bt_n%C6%B0%E1%BB%9Bng%29_t%E1%BA%A1i_Nguy%E1%BB%85n_S%C6%A1n%2C_T%C3%A2n_Ph%C3%BA_%281%29.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/B%C3%BAn_ch%E1%BA%A3_H%C3%A0_N%E1%BB%99i_%28th%E1%BB%8Bt_n%C6%B0%E1%BB%9Bng%29_t%E1%BA%A1i_Nguy%E1%BB%85n_S%C6%A1n%2C_T%C3%A2n_Ph%C3%BA_%282%29.jpg/960px-B%C3%BAn_ch%E1%BA%A3_H%C3%A0_N%E1%BB%99i_%28th%E1%BB%8Bt_n%C6%B0%E1%BB%9Bng%29_t%E1%BA%A1i_Nguy%E1%BB%85n_S%C6%A1n%2C_T%C3%A2n_Ph%C3%BA_%282%29.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1763703544688-2ac7839b0659?auto=format&fit=crop&w=600&q=80',
@@ -183,6 +191,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 14. bun_bo_hue (Authentic Bún Bò Huế)
   bun_bo_hue: [
+    '/dish-images/dish-bun-bo-hue.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Bun_Bo_Hue_1.jpg/960px-Bun_Bo_Hue_1.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Bun-Bo-Hue-from-Huong-Giang-2011.jpg/960px-Bun-Bo-Hue-from-Huong-Giang-2011.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_minh28397.jpg/960px-B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_minh28397.jpg?auto=format&fit=crop&w=600&q=80',
@@ -191,6 +200,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 15. bun_rieu (Authentic Bún Riêu Cua)
   bun_rieu: [
+    '/dish-images/dish-bun-rieu-cua.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/B%C3%BAn_ri%C3%AAu_cua_n%C6%B0%E1%BB%9Bc.jpg/960px-B%C3%BAn_ri%C3%AAu_cua_n%C6%B0%E1%BB%9Bc.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Bowl_of_Vietnamese_bun_rieu_soup_with_tomato.jpg/960px-Bowl_of_Vietnamese_bun_rieu_soup_with_tomato.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Bun_rieu_with_herbs.jpg/960px-Bun_rieu_with_herbs.jpg?auto=format&fit=crop&w=600&q=80',
@@ -199,6 +209,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 16. bun_dau_mam_tom (Authentic Bún Đậu Mắm Tôm)
   bun_dau_mam_tom: [
+    '/dish-images/dish-bun-dau-mam-tom.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m.jpg/960px-B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m%2C_b%C3%BAn_nem_r%C3%A1n.JPG/960px-B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m%2C_b%C3%BAn_nem_r%C3%A1n.JPG?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/1/11/B%C3%BAn_%C4%91%E1%BA%ADu_m%E1%BA%AFm_t%C3%B4m_%282019%29.jpg?auto=format&fit=crop&w=600&q=80',
@@ -207,6 +218,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 17. bun_thit_nuong (Authentic Bún Thịt Nướng Chả Giò)
   bun_thit_nuong: [
+    '/dish-images/dish-bun-cha-ha-noi.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Bun_thit_nuong.jpg/960px-Bun_thit_nuong.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/B%C3%BAn_Th%E1%BB%8Bt_N%C6%B0%E1%BB%9Bng_Ch%E1%BA%A3_Gi%C3%B2.JPG/960px-B%C3%BAn_Th%E1%BB%8Bt_N%C6%B0%E1%BB%9Bng_Ch%E1%BA%A3_Gi%C3%B2.JPG?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=600&q=80',
@@ -215,6 +227,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 18. hu_tieu (Authentic Hủ Tiếu Nam Vang)
   hu_tieu: [
+    '/dish-images/dish-hu-tieu-nam-vang.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg/960px-H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang_S%C3%A0i_G%C3%B2n.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=600&q=80',
@@ -225,7 +238,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
   mi_quang_cao_lau: [
     'https://upload.wikimedia.org/wikipedia/commons/f/f8/Cao_L%E1%BA%A7u.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Cao_l%E1%BA%A7u_H%E1%BB%99i_An.jpg/960px-Cao_l%E1%BA%A7u_H%E1%BB%99i_An.jpg?auto=format&fit=crop&w=600&q=80',
-    'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Mi_Quang_-_Quan_Hat_Mi_Quang%2C_Cao_Lau_VND2000.jpg/960px-Mi_Quang_-_Quan_Hat_Mi_Quang%2C_Cao_Lau_VND2000.jpg?auto=format&fit=crop&w=600&q=80',
+    '/dish-images/dish-mi-quang-hoi-an.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Mi_Quang_1A_Danang.jpg/960px-Mi_Quang_1A_Danang.jpg?auto=format&fit=crop&w=600&q=80',
   ],
 
@@ -239,6 +252,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 21. com_tam (Authentic Cơm Tấm Sườn Bì Chả)
   com_tam: [
+    '/dish-images/dish-com-tam-suon-bi-cha.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_b%C3%AC_ch%E1%BA%A3.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG/960px-C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1569058242252-623df46b5025?auto=format&fit=crop&w=600&q=80',
@@ -255,15 +269,15 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 23. xoi (Authentic Xôi Xéo & Xôi Gấc)
   xoi: [
-    'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/X%C3%B4i_x%C3%A9o.jpg/960px-X%C3%B4i_x%C3%A9o.jpg?auto=format&fit=crop&w=600&q=80',
+    '/dish-images/dish-xoi-xeo-xoi-man.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/X%C3%B4i_g%E1%BA%A5c.JPG/960px-X%C3%B4i_g%E1%BA%A5c.JPG?auto=format&fit=crop&w=600&q=80',
+    'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/X%C3%B4i_x%C3%A9o.jpg/960px-X%C3%B4i_x%C3%A9o.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1596560548464-f010549b84d7?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1788928808407-531f4779bd50?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 24. thit_kho_tau (Authentic Thịt Kho Tàu Hột Vịt)
   thit_kho_tau: [
-    'https://upload.wikimedia.org/wikipedia/commons/5/5b/Caramelized_Pork_and_Eggs.jpg?auto=format&fit=crop&w=600&q=80',
+    '/dish-images/dish-thit-kho-tau.jpg',
     'https://upload.wikimedia.org/wikipedia/commons/f/f7/Bi-quyet-nau-thit-kho-tau-thom-ngon-vang-ngay1.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Vietnamese_thit_kho%2C_braised_pork_belly_and_boiled_eggs.jpg/960px-Vietnamese_thit_kho%2C_braised_pork_belly_and_boiled_eggs.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Th%E1%BB%8Bt_kho_h%E1%BB%99t_v%E1%BB%8Bt.jpg/960px-Th%E1%BB%8Bt_kho_h%E1%BB%99t_v%E1%BB%8Bt.jpg?auto=format&fit=crop&w=600&q=80',
@@ -271,7 +285,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 25. thit_rang_chay_canh
   thit_rang_chay_canh: [
-    'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Thit_rang_chay_canh.jpg/960px-Thit_rang_chay_canh.jpg?auto=format&fit=crop&w=600&q=80',
+    '/dish-images/dish-thit-rang-chay-canh.jpg',
     'https://images.unsplash.com/photo-1566749382513-5e93b380138d?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1707056503922-91c9ebaf0774?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1625477811233-044633d10dd1?auto=format&fit=crop&w=600&q=80',
@@ -279,113 +293,113 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 26. ca_kho_to (Authentic Cá Kho Tộ & Braised/Fried Fish — ZERO shrimp!)
   ca_kho_to: [
+    '/dish-images/dish-ca-kho-to.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/C%C3%A1_kho_t%E1%BB%99.JPG/960px-C%C3%A1_kho_t%E1%BB%99.JPG?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1767436093457-84ea9122eb4e?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1616557938459-b9baef2b7be3?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 27. suon_ram (Authentic Sườn Xào Chua Ngọt & Sườn Ram)
   suon_ram: [
+    '/dish-images/dish-suon-xao-chua-ngot.jpg',
     'https://upload.wikimedia.org/wikipedia/commons/7/78/Suon_xao_chua_ngot.png?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/7/7c/Suon_xao_chua_ngot_bac_ninh.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1761315412952-a3a9e3ed06ff?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1761315414596-62d1f1ed5ed9?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 28. ga_kho_gung_sa
   ga_kho_gung_sa: [
+    '/dish-images/dish-ga-kho-gung-sa.jpg',
     'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1606728035253-49e8a23146de?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1747628857852-2ffef1e3d06b?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 29. bo_xao_can_toi
   bo_xao_can_toi: [
+    '/dish-images/dish-bo-xao-can-toi.jpg',
     'https://images.unsplash.com/photo-1760504526069-ff0f8bf6e4ca?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1723531055852-744d14ac00b4?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1723531055833-49fb132cbaab?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1601226809816-b8c32440158a?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 30. tom_rim_hai_san
   tom_rim_hai_san: [
+    '/dish-images/dish-tom-rim-man-ngot.jpg',
     'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1688084468401-4938b073aef2?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1771573042846-9f3631a48058?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 31. dau_sot_ca_chua (Authentic Đậu Sốt Cà Chua Nhồi Thịt)
   dau_sot_ca_chua: [
+    '/dish-images/dish-dau-sot-ca-chua.jpg',
     'https://upload.wikimedia.org/wikipedia/commons/b/b7/Dau_sot_ca%2C_tofu_stuffed_with_pork%2C_in_tomato_sauce.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1680173073730-852e0ec93bec?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1789999018388-68773a66b33f?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1680991172715-4074203a40d3?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 32. canh_chua (Authentic Canh Chua Cá Lóc / Cá Diêu Hồng)
   canh_chua: [
+    '/dish-images/dish-canh-chua-ca.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg/960px-Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Canh_chua_c%C3%A1_l%C3%B3c_%E1%BB%9F_Th%E1%BB%A7y_Tr%C3%BAc_Qu%C3%A1n%2C_%C4%91%C6%B0%E1%BB%9Dng_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m_%281%29.jpg/960px-Canh_chua_c%C3%A1_l%C3%B3c_%E1%BB%9F_Th%E1%BB%A7y_Tr%C3%BAc_Qu%C3%A1n%2C_%C4%91%C6%B0%E1%BB%9Dng_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m_%281%29.jpg?auto=format&fit=crop&w=600&q=80',
-    'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Canh_chua_%C4%90%C3%B4ng_H%C3%A0.jpg/960px-Canh_chua_%C4%90%C3%B4ng_H%C3%A0.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 33. canh_cua_rau_day
   canh_cua_rau_day: [
+    '/dish-images/dish-canh-cua-mong-toi.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Canh_Ngh%C3%AAu_n%E1%BA%A5u_rau_mu%E1%BB%91ng.jpg/960px-Canh_Ngh%C3%AAu_n%E1%BA%A5u_rau_mu%E1%BB%91ng.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1554054204-b2f70b09d031?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1789296719195-729ce93ca4aa?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1659603667872-915f2b953cb7?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 34. canh_suon_sau_kim_chi
   canh_suon_sau_kim_chi: [
+    '/dish-images/dish-canh-suon-nau-sau.jpg',
     'https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1665593998976-d957f2827fe7?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1608500218861-01091cdc501e?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1755438538539-695f7bbfff6a?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 35. canh_thanh_mat
   canh_thanh_mat: [
+    '/dish-images/dish-canh-thanh-mat.jpg',
     'https://images.unsplash.com/photo-1684866907269-2248f7334a09?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1763470260582-894ae15f43bb?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1758293121435-396ed31ebcf4?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1584003397078-45ef96d6174d?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 36. canh_kho_qua (Authentic Canh Khổ Qua Nhồi Thịt)
   canh_kho_qua: [
+    '/dish-images/dish-canh-kho-qua.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Canh_kh%E1%BB%95_qua.JPG/960px-Canh_kh%E1%BB%95_qua.JPG?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/a/ae/Soup_made_from_stuffed_bitter_melon%2C_Canh_Kho_Qua.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/Canh_kh%E1%BB%95_qua_nh%E1%BB%93i_th%E1%BB%8Bt.png/960px-Canh_kh%E1%BB%95_qua_nh%E1%BB%93i_th%E1%BB%8Bt.png?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1750677637369-7fae4d9e361b?auto=format&fit=crop&w=600&q=80',
   ],
 
-  // 37. rau_muong_xao_luoc (Authentic Rau Muống Xào Tỏi)
+  // 37. rau_muong_xao_luoc (Authentic Rau Muống Luộc Dầm Sấu & Rau Muống Xào Tỏi)
   rau_muong_xao_luoc: [
-    'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi.jpg/960px-Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi.jpg?auto=format&fit=crop&w=600&q=80',
-    'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg/960px-Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg?auto=format&fit=crop&w=600&q=80',
+    '/dish-images/dish-rau-muong-luoc-sau.jpg',
+    '/dish-images/dish-rau-muong-xao-toi.jpg',
     'https://images.unsplash.com/photo-1707270686208-5d1fc168dd7b?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1680676066605-08566beed799?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 38. rau_cu_luoc_kho_quet (Authentic Boiled Vegetables & Kho Quẹt — ZERO scorched rice cake!)
   rau_cu_luoc_kho_quet: [
+    '/dish-images/dish-rau-cu-kho-quet.jpg',
     'https://images.unsplash.com/photo-1540420828642-fca2c5c18abe?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1780842819206-435e9b52bc60?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1584495018406-036108e89aa2?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 39. rau_xao_thap_cam
   rau_xao_thap_cam: [
+    '/dish-images/dish-rau-xao-thap-cam.jpg',
     'https://images.unsplash.com/photo-1576402187878-974f70c890a5?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1592578630143-fac65cda7a67?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1648422709905-8c3d148974e1?auto=format&fit=crop&w=600&q=80',
   ],
 
@@ -439,6 +453,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 46. che_duong_nhan_khuc_bach (Authentic Chè Khúc Bạch Long Nhãn)
   che_duong_nhan_khuc_bach: [
+    '/dish-images/dish-che-khuc-bach-truyen-thong.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_%E1%BB%9F_qu%C3%A1n_Th%E1%BA%A3o_Vy_2020_09_06.jpg/960px-Ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_%E1%BB%9F_qu%C3%A1n_Th%E1%BA%A3o_Vy_2020_09_06.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/M%C3%B3n_ti%E1%BB%87c_c%C6%B0%E1%BB%9Bi_%E1%BB%9F_T%C3%A2n_B%C3%ACnh_ng6th8n2023_%28m%C3%B3n_tr%C3%A1ng_mi%E1%BB%87ng%2C_ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_long_nh%C3%A3n%29_%281%29.jpg/960px-M%C3%B3n_ti%E1%BB%87c_c%C6%B0%E1%BB%9Bi_%E1%BB%9F_T%C3%A2n_B%C3%ACnh_ng6th8n2023_%28m%C3%B3n_tr%C3%A1ng_mi%E1%BB%87ng%2C_ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_long_nh%C3%A3n%29_%281%29.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/M%C3%B3n_ti%E1%BB%87c_c%C6%B0%E1%BB%9Bi_%E1%BB%9F_T%C3%A2n_B%C3%ACnh_ng6th8n2023_%28m%C3%B3n_tr%C3%A1ng_mi%E1%BB%87ng%2C_ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_long_nh%C3%A3n%29_%282%29.jpg/960px-M%C3%B3n_ti%E1%BB%87c_c%C6%B0%E1%BB%9Bi_%E1%BB%9F_T%C3%A2n_B%C3%ACnh_ng6th8n2023_%28m%C3%B3n_tr%C3%A1ng_mi%E1%BB%87ng%2C_ch%C3%A8_kh%C3%BAc_b%E1%BA%A1ch_long_nh%C3%A3n%29_%282%29.jpg?auto=format&fit=crop&w=600&q=80',
@@ -447,6 +462,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 47. che_truyen_thong (Authentic Vietnamese Chè Đậu Xanh, Chè Trôi Nước, Chè Hạt Sen)
   che_truyen_thong: [
+    '/dish-images/dish-che-khuc-bach-truyen-thong.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Vietblackeyedpeas.jpg/960px-Vietblackeyedpeas.jpg?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/b/ba/Banhchay.JPG?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG/960px-Ch%C3%A8_Th%E1%BA%A1ch_Tr%E1%BA%AFng_%C4%90%E1%BA%ADu_Xanh_Nh%C3%A3n_Nh%E1%BB%A5c.JPG?auto=format&fit=crop&w=600&q=80',
@@ -634,6 +650,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 70. goi_nom_vietnam
   goi_nom_vietnam: [
+    '/dish-images/dish-dua-gia-goi-nom.jpg',
     'https://images.unsplash.com/photo-1729292836660-1bd9884457dc?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1582088498475-efe525179fe0?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1749146878349-b6dc0f931d5d?auto=format&fit=crop&w=600&q=80',
@@ -642,6 +659,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 71. cha_ca_vietnam (Authentic Chả Cá Lã Vọng Hà Nội)
   cha_ca_vietnam: [
+    '/dish-images/dish-cha-ca-la-vong.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Ch%E1%BA%A3_c%C3%A1_L%C3%A3_V%E1%BB%8Dng.jpg/960px-Ch%E1%BA%A3_c%C3%A1_L%C3%A3_V%E1%BB%8Dng.jpg?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/0/02/Cha_ca_La_Vong.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Ch%E1%BA%A3_c%C3%A1_L%C3%A3_V%E1%BB%8Dng_H%C3%A0_N%E1%BB%99i.jpg/960px-Ch%E1%BA%A3_c%C3%A1_L%C3%A3_V%E1%BB%8Dng_H%C3%A0_N%E1%BB%99i.jpg?auto=format&fit=crop&w=600&q=80',
@@ -650,14 +668,15 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 72. banh_xeo_banh_khot (Authentic Bánh Xèo & Bánh Khọt)
   banh_xeo_banh_khot: [
+    '/dish-images/dish-banh-xeo-vietnam.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/B%C3%A1nh_x%C3%A8o_1.jpg/960px-B%C3%A1nh_x%C3%A8o_1.jpg?auto=format&fit=crop&w=600&q=80',
-    'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/B%C3%A1nh_x%C3%A8o_with_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm.jpg/960px-B%C3%A1nh_x%C3%A8o_with_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFm.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/B%C3%A1nh_kh%E1%BB%8Dt_by_Baoothersks.jpg/960px-B%C3%A1nh_kh%E1%BB%8Dt_by_Baoothersks.jpg?auto=format&fit=crop&w=600&q=80',
     'https://upload.wikimedia.org/wikipedia/commons/b/b2/B%C3%A1nh_kh%E1%BB%8Dt_%282020-3-28%29.jpg?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 73. banh_cuon_banh_uot
   banh_cuon_banh_uot: [
+    '/dish-images/dish-banh-cuon-nong.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/B%C3%A1nh_cu%E1%BB%91n.jpg/960px-B%C3%A1nh_cu%E1%BB%91n.jpg?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1786114774610-8696925848c6?auto=format&fit=crop&w=600&q=80',
     'https://images.unsplash.com/photo-1719454261026-fc7f0ffc1835?auto=format&fit=crop&w=600&q=80',
@@ -668,8 +687,8 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
   chao_vietnam: [
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Ch%C3%A1o_l%C3%B2ng.jpg/960px-Ch%C3%A1o_l%C3%B2ng.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Ch%C3%A1o_l%C3%B2ng_B%C3%ACnh_Long_ng%C3%A0y_02_th%C3%A1ng_11_n%C4%83m_2018_%282%29.jpg/960px-Ch%C3%A1o_l%C3%B2ng_B%C3%ACnh_Long_ng%C3%A0y_02_th%C3%A1ng_11_n%C4%83m_2018_%282%29.jpg?auto=format&fit=crop&w=600&q=80',
+    '/dish-images/dish-chao-suon-chao-ga.jpg',
     'https://images.unsplash.com/photo-1766761562530-c8dd12c96d9a?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1621658537360-dfcb008fe19f?auto=format&fit=crop&w=600&q=80',
   ],
 
   // 75. lau_vietnam
@@ -682,6 +701,7 @@ export const CULINARY_82_POOLS: Record<string, string[]> = {
 
   // 76. nem_cuon_spring_rolls (Authentic Gỏi Cuốn Tôm Thịt)
   nem_cuon_spring_rolls: [
+    '/dish-images/dish-goi-cuon-tom-thit.jpg',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Summer_roll.jpg/960px-Summer_roll.jpg?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Goi_cuon_Phuongnhu.JPG/960px-Goi_cuon_Phuongnhu.JPG?auto=format&fit=crop&w=600&q=80',
     'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/G%E1%BB%8Fi_cu%E1%BB%91n.jpg/960px-G%E1%BB%8Fi_cu%E1%BB%91n.jpg?auto=format&fit=crop&w=600&q=80',
@@ -2058,6 +2078,15 @@ function getAllowedPoolIndices(poolKey: string, seedString: string, poolLength: 
     return [2, 3]; // General white rice porridge
   }
 
+  if (poolKey === 'rau_muong_xao_luoc' && poolLength >= 2) {
+    if (norm.includes('luoc') || norm.includes('dam sau')) {
+      return [0]; // Rau muống luộc dầm sấu
+    }
+    if (norm.includes('xao')) {
+      return [1]; // Rau muống / rau lang xào tỏi
+    }
+  }
+
   return Array.from({ length: poolLength }, (_, i) => i);
 }
 
@@ -2068,8 +2097,10 @@ function pickDeterministicUrl(poolKey: string, seedString: string): string {
     return defaultPool[0] || '';
   }
   const allowedIndices = getAllowedPoolIndices(poolKey, seedString, pool.length);
+  const dishImageIndices = allowedIndices.filter(idx => pool[idx]?.startsWith('/dish-images/'));
+  const candidateIndices = dishImageIndices.length > 0 ? dishImageIndices : allowedIndices;
   const hash = hashDishTitle(seedString);
-  const chosenIdx = allowedIndices[hash % allowedIndices.length];
+  const chosenIdx = candidateIndices[hash % candidateIndices.length];
   return pool[chosenIdx];
 }
 
@@ -2205,39 +2236,978 @@ export function resolveCulinaryCluster(title: string, category?: string): string
   return getCategoryFallbackKey(category);
 }
 
+// ============================================================================
+// ADMIN UNIVERSAL DISH & RECIPE OVERRIDE REGISTRY (LOCAL + SERVER SYNCED)
+// ============================================================================
+import type { Recipe, Ingredient, CookingInstruction, MealCategory, Region, VietnameseMealSet, DailyMealPlan } from '../types';
+
+export const ADMIN_RECIPE_IMAGES_STORAGE_KEY = 'mealwise_admin_recipe_images_v1';
+
+export interface AdminRecipeImageOverride {
+  key: string;
+  recipeId?: string;
+  originalTitle?: string;
+  title: string;
+  imageUrl?: string;
+  description?: string;
+  category?: MealCategory;
+  region?: Region;
+  prepTimeMinutes?: number;
+  cookTimeMinutes?: number;
+  servings?: number;
+  calories?: number;
+  estimatedCostVnd?: number;
+  difficulty?: 'Dễ' | 'Trung bình' | 'Cầu kỳ';
+  chefTip?: string;
+  tags?: string[];
+  ingredients?: Ingredient[];
+  instructions?: CookingInstruction[];
+  isNewAdminDish?: boolean;
+  isDeletedByAdmin?: boolean;
+  updatedAt: string;
+}
+
+let inMemoryAdminOverridesCache: Record<string, AdminRecipeImageOverride> | null = null;
+let hasInitializedServerRecipeSync = false;
+
+export function normalizeRecipeOverrideKey(titleOrKey: string): string {
+  return String(titleOrKey || '').trim().toLowerCase();
+}
+
+export function getAdminRecipeImageOverrides(): Record<string, AdminRecipeImageOverride> {
+  if (inMemoryAdminOverridesCache) {
+    return inMemoryAdminOverridesCache;
+  }
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return {};
+  }
+  try {
+    const raw = localStorage.getItem(ADMIN_RECIPE_IMAGES_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        inMemoryAdminOverridesCache = parsed;
+        return parsed;
+      }
+    }
+  } catch {}
+  inMemoryAdminOverridesCache = {};
+  return {};
+}
+
+function saveAdminRecipeImageOverridesToLocal(map: Record<string, AdminRecipeImageOverride>): void {
+  inMemoryAdminOverridesCache = { ...map };
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    try {
+      localStorage.setItem(ADMIN_RECIPE_IMAGES_STORAGE_KEY, JSON.stringify(inMemoryAdminOverridesCache));
+    } catch {}
+    window.dispatchEvent(new CustomEvent('mealwise:recipe_images_updated', { detail: inMemoryAdminOverridesCache }));
+  }
+}
+
+export function getAdminDishOverride(
+  title?: string,
+  recipeId?: string,
+  overridesMap?: Record<string, AdminRecipeImageOverride>
+): AdminRecipeImageOverride | null {
+  const overrides = overridesMap || getAdminRecipeImageOverrides();
+  if (recipeId) {
+    const byId = overrides[normalizeRecipeOverrideKey(recipeId)];
+    if (byId) return byId;
+  }
+  if (title) {
+    const byTitle = overrides[normalizeRecipeOverrideKey(title)];
+    if (byTitle) return byTitle;
+  }
+  return null;
+}
+
+export function getAdminRecipeImageOverrideForTitle(title?: string, recipeId?: string): string | null {
+  const override = getAdminDishOverride(title, recipeId);
+  if (override && override.imageUrl) {
+    return override.imageUrl;
+  }
+  return null;
+}
+
+export async function setAdminDishFullOverride(
+  payload: Partial<AdminRecipeImageOverride> & { title: string; originalTitle?: string; recipeId?: string }
+): Promise<Record<string, AdminRecipeImageOverride>> {
+  const primaryTitle = payload.originalTitle || payload.title;
+  const key = normalizeRecipeOverrideKey(primaryTitle);
+  const newTitleKey = normalizeRecipeOverrideKey(payload.title);
+  const current = { ...getAdminRecipeImageOverrides() };
+  const existing = current[key] || (payload.recipeId ? current[normalizeRecipeOverrideKey(payload.recipeId)] : undefined) || {};
+
+  const entry: AdminRecipeImageOverride = {
+    ...existing,
+    ...payload,
+    key,
+    recipeId: payload.recipeId ?? existing.recipeId ?? '',
+    originalTitle: payload.originalTitle ?? existing.originalTitle ?? payload.title.trim(),
+    title: payload.title.trim(),
+    imageUrl: payload.imageUrl !== undefined ? String(payload.imageUrl).trim() : (existing.imageUrl || ''),
+    updatedAt: new Date().toLocaleString('vi-VN')
+  };
+
+  current[key] = entry;
+  if (newTitleKey && newTitleKey !== key) {
+    current[newTitleKey] = entry;
+  }
+  if (entry.recipeId) {
+    current[normalizeRecipeOverrideKey(entry.recipeId)] = entry;
+  }
+  saveAdminRecipeImageOverridesToLocal(current);
+
+  try {
+    const res = await fetch('/api/admin/recipe-images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'set',
+        ...entry
+      })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.ok && data.overrides) {
+        const merged = { ...current, ...data.overrides };
+        saveAdminRecipeImageOverridesToLocal(merged);
+        return merged;
+      }
+    }
+  } catch {}
+
+  return current;
+}
+
+export async function setAdminRecipeImageOverride(
+  title: string,
+  imageUrl: string,
+  recipeId?: string
+): Promise<Record<string, AdminRecipeImageOverride>> {
+  return setAdminDishFullOverride({
+    title,
+    originalTitle: title,
+    imageUrl,
+    recipeId
+  });
+}
+
+export async function removeAdminRecipeImageOverride(
+  title: string,
+  recipeId?: string,
+  originalTitle?: string
+): Promise<Record<string, AdminRecipeImageOverride>> {
+  const key = normalizeRecipeOverrideKey(originalTitle || title);
+  const titleKey = normalizeRecipeOverrideKey(title);
+  const current = { ...getAdminRecipeImageOverrides() };
+  delete current[key];
+  delete current[titleKey];
+  if (recipeId) {
+    delete current[normalizeRecipeOverrideKey(recipeId)];
+  }
+  saveAdminRecipeImageOverridesToLocal(current);
+
+  try {
+    await fetch('/api/admin/recipe-images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'delete',
+        key,
+        recipeId: recipeId || '',
+        originalTitle: originalTitle || title.trim(),
+        title: title.trim()
+      })
+    });
+  } catch {}
+
+  return current;
+}
+
+export function applyAdminOverrideToRecipe<T extends Recipe>(
+  recipe: T,
+  overridesMap?: Record<string, AdminRecipeImageOverride>
+): T {
+  if (!recipe) return recipe;
+  const overrides = overridesMap || getAdminRecipeImageOverrides();
+  const ov = getAdminDishOverride(recipe.title, recipe.id, overrides);
+  if (!ov) return recipe;
+
+  const mergedImageUrl = ov.imageUrl ? ov.imageUrl : recipe.imageUrl;
+  return {
+    ...recipe,
+    title: ov.title || recipe.title,
+    description: ov.description !== undefined ? ov.description : recipe.description,
+    category: ov.category || recipe.category,
+    region: ov.region || recipe.region,
+    prepTimeMinutes: ov.prepTimeMinutes !== undefined ? Number(ov.prepTimeMinutes) : recipe.prepTimeMinutes,
+    cookTimeMinutes: ov.cookTimeMinutes !== undefined ? Number(ov.cookTimeMinutes) : recipe.cookTimeMinutes,
+    servings: ov.servings !== undefined ? Number(ov.servings) : recipe.servings,
+    calories: ov.calories !== undefined ? Number(ov.calories) : recipe.calories,
+    estimatedCostVnd: ov.estimatedCostVnd !== undefined ? Number(ov.estimatedCostVnd) : recipe.estimatedCostVnd,
+    difficulty: ov.difficulty || recipe.difficulty,
+    chefTip: ov.chefTip !== undefined ? ov.chefTip : recipe.chefTip,
+    tags: Array.isArray(ov.tags) ? ov.tags : recipe.tags,
+    ingredients: Array.isArray(ov.ingredients) ? ov.ingredients : recipe.ingredients,
+    instructions: Array.isArray(ov.instructions) ? ov.instructions : recipe.instructions,
+    imageUrl: mergedImageUrl
+  };
+}
+
+export function applyAdminOverridesToRecipeList(
+  recipes: Recipe[],
+  overridesMap?: Record<string, AdminRecipeImageOverride>
+): Recipe[] {
+  const overrides = overridesMap || getAdminRecipeImageOverrides();
+  const existingIds = new Set<string>();
+  const existingTitles = new Set<string>();
+
+  const updatedList: Recipe[] = [];
+  for (const r of recipes) {
+    if (!r) continue;
+    const ov = getAdminDishOverride(r.title, r.id, overrides);
+    if (ov?.isDeletedByAdmin) continue;
+    const merged = applyAdminOverrideToRecipe(r, overrides);
+    existingIds.add(normalizeRecipeOverrideKey(r.id));
+    existingIds.add(normalizeRecipeOverrideKey(merged.id));
+    existingTitles.add(normalizeRecipeOverrideKey(r.title));
+    existingTitles.add(normalizeRecipeOverrideKey(merged.title));
+    updatedList.push(merged);
+  }
+
+  // Prepend any brand-new dishes created by Admin
+  const addedAdminKeys = new Set<string>();
+  for (const ov of Object.values(overrides)) {
+    if (!ov || !ov.isNewAdminDish || ov.isDeletedByAdmin) continue;
+    const normKey = normalizeRecipeOverrideKey(ov.recipeId || ov.key || ov.title);
+    if (addedAdminKeys.has(normKey)) continue;
+    if (existingIds.has(normKey) || existingTitles.has(normalizeRecipeOverrideKey(ov.title))) continue;
+    addedAdminKeys.add(normKey);
+
+    const newRecipe: Recipe = {
+      id: ov.recipeId || `admin-dish-${normKey.replace(/\s+/g, '-')}`,
+      title: ov.title,
+      description: ov.description || 'Món ngon gia đình do Quản trị viên cập nhật.',
+      category: ov.category || 'mon-man',
+      region: ov.region || 'toan-quoc',
+      prepTimeMinutes: ov.prepTimeMinutes ?? 15,
+      cookTimeMinutes: ov.cookTimeMinutes ?? 25,
+      servings: ov.servings ?? 4,
+      calories: ov.calories ?? 450,
+      estimatedCostVnd: ov.estimatedCostVnd ?? 65000,
+      imageUrl: ov.imageUrl || getDishImageUrl(ov.title, ov.category),
+      ingredients: Array.isArray(ov.ingredients) ? ov.ingredients : [],
+      instructions: Array.isArray(ov.instructions) ? ov.instructions : [],
+      tags: Array.isArray(ov.tags) ? ov.tags : ['Chuẩn Vị Nhà'],
+      chefTip: ov.chefTip || '',
+      difficulty: ov.difficulty || 'Dễ',
+      isCustom: true
+    };
+    updatedList.unshift(newRecipe);
+  }
+
+  return updatedList;
+}
+
+export function applyAdminOverridesToMealSet(
+  mealSet: VietnameseMealSet,
+  overridesMap?: Record<string, AdminRecipeImageOverride>
+): VietnameseMealSet {
+  if (!mealSet) return mealSet;
+  const overrides = overridesMap || getAdminRecipeImageOverrides();
+  const mainDish = applyAdminOverrideToRecipe(mealSet.mainDish, overrides);
+  const soupDish = applyAdminOverrideToRecipe(mealSet.soupDish, overrides);
+  const sideDish = applyAdminOverrideToRecipe(mealSet.sideDish, overrides);
+  const sumCost = (mainDish?.estimatedCostVnd || 0) + (soupDish?.estimatedCostVnd || 0) + (sideDish?.estimatedCostVnd || 0);
+  const sumCal = (mainDish?.calories || 0) + (soupDish?.calories || 0) + (sideDish?.calories || 0);
+  return {
+    ...mealSet,
+    mainDish,
+    soupDish,
+    sideDish,
+    totalCostVnd: sumCost > 0 ? sumCost : mealSet.totalCostVnd,
+    totalCalories: sumCal > 0 ? sumCal : mealSet.totalCalories,
+    imageUrl: mainDish?.imageUrl || mealSet.imageUrl
+  };
+}
+
+export function applyAdminOverridesToDailyPlan(
+  plan: DailyMealPlan[],
+  overridesMap?: Record<string, AdminRecipeImageOverride>
+): DailyMealPlan[] {
+  if (!Array.isArray(plan)) return plan;
+  const overrides = overridesMap || getAdminRecipeImageOverrides();
+  if (!overrides || Object.keys(overrides).length === 0) return plan;
+
+  return plan.map(day => {
+    if (!day || !day.meals) return day;
+    const transformSlot = (item: Recipe | VietnameseMealSet | null | undefined) => {
+      if (!item) return item ?? null;
+      if ('mainDish' in item) {
+        return applyAdminOverridesToMealSet(item, overrides);
+      }
+      return applyAdminOverrideToRecipe(item, overrides);
+    };
+    const breakfast = transformSlot(day.meals.breakfast);
+    const lunch = transformSlot(day.meals.lunch);
+    const dinner = transformSlot(day.meals.dinner);
+    const snack = day.meals.snack !== undefined ? transformSlot(day.meals.snack) : undefined;
+    return {
+      ...day,
+      meals: {
+        ...day.meals,
+        breakfast,
+        lunch,
+        dinner,
+        ...(snack !== undefined ? { snack } : {})
+      }
+    };
+  });
+}
+
+export async function syncAdminRecipeImageOverridesFromServer(): Promise<Record<string, AdminRecipeImageOverride>> {
+  const current = { ...getAdminRecipeImageOverrides() };
+  if (typeof window === 'undefined') return current;
+  try {
+    const res = await fetch('/api/admin/recipe-images');
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.ok && data.overrides && typeof data.overrides === 'object') {
+        const merged = { ...current, ...data.overrides };
+        saveAdminRecipeImageOverridesToLocal(merged);
+        return merged;
+      }
+    }
+  } catch {}
+  return current;
+}
+
+export function ensureServerRecipeImagesSyncedOnce(): void {
+  if (hasInitializedServerRecipeSync || typeof window === 'undefined') return;
+  hasInitializedServerRecipeSync = true;
+  syncAdminRecipeImageOverridesFromServer().catch(() => {});
+}
+
+/**
+ * Returns alternative curated food image URLs for a given dish so the Admin can preview/pick alternatives with 1 click.
+ */
+export function getClusterCandidatesForDish(title: string, category?: string): string[] {
+  const clusterKey = resolveCulinaryCluster(title || '', category);
+  const pool = FOOD_IMAGE_POOLS[clusterKey] || FOOD_IMAGE_POOLS['com_tam'] || [];
+  return Array.from(new Set(pool));
+}
+
 /**
  * Resolves the most accurate, high-definition food photograph for a dish.
  * 
  * @param title The dish, drink, or snack title in Vietnamese or English.
  * @param category Optional category slug (e.g. 'mon-chinh', 'mon-canh', 'nuoc-uong').
  * @param existingUrl Optional existing image URL in the database.
- * @returns Verified CDN URL matching the exact culinary cluster.
+ * @param ignoreAdminOverride Optional flag to inspect the default image ignoring admin override.
+ * @returns Verified CDN URL matching the exact culinary cluster or Admin custom override.
  */
 export function getDishImageUrl(
   title: string,
   category?: string,
-  existingUrl?: string
+  existingUrl?: string,
+  ignoreAdminOverride?: boolean
 ): string {
   const rawTitle = title || '';
+
+  // Preserve explicit step-completion images directly
+  if (existingUrl && typeof existingUrl === 'string' && existingUrl.trim().startsWith('/step-images/')) {
+    return existingUrl.trim();
+  }
+
+  // Priority #0: Admin Custom Recipe Image Override
+  if (!ignoreAdminOverride) {
+    ensureServerRecipeImagesSyncedOnce();
+    const adminOverrideUrl = getAdminRecipeImageOverrideForTitle(rawTitle);
+    if (adminOverrideUrl) {
+      return adminOverrideUrl;
+    }
+  }
+
   const clusterKey = resolveCulinaryCluster(rawTitle, category);
 
   // Step A: Inspect existingUrl for validity and semantic cluster alignment
   if (existingUrl && !isDeadOrPlaceholderUrl(existingUrl)) {
-    // Preserve custom non-pool URLs (e.g. external custom upload or data:image/png)
+    // Preserve custom non-pool URLs (e.g. /dish-images/, external custom upload, or data:image/png)
     if (!existingUrl.includes('images.unsplash.com') && !existingUrl.includes('wikimedia.org')) {
       return existingUrl;
     }
-    // For pool URLs, only keep existingUrl if it belongs to the allowed sub-slice of the resolved semantic cluster pool
+    // For pool URLs, if the resolved cluster has a dedicated high-res /dish-images/ hero photo, upgrade legacy stock URLs automatically
     const clusterPool = FOOD_IMAGE_POOLS[clusterKey] || [];
     const allowedIndices = getAllowedPoolIndices(clusterKey, rawTitle, clusterPool.length);
     const allowedPoolUrls = allowedIndices.map(idx => clusterPool[idx]).filter(Boolean);
-    const existingBase = existingUrl.split('?')[0];
-    const matchedPoolUrl = allowedPoolUrls.find(poolUrl => poolUrl.includes(existingBase));
-    if (matchedPoolUrl) {
-      return matchedPoolUrl;
+    const hasCuratedLocalHero = allowedPoolUrls.some(poolUrl => poolUrl.startsWith('/dish-images/'));
+    if (!hasCuratedLocalHero) {
+      const existingBase = existingUrl.split('?')[0];
+      const matchedPoolUrl = allowedPoolUrls.find(poolUrl => poolUrl.includes(existingBase));
+      if (matchedPoolUrl) {
+        return matchedPoolUrl;
+      }
     }
   }
 
   return pickDeterministicUrl(clusterKey, rawTitle);
 }
+
+// ============================================================================
+// 8. UNIVERSAL COOKING STEP COMPLETION IMAGE RESOLVER
+// ============================================================================
+
+export interface CookingStepImagePreset {
+  id: string;
+  label: string;
+  phase: 'prep' | 'marinate' | 'cook' | 'finish';
+  url: string;
+  fallbackUrl: string;
+}
+
+export const COOKING_STEP_IMAGE_PRESETS: CookingStepImagePreset[] = [
+  {
+    id: 'step-prep-pork-meat',
+    label: 'Sơ chế Thịt heo / Ba chỉ / Sườn',
+    phase: 'prep',
+    url: '/step-images/step-prep-pork-meat.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-prep-beef-poultry',
+    label: 'Sơ chế Thịt bò / Gà / Gia cầm',
+    phase: 'prep',
+    url: '/step-images/step-prep-beef-poultry.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-prep-seafood-fish',
+    label: 'Sơ chế Cá / Tôm / Hải sản',
+    phase: 'prep',
+    url: '/step-images/step-prep-seafood-fish.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-prep-veggies-herbs',
+    label: 'Sơ chế Rau củ / Nấm / Gia vị tươi',
+    phase: 'prep',
+    url: '/step-images/step-prep-veggies-herbs.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1540420828642-fca2c5c18abe?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-prep-tofu-eggs',
+    label: 'Sơ chế Đậu hũ / Trứng',
+    phase: 'prep',
+    url: '/step-images/step-prep-tofu-eggs.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-prep-aromatics-spices',
+    label: 'Sơ chế Hành tỏi / Gừng sả / Thảo mộc',
+    phase: 'prep',
+    url: '/step-images/step-prep-aromatics-spices.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1540420828642-fca2c5c18abe?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-sauce-dipping-fishsauce',
+    label: 'Pha nước chấm / Nước mắm tỏi ớt / Sốt trộn',
+    phase: 'marinate',
+    url: '/step-images/step-sauce-dipping-fishsauce.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-marinate-meat',
+    label: 'Ướp thịt & Pha sốt đậm đà',
+    phase: 'marinate',
+    url: '/step-images/step-marinate-meat.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-marinate-seafood',
+    label: 'Ướp cá / Tôm / Hải sản khử tanh',
+    phase: 'marinate',
+    url: '/step-images/step-marinate-seafood.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-blanch-boil-greens',
+    label: 'Luộc rau xanh / Chần sơ sốc nhiệt đá lạnh',
+    phase: 'cook',
+    url: '/step-images/step-blanch-boil-greens.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-stirfry-greens-garlic',
+    label: 'Xào rau xanh / Xào tỏi lửa lớn',
+    phase: 'cook',
+    url: '/step-images/step-stirfry-greens-garlic.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-cook-sear-braise',
+    label: 'Kho thịt / Rim / Rang cháy cạnh',
+    phase: 'cook',
+    url: '/step-images/step-cook-sear-braise.jpg',
+    fallbackUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Caramelized_Pork_and_Eggs.jpg?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-cook-braise-fish-claypot',
+    label: 'Cá kho tộ / Kho cá nồi đất đậm vị',
+    phase: 'cook',
+    url: '/step-images/step-cook-braise-fish-claypot.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-cook-braise-shrimp',
+    label: 'Tôm rim / Rang tôm mặn ngọt',
+    phase: 'cook',
+    url: '/step-images/step-cook-braise-shrimp.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-cook-tofu-tomato-sauce',
+    label: 'Đậu phụ sốt cà chua / Rim sốt cà',
+    phase: 'cook',
+    url: '/step-images/step-cook-tofu-tomato-sauce.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-cook-stirfry-wok',
+    label: 'Xào lửa lớn / Đảo chảo nóng',
+    phase: 'cook',
+    url: '/step-images/step-cook-stirfry-wok.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1760504526069-ff0f8bf6e4ca?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-cook-simmer-soup',
+    label: 'Nấu canh / Đun sôi / Hầm nước dùng',
+    phase: 'cook',
+    url: '/step-images/step-cook-simmer-soup.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-cook-fry-crispy',
+    label: 'Chiên vàng giòn / Áp chảo',
+    phase: 'cook',
+    url: '/step-images/step-cook-fry-crispy.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-salad-mix-nom-goi',
+    label: 'Trộn gỏi / Nộm / Bóp xổi chua ngọt',
+    phase: 'cook',
+    url: '/step-images/step-salad-mix-nom-goi.jpg',
+    fallbackUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'step-finish-garnish',
+    label: 'Hoàn thiện & Trình bày ra đĩa',
+    phase: 'finish',
+    url: '/step-images/step-finish-garnish.jpg',
+    fallbackUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Caramelized_Pork_and_Eggs.jpg?auto=format&fit=crop&w=600&q=80'
+  }
+];
+
+export const STEP_IMAGE_FALLBACK_MAP: Record<string, string> = COOKING_STEP_IMAGE_PRESETS.reduce(
+  (acc, item) => {
+    acc[item.url] = item.fallbackUrl;
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
+export const LEGACY_CUSTOM_PRESET_IMAGE_URLS = new Set<string>([
+  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=600&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80'
+]);
+
+/**
+ * Checks whether a recipe has a valid image to display.
+ * - For system & admin dishes: always true.
+ * - For user-added custom dishes (`isCustom === true` and not `admin-dish-*`):
+ *   ONLY returns true if the user explicitly uploaded/entered an image themselves!
+ */
+export function hasUserProvidedRecipeImage(
+  recipe?: { id?: string; isCustom?: boolean; imageUrl?: string } | null
+): boolean {
+  if (!recipe) return false;
+  const isUserCustom = Boolean(recipe.isCustom) && !String(recipe.id || '').startsWith('admin-dish-');
+  if (!isUserCustom) return true;
+  const raw = (recipe.imageUrl || '').trim();
+  if (!raw) return false;
+  if (LEGACY_CUSTOM_PRESET_IMAGE_URLS.has(raw)) return false;
+  return true;
+}
+
+export function getStepFallbackImageUrl(
+  stepImageUrl?: string,
+  recipeTitle?: string,
+  category?: string
+): string {
+  if (stepImageUrl && STEP_IMAGE_FALLBACK_MAP[stepImageUrl.trim()]) {
+    return STEP_IMAGE_FALLBACK_MAP[stepImageUrl.trim()];
+  }
+  return getDishImageUrl(recipeTitle || 'Món ăn', category);
+}
+
+/**
+ * Resolves the step-completion visual photograph for any cooking step of any recipe.
+ * Ensures every single step (Step 1 Prep, Step 2 Marinate/Mix/Sauce, Step 3 Active Cook, Step 4 Finish)
+ * displays an authentic, realistic photo that 100% matches the culinary action and ingredient of that step.
+ */
+export function getCookingStepImageUrl(
+  recipe: {
+    id?: string;
+    title?: string;
+    category?: string;
+    imageUrl?: string;
+    isCustom?: boolean;
+    ingredients?: Array<{ name: string; category?: string }>;
+  },
+  instruction: {
+    step: number;
+    title?: string;
+    content?: string;
+    heatLevel?: string;
+    imageUrl?: string;
+  },
+  totalSteps: number
+): string {
+  // 1. Explicit custom step image URL on the instruction itself
+  if (instruction?.imageUrl && typeof instruction.imageUrl === 'string' && instruction.imageUrl.trim().length > 0) {
+    const trimmed = instruction.imageUrl.trim();
+    if (!isDeadOrPlaceholderUrl(trimmed)) {
+      return trimmed;
+    }
+  }
+
+  // 1b. If this is a user-added custom dish, ONLY show an image if the user put one in themselves
+  const isUserCustom = Boolean(recipe?.isCustom) && !String(recipe?.id || '').startsWith('admin-dish-');
+  if (isUserCustom) {
+    const stepNumCheck = Number(instruction?.step) || 1;
+    if (stepNumCheck === totalSteps && hasUserProvidedRecipeImage(recipe)) {
+      return (recipe.imageUrl || '').trim();
+    }
+    return '';
+  }
+
+  // 2. Check Admin dish override in case step imageUrl was customized via Admin Dashboard
+  const adminOv = getAdminDishOverride(recipe?.title, recipe?.id);
+  if (adminOv && Array.isArray(adminOv.instructions)) {
+    const matchedStep = adminOv.instructions.find(s => s.step === instruction.step);
+    if (matchedStep?.imageUrl && matchedStep.imageUrl.trim().length > 0 && !isDeadOrPlaceholderUrl(matchedStep.imageUrl)) {
+      return matchedStep.imageUrl.trim();
+    }
+  }
+
+  const stepNum = Number(instruction?.step) || 1;
+  const stepTitleLower = (instruction?.title || '').toLowerCase();
+  const stepContentLower = (instruction?.content || '').toLowerCase();
+  const stepText = `${stepTitleLower} ${stepContentLower}`;
+
+  const recipeTitleLower = (recipe?.title || '').toLowerCase();
+  const recipeCatLower = (recipe?.category || '').toLowerCase();
+  const ingredientsText = Array.isArray(recipe?.ingredients)
+    ? recipe.ingredients.map(i => (i?.name || '').toLowerCase()).join(' ')
+    : '';
+  const dishContext = `${recipeTitleLower} ${recipeCatLower} ${ingredientsText}`;
+
+  // Guard against false-positive "cá" inside "cà chua", "cà tím", "cà rốt", "cà pháo", "cà phê", "cà ri", "cánh gà", "cải"
+  const sanitizeForSeafoodCheck = (txt: string) =>
+    txt
+      .replace(/cà chua|cà tím|cà rốt|cà pháo|cà phê|cà ri|cánh gà|cải|cắt|các mặt|cách thủy|cạn|cảm|càng|cạo/gi, ' ');
+
+  const isFishContext = (txt: string) => {
+    const clean = sanitizeForSeafoodCheck(txt);
+    return /\b(cá|cá lóc|cá nục|cá bống|cá hú|cá trắm|cá basa|cá thu|cá hồi|cá diêu hồng|cá chép|cá rô|cá kèo|cá ngừ|chả cá|đầu cá|khúc cá|phi lê cá)\b/i.test(clean);
+  };
+  const isShrimpContext = (txt: string) =>
+    /\b(tôm|tép|tôm sú|tôm thẻ|tôm đất|tôm khô|nõn tôm)\b/i.test(txt);
+  const isSeafoodContext = (txt: string) => {
+    const clean = sanitizeForSeafoodCheck(txt);
+    return /\b(cá|tôm|mực|hải sản|ngao|nghêu|hàu|sò|ốc|cua|ghẹ|bạch tuộc|chả cá|tép|lươn|ếch|hến)\b/i.test(clean);
+  };
+  const isBeefPoultryContext = (txt: string) =>
+    /\b(bò|bê|gà|vịt|ngan|ngỗng|chim|cút|ức gà|đùi gà|cánh gà|thịt bò|thịt gà|thịt vịt)\b/i.test(txt);
+  const isPorkMeatContext = (txt: string) =>
+    /\b(heo|lợn|ba chỉ|ba rọi|sườn|chân giò|móng giò|thịt nạc|thịt băm|thịt xay|thịt vai|giò|chả lụa|xúc xích|lạp xưởng|thịt viên|xíu mại)\b/i.test(txt);
+  const isTofuEggContext = (txt: string) =>
+    /\b(đậu phụ|đậu hũ|tàu hũ|trứng|hột vịt|hột gà|trứng gà|trứng vịt|trứng cút|lòng đỏ|lòng trắng)\b/i.test(txt);
+  const isVeggieContext = (txt: string) =>
+    /\b(rau|cải|muống|mồng tơi|rau dền|rau đay|rau lang|rau ngót|bắp cải|su hào|súp lơ|bông cải|bí|bầu|mướp|khổ qua|nấm|cà chua|cà tím|đậu bắp|đậu cô ve|đậu que|khoai|cà rốt|dưa|xà lách|ngó sen|củ|măng|giá đỗ|hành lá|ngò)\b/i.test(txt);
+  const isAromaticsSpicesOnlyStep = (txt: string) =>
+    /\b(nướng gừng|rang thảo mộc|hoa hồi|thảo quả|quế|đinh hương|hạt mùi|băm hành tỏi|sơ chế sả ớt|đập dập gừng sả|phi hành khô)\b/i.test(txt) &&
+    !isPorkMeatContext(txt) &&
+    !isBeefPoultryContext(txt) &&
+    !isSeafoodContext(txt);
+
+  const isPureVegOrVeganDish =
+    recipeCatLower === 'mon-rau' ||
+    recipeCatLower === 'mon-chay' ||
+    /\b(chay|luộc|xào tỏi|bóp xổi|muối xổi|nộm rau|salad rau)\b/i.test(recipeTitleLower) &&
+      !isPorkMeatContext(recipeTitleLower) &&
+      !isBeefPoultryContext(recipeTitleLower) &&
+      !isSeafoodContext(recipeTitleLower);
+
+  const isSweetDrinkOrBakeryDish =
+    recipeCatLower === 'nuoc-uong' ||
+    recipeCatLower === 'trang-mieng' ||
+    /\b(yến mạch|overnight oats|pancake|bánh kếp|french toast|bánh mì nướng kiểu pháp|granola|sinh tố|smoothie|trà đào|trà sữa|cà phê|chè|sữa chua|flan|caramen|kem|bánh ngọt|nước ép|nước sâm|nước mía)\b/i.test(recipeTitleLower);
+
+  // PHASE 4: Final Step / Finishing & Garnishing
+  const isFinalStep = totalSteps > 1 && stepNum === totalSteps;
+  const hasFinishKeywords = /\b(hoàn thiện|hoàn tất|trình bày|múc ra|bày ra đĩa|cho ra đĩa|cho ra tô|thưởng thức|rắc tiêu và hành)\b/i.test(stepTitleLower);
+
+  if (isFinalStep || (stepNum > 2 && hasFinishKeywords)) {
+    if (
+      /\b(thịt kho|ba chỉ kho|ba rọi kho|thịt heo kho|sườn kho)\b/i.test(recipeTitleLower) &&
+      (!recipe?.imageUrl || recipe.imageUrl.includes('wikimedia.org') || recipe.imageUrl.includes('unsplash.com'))
+    ) {
+      return '/step-images/step-finish-garnish.jpg';
+    }
+    if (recipe?.title) {
+      return getDishImageUrl(recipe.title, recipe.category, recipe.imageUrl);
+    }
+    return '/step-images/step-finish-garnish.jpg';
+  }
+
+  // SPECIAL CASE A: Sweet / Drink / Bakery / Overnight Oats / Dessert recipes
+  // Never show raw meat, fish, or fish sauce on sweet breakfast, drink, or dessert steps!
+  if (isSweetDrinkOrBakeryDish) {
+    if (/\b(trứng|sữa|bột|đánh tan|khuấy đều)\b/i.test(stepText)) {
+      return '/step-images/step-prep-tofu-eggs.jpg';
+    }
+    if (/\b(cắt|gọt|thái|rửa|trái cây|hoa quả|dâu|chuối|bơ|xoài|đào|cam|chanh|lá dứa|nha đam|hạt sen|đậu xanh)\b/i.test(stepText)) {
+      return '/step-images/step-prep-veggies-herbs.jpg';
+    }
+    if (/\b(nấu|đun|sôi|hầm|ninh|nấu nước đường|nấu chè|ủ trà)\b/i.test(stepText)) {
+      return '/step-images/step-cook-simmer-soup.jpg';
+    }
+    // Otherwise return the dish's own semantic cluster image or an alternate candidate from its cluster
+    const candidates = getClusterCandidatesForDish(recipe?.title || '', recipe?.category);
+    if (candidates.length > 1) {
+      return candidates[(stepNum - 1) % candidates.length];
+    }
+    return getDishImageUrl(recipe?.title || 'Món ăn', recipe?.category, recipe?.imageUrl);
+  }
+
+  // Helper to resolve preparation image based on step text first, then dish context
+  const resolvePrepImage = (): string => {
+    if (isAromaticsSpicesOnlyStep(stepText)) {
+      return '/step-images/step-prep-aromatics-spices.jpg';
+    }
+    // If pure vegetable / vegetarian dish, strictly forbid meat/seafood prep photos
+    if (isPureVegOrVeganDish) {
+      if (isTofuEggContext(stepText) || isTofuEggContext(dishContext)) {
+        return '/step-images/step-prep-tofu-eggs.jpg';
+      }
+      return '/step-images/step-prep-veggies-herbs.jpg';
+    }
+
+    // Check what the step text itself is explicitly preparing
+    const stepHasSeafood = isSeafoodContext(stepText);
+    const stepHasBeefPoultry = isBeefPoultryContext(stepText);
+    const stepHasPork = isPorkMeatContext(stepText);
+    const stepHasTofuEgg = isTofuEggContext(stepText);
+    const stepHasVeggie = isVeggieContext(stepText);
+
+    if (stepHasSeafood && !stepHasPork && !stepHasBeefPoultry) {
+      return '/step-images/step-prep-seafood-fish.jpg';
+    }
+    if (stepHasBeefPoultry && !stepHasPork) {
+      return '/step-images/step-prep-beef-poultry.jpg';
+    }
+    if (stepHasPork) {
+      return '/step-images/step-prep-pork-meat.jpg';
+    }
+    if (stepHasTofuEgg && !stepHasSeafood && !stepHasBeefPoultry && !stepHasPork) {
+      return '/step-images/step-prep-tofu-eggs.jpg';
+    }
+    if (stepHasVeggie && !stepHasSeafood && !stepHasBeefPoultry && !stepHasPork && !/\bthịt\b/i.test(stepText)) {
+      return '/step-images/step-prep-veggies-herbs.jpg';
+    }
+    if (stepHasSeafood) return '/step-images/step-prep-seafood-fish.jpg';
+    if (stepHasBeefPoultry) return '/step-images/step-prep-beef-poultry.jpg';
+
+    // Fallback to overall dish context
+    if (isSeafoodContext(dishContext)) return '/step-images/step-prep-seafood-fish.jpg';
+    if (isBeefPoultryContext(dishContext)) return '/step-images/step-prep-beef-poultry.jpg';
+    if (isPorkMeatContext(dishContext)) return '/step-images/step-prep-pork-meat.jpg';
+    if (isTofuEggContext(dishContext)) return '/step-images/step-prep-tofu-eggs.jpg';
+    if (isVeggieContext(dishContext)) return '/step-images/step-prep-veggies-herbs.jpg';
+    if (/\bthịt\b/i.test(dishContext)) return '/step-images/step-prep-pork-meat.jpg';
+    return '/step-images/step-prep-veggies-herbs.jpg';
+  };
+
+  // Explicit check for Roasting Aromatics & Pho/Broth Spices (e.g. Step 2 of Phở Bò: "Nướng gừng hành và rang thảo mộc")
+  if (isAromaticsSpicesOnlyStep(stepText)) {
+    return '/step-images/step-prep-aromatics-spices.jpg';
+  }
+
+  // Explicit check for Mixing Dipping Sauce / Fish Sauce / Dressing / Ice Water Bath (without marinating raw meat/fish)
+  const isMixingDippingSauceStep =
+    /\b(pha sẵn bát nước chấm|pha bát nước chấm|pha nước chấm|pha nước mắm|pha nước ngâm|pha nước trộn|pha sốt trộn|pha mắm nêm|pha hỗn hợp sốt|nước đá và nước mắm)\b/i.test(stepText) &&
+    !/\b(ướp thịt|ướp cá|ướp tôm|ướp bò|ướp gà|ướp sườn|thoa đều lên thịt|thoa đều lên cá)\b/i.test(stepText);
+
+  if (isMixingDippingSauceStep) {
+    return '/step-images/step-sauce-dipping-fishsauce.jpg';
+  }
+
+  // Explicit check for Boiling / Blanching Leafy Greens & Ice-Bath Shocking (e.g. Rau Muống Luộc Step 3, Rau Lang Xào Tỏi Step 2)
+  const isBlanchingOrBoilingGreensStep =
+    (/\b(luộc rau|chần rau|chần sơ|sốc nhiệt|ngâm vào âu nước đá|ngâm ngay vào âu nước đá|thả rau.*vào luộc|vớt rau ra)\b/i.test(stepText) &&
+      !/\b(chần xương|chần thịt|chần sườn|luộc thịt|luộc gà|luộc sườn|luộc chân giò)\b/i.test(stepText)) ||
+    (recipeCatLower === 'mon-rau' && /\b(luộc|đun sôi.*lít nước|chần)\b/i.test(stepText));
+
+  if (isBlanchingOrBoilingGreensStep) {
+    return '/step-images/step-blanch-boil-greens.jpg';
+  }
+
+  // Explicit check for Salad / Nộm / Gỏi / Pickled Veggies Tossing (e.g. Dưa Giá Bóp Xổi Step 3, Gỏi/Nộm/Salad)
+  const isSaladOrPickleMixStep =
+    /\b(trộn gỏi|trộn nộm|trộn salad|bóp xổi|muối xổi|ngâm chua ngọt|xếp dưa giá|trộn đều nhẹ tay|bóp nhẹ)\b/i.test(stepText) &&
+    !/\b(xào|chiên|rán|kho|rim|nấu canh|đun sôi)\b/i.test(stepText);
+
+  if (isSaladOrPickleMixStep) {
+    return '/step-images/step-salad-mix-nom-goi.jpg';
+  }
+
+  // PHASE 1: Preparation (Step 1 or explicit prep step without active heat)
+  const hasPrepKeywords = /\b(sơ chế|rửa sạch|thái lát|cắt khúc|băm nhuyễn|gọt vỏ|nhặt rau|nhặt lá|ngâm nước muối|khử hôi|cắt miếng|thái mỏng)\b/i.test(stepText);
+  const isNoHeat = instruction?.heatLevel === 'không dùng nhiệt';
+
+  if (stepNum === 1) {
+    return resolvePrepImage();
+  }
+
+  // PHASE 2: Marinating & Mixing (or Step 2 prep/marinate)
+  const hasMarinateKeywords = /\b(ướp|thấm gia vị|trộn đều gia vị|đánh tan trứng|đánh trứng|pha sốt|pha nước sốt)\b/i.test(stepText);
+  if (hasMarinateKeywords || (stepNum === 2 && isNoHeat)) {
+    // Check if this step is actually washing/cutting veggies rather than marinating meat
+    if (
+      /\b(nhặt lá|nhặt rau|gọt vỏ|rửa sạch rau|cắt khúc|thái vát|thái múi cau|bổ múi cau|cắt lát)\b/i.test(stepContentLower) &&
+      !/\b(ướp thịt|ướp cá|ướp tôm|ướp bò|ướp gà|ướp sườn)\b/i.test(stepContentLower)
+    ) {
+      if (isTofuEggContext(stepText) && !isVeggieContext(stepText)) {
+        return '/step-images/step-prep-tofu-eggs.jpg';
+      }
+      return '/step-images/step-prep-veggies-herbs.jpg';
+    }
+    if (isPureVegOrVeganDish) {
+      if (isTofuEggContext(stepText) || isTofuEggContext(dishContext)) {
+        return '/step-images/step-prep-tofu-eggs.jpg';
+      }
+      if (/\b(pha|nước chấm|nước mắm|sốt|ngâm)\b/i.test(stepText)) {
+        return '/step-images/step-sauce-dipping-fishsauce.jpg';
+      }
+      return '/step-images/step-prep-veggies-herbs.jpg';
+    }
+    if (
+      (isTofuEggContext(stepText) || /\b(đánh tan|đánh trứng|khuấy trứng)\b/i.test(stepText)) &&
+      !isPorkMeatContext(stepText) &&
+      !isBeefPoultryContext(stepText) &&
+      !isSeafoodContext(stepText)
+    ) {
+      return '/step-images/step-prep-tofu-eggs.jpg';
+    }
+    if (isSeafoodContext(stepText) || (isSeafoodContext(dishContext) && !isPorkMeatContext(stepText) && !isBeefPoultryContext(stepText))) {
+      return '/step-images/step-marinate-seafood.jpg';
+    }
+    if (
+      (isTofuEggContext(dishContext) && !isPorkMeatContext(dishContext) && !isBeefPoultryContext(dishContext) && !isSeafoodContext(dishContext))
+    ) {
+      return '/step-images/step-prep-tofu-eggs.jpg';
+    }
+    return '/step-images/step-marinate-meat.jpg';
+  }
+
+  if (hasPrepKeywords && isNoHeat) {
+    return resolvePrepImage();
+  }
+
+  // PHASE 3: Active Cooking — Fine-Grained Culinary Technique & Ingredient Matching
+
+  // 3A. Tofu in Tomato Sauce (Đậu phụ sốt cà chua / Đậu hũ sốt cà)
+  if (
+    (/\b(sốt cà chua|xốt cà chua|om đậu|đậu phụ.*cà chua|đậu hũ.*cà chua)\b/i.test(stepText) ||
+      (/\b(đậu phụ|đậu hũ|tàu hũ)\b/i.test(dishContext) && /\b(cà chua)\b/i.test(stepText))) &&
+    !/\b(rán đậu|chiên đậu)\b/i.test(stepTitleLower)
+  ) {
+    return '/step-images/step-cook-tofu-tomato-sauce.jpg';
+  }
+
+  // 3B. Crispy Frying / Pan-Searing (Chiên / Rán / Áp chảo)
+  if (/\b(chiên|rán|áp chảo|chiên giòn|chiên vàng|rán đậu|rán cá|rán trứng|rán chả)\b/i.test(stepText)) {
+    return '/step-images/step-cook-fry-crispy.jpg';
+  }
+
+  // 3C. Braising / Caramelizing (Kho / Rim / Ram / Rang) — Differentiated by Fish vs Shrimp vs Tofu/Veg vs Meat
+  if (/\b(kho|rim|ram|rang cháy cạnh|thắng nước màu|nước màu|nước hàng|kẹo lại|sánh đặc)\b/i.test(stepText)) {
+    if (isFishContext(stepText) || isFishContext(recipeTitleLower)) {
+      return '/step-images/step-cook-braise-fish-claypot.jpg';
+    }
+    if (isShrimpContext(stepText) || isShrimpContext(recipeTitleLower)) {
+      return '/step-images/step-cook-braise-shrimp.jpg';
+    }
+    if (isPureVegOrVeganDish && isTofuEggContext(dishContext)) {
+      return '/step-images/step-cook-tofu-tomato-sauce.jpg';
+    }
+    return '/step-images/step-cook-sear-braise.jpg';
+  }
+
+  // 3D. Boiling / Simmering Soup / Broth (Nấu canh / Hầm / Ninh / Nước dùng)
+  if (
+    recipeCatLower === 'mon-canh' ||
+    /\b(nấu canh|nồi canh|hầm|ninh|nước dùng|hớt bọt|riêu cua|nước cua|nước lèo|nấu súp|nấu cháo)\b/i.test(stepText) ||
+    (/\b(đun sôi|luộc)\b/i.test(stepText) && !/\b(xào|chiên|rán|kho|rim)\b/i.test(stepTitleLower))
+  ) {
+    if (isPureVegOrVeganDish && recipeCatLower === 'mon-rau') {
+      return '/step-images/step-blanch-boil-greens.jpg';
+    }
+    return '/step-images/step-cook-simmer-soup.jpg';
+  }
+
+  // 3E. Stir-Frying (Xào / Đảo lửa lớn / Phi thơm) — Differentiated between Pure Greens/Veg vs Meat/Seafood Stir-fry
+  if (/\b(xào|đảo đều|đảo nhanh|phi thơm|phi tỏi|chảo nóng|rang cơm)\b/i.test(stepText)) {
+    const stepMentionsMeatOrSeafood =
+      isPorkMeatContext(stepText) || isBeefPoultryContext(stepText) || isSeafoodContext(stepText) || /\b(thịt|lạp xưởng|xúc xích)\b/i.test(stepText);
+    if (
+      (isPureVegOrVeganDish || (isVeggieContext(stepText) && !stepMentionsMeatOrSeafood && !isPorkMeatContext(dishContext) && !isBeefPoultryContext(dishContext) && !isSeafoodContext(dishContext)))
+    ) {
+      return '/step-images/step-stirfry-greens-garlic.jpg';
+    }
+    return '/step-images/step-cook-stirfry-wok.jpg';
+  }
+
+  // Fallback by dish category/title for any remaining intermediate steps
+  if (isPureVegOrVeganDish) {
+    if (/\b(luộc|chần)\b/i.test(recipeTitleLower)) return '/step-images/step-blanch-boil-greens.jpg';
+    if (/\b(bóp xổi|nộm|gỏi|salad|muối)\b/i.test(recipeTitleLower)) return '/step-images/step-salad-mix-nom-goi.jpg';
+    if (isTofuEggContext(dishContext) && /\bcà chua\b/i.test(dishContext)) return '/step-images/step-cook-tofu-tomato-sauce.jpg';
+    return '/step-images/step-stirfry-greens-garlic.jpg';
+  }
+  if (recipeCatLower === 'mon-canh' || /\b(canh|súp|lẩu|cháo|phở|bún|miến|hủ tiếu)\b/i.test(recipeTitleLower)) {
+    return '/step-images/step-cook-simmer-soup.jpg';
+  }
+  if (/\b(nộm|gỏi|salad|bóp xổi)\b/i.test(recipeTitleLower)) {
+    return '/step-images/step-salad-mix-nom-goi.jpg';
+  }
+  if (/\b(chiên|rán|áp chảo)\b/i.test(recipeTitleLower)) {
+    return '/step-images/step-cook-fry-crispy.jpg';
+  }
+  if (/\b(kho|rim|ram|rang)\b/i.test(recipeTitleLower)) {
+    if (isFishContext(recipeTitleLower)) return '/step-images/step-cook-braise-fish-claypot.jpg';
+    if (isShrimpContext(recipeTitleLower)) return '/step-images/step-cook-braise-shrimp.jpg';
+    return '/step-images/step-cook-sear-braise.jpg';
+  }
+  return '/step-images/step-cook-stirfry-wok.jpg';
+}
+
+
 

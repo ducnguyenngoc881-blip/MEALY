@@ -141,19 +141,15 @@ describe('Unit: Guest Account Feature Locking & Context Resilience Invariants', 
     expect(content.includes('Giữ nguyên các món ăn')).toBe(true);
   });
 
-  it('GUEST-11: Guests strictly use default app settings and cannot access OnboardingModal', () => {
+  it('GUEST-11: Guests and Registered users can access Welcome Onboarding -> Onboarding Preference -> Interactive Tutorial flow', () => {
     const onboardingFilePath = path.join(srcDir, 'components', 'OnboardingModal.tsx');
     const onboardingContent = fs.readFileSync(onboardingFilePath, 'utf-8');
-    expect(onboardingContent.includes('if (!showOnboarding || !isRegistered) return null;')).toBe(true);
+    expect(onboardingContent.includes('if (!showOnboarding) return null;')).toBe(true);
 
     const contextFilePath = path.join(srcDir, 'context', 'MealWiseContext.tsx');
     const contextContent = fs.readFileSync(contextFilePath, 'utf-8');
     expect(contextContent.includes('const effectiveOnboardingData = useMemo<OnboardingData>')).toBe(true);
     expect(contextContent.includes('INITIAL_ONBOARDING')).toBe(true);
     expect(contextContent.includes("regionPreference: 'toan-quoc'")).toBe(true);
-
-    const weeklyBoardPath = path.join(srcDir, 'components', 'WeeklyBoard.tsx');
-    const weeklyBoardContent = fs.readFileSync(weeklyBoardPath, 'utf-8');
-    expect(weeklyBoardContent.includes("isRegistered ? 'Đổi mục tiêu' : 'Đổi mục tiêu 🔒'")).toBe(true);
   });
 });

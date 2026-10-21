@@ -890,8 +890,8 @@ export const GroceryList: React.FC = () => {
           category: (ing.category || (isFresh ? 'rau-cu' : 'do-kho')) as any,
           cost: ing.cost,
           storeChannel: channel,
-          dishNames: [recipeTitle],
-          dishCount: 1,
+          dishNames: isExtra ? [] : [recipeTitle],
+          dishCount: isExtra ? 0 : 1,
           isCustom: isExtra,
           extraOriginalNames: isExtra ? [rawName] : []
         };
@@ -904,11 +904,12 @@ export const GroceryList: React.FC = () => {
           if (!itemsMap[targetKey].extraOriginalNames!.includes(rawName)) {
             itemsMap[targetKey].extraOriginalNames!.push(rawName);
           }
+        } else {
+          if (!itemsMap[targetKey].dishNames.includes(recipeTitle)) {
+            itemsMap[targetKey].dishNames.push(recipeTitle);
+          }
+          itemsMap[targetKey].dishCount += 1;
         }
-        if (!itemsMap[targetKey].dishNames.includes(recipeTitle)) {
-          itemsMap[targetKey].dishNames.push(recipeTitle);
-        }
-        itemsMap[targetKey].dishCount += 1;
       }
     });
   };
@@ -963,8 +964,7 @@ export const GroceryList: React.FC = () => {
   }
 
   // Convert accumulated map into clean processed grocery item list with 1,000 VND rounding
-  const allList: ProcessedGroceryItem[] = Object.values(itemsMap)
-    .filter(entry => !isItemDeleted(entry.cleanName, entry.extraOriginalNames))
+  const fullUnfilteredList: ProcessedGroceryItem[] = Object.values(itemsMap)
     .map(entry => {
     const formatted = formatDisplayAmountAndUnit(entry.baseAmount, entry.family, entry.baseUnit);
     const isFresh = entry.category === 'thit-ca' || entry.category === 'rau-cu';
@@ -988,21 +988,25 @@ export const GroceryList: React.FC = () => {
     };
   });
 
-  // Reconcile rounding remainder against targetTotalGroceryCost to guarantee 100% exact match
-  if (allList.length > 0 && targetTotalGroceryCost > 0) {
-    const sumAll = allList.reduce((sum, it) => sum + it.cost, 0);
-    const remainder = targetTotalGroceryCost - sumAll;
-    if (remainder !== 0) {
-      // Find the highest cost item (e.g. main protein) and absorb rounding remainder
-      let maxItemIndex = 0;
-      for (let i = 1; i < allList.length; i++) {
-        if (allList[i].cost > allList[maxItemIndex].cost) {
-          maxItemIndex = i;
+  // Reconcile rounding remainder against targetTotalGroceryCost on the unfiltered weekly items only
+  const weeklyOnlyItems = fullUnfilteredList.filter(it => !it.isCustom);
+  if (weeklyOnlyItems.length > 0 && targetTotalGroceryCost > 0) {
+    const sumWeekly = weeklyOnlyItems.reduce((sum, it) => sum + it.cost, 0);
+    const remainder = targetTotalGroceryCost - sumWeekly;
+    if (remainder !== 0 && Math.abs(remainder) <= weeklyOnlyItems.length * 2000) {
+      let maxItem = weeklyOnlyItems[0];
+      for (let i = 1; i < weeklyOnlyItems.length; i++) {
+        if (weeklyOnlyItems[i].cost > maxItem.cost) {
+          maxItem = weeklyOnlyItems[i];
         }
       }
-      allList[maxItemIndex].cost += remainder;
+      maxItem.cost += remainder;
     }
   }
+
+  const allList: ProcessedGroceryItem[] = fullUnfilteredList.filter(
+    entry => !isItemDeleted(entry.name, entry.extraOriginalNames)
+  );
 
   // Sort list: Natural shopping aisle progression (Meat -> Seafood -> Vegetables -> Fruits -> Spices/Dry goods), then by Vietnamese name
   const AISLE_ORDER: Record<Exclude<GroceryAisleCategory, 'all'>, number> = {
@@ -1443,15 +1447,6 @@ export const GroceryList: React.FC = () => {
                 {item.name}
               </span>
 
-              {item.isCustom && (
-                <span 
-                  className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-sky-500/15 text-sky-800 dark:text-sky-300 border border-sky-500/30 shrink-0" 
-                  title="Món bổ sung do bạn tự thêm"
-                >
-                  <span>✨ Tự thêm</span>
-                </span>
-              )}
-
               {item.dishCount && item.dishCount > 1 && (
                 <span 
                   className="inline-flex items-center gap-0.5 text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 shrink-0" 
@@ -1682,31 +1677,38 @@ export const GroceryList: React.FC = () => {
           </div>
         </div>
 
-        {/* Compact 1-Tap Pantry Spices Strip (Zero Vertical Expansion) */}
+        {/* Redesigned Pantry Spices Cabinet Card (Zero Truncation, Clean Wrapped Pills) */}
         <div
           data-tutorial-target="spices-cabinet-btn"
-          className="p-2.5 sm:p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 space-y-2"
+          className="p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 space-y-2.5"
         >
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 min-w-0">
-              <span className="text-sm shrink-0">🧂</span>
-              <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 truncate">
-                Gia vị cơ bản đã ẩn • <strong className="text-slate-900 dark:text-white">Chạm món hết để mua:</strong>
-              </p>
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+              <div className="w-8 h-8 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center text-sm shadow-2xs shrink-0">
+                🧂
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-xs font-black text-slate-900 dark:text-white leading-tight">
+                  Gia Vị Cơ Bản Đã Ẩn
+                </h3>
+                <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-snug mt-0.5">
+                  Chạm món đã hết để thêm vào giỏ mua:
+                </p>
+              </div>
             </div>
             <button
               type="button"
               onClick={() => setIsQuickAddOpen(true)}
-              className="px-2.5 py-1 rounded-lg bg-white hover:bg-blue-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-[#1D4ED8] dark:text-blue-400 border border-blue-200 dark:border-blue-800/70 text-[11px] font-black transition-all active:scale-95 cursor-pointer shrink-0 flex items-center gap-1 shadow-2xs"
+              className="px-3 py-1.5 rounded-xl bg-white hover:bg-blue-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-[#1D4ED8] dark:text-blue-400 border border-blue-200 dark:border-blue-800/70 text-[11px] font-black transition-all active:scale-95 cursor-pointer shrink-0 flex items-center gap-1 shadow-2xs"
               title="Nhập thêm món hoặc nhu yếu phẩm khác"
             >
-              <Plus className="w-3 h-3 stroke-[3]" />
+              <Plus className="w-3.5 h-3.5 stroke-[3]" />
               <span>Món khác</span>
             </button>
           </div>
 
-          {/* Horizontal 1-Tap Scrollable Spice Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5 -mx-0.5 px-0.5">
+          {/* Clean Wrapped 1-Tap Spice Chips (No Horizontal Cut-Off or Scrollbar) */}
+          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
             {COMMON_PANTRY_SPICES.map(spice => {
               const toBuy = isSpiceMarkedToBuy(spice.name);
               return (
@@ -1911,7 +1913,7 @@ export const GroceryList: React.FC = () => {
           onClick={() => setIsQuickAddOpen(false)}
         >
           <div 
-            className="w-full max-w-lg max-h-[88vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-t-[28px] sm:rounded-3xl flex flex-col overflow-hidden animate-slideUp sm:animate-scaleUp"
+            className="w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[88vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-t-[28px] sm:rounded-3xl flex flex-col overflow-hidden animate-slideUp sm:animate-scaleUp"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Mobile drag handle */}
@@ -2603,57 +2605,25 @@ export const GroceryList: React.FC = () => {
                 </div>
               </div>
 
-              {/* Pending Items to buy: ALWAYS at the top */}
+              {/* Aisle Items List (in-place checkoff without duplicate cart category) */}
               <div className="space-y-1.5">
                 {isFirstAisle ? (
-                  pendingItems.length > 0 ? (
-                    <>
-                      <div data-tutorial-target="grocery-first-three-items" className="space-y-1.5">
-                        {pendingItems.slice(0, 3).map(renderGroceryItemRow)}
-                      </div>
-                      {pendingItems.slice(3).map(renderGroceryItemRow)}
-                    </>
-                  ) : (
+                  <>
                     <div data-tutorial-target="grocery-first-three-items" className="space-y-1.5">
-                      {cartedItems.slice(0, 3).map(renderGroceryItemRow)}
+                      {aisleItems.slice(0, 3).map(renderGroceryItemRow)}
                     </div>
-                  )
+                    {aisleItems.slice(3).map(renderGroceryItemRow)}
+                  </>
                 ) : (
-                  pendingItems.map(renderGroceryItemRow)
+                  aisleItems.map(renderGroceryItemRow)
                 )}
-                {pendingItems.length === 0 && cartedItems.length > 0 && (
+                {isAllAisleChecked && (
                   <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-300 dark:border-emerald-800 text-center text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center justify-center gap-2">
                     <span>🎉</span>
                     <span>Đã gom đủ toàn bộ nguyên liệu quầy {aisle.name.toLowerCase()}!</span>
                   </div>
                 )}
               </div>
-
-              {/* In-Cart Items: Pushed to bottom of the aisle section */}
-              {cartedItems.length > 0 && (
-                <div className="pt-2 mt-2 border-t border-dashed border-emerald-300/60 dark:border-emerald-800/60 space-y-1.5">
-                  <button
-                    type="button"
-                    onClick={() => toggleAisleCart(aisleKey)}
-                    className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/40 text-[11px] font-black text-emerald-800 dark:text-emerald-200 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors cursor-pointer select-none"
-                  >
-                    <span className="flex items-center gap-1.5 uppercase tracking-wider">
-                      <span>🛒</span>
-                      <span>Đã Cho Vào Giỏ ({cartedItems.length} món)</span>
-                    </span>
-                    <span className="flex items-center gap-1 text-[10.5px] font-bold text-emerald-700 dark:text-emerald-300">
-                      <span>{isCartExpanded ? 'Thu gọn' : 'Xem món đã nhặt'}</span>
-                      {isCartExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                    </span>
-                  </button>
-
-                  {isCartExpanded && (
-                    <div className="space-y-1.5 animate-fadeIn">
-                      {cartedItems.map(renderGroceryItemRow)}
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           );
         });
@@ -2694,7 +2664,10 @@ export const GroceryList: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="py-8 text-center text-xs text-slate-500 dark:text-slate-400 italic rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
+            <div
+              data-tutorial-target="grocery-first-three-items"
+              className="py-8 text-center text-xs text-slate-500 dark:text-slate-400 italic rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50"
+            >
               {totalCount === 0 
                 ? 'Chưa có món nào trong thực đơn tuần hoặc kế hoạch tiệc.' 
                 : `Không có nguyên liệu nào thuộc quầy "${aisleFilter === 'all' ? 'Tất Cả' : GROCERY_AISLES[aisleFilter].name}".`}
@@ -2706,12 +2679,12 @@ export const GroceryList: React.FC = () => {
       </div>
 
       {/* FIXED BOTTOM PROGRESS BAR (ALWAYS VISIBLE ABOVE BOTTOM TAB BAR AT bottom-16) */}
-      <div className="fixed bottom-16 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-30 px-3 sm:px-4 py-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-t sm:border-x border-stone-200 dark:border-stone-800 shadow-2xl space-y-2">
+      <div className="fixed bottom-16 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:max-w-xl md:max-w-3xl lg:max-w-4xl z-30 px-3 sm:px-5 md:px-6 py-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-t sm:border-x border-stone-200 dark:border-stone-800 shadow-2xl space-y-2">
         
         {/* Progress status & percentage — hidden when weekly shopping is completed since the main screen card already shows it */}
         {!(isWeeklyShoppingDone && totalCount === 0) && (
           <>
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center justify-between text-xs md:text-sm">
               <div className="flex items-center gap-1.5 font-bold text-stone-900 dark:text-white">
                 {progressPercent === 100 ? (
                   <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
@@ -2721,7 +2694,7 @@ export const GroceryList: React.FC = () => {
                   <span>Đã mua: {overallCheckedCount} / {totalCount} món ({progressPercent}%)</span>
                 )}
               </div>
-              <span className="text-xs font-black text-stone-900 dark:text-white">
+              <span className="text-xs md:text-sm font-black text-stone-900 dark:text-white">
                 {totalCostEstimate.toLocaleString('vi-VN')} đ
               </span>
             </div>
@@ -2736,106 +2709,109 @@ export const GroceryList: React.FC = () => {
           </>
         )}
 
-        {/* Golden Loop: Stock Checked Items to Smart Fridge OR View Fridge when done */}
-        {isWeeklyShoppingDone && totalCount === 0 ? (
-          <button
-            type="button"
-            onClick={() => setActiveTab('pantry')}
-            className="w-full py-2.5 px-4 rounded-2xl font-black text-xs sm:text-sm shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-400/30"
-          >
-            <span className="text-base">🧊</span>
-            <span>Mở Tủ Lạnh Thông Minh</span>
-            <ArrowRight className="w-4 h-4 ml-1 opacity-75" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            data-tutorial-target="stock-fridge-btn"
-            onClick={() => {
-              if (overallCheckedCount === 0) {
-                showToast('Hãy tích chọn các món bạn đã mua trước khi cất vào tủ lạnh nhé!', 'info');
-                return;
-              }
-              setIsStockFridgeModalOpen(true);
-            }}
-            className={`w-full py-2.5 px-4 rounded-2xl font-black text-xs sm:text-sm shadow-xs transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer border ${
-              overallCheckedCount > 0
-                ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-400/30 shadow-md hover:shadow-lg'
-                : 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-700'
-            }`}
-          >
-            <span className="text-base">🧊</span>
-            <span>
-              {overallCheckedCount > 0
-                ? `Cất Vào Tủ Lạnh (${overallCheckedCount} món đã mua)`
-                : 'Cất Vào Tủ Lạnh (Tích chọn món đã mua)'}
-            </span>
-            <ArrowRight className="w-4 h-4 ml-1 opacity-75" />
-          </button>
-        )}
+        {/* Responsive Action Buttons: Stacked on phone, sleek single row on tablet */}
+        <div className="flex flex-col md:flex-row gap-2">
+          {/* Golden Loop: Stock Checked Items to Smart Fridge OR View Fridge when done */}
+          {isWeeklyShoppingDone && totalCount === 0 ? (
+            <button
+              type="button"
+              onClick={() => setActiveTab('pantry')}
+              className="w-full md:flex-[1.35] py-2.5 px-4 rounded-2xl font-black text-xs sm:text-sm shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-400/30 min-h-[44px]"
+            >
+              <span className="text-base">🧊</span>
+              <span>Mở Tủ Lạnh Thông Minh</span>
+              <ArrowRight className="w-4 h-4 ml-1 opacity-75" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              data-tutorial-target="stock-fridge-btn"
+              onClick={() => {
+                if (overallCheckedCount === 0) {
+                  showToast('Hãy tích chọn các món bạn đã mua trước khi cất vào tủ lạnh nhé!', 'info');
+                  return;
+                }
+                setIsStockFridgeModalOpen(true);
+              }}
+              className={`w-full md:flex-[1.35] py-2.5 px-4 rounded-2xl font-black text-xs sm:text-sm shadow-xs transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer border min-h-[44px] ${
+                overallCheckedCount > 0
+                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-400/30 shadow-md hover:shadow-lg'
+                  : 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-700'
+              }`}
+            >
+              <span className="text-base">🧊</span>
+              <span className="truncate">
+                {overallCheckedCount > 0
+                  ? `Cất Vào Tủ Lạnh (${overallCheckedCount} món đã mua)`
+                  : 'Cất Vào Tủ Lạnh (Tích chọn món đã mua)'}
+              </span>
+              <ArrowRight className="w-4 h-4 ml-1 opacity-75 shrink-0" />
+            </button>
+          )}
 
-        {/* Collaborative Share & Zalo Export Buttons Grid */}
-        <div className="grid grid-cols-2 gap-2">
-          {/* Button 1: Collaborative Live Share (Unlocked for all users) */}
-          <button
-            type="button"
-            data-tutorial-target="collab-lobby-btn"
-            onClick={async () => {
-              if (collabRoom) {
-                const nextState = !isLobbyOpen;
-                setIsLobbyOpen(nextState);
-                if (nextState) {
+          {/* Collaborative Share & Zalo Export Buttons Grid */}
+          <div className="grid grid-cols-2 gap-2 md:flex-1">
+            {/* Button 1: Collaborative Live Share (Unlocked for all users) */}
+            <button
+              type="button"
+              data-tutorial-target="collab-lobby-btn"
+              onClick={async () => {
+                if (collabRoom) {
+                  const nextState = !isLobbyOpen;
+                  setIsLobbyOpen(nextState);
+                  if (nextState) {
+                    setTimeout(() => {
+                      lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
+                  }
+                } else {
+                  await startCollabRoom(allList, `Giỏ Đi Chợ Tuần Này (${allList.length} món)`);
+                  setIsLobbyOpen(true);
                   setTimeout(() => {
                     lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }, 50);
                 }
-              } else {
-                await startCollabRoom(allList, `Giỏ Đi Chợ Tuần Này (${allList.length} món)`);
-                setIsLobbyOpen(true);
-                setTimeout(() => {
-                  lobbyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 50);
-              }
-            }}
-            className="py-2.5 px-2 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-            title={collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng đi chợ chung'}
-            aria-label="Chia Sẻ Mua Chung"
-          >
-            <Users className="w-4 h-4 shrink-0" />
-            <span className="truncate">
-              {collabRoom
-                ? (isLobbyOpen ? 'Đóng Sảnh' : 'Mua Chung')
-                : 'Đi Chợ Chung'}
-            </span>
-            {collabRoom && (
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              }}
+              className="py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+              title={collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng đi chợ chung'}
+              aria-label="Chia Sẻ Mua Chung"
+            >
+              <Users className="w-4 h-4 shrink-0" />
+              <span className="truncate">
+                {collabRoom
+                  ? (isLobbyOpen ? 'Đóng Sảnh' : 'Mua Chung')
+                  : 'Đi Chợ Chung'}
               </span>
-            )}
-          </button>
-
-          {/* Button 2: Quick Share / Export Shopping List */}
-          <button
-            type="button"
-            onClick={handleShareList}
-            className="py-2.5 px-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer"
-            title="Chia sẻ danh sách đi chợ hoặc sao chép"
-          >
-            {copied ? (
-              <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-            ) : (
-              <Share2 className="w-4 h-4 text-stone-600 dark:text-stone-400 shrink-0" />
-            )}
-            <span className="truncate">
-              {copied ? 'Đã Chia Sẻ' : (
-                <>
-                  <span className="sm:hidden">Chia Sẻ Danh Sách</span>
-                  <span className="hidden sm:inline">Chia Sẻ Danh Sách</span>
-                </>
+              {collabRoom && (
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                </span>
               )}
-            </span>
-          </button>
+            </button>
+
+            {/* Button 2: Quick Share / Export Shopping List */}
+            <button
+              type="button"
+              onClick={handleShareList}
+              className="py-2.5 px-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs sm:text-sm border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer"
+              title="Chia sẻ danh sách đi chợ hoặc sao chép"
+            >
+              {copied ? (
+                <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+              ) : (
+                <Share2 className="w-4 h-4 text-stone-600 dark:text-stone-400 shrink-0" />
+              )}
+              <span className="truncate">
+                {copied ? 'Đã Chia Sẻ' : (
+                  <>
+                    <span className="sm:hidden">Chia Sẻ Danh Sách</span>
+                    <span className="hidden sm:inline">Chia Sẻ Danh Sách</span>
+                  </>
+                )}
+              </span>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -2972,7 +2948,7 @@ export const GroceryList: React.FC = () => {
           aria-modal="true"
         >
           <div 
-            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-4 animate-scale-up text-stone-900 dark:text-white max-h-[85vh] flex flex-col"
+            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-md sm:max-w-lg md:max-w-2xl w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-scale-up text-stone-900 dark:text-white max-h-[85vh] flex flex-col"
             onClick={e => e.stopPropagation()}
           >
             {/* Modal Header */}

@@ -304,27 +304,15 @@ export const MealSetExplorer: React.FC = () => {
       aria-label={`Xem Chi Tiết Mâm: ${set.title}`}
     >
       <SafeImage 
-        src={set.imageUrl} 
+        src={set.mainDish?.imageUrl || set.imageUrl} 
         alt={set.title} 
+        dishTitle={set.mainDish?.title || set.title}
         fallbackTitle={set.title}
-        category="Mâm Cơm"
+        category={set.mainDish?.category || "Mâm Cơm"}
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
       />
       {/* High-contrast gradient overlay to ensure text readability */}
       <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-transparent pointer-events-none" />
-      
-      {/* Top Left: Region Badge & Optional Fallback Pill */}
-      <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10 pointer-events-none">
-        <span className="px-2.5 py-0.5 rounded-full bg-stone-950/60 backdrop-blur-md text-white text-[10px] font-bold border border-white/10 shadow-xs">
-          {getRegionBadgeLabel(set)}
-        </span>
-        {isFallback && (
-          <span className="px-2 py-0.5 rounded-full bg-amber-500/90 backdrop-blur-md text-white text-[10px] font-extrabold flex items-center gap-1 shadow-xs border border-white/20">
-            <Sparkles className="w-3 h-3" />
-            <span>Gợi ý thêm</span>
-          </span>
-        )}
-      </div>
 
       {/* Top Right: Plus Button to choose/assign this meal set */}
       <div className="absolute top-3 right-3 z-10">
@@ -357,7 +345,7 @@ export const MealSetExplorer: React.FC = () => {
   );
 
   return (
-    <div className="space-y-5 max-w-lg mx-auto">
+    <div className="space-y-5 w-full mx-auto">
       
       {/* 1. HERO CARD: "HÔM NAY ĂN GÌ?" (WITH COLLAPSIBLE ACCORDION / TOGGLE) */}
       {featuredSet && !searchQuery.trim() && (
@@ -422,17 +410,14 @@ export const MealSetExplorer: React.FC = () => {
               onClick={() => setSelectedMealSet(featuredSet)}
             >
               <SafeImage 
-                src={featuredSet.imageUrl} 
+                src={featuredSet.mainDish?.imageUrl || featuredSet.imageUrl} 
                 alt={featuredSet.title} 
+                dishTitle={featuredSet.mainDish?.title || featuredSet.title}
                 fallbackTitle={featuredSet.title}
-                category="Mâm Cơm"
+                category={featuredSet.mainDish?.category || "Mâm Cơm"}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-black/20 to-transparent" />
-
-              <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-slate-950/70 backdrop-blur-md text-white text-[10px] font-extrabold border border-white/10">
-                {getRegionBadgeLabel(featuredSet)}
-              </div>
 
               <div className="absolute bottom-2.5 left-3 right-3 text-white">
                 <h3 className="text-base sm:text-lg font-black tracking-tight leading-tight">
@@ -684,7 +669,7 @@ export const MealSetExplorer: React.FC = () => {
               transform: assignDragY > 0 ? `translateY(${assignDragY}px)` : undefined,
               transition: assignDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
             }}
-            className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-4 sm:p-5 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4 animate-slide-up border-t border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-lg sm:max-w-xl md:max-w-2xl bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-4 sm:p-5 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4 animate-slide-up border-t border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
           >
             {/* Swipe handle bar */}
             <div 

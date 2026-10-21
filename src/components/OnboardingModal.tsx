@@ -54,7 +54,7 @@ export const OnboardingModal: React.FC = () => {
     }
   }, [showOnboarding, onboardingData]);
 
-  if (!showOnboarding || !isRegistered) return null;
+  if (!showOnboarding) return null;
 
   const totalSteps = 4;
 
@@ -84,7 +84,7 @@ export const OnboardingModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-stone-950/60 dark:bg-stone-950/85 backdrop-blur-xl animate-fade-in">
-      <div className="w-full max-w-lg h-[92vh] sm:h-auto sm:max-h-[85vh] flex flex-col bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden relative">
+      <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl h-[92vh] sm:h-auto sm:max-h-[85vh] flex flex-col bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden relative">
         
         {/* Header progress bar (shrink-0) */}
         <div className="h-1.5 bg-stone-100 dark:bg-stone-800 w-full shrink-0">
@@ -125,11 +125,15 @@ export const OnboardingModal: React.FC = () => {
               onClick={() => {
                 setShowOnboarding(false);
                 try {
+                  localStorage.setItem('mealwise_onboarding_completed_guest', 'true');
+                  let emailLower = user?.email?.toLowerCase().trim();
+                  if (emailLower) {
+                    localStorage.setItem(`mealwise_onboarding_completed_${emailLower}`, 'true');
+                  }
                   // If user was already onboarded and was just editing/reviewing config, never launch tutorial
                   if (onboardingData?.completed || user?.onboardingCompleted) {
                     return;
                   }
-                  let emailLower = user?.email?.toLowerCase().trim();
                   const userTutorialKey = emailLower ? `mealwise_tutorial_completed_${emailLower}` : null;
                   const isUserTutorialDone = userTutorialKey
                     ? localStorage.getItem(userTutorialKey) === 'true'

@@ -26,10 +26,12 @@ import {
   Gamepad2,
   Dices,
   Share2,
-  Lock
+  Lock,
+  Camera
 } from 'lucide-react';
 import { SafeImage } from './SafeImage';
 import { Ingredient, CookingInstruction, Recipe } from '../types';
+import { getCookingStepImageUrl, hasUserProvidedRecipeImage } from '../utils/dishImageResolver';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
 import { recordAdImpression, recordVolunteerAdWatched, isUserAdFree } from '../utils/adTrackingService';
 
@@ -173,6 +175,43 @@ export const RecipeDetailModal: React.FC = () => {
   // 30s Meal Completion Ad State (Triggers on ticking final step)
   const [isCompletionAdOpen, setIsCompletionAdOpen] = useState<boolean>(false);
 
+  // Enlarged Step Completion Image Lightbox State
+  const [enlargedStepImage, setEnlargedStepImage] = useState<{
+    step: number;
+    title: string;
+    imageUrl: string;
+    content: string;
+  } | null>(null);
+
+  // Hands-Free Step Card View Mode: 'text' (instruction text) vs 'image' (large step-completion photo)
+  const [handsFreeCardView, setHandsFreeCardView] = useState<'text' | 'image'>('text');
+  const stepBoxSwipeStartX = useRef<number | null>(null);
+  const stepBoxSwipeStartY = useRef<number | null>(null);
+
+  const handleStepBoxTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    stepBoxSwipeStartX.current = e.touches[0].clientX;
+    stepBoxSwipeStartY.current = e.touches[0].clientY;
+  };
+
+  const handleStepBoxTouchEnd = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    if (stepBoxSwipeStartX.current === null || stepBoxSwipeStartY.current === null) return;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const deltaX = endX - stepBoxSwipeStartX.current;
+    const deltaY = endY - stepBoxSwipeStartY.current;
+    if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (handsFreeCardView === 'text') {
+        setHandsFreeCardView('image');
+      } else {
+        setHandsFreeCardView('text');
+      }
+    }
+    stepBoxSwipeStartX.current = null;
+    stepBoxSwipeStartY.current = null;
+  };
+
   // Author Voice Note Playback State
   const [isPlayingAuthorVoice, setIsPlayingAuthorVoice] = useState<boolean>(false);
   const authorVoiceAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -259,31 +298,11 @@ export const RecipeDetailModal: React.FC = () => {
       setShowHandsFreeIngredients(false);
       setIsNextWeekWarningDismissed(false);
       setSwappedEquivalentIngredients({});
+      setEnlargedStepImage(null);
+      setHandsFreeCardView('text');
 
-      // Restore saved ingredient checklist from localStorage & auto-tick fridge items
-      try {
-        const savedIng = localStorage.getItem(`mealwise_recipe_ing_${selectedRecipe.id}`);
-        const parsedSaved: Record<string, boolean> = savedIng ? JSON.parse(savedIng) : {};
-        const merged: Record<string, boolean> = { ...parsedSaved };
-
-        // Auto-tick any ingredient that is already present in the user's fridge!
-        selectedRecipe.ingredients.forEach((ing, idx) => {
-          const key = `${ing.name}_${idx}`;
-          if (pantryIngredientMatches[idx]?.inFridge) {
-            merged[key] = true;
-          }
-        });
-        setCheckedIngredients(merged);
-      } catch {
-        const initialChecked: Record<string, boolean> = {};
-        selectedRecipe.ingredients.forEach((ing, idx) => {
-          const key = `${ing.name}_${idx}`;
-          if (pantryIngredientMatches[idx]?.inFridge) {
-            initialChecked[key] = true;
-          }
-        });
-        setCheckedIngredients(initialChecked);
-      }
+      // Start with all ingredient preparation checkboxes unchecked so the user checks them manually while preparing the meal
+      setCheckedIngredients({});
 
       // Restore saved step completion from localStorage
       try {
@@ -304,7 +323,7 @@ export const RecipeDetailModal: React.FC = () => {
       });
       setExpandedSteps(allOpen);
     }
-  }, [selectedRecipe?.id, pantryIngredientMatches]);
+  }, [selectedRecipe?.id]);
 
   // Actionable Countdown Timer interval
   useEffect(() => {
@@ -815,17 +834,20 @@ export const RecipeDetailModal: React.FC = () => {
   // Hands-free mode navigation
   const enterHandsFreeMode = (stepIndex: number = 0) => {
     setActiveStepIndex(Math.max(0, Math.min(stepIndex, selectedRecipe.instructions.length - 1)));
+    setHandsFreeCardView('text');
     setIsHandsFreeMode(true);
   };
 
   const handlePrevStep = () => {
     if (activeStepIndex > 0) {
+      setHandsFreeCardView('text');
       setActiveStepIndex(prev => prev - 1);
     }
   };
 
   const handleNextStep = () => {
     if (activeStepIndex < totalSteps - 1) {
+      setHandsFreeCardView('text');
       setActiveStepIndex(prev => prev + 1);
     } else {
       const consumedNames = consumeUsedFridgeIngredients();
@@ -882,6 +904,14 @@ export const RecipeDetailModal: React.FC = () => {
     <div 
       className="fixed inset-0 z-[150] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/60 dark:bg-stone-950/80 backdrop-blur-sm animate-fade-in"
       onClick={() => {
+        if (enlargedStepImage) {
+          setEnlargedStepImage(null);
+          return;
+        }
+        if (easterEggQuote) {
+          setEasterEggQuote(null);
+          return;
+        }
         setSelectedRecipe(null);
         setIsHandsFreeMode(false);
         setIsTimerOpen(false);
@@ -893,7 +923,7 @@ export const RecipeDetailModal: React.FC = () => {
           transform: dragY > 0 ? `translateY(${dragY}px)` : undefined,
           transition: dragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
         }}
-        className="w-full max-w-lg sm:max-w-xl bg-white dark:bg-[#1A1918] rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col animate-slide-up border border-[#E8E2D8] dark:border-[#252220] relative overflow-hidden"
+        className="w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl bg-white dark:bg-[#1A1918] rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[92vh] flex flex-col animate-slide-up border border-[#E8E2D8] dark:border-[#252220] relative overflow-hidden"
       >
         {/* Swipe Handle Bar (Mobile Drag Zone) */}
         <div 
@@ -1222,7 +1252,10 @@ export const RecipeDetailModal: React.FC = () => {
                       <button
                         key={inst.step}
                         type="button"
-                        onClick={() => setActiveStepIndex(idx)}
+                        onClick={() => {
+                          setHandsFreeCardView('text');
+                          setActiveStepIndex(idx);
+                        }}
                         className={`h-1.5 rounded-full transition-all cursor-pointer flex-1 ${
                           isStepActive 
                             ? 'bg-stone-900 dark:bg-white ring-1 ring-stone-400/50 shadow-xs' 
@@ -1282,68 +1315,128 @@ export const RecipeDetailModal: React.FC = () => {
                 </div>
               </div>
 
-              {/* Active Step Card with Large Typography */}
-              {currentInstruction && (
-                <div className="p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-4">
-                  {/* Step Title & Flame / Timer Meta Badges */}
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase tracking-wider bg-stone-900 dark:bg-white text-white dark:text-stone-950">
-                        Bước {currentInstruction.step}
-                      </span>
-                      {currentInstruction.heatLevel && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
-                          <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                          Canh lửa: {currentInstruction.heatLevel}
+              {/* Active Step Card with Large Typography & Switchable Text / Step Result Image Box */}
+              {currentInstruction && (() => {
+                const currentStepImageUrl = getCookingStepImageUrl(selectedRecipe, currentInstruction, totalSteps);
+                const hasStepPhoto = Boolean(currentStepImageUrl && currentStepImageUrl.trim().length > 0);
+                const cleanCurrentStepTitle = currentInstruction.title.replace(/^bước\s*\d+\s*:\s*/i, '').trim();
+                const isShowingStepPhoto = hasStepPhoto && handsFreeCardView === 'image';
+
+                return (
+                  <div className="p-5 rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] shadow-sm space-y-4">
+                    {/* Step Title & Flame / Timer Meta Badges */}
+                    <div className="space-y-2.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase tracking-wider bg-stone-900 dark:bg-white text-white dark:text-stone-950">
+                          Bước {currentInstruction.step}
                         </span>
-                      )}
-                      {currentInstruction.durationMinutes && (
-                        <button
-                          type="button"
-                          onClick={() => startTimerWithDuration(currentInstruction.durationMinutes! * 60, `Bước ${currentInstruction.step}: ${currentInstruction.title}`)}
-                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors cursor-pointer min-h-[32px]"
-                        >
-                          <Timer className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                          Hẹn giờ: {currentInstruction.durationMinutes} phút
-                        </button>
-                      )}
-                    </div>
-
-                    <h4 className="text-lg sm:text-xl font-black text-stone-900 dark:text-white leading-snug">
-                      {currentInstruction.title}
-                    </h4>
-                  </div>
-
-                  {/* Large Pedagogical Instruction Body */}
-                  <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-800 dark:text-stone-100 text-base leading-relaxed font-normal">
-                    <p>{currentInstruction.content}</p>
-                  </div>
-
-                  {/* Step Micro-Tip (if present) */}
-                  {currentInstruction.tip && (
-                    <div className="p-3 rounded-2xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/40 text-stone-800 dark:text-amber-200 text-xs sm:text-sm flex items-start gap-2 font-medium">
-                      <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-stone-900 dark:text-amber-300">Mẹo nhỏ:</strong> {currentInstruction.tip}
+                        {currentInstruction.heatLevel && (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                            <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                            Canh lửa: {currentInstruction.heatLevel}
+                          </span>
+                        )}
+                        {currentInstruction.durationMinutes && (
+                          <button
+                            type="button"
+                            onClick={() => startTimerWithDuration(currentInstruction.durationMinutes! * 60, `Bước ${currentInstruction.step}: ${currentInstruction.title}`)}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors cursor-pointer min-h-[32px]"
+                          >
+                            <Timer className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            Hẹn giờ: {currentInstruction.durationMinutes} phút
+                          </button>
+                        )}
                       </div>
-                    </div>
-                  )}
 
-                  {/* Step Completion Toggle (48px+ tap target) */}
-                  <button
-                    type="button"
-                    onClick={(e) => toggleStepCompleted(currentInstruction.step, e)}
-                    className={`w-full py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 border transition-all cursor-pointer min-h-[48px] ${
-                      isCurrentStepCompleted 
-                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20' 
-                        : 'bg-white dark:bg-[#121110] text-stone-700 dark:text-stone-200 border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400'
-                    }`}
-                  >
-                    <Check className={`w-4 h-4 stroke-[3] ${isCurrentStepCompleted ? 'text-white' : 'text-stone-400'}`} />
-                    <span>{isCurrentStepCompleted ? 'Đã hoàn thành bước này ✓' : 'Đánh dấu đã hoàn thành bước này'}</span>
-                  </button>
-                </div>
-              )}
+                      <h4 className="text-lg sm:text-xl md:text-2xl font-black text-stone-900 dark:text-white leading-snug">
+                        {cleanCurrentStepTitle}
+                      </h4>
+                    </div>
+
+                    {/* Switchable Content Box: Swipe or Tap Arrow to switch between Text and Step Result Image */}
+                    <div
+                      className="relative select-none"
+                      onTouchStart={hasStepPhoto ? handleStepBoxTouchStart : undefined}
+                      onTouchEnd={hasStepPhoto ? handleStepBoxTouchEnd : undefined}
+                    >
+                      {!isShowingStepPhoto ? (
+                        <div className={`p-4 md:p-6 ${hasStepPhoto ? 'pr-11 md:pr-14' : ''} rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-800 dark:text-stone-100 text-base sm:text-lg md:text-xl leading-relaxed font-normal min-h-[175px] md:min-h-[220px] flex items-center relative`}>
+                          <p>{currentInstruction.content}</p>
+
+                          {/* Minimal Right-Edge Arrow Only (Shown only when step has an image) */}
+                          {hasStepPhoto && (
+                            <button
+                              type="button"
+                              onClick={() => setHandsFreeCardView('image')}
+                              aria-label={`Xem ảnh Bước ${currentInstruction.step}`}
+                              title={`Xem ảnh Bước ${currentInstruction.step}`}
+                              className="absolute right-1.5 md:right-2.5 top-1/2 -translate-y-1/2 w-8 h-10 md:w-10 md:h-12 rounded-full text-stone-400 hover:text-stone-800 dark:text-stone-500 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors active:scale-95"
+                            >
+                              <ChevronRight className="w-5 h-5 md:w-6 md:h-6 stroke-[2.5]" />
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <div
+                          data-testid={`handsfree-step-image-${currentInstruction.step}`}
+                          className="relative w-full h-64 sm:h-72 md:h-96 lg:h-[420px] rounded-2xl overflow-hidden border border-[#E8E2D8] dark:border-[#252220] bg-stone-900 shadow-sm animate-fade-in"
+                        >
+                          <SafeImage
+                            src={currentStepImageUrl}
+                            alt={`Bước ${currentInstruction.step}: ${cleanCurrentStepTitle}`}
+                            fallbackTitle={selectedRecipe.title}
+                            category={selectedRecipe.category}
+                            className="w-full h-full object-cover"
+                            onClick={() =>
+                              setEnlargedStepImage({
+                                step: currentInstruction.step,
+                                title: cleanCurrentStepTitle,
+                                imageUrl: currentStepImageUrl,
+                                content: currentInstruction.content
+                              })
+                            }
+                          />
+
+                          {/* Minimal Left-Edge Arrow Only */}
+                          <button
+                            type="button"
+                            onClick={() => setHandsFreeCardView('text')}
+                            aria-label="Quay lại hướng dẫn"
+                            title="Quay lại hướng dẫn"
+                            className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/50 hover:bg-black/75 text-white flex items-center justify-center cursor-pointer backdrop-blur-xs transition-transform active:scale-95"
+                          >
+                            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 stroke-[2.5]" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Step Micro-Tip (if present) */}
+                    {currentInstruction.tip && (
+                      <div className="p-3 rounded-2xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/40 text-stone-800 dark:text-amber-200 text-xs sm:text-sm flex items-start gap-2 font-medium">
+                        <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                        <div>
+                          <strong className="text-stone-900 dark:text-amber-300">Mẹo nhỏ:</strong> {currentInstruction.tip}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Step Completion Toggle (48px+ tap target) */}
+                    <button
+                      type="button"
+                      onClick={(e) => toggleStepCompleted(currentInstruction.step, e)}
+                      className={`w-full py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 border transition-all cursor-pointer min-h-[48px] ${
+                        isCurrentStepCompleted 
+                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20' 
+                          : 'bg-white dark:bg-[#121110] text-stone-700 dark:text-stone-200 border-[#E8E2D8] dark:border-[#252220] hover:border-stone-400'
+                      }`}
+                    >
+                      <Check className={`w-4 h-4 stroke-[3] ${isCurrentStepCompleted ? 'text-white' : 'text-stone-400'}`} />
+                      <span>{isCurrentStepCompleted ? 'Đã hoàn thành bước này ✓' : 'Đánh dấu đã hoàn thành bước này'}</span>
+                    </button>
+                  </div>
+                );
+              })()}
 
               {/* Navigation Action Buttons (48px+ tap targets) */}
               <div className="grid grid-cols-2 gap-3 pt-2">
@@ -1403,38 +1496,35 @@ export const RecipeDetailModal: React.FC = () => {
               {/* Hero Image, Metrics, and Description (Shown in Step 1, Hidden in Step 2 per user request) */}
               {cookingPhase === 1 ? (
                 <>
-                  {/* Hero Image & Title */}
-                  <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden shadow-md shrink-0">
-                    <SafeImage 
-                      src={selectedRecipe.imageUrl} 
-                      alt={selectedRecipe.title} 
-                      fallbackTitle={selectedRecipe.title}
-                      category={selectedRecipe.category}
-                      className="w-full h-full object-cover"
-                      loading="eager"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent" />
-                    <div className="absolute bottom-3 left-4 right-4">
-                      <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-                        {selectedRecipe.isCustom && (
-                          <span className="px-2.5 py-0.5 rounded-full bg-amber-500/90 text-stone-950 text-[10px] font-black inline-block backdrop-blur-sm shadow-xs">
-                            ⭐️ Món Bếp Nhà
-                          </span>
-                        )}
-                        <span className="px-2.5 py-0.5 rounded-full bg-stone-900/80 text-white border border-stone-700/60 text-[10px] font-extrabold inline-block backdrop-blur-sm">
-                          {selectedRecipe.region === 'bac' ? 'Vị Bắc' : selectedRecipe.region === 'nam' ? 'Vị Nam' : selectedRecipe.region === 'trung' ? 'Vị Trung' : 'Toàn Quốc'}
-                        </span>
-                        {selectedRecipe.tags && selectedRecipe.tags.map(tag => (
-                          <span key={tag} className="px-2 py-0.5 rounded-full bg-stone-900/70 text-stone-200 text-[10px] font-semibold backdrop-blur-sm border border-stone-700/60">
-                            #{tag}
-                          </span>
-                        ))}
+                  {/* Hero Image & Title (Only shows photo if system dish or user uploaded their own photo) */}
+                  {hasUserProvidedRecipeImage(selectedRecipe) ? (
+                    <div className="relative h-[34dvh] min-h-[260px] sm:h-[38dvh] md:h-[42dvh] md:min-h-[320px] rounded-2xl overflow-hidden shadow-md shrink-0">
+                      <SafeImage 
+                        src={selectedRecipe.imageUrl} 
+                        alt={selectedRecipe.title} 
+                        fallbackTitle={selectedRecipe.title}
+                        category={selectedRecipe.category}
+                        className="w-full h-full object-cover"
+                        loading="eager"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/35 to-transparent" />
+                      <div className="absolute bottom-3.5 left-4 right-4 md:bottom-5 md:left-6 md:right-6">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight drop-shadow-sm">
+                          {selectedRecipe.title}
+                        </h2>
                       </div>
-                      <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                    </div>
+                  ) : (
+                    <div className="p-4 sm:p-5 md:p-6 rounded-2xl bg-gradient-to-br from-stone-800 via-stone-900 to-stone-950 border border-stone-700/60 shadow-sm shrink-0 space-y-1.5">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-amber-300 text-[10px] md:text-xs font-black uppercase tracking-wider">
+                        <ChefHat className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                        <span>Món Bếp Nhà</span>
+                      </span>
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight">
                         {selectedRecipe.title}
                       </h2>
                     </div>
-                  </div>
+                  )}
 
                   {/* Metrics & Servings Stepper Grid (Preserving exact grid class for layout tests) */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-center">
@@ -1816,13 +1906,6 @@ export const RecipeDetailModal: React.FC = () => {
                                         e.stopPropagation();
                                         const willSwap = !isSwappedToCookingOil;
                                         setSwappedEquivalentIngredients(prev => ({ ...prev, [originalIndex]: willSwap }));
-                                        setCheckedIngredients(prev => {
-                                          const next = { ...prev, [key]: willSwap };
-                                          try {
-                                            localStorage.setItem(`mealwise_recipe_ing_${selectedRecipe.id}`, JSON.stringify(next));
-                                          } catch {}
-                                          return next;
-                                        });
                                         showToast(
                                           willSwap
                                             ? '🔄 Đã đổi tương đương sang Dầu ăn thường có sẵn trong bếp!'
@@ -1959,6 +2042,7 @@ export const RecipeDetailModal: React.FC = () => {
                   {selectedRecipe.instructions.map(inst => {
                     const isExpanded = expandedSteps[inst.step] ?? true;
                     const isCompleted = !!completedSteps[inst.step];
+                    const cleanStepTitle = inst.title.replace(/^bước\s*\d+\s*:\s*/i, '').trim();
 
                     return (
                       <div 
@@ -1995,7 +2079,7 @@ export const RecipeDetailModal: React.FC = () => {
                                   ? 'text-emerald-900 dark:text-emerald-300 line-through opacity-80' 
                                   : 'text-stone-900 dark:text-white'
                               }`}>
-                                Bước {inst.step}: {inst.title.replace(/^bước\s*\d+\s*:\s*/i, '').trim()}
+                                Bước {inst.step}: {cleanStepTitle}
                               </h4>
                             </div>
                           </div>
@@ -2019,7 +2103,7 @@ export const RecipeDetailModal: React.FC = () => {
                           <div className="px-3.5 pb-3 pt-0 text-xs text-stone-600 dark:text-stone-300 pl-11 leading-relaxed border-t border-[#E8E2D8]/60 dark:border-[#252220]/60 mt-1 space-y-2">
                             <p>{inst.content}</p>
 
-                            {/* Badges & Actions row - aligned together with consistent spacing, no wide gap */}
+                            {/* Badges & Actions row */}
                             <div className="flex items-center gap-2 pt-1 flex-wrap">
                               {inst.heatLevel && (
                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 min-h-[28px]">
@@ -2030,7 +2114,7 @@ export const RecipeDetailModal: React.FC = () => {
                               {inst.durationMinutes && (
                                 <button
                                   type="button"
-                                  onClick={() => startTimerWithDuration(inst.durationMinutes! * 60, `Bước ${inst.step}: ${inst.title.replace(/^bước\s*\d+\s*:\s*/i, '').trim()}`)}
+                                  onClick={() => startTimerWithDuration(inst.durationMinutes! * 60, `Bước ${inst.step}: ${cleanStepTitle}`)}
                                   className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer min-h-[28px]"
                                   title={`Hẹn giờ ${inst.durationMinutes} phút`}
                                 >
@@ -2095,6 +2179,69 @@ export const RecipeDetailModal: React.FC = () => {
         </div>
       </div>
 
+      {/* Step Completion Image Lightbox Modal */}
+      {enlargedStepImage && (
+        <div
+          className="fixed inset-0 z-[170] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
+          onClick={(e) => {
+            e.stopPropagation();
+            setEnlargedStepImage(null);
+          }}
+        >
+          <div
+            className="relative w-full max-w-md md:max-w-xl lg:max-w-2xl rounded-3xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative h-64 sm:h-72 md:h-96 w-full bg-stone-950">
+              <SafeImage
+                src={enlargedStepImage.imageUrl}
+                alt={`Kết quả Bước ${enlargedStepImage.step}: ${enlargedStepImage.title}`}
+                fallbackTitle={selectedRecipe.title}
+                category={selectedRecipe.category}
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEnlargedStepImage(null);
+                }}
+                className="absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center border border-white/20 cursor-pointer"
+                aria-label="Đóng ảnh phóng to"
+              >
+                <X className="w-4 h-4 md:w-5 md:h-5" />
+              </button>
+              <div className="absolute bottom-3 left-4 right-4 md:bottom-4 md:left-6 md:right-6 text-white">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500 text-stone-950 text-[10px] md:text-xs font-black uppercase tracking-wider mb-1">
+                  <Camera className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                  <span>Kết quả Bước {enlargedStepImage.step}</span>
+                </span>
+                <h4 className="text-base md:text-xl font-black leading-snug drop-shadow">
+                  {enlargedStepImage.title}
+                </h4>
+              </div>
+            </div>
+            <div className="p-4 md:p-6 space-y-3">
+              <p className="text-xs sm:text-sm md:text-base text-stone-700 dark:text-stone-200 leading-relaxed">
+                {enlargedStepImage.content}
+              </p>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEnlargedStepImage(null);
+                }}
+                className="w-full py-2.5 md:py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-200 text-white dark:text-stone-950 font-black text-xs md:text-sm cursor-pointer min-h-[42px] md:min-h-[48px]"
+              >
+                Đóng xem ảnh
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 30s Meal Completion Ad Modal */}
       {isCompletionAdOpen && (
         <VolunteerAdSequenceModal
@@ -2125,7 +2272,10 @@ export const RecipeDetailModal: React.FC = () => {
       {easterEggQuote && (
         <div 
           className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in"
-          onClick={() => setEasterEggQuote(null)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setEasterEggQuote(null);
+          }}
         >
           <div 
             className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-[#1A202C] border border-amber-300/80 dark:border-amber-700/60 p-5 shadow-2xl space-y-4 text-center animate-in zoom-in-95 duration-200"

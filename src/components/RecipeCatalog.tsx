@@ -35,6 +35,7 @@ import { Recipe, Ingredient, MealCategory, Region, MealSlot } from '../types';
 import { matchesRecipeSearch, matchesSearchTerm, normalizeSearchString } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
 import { shareCustomRecipe } from './RecipeDetailModal';
+import { hasUserProvidedRecipeImage } from '../utils/dishImageResolver';
 
 const BASE_VIETNAMESE_INGREDIENTS: Ingredient[] = [
   // Rau củ & Rau thơm
@@ -185,6 +186,12 @@ export const RecipeCatalog: React.FC = () => {
   const speechRecRef = useRef<any>(null);
   const voiceAudioRef = useRef<HTMLAudioElement | null>(null);
   const [newSecretTips, setNewSecretTips] = useState('');
+  const [customSteps, setCustomSteps] = useState<Array<{ title: string; content: string; imageUrl?: string }>>([
+    { title: 'Sơ chế nguyên liệu', content: '' }
+  ]);
+  const [focusedStepIdx, setFocusedStepIdx] = useState<number>(0);
+  const [uploadingStepIdx, setUploadingStepIdx] = useState<number | null>(null);
+  const stepImageInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
   const [isIngredientDropdownOpen, setIsIngredientDropdownOpen] = useState(false);
   const [ingredientSearchQuery, setIngredientSearchQuery] = useState('');
@@ -348,6 +355,86 @@ export const RecipeCatalog: React.FC = () => {
     reader.readAsDataURL(file);
   };
 
+  const DEFAULT_STEP_TITLES = [
+    'Sơ chế nguyên liệu',
+    'Ướp & chuẩn bị gia vị',
+    'Chế biến trên bếp',
+    'Hoàn thiện & trình bày'
+  ];
+
+  const handleAddCustomStep = () => {
+    setCustomSteps(prev => {
+      const nextIdx = prev.length;
+      const defaultTitle = DEFAULT_STEP_TITLES[nextIdx] || `Bước ${nextIdx + 1}`;
+      const updated = [...prev, { title: defaultTitle, content: '' }];
+      setFocusedStepIdx(updated.length - 1);
+      return updated;
+    });
+  };
+
+  const handleRemoveCustomStep = (idxToRemove: number) => {
+    setCustomSteps(prev => {
+      if (prev.length <= 1) {
+        return [{ title: 'Sơ chế nguyên liệu', content: '' }];
+      }
+      const updated = prev.filter((_, idx) => idx !== idxToRemove);
+      setFocusedStepIdx(curr => Math.max(0, Math.min(curr, updated.length - 1)));
+      return updated;
+    });
+  };
+
+  const handleUpdateCustomStep = (idx: number, field: 'title' | 'content' | 'imageUrl', value: string) => {
+    setCustomSteps(prev =>
+      prev.map((item, i) => (i === idx ? { ...item, [field]: value } : item))
+    );
+  };
+
+  const handleStepImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    const targetIdx = uploadingStepIdx;
+    e.target.value = '';
+    if (!file || targetIdx === null) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result !== 'string') return;
+      const rawDataUrl = reader.result;
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const maxDim = 960;
+          let targetW = img.width;
+          let targetH = img.height;
+          if (targetW > maxDim || targetH > maxDim) {
+            if (targetW >= targetH) {
+              targetH = Math.round((targetH * maxDim) / targetW);
+              targetW = maxDim;
+            } else {
+              targetW = Math.round((targetW * maxDim) / targetH);
+              targetH = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = targetW;
+          canvas.height = targetH;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, targetW, targetH);
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            handleUpdateCustomStep(targetIdx, 'imageUrl', compressedDataUrl);
+            showToast(`📸 Đã thêm ảnh cho Bước ${targetIdx + 1}!`, 'info');
+            return;
+          }
+        } catch {}
+        handleUpdateCustomStep(targetIdx, 'imageUrl', rawDataUrl);
+      };
+      img.onerror = () => {
+        handleUpdateCustomStep(targetIdx, 'imageUrl', rawDataUrl);
+      };
+      img.src = rawDataUrl;
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSaveCustomRecipe = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!newTitle.trim()) return;
@@ -358,7 +445,38 @@ export const RecipeCatalog: React.FC = () => {
           { name: newTitle.trim(), amount: 1, unit: 'phần', category: 'thit-ca' as const }
         ];
 
-    const fallbackImg = PRESET_DISH_IMAGES[0].url;
+    const populatedSteps = customSteps
+      .map((s, idx) => ({
+        step: idx + 1,
+        title: s.title.trim() || DEFAULT_STEP_TITLES[idx] || `Bước ${idx + 1}`,
+        content: s.content.trim() || (s.imageUrl ? `Thực hiện ${s.title.trim() || `bước ${idx + 1}`}.` : ''),
+        imageUrl: s.imageUrl?.trim() || undefined
+      }))
+      .filter(s => s.content.length > 0 || Boolean(s.imageUrl));
+
+    const finalInstructions =
+      populatedSteps.length > 0
+        ? populatedSteps.map((s, idx) => ({
+            ...s,
+            step: idx + 1,
+            tip: idx === 0 && newAuthorNote.trim() ? newAuthorNote.trim() : undefined
+          }))
+        : newSecretTips.trim()
+          ? [
+              {
+                step: 1,
+                title: 'Bí Quyết & Chế Biến',
+                content: newSecretTips.trim(),
+                tip: newAuthorNote.trim() || undefined
+              }
+            ]
+          : [
+              {
+                step: 1,
+                title: 'Chế Biến Gia Đình',
+                content: 'Nấu theo khẩu vị gia đình, nêm nếm vừa miệng và canh lửa phù hợp.'
+              }
+            ];
 
     const customRecipe: Recipe = {
       id: editingRecipeId || `custom-${Date.now()}`,
@@ -371,24 +489,9 @@ export const RecipeCatalog: React.FC = () => {
       servings: 4,
       calories: parseInt(newCalories, 10) || 450,
       estimatedCostVnd: parseInt(newCost.replace(/\D/g, ''), 10) || 65000,
-      imageUrl: newImageUrl || fallbackImg,
+      imageUrl: newImageUrl.trim(),
       ingredients,
-      instructions: newSecretTips.trim()
-        ? [
-            {
-              step: 1,
-              title: 'Bí Quyết & Chế Biến',
-              content: newSecretTips.trim(),
-              tip: newAuthorNote.trim() || undefined
-            }
-          ]
-        : [
-            {
-              step: 1,
-              title: 'Chế Biến Gia Đình',
-              content: 'Nấu theo khẩu vị gia đình, nêm nếm vừa miệng và canh lửa phù hợp.',
-            }
-          ],
+      instructions: finalInstructions,
       tags: ['Món Của Tôi', newAuthorNote.trim()].filter(Boolean),
       chefTip: newSecretTips.trim() || undefined,
       authorName: user?.name || 'Đầu Bếp Tại Gia',
@@ -410,6 +513,8 @@ export const RecipeCatalog: React.FC = () => {
     setNewAuthorVoiceUrl('');
     setNewAuthorVoiceDurationSec(0);
     setNewSecretTips('');
+    setCustomSteps([{ title: 'Sơ chế nguyên liệu', content: '' }]);
+    setFocusedStepIdx(0);
     setSelectedIngredients([]);
     setIngredientSearchQuery('');
     setIsIngredientDropdownOpen(false);
@@ -648,6 +753,8 @@ export const RecipeCatalog: React.FC = () => {
     setNewAuthorVoiceDurationSec(0);
     setIsRecordingVoice(false);
     setNewSecretTips('');
+    setCustomSteps([{ title: 'Sơ chế nguyên liệu', content: '' }]);
+    setFocusedStepIdx(0);
     setSelectedIngredients([]);
     setIngredientSearchQuery('');
     setIsIngredientDropdownOpen(false);
@@ -675,14 +782,26 @@ export const RecipeCatalog: React.FC = () => {
     setNewAuthorVoiceUrl(recipe.authorVoiceUrl || '');
     setNewAuthorVoiceDurationSec(recipe.authorVoiceDurationSec || 0);
     setIsRecordingVoice(false);
-    setNewSecretTips(recipe.chefTip || recipe.instructions?.[0]?.content || '');
+    setNewSecretTips(recipe.chefTip || '');
+    if (Array.isArray(recipe.instructions) && recipe.instructions.length > 0) {
+      setCustomSteps(
+        recipe.instructions.map((inst, idx) => ({
+          title: inst.title || DEFAULT_STEP_TITLES[idx] || `Bước ${idx + 1}`,
+          content: inst.content || '',
+          imageUrl: inst.imageUrl || undefined
+        }))
+      );
+    } else {
+      setCustomSteps([{ title: 'Sơ chế nguyên liệu', content: recipe.chefTip || '' }]);
+    }
+    setFocusedStepIdx(0);
     setSelectedIngredients(recipe.ingredients ? [...recipe.ingredients] : []);
     setIngredientSearchQuery('');
     setIsIngredientDropdownOpen(false);
     setNewCost(String(recipe.estimatedCostVnd || 65000));
     setNewCookTime(String(recipe.cookTimeMinutes || 25));
     setNewCalories(String(recipe.calories || 450));
-    setNewImageUrl(recipe.imageUrl || '');
+    setNewImageUrl(hasUserProvidedRecipeImage(recipe) ? (recipe.imageUrl || '') : '');
     setIsCreateModalOpen(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1105,31 +1224,152 @@ export const RecipeCatalog: React.FC = () => {
                 </div>
               )}
 
-              {/* ==================== STEP 2: CÁCH NẤU & BÍ QUYẾT ==================== */}
+              {/* ==================== STEP 2: CÁCH NẤU & BÍ QUYẾT (MULTI-STEP BUILDER) ==================== */}
               {createStep === 2 && (
                 <div className="space-y-5 animate-fade-in">
-                  {/* Secret Seasoning & Cooking Steps */}
-                  <div className="space-y-2.5">
-                    <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center justify-between">
-                      <span>Cách Làm & Bí Quyết Nêm Nếm</span>
-                      <span className="text-[11px] text-[#1D4ED8] dark:text-blue-400 font-semibold">Linh hồn món ăn</span>
-                    </label>
-                    <textarea 
-                      rows={5}
-                      autoFocus
-                      value={newSecretTips}
-                      onChange={e => setNewSecretTips(e.target.value)}
-                      placeholder="Ghi lại các bước nấu hoặc mẹo riêng (Ví dụ: Ướp cá với nước mắm nhỉ và tiêu 15 phút, kho 2 lửa liu riu đến khi nước kho kẹo lại...)" 
-                      className="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1D4ED8] leading-relaxed"
-                    />
+                  {/* Hidden file input for optional per-step photo */}
+                  <input
+                    type="file"
+                    ref={stepImageInputRef}
+                    onChange={handleStepImageFileChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+
+                  {/* Multi-Step Cooking Instructions Builder */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                        Các Bước Chế Biến ({customSteps.length} bước)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={handleAddCustomStep}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 text-[#1D4ED8] dark:text-blue-300 border border-blue-200 dark:border-blue-800/70 text-xs font-black transition-all cursor-pointer active:scale-95"
+                      >
+                        <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                        <span>Thêm bước</span>
+                      </button>
+                    </div>
+
+                    <div className="space-y-3">
+                      {customSteps.map((stepItem, idx) => {
+                        const isFocused = focusedStepIdx === idx;
+                        return (
+                          <div
+                            key={idx}
+                            onClick={() => setFocusedStepIdx(idx)}
+                            className={`p-3.5 rounded-2xl border transition-all space-y-2.5 ${
+                              isFocused
+                                ? 'bg-blue-50/30 dark:bg-slate-900 border-[#1D4ED8]/60 ring-2 ring-blue-500/10'
+                                : 'bg-slate-50/80 dark:bg-slate-950/70 border-slate-200 dark:border-slate-800'
+                            }`}
+                          >
+                            {/* Step Header Row: Badge + Step Title Input + Photo Upload + Remove */}
+                            <div className="flex items-center gap-2">
+                              <span className="px-2.5 py-1 rounded-lg bg-[#1D4ED8] text-white text-[11px] font-black shrink-0">
+                                Bước {idx + 1}
+                              </span>
+                              <input
+                                type="text"
+                                value={stepItem.title}
+                                onFocus={() => setFocusedStepIdx(idx)}
+                                onChange={e => handleUpdateCustomStep(idx, 'title', e.target.value)}
+                                placeholder={`Tiêu đề bước ${idx + 1} (VD: Sơ chế, Ướp gia vị...)`}
+                                className="flex-1 min-w-0 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1D4ED8]"
+                              />
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setUploadingStepIdx(idx);
+                                  stepImageInputRef.current?.click();
+                                }}
+                                className={`px-2.5 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1 shrink-0 transition-colors cursor-pointer ${
+                                  stepItem.imageUrl
+                                    ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
+                                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#1D4ED8]'
+                                }`}
+                                title="Tải ảnh riêng cho bước này (Tùy chọn)"
+                              >
+                                <Camera className="w-3.5 h-3.5" />
+                                <span>{stepItem.imageUrl ? 'Đổi ảnh' : 'Ảnh'}</span>
+                              </button>
+                              {customSteps.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleRemoveCustomStep(idx);
+                                  }}
+                                  className="w-7 h-7 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                                  title={`Xóa Bước ${idx + 1}`}
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </div>
+
+                            {/* Step Content Textarea */}
+                            <textarea
+                              rows={3}
+                              value={stepItem.content}
+                              onFocus={() => setFocusedStepIdx(idx)}
+                              onChange={e => handleUpdateCustomStep(idx, 'content', e.target.value)}
+                              placeholder={
+                                idx === 0
+                                  ? 'Mô tả thao tác Bước 1 (VD: Rửa sạch thịt, thái miếng vừa ăn, băm nhỏ hành tỏi...)'
+                                  : idx === 1
+                                    ? 'Mô tả thao tác Bước 2 (VD: Ướp với 1 thìa nước mắm, tiêu, hành băm trong 15 phút...)'
+                                    : `Mô tả chi tiết cách làm ở Bước ${idx + 1}...`
+                              }
+                              className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1D4ED8] leading-relaxed"
+                            />
+
+                            {/* Optional Step Image Preview (only if user uploaded one) */}
+                            {stepItem.imageUrl && (
+                              <div className="relative w-36 aspect-video rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                                <img
+                                  src={stepItem.imageUrl}
+                                  alt={`Ảnh Bước ${idx + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleUpdateCustomStep(idx, 'imageUrl', '');
+                                  }}
+                                  className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/70 text-white flex items-center justify-center cursor-pointer"
+                                  title="Xóa ảnh bước này"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Prominent Add Next Step Button */}
+                    <button
+                      type="button"
+                      onClick={handleAddCustomStep}
+                      className="w-full py-2.5 px-4 rounded-2xl border border-dashed border-[#1D4ED8]/50 hover:border-[#1D4ED8] bg-blue-50/40 hover:bg-blue-50 dark:bg-blue-950/20 dark:hover:bg-blue-950/40 text-[#1D4ED8] dark:text-blue-300 text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-98"
+                    >
+                      <Plus className="w-4 h-4 stroke-[2.5]" />
+                      <span>Thêm Bước {customSteps.length + 1}</span>
+                    </button>
 
                     {/* 1-Tap Quick-Insert Cooking Step Chips */}
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5 pt-1">
                       <span className="text-[11px] text-slate-400 dark:text-slate-500 block font-medium">
-                        Chạm để chèn nhanh thao tác nấu:
+                        Chạm để chèn nhanh vào Bước {Math.min(focusedStepIdx + 1, customSteps.length)}:
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {[
+                          'Rửa sạch nguyên liệu, để ráo và cắt miếng vừa ăn.',
                           'Ướp gia vị 15 phút cho thấm.',
                           'Phi thơm hành tỏi với dầu ăn.',
                           'Kho lửa nhỏ liu riu đến khi sánh kẹo.',
@@ -1140,7 +1380,17 @@ export const RecipeCatalog: React.FC = () => {
                             key={idx}
                             type="button"
                             onClick={() => {
-                              setNewSecretTips(prev => prev.trim() ? `${prev.trim()} ${phrase}` : phrase);
+                              const targetIdx = Math.max(0, Math.min(focusedStepIdx, customSteps.length - 1));
+                              setCustomSteps(prev =>
+                                prev.map((item, i) =>
+                                  i === targetIdx
+                                    ? {
+                                        ...item,
+                                        content: item.content.trim() ? `${item.content.trim()} ${phrase}` : phrase
+                                      }
+                                    : item
+                                )
+                              );
                             }}
                             className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-[#1D4ED8] text-xs font-semibold transition-colors cursor-pointer"
                           >
@@ -1380,9 +1630,14 @@ export const RecipeCatalog: React.FC = () => {
 
                   {/* Dish Photo */}
                   <div className="space-y-2.5">
-                    <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 block">
-                      Hình Ảnh Món Ăn
-                    </label>
+                    <div className="flex items-center justify-between gap-2">
+                      <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 block">
+                        Hình Ảnh Món Ăn (Tùy chọn)
+                      </label>
+                      <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                        Chỉ hiển thị ảnh khi bạn tự tải lên
+                      </span>
+                    </div>
 
                     <input 
                       type="file" 
@@ -1401,7 +1656,7 @@ export const RecipeCatalog: React.FC = () => {
                       <span>Chụp ảnh món ăn hoặc Tải từ điện thoại</span>
                     </button>
 
-                    {newImageUrl && (
+                    {newImageUrl ? (
                       <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-xs">
                         <img 
                           src={newImageUrl} 
@@ -1417,45 +1672,11 @@ export const RecipeCatalog: React.FC = () => {
                           <X className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                    )}
-
-                    <div className="pt-1">
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-                        Hoặc chọn ảnh minh họa sẵn:
+                    ) : (
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 italic">
+                        Nếu không tải ảnh lên, món ăn sẽ hiển thị gọn gàng không kèm ảnh.
                       </p>
-                      <div className="grid grid-cols-3 gap-2.5">
-                        {PRESET_DISH_IMAGES.map((preset, idx) => {
-                          const isSelected = newImageUrl === preset.url;
-                          return (
-                            <button
-                              key={idx}
-                              type="button"
-                              onClick={() => setNewImageUrl(preset.url)}
-                              className={`relative aspect-video rounded-2xl overflow-hidden border-2 transition-all cursor-pointer group text-left ${
-                                isSelected 
-                                  ? 'border-[#1D4ED8] ring-2 ring-blue-500/30 shadow-xs' 
-                                  : 'border-transparent hover:border-slate-300 dark:hover:border-slate-700 opacity-80 hover:opacity-100'
-                              }`}
-                            >
-                              <img 
-                                src={preset.url} 
-                                alt={preset.title} 
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-                              <span className="absolute bottom-1.5 left-2 right-2 text-[10.5px] font-bold text-white truncate">
-                                {preset.title}
-                              </span>
-                              {isSelected && (
-                                <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#1D4ED8] text-white flex items-center justify-center">
-                                  <Check className="w-2.5 h-2.5 stroke-[3]" />
-                                </div>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -1544,24 +1765,10 @@ export const RecipeCatalog: React.FC = () => {
               Tuyển tập công thức chuẩn vị 3 miền từ thịt rang cháy cạnh, canh cua đồng tới thịt kho tàu.
             </p>
           </div>
-
-          <button
-            type="button"
-            onClick={openCreateScreen}
-            className={`px-4 py-2.5 rounded-2xl active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shrink-0 shadow-xs transition-all cursor-pointer ${
-              isRegistered
-                ? 'bg-[#1D4ED8] hover:bg-blue-800'
-                : 'bg-slate-800 hover:bg-slate-900 dark:bg-slate-800 dark:hover:bg-slate-700 border border-amber-400/50'
-            }`}
-            title={isRegistered ? 'Thêm công thức món ăn của riêng bạn' : 'Đăng ký tài khoản miễn phí để mở khóa Sổ Bếp Gia Đình & Ghi Âm Lời Dặn'}
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>{isRegistered ? 'Thêm Món Mới' : 'Thêm Món Mới 🔒'}</span>
-          </button>
         </div>
 
         {/* Search bar */}
-        <div className="mt-4 relative max-w-lg">
+        <div className="mt-4 relative max-w-lg md:max-w-2xl">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
@@ -1646,14 +1853,26 @@ export const RecipeCatalog: React.FC = () => {
         <span>
           Tìm thấy <strong className="text-slate-900 dark:text-white font-black">{filteredRecipes.length}</strong> món ngon phù hợp
         </span>
-        {hasActiveFilters && (
-          <button
-            onClick={resetAllFilters}
-            className="text-xs text-[#1D4ED8] dark:text-blue-400 hover:underline font-bold shrink-0 cursor-pointer"
-          >
-            Đặt lại bộ lọc
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {selectedCategory === 'mon-cua-toi' && isRegistered && filteredRecipes.length > 0 && (
+            <button
+              type="button"
+              onClick={openCreateScreen}
+              className="px-3 py-1.5 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white text-xs font-black flex items-center gap-1 shadow-2xs cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>Thêm Món Mới</span>
+            </button>
+          )}
+          {hasActiveFilters && (
+            <button
+              onClick={resetAllFilters}
+              className="text-xs text-[#1D4ED8] dark:text-blue-400 hover:underline font-bold shrink-0 cursor-pointer"
+            >
+              Đặt lại bộ lọc
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Empty State */}
@@ -1700,48 +1919,46 @@ export const RecipeCatalog: React.FC = () => {
           </div>
         )
       ) : (
-        /* Recipe Grid (responsive 1 -> 2 -> 3 columns) */
+        /* Recipe Grid (1 col on phone, 2 spacious cols on tablet/large screens with larger readable text & imagery) */
         <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-            {visibleRecipes.map(recipe => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+            {visibleRecipes.map(recipe => {
+              const showRecipeImage = hasUserProvidedRecipeImage(recipe);
+              return (
               <div
                 key={recipe.id}
                 onClick={() => setSelectedRecipe(recipe)}
-                className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all cursor-pointer group border border-slate-200 dark:border-slate-800 select-none"
+                className={`relative w-full rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all cursor-pointer group border border-slate-200 dark:border-slate-800 select-none ${
+                  showRecipeImage
+                    ? 'aspect-[16/10] md:aspect-[16/9] min-h-[190px] md:min-h-[225px]'
+                    : 'min-h-[168px] md:min-h-[195px] bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950'
+                }`}
                 title="Xem Chi Tiết Món"
                 aria-label={`Xem Chi Tiết Món: ${recipe.title}`}
               >
-                <SafeImage 
-                  src={recipe.imageUrl} 
-                  alt={recipe.title} 
-                  fallbackTitle={recipe.title}
-                  category={recipe.category}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                {/* High-contrast gradient overlay to ensure text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent pointer-events-none" />
-
-                {/* Unified Top Bar: Badges (Left) + Action Buttons (Right) — Never Overlaps */}
-                <div className="absolute top-3 left-3 right-3 z-10 flex items-start justify-between gap-2 pointer-events-none">
-                  {/* Top Left: Custom Badge & Region */}
-                  <div className="flex flex-wrap items-center gap-1.5 min-w-0 flex-1">
-                    {recipe.isCustom && (
-                      <span className="px-2.5 py-0.5 rounded-full bg-amber-500/90 backdrop-blur-md text-slate-950 text-[10px] font-black border border-amber-300 shadow-xs flex items-center gap-1 shrink-0">
-                        <span>👨‍🍳</span>
-                        <span className="truncate max-w-[110px]">{recipe.authorName || 'Món Bếp Nhà'}</span>
-                      </span>
-                    )}
-                    <span className="px-2.5 py-0.5 rounded-full bg-slate-950/60 backdrop-blur-md text-white text-[10px] font-bold border border-white/10 shadow-xs shrink-0">
-                      {recipe.region === 'bac' ? 'Miền Bắc' : recipe.region === 'nam' ? 'Miền Nam' : recipe.region === 'trung' ? 'Miền Trung' : 'Toàn Quốc'}
+                {showRecipeImage ? (
+                  <>
+                    <SafeImage 
+                      src={recipe.imageUrl} 
+                      alt={recipe.title} 
+                      fallbackTitle={recipe.title}
+                      category={recipe.category}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {/* High-contrast gradient overlay to ensure text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/35 to-transparent pointer-events-none" />
+                  </>
+                ) : (
+                  <div className="absolute top-3.5 left-4 pointer-events-none">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 text-amber-300 border border-white/15 text-[10px] md:text-[11px] font-black uppercase tracking-wider">
+                      <ChefHat className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                      <span>Món Bếp Nhà</span>
                     </span>
-                    {!recipe.isCustom && recipe.calories && (
-                      <span className="px-2 py-0.5 rounded-full bg-slate-950/60 backdrop-blur-md text-amber-300 text-[10px] font-bold border border-white/10 flex items-center gap-0.5 shadow-xs shrink-0">
-                        <Flame className="w-3 h-3 text-amber-400" />
-                        {recipe.calories} kcal
-                      </span>
-                    )}
                   </div>
+                )}
 
+                {/* Top Bar: Action Buttons (Right) */}
+                <div className="absolute top-3 left-3 right-3 z-10 flex items-start justify-end gap-2 pointer-events-none">
                   {/* Top Right: Actions (Edit & Delete for custom + Quick-Add) */}
                   <div className="flex items-center gap-1.5 shrink-0 pointer-events-auto">
                     {recipe.isCustom && (
@@ -1752,11 +1969,11 @@ export const RecipeCatalog: React.FC = () => {
                             e.stopPropagation();
                             shareCustomRecipe(recipe, showToast);
                           }}
-                          className="w-9 h-9 rounded-2xl bg-slate-950/60 hover:bg-[#1D4ED8] active:scale-90 backdrop-blur-md text-white/90 hover:text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation"
+                          className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-slate-950/65 hover:bg-[#1D4ED8] active:scale-90 backdrop-blur-md text-white/90 hover:text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation"
                           title="Chia Sẻ Món Bếp Nhà"
                           aria-label={`Chia Sẻ Món: ${recipe.title}`}
                         >
-                          <Share2 className="w-4 h-4" />
+                          <Share2 className="w-4 h-4 md:w-4.5 md:h-4.5" />
                         </button>
                         <button
                           type="button"
@@ -1764,11 +1981,11 @@ export const RecipeCatalog: React.FC = () => {
                             e.stopPropagation();
                             handleEditCustomRecipe(recipe);
                           }}
-                          className="w-9 h-9 rounded-2xl bg-slate-950/60 hover:bg-amber-500 active:scale-90 backdrop-blur-md text-white/90 hover:text-slate-950 border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation"
+                          className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-slate-950/65 hover:bg-amber-500 active:scale-90 backdrop-blur-md text-white/90 hover:text-slate-950 border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation"
                           title="Chỉnh Sửa Món"
                           aria-label={`Chỉnh Sửa Món: ${recipe.title}`}
                         >
-                          <Pencil className="w-4 h-4" />
+                          <Pencil className="w-4 h-4 md:w-4.5 md:h-4.5" />
                         </button>
                         <button
                           type="button"
@@ -1785,11 +2002,11 @@ export const RecipeCatalog: React.FC = () => {
                               }
                             });
                           }}
-                          className="w-9 h-9 rounded-2xl bg-slate-950/60 hover:bg-rose-600 active:scale-90 backdrop-blur-md text-white/90 hover:text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation"
+                          className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-slate-950/65 hover:bg-rose-600 active:scale-90 backdrop-blur-md text-white/90 hover:text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation"
                           title="Xóa Món Khỏi Sổ Bếp"
                           aria-label={`Xóa Món: ${recipe.title}`}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4 md:w-4.5 md:h-4.5" />
                         </button>
                       </>
                     )}
@@ -1799,24 +2016,24 @@ export const RecipeCatalog: React.FC = () => {
                         e.stopPropagation();
                         setAssigningRecipe(recipe);
                       }}
-                      className="w-9 h-9 rounded-2xl bg-slate-950/60 hover:bg-[#1D4ED8] active:scale-90 backdrop-blur-md text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation group/btn"
+                      className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-slate-950/65 hover:bg-[#1D4ED8] active:scale-90 backdrop-blur-md text-white border border-white/20 flex items-center justify-center transition-all shadow-md cursor-pointer touch-manipulation group/btn"
                       title="Chọn Món Này"
                       aria-label={`Chọn Món Này: ${recipe.title}`}
                     >
-                      <PlusCircle className="w-5 h-5 text-white/90 group-hover/btn:text-white group-hover/btn:scale-110 transition-transform" />
+                      <PlusCircle className="w-5 h-5 md:w-5.5 md:h-5.5 text-white/90 group-hover/btn:text-white group-hover/btn:scale-110 transition-transform" />
                     </button>
                   </div>
                 </div>
 
-                {/* Bottom Content: Title and Price / Time / Calories or Tag */}
-                <div className="absolute bottom-3 left-3.5 right-3.5 text-white z-10 pointer-events-none">
-                  <h4 className="text-base sm:text-lg font-extrabold leading-tight tracking-tight text-white drop-shadow-xs truncate">
+                {/* Bottom Content: Title and Price / Time / Calories */}
+                <div className="absolute bottom-3.5 left-4 right-4 text-white z-10 pointer-events-none">
+                  <h4 className="text-base sm:text-lg md:text-xl font-extrabold leading-snug tracking-tight text-white drop-shadow-xs line-clamp-2">
                     {recipe.title}
                   </h4>
                   {(recipe.authorNote || recipe.authorVoiceUrl) && (
-                    <div className="flex items-center gap-2 mt-0.5">
+                    <div className="flex items-center gap-2 mt-1">
                       {recipe.authorNote && (
-                        <p className="text-[11px] text-amber-300 font-semibold drop-shadow-xs truncate">
+                        <p className="text-[11px] md:text-xs text-amber-300 font-semibold drop-shadow-xs truncate">
                           ❤️ {recipe.authorNote}
                         </p>
                       )}
@@ -1827,7 +2044,7 @@ export const RecipeCatalog: React.FC = () => {
                             e.stopPropagation();
                             playVoiceNote(recipe.authorVoiceUrl!, recipe.authorNote || recipe.title, recipe.id);
                           }}
-                          className={`pointer-events-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black transition-all shrink-0 cursor-pointer shadow-xs ${
+                          className={`pointer-events-auto inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] md:text-[11px] font-black transition-all shrink-0 cursor-pointer shadow-xs ${
                             playingCardVoiceId === recipe.id
                               ? 'bg-rose-600 text-white animate-pulse'
                               : 'bg-amber-400/95 hover:bg-amber-300 text-slate-950'
@@ -1849,31 +2066,27 @@ export const RecipeCatalog: React.FC = () => {
                       )}
                     </div>
                   )}
-                  <div className="flex items-center gap-2 text-xs text-slate-200 mt-0.5 font-semibold">
-                    <span className="text-white font-black">{recipe.estimatedCostVnd.toLocaleString('vi-VN')} đ</span>
+                  <div className="flex items-center flex-wrap gap-x-2 gap-y-0.5 text-xs md:text-sm text-slate-200 mt-1 font-semibold">
+                    <span className="text-white font-black whitespace-nowrap">{recipe.estimatedCostVnd.toLocaleString('vi-VN')} đ</span>
                     <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-slate-300" />
-                      {recipe.cookTimeMinutes} phút
+                    <span className="flex items-center gap-1 whitespace-nowrap">
+                      <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-300 shrink-0" />
+                      <span>{recipe.cookTimeMinutes} phút</span>
                     </span>
-                    {recipe.isCustom && recipe.calories ? (
+                    {recipe.calories ? (
                       <>
                         <span>•</span>
-                        <span className="flex items-center gap-1 text-amber-300 font-bold">
-                          <Flame className="w-3.5 h-3.5 text-amber-400" />
-                          {recipe.calories} kcal
+                        <span className="flex items-center gap-1 text-amber-300 font-bold whitespace-nowrap">
+                          <Flame className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-400 shrink-0" />
+                          <span>{recipe.calories} kcal</span>
                         </span>
-                      </>
-                    ) : recipe.tags && recipe.tags.length > 0 ? (
-                      <>
-                        <span>•</span>
-                        <span className="text-slate-300 truncate max-w-[120px]">#{recipe.tags[0]}</span>
                       </>
                     ) : null}
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Load More Button */}
@@ -1904,7 +2117,7 @@ export const RecipeCatalog: React.FC = () => {
               transform: assignDragY > 0 ? `translateY(${assignDragY}px)` : undefined,
               transition: assignDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
             }}
-            className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-4 sm:p-5 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4 animate-slide-up border-t border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-lg sm:max-w-xl md:max-w-2xl bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-4 sm:p-5 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] space-y-4 animate-slide-up border-t border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
           >
             {/* Swipe handle bar */}
             <div 

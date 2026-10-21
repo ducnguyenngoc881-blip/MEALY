@@ -18,6 +18,7 @@ export interface CookingInstruction {
   tip?: string;
   durationMinutes?: number;
   heatLevel?: 'lửa lớn' | 'lửa vừa' | 'lửa nhỏ' | 'riu riu' | 'không dùng nhiệt';
+  imageUrl?: string;
 }
 
 export interface Recipe {

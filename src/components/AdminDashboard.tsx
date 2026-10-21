@@ -33,9 +33,12 @@ import {
   MonitorPlay,
   UtensilsCrossed,
   LayoutDashboard,
-  Globe
+  Globe,
+  Camera,
+  Lock
 } from 'lucide-react';
 import { MealyLogoMark } from './icons/MealWiseLogo';
+import { AdminRecipeImageManager, checkIsDesktopForAdminEditor } from './AdminRecipeImageManager';
 import { 
   TelemetryEvent, 
   ActiveSession, 
@@ -82,11 +85,13 @@ export const AdminDashboard: React.FC = () => {
     collabCheckedMap,
     collabParticipants,
     toggleCollabChecked,
-    recipes
+    recipes,
+    openDownloadAppModal
   } = useMealWise();
 
   // Active view tab inside Admin Telemetry
-  const [adminTab, setAdminTab] = useState<'overview' | 'collab' | 'ads_screentime' | 'accounts' | 'events'>('overview');
+  const [adminTab, setAdminTab] = useState<'overview' | 'collab' | 'ads_screentime' | 'accounts' | 'events' | 'recipe_images'>('overview');
+  const [isDesktopDevice, setIsDesktopDevice] = useState<boolean>(() => checkIsDesktopForAdminEditor());
 
   // Ad & Screen Time Timeframe Filter: 'day' | 'month' | 'year' | 'lifetime'
   const [adTimeframe, setAdTimeframe] = useState<AdTimeframe>('day');
@@ -113,6 +118,29 @@ export const AdminDashboard: React.FC = () => {
   const [events, setEvents] = useState<TelemetryEvent[]>([]);
   const [hoveredPoint, setHoveredPoint] = useState<{ hour: string; count: number; note: string } | null>(null);
   const [simulationStatus, setSimulationStatus] = useState<string | null>(null);
+
+  const handleOpenRecipeManager = useCallback(() => {
+    const desktopNow = checkIsDesktopForAdminEditor();
+    setIsDesktopDevice(desktopNow);
+    if (!desktopNow) {
+      setSimulationStatus('🔒 Quản Lý Món & Công Thức chỉ cho phép truy cập trên máy tính để bàn, không hỗ trợ trên thiết bị di động.');
+      setTimeout(() => setSimulationStatus(null), 4500);
+      return;
+    }
+    setAdminTab('recipe_images');
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const desktopNow = checkIsDesktopForAdminEditor();
+      setIsDesktopDevice(desktopNow);
+      if (!desktopNow) {
+        setAdminTab((prev) => (prev === 'recipe_images' ? 'overview' : prev));
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Refresh all real telemetry data
   const refreshTelemetry = useCallback(() => {
@@ -473,6 +501,28 @@ export const AdminDashboard: React.FC = () => {
               </span>
             </button>
 
+            {isDesktopDevice && (
+              <button
+                type="button"
+                onClick={handleOpenRecipeManager}
+                className={`hidden lg:flex w-full items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                  adminTab === 'recipe_images'
+                    ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-black'
+                    : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Camera className="w-4 h-4 shrink-0" />
+                  <span>Quản Lý Món & Công Thức</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                  adminTab === 'recipe_images' ? 'bg-stone-950/20 text-stone-950' : 'bg-stone-800 text-amber-400'
+                }`}>
+                  Sửa Món
+                </span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => setAdminTab('events')}
@@ -566,7 +616,7 @@ export const AdminDashboard: React.FC = () => {
           {/* Gateway back to Mobile Phone Simulation */}
           <button
             type="button"
-            onClick={() => setActiveTab('meal-sets')}
+            onClick={() => setActiveTab('weekly')}
             className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/15 transition-all cursor-pointer"
           >
             <Smartphone className="w-4 h-4" />
@@ -587,11 +637,37 @@ export const AdminDashboard: React.FC = () => {
               {adminTab === 'collab' && 'Phòng Đi Chợ Chung'}
               {adminTab === 'ads_screentime' && 'Quảng Cáo & Thời Lượng'}
               {adminTab === 'accounts' && 'Quản Lý Tài Khoản'}
+              {adminTab === 'recipe_images' && 'Quản Lý Món & Công Thức'}
               {adminTab === 'events' && 'Nhật Ký Realtime'}
             </span>
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Store Kit Preview Button in Top Bar */}
+            <button
+              type="button"
+              onClick={() => openDownloadAppModal()}
+              className="px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border-blue-500/40 transition-colors cursor-pointer"
+              title="Xem trước trang App Store & CH Play và tải bộ ảnh cửa hàng"
+            >
+              <Store className="w-3.5 h-3.5 text-blue-400" />
+              <span className="hidden sm:inline">Bộ Ảnh Cửa Hàng</span>
+            </button>
+            {/* Quick Dish & Recipe Editor Button in Top Bar (Strictly Desktop Only) */}
+            {isDesktopDevice && (
+              <button
+                type="button"
+                onClick={handleOpenRecipeManager}
+                className={`hidden lg:flex px-3 py-1.5 rounded-xl text-xs font-bold items-center gap-1.5 border transition-colors cursor-pointer ${
+                  adminTab === 'recipe_images'
+                    ? 'bg-amber-500 text-stone-950 border-amber-400 font-black'
+                    : 'bg-stone-800 hover:bg-stone-700 text-amber-300 border-stone-700'
+                }`}
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>Sửa Món & Công Thức</span>
+              </button>
+            )}
             {/* Live Indicator Pill */}
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[11px] text-emerald-400 font-bold">
               <span className="relative flex h-2 w-2">
@@ -613,7 +689,7 @@ export const AdminDashboard: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => setActiveTab('meal-sets')}
+              onClick={() => setActiveTab('weekly')}
               className="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-bold"
             >
               <Smartphone className="w-3.5 h-3.5 text-amber-400" />
@@ -1895,6 +1971,18 @@ export const AdminDashboard: React.FC = () => {
             )}
           </div>
         </div>
+      )}
+
+      {/* TAB 5: ADMIN RECIPE IMAGE MANAGER */}
+      {adminTab === 'recipe_images' && (
+        <AdminRecipeImageManager
+          recipes={recipes}
+          onStatusMessage={(msg) => {
+            setSimulationStatus(msg);
+            refreshTelemetry();
+            setTimeout(() => setSimulationStatus(null), 4000);
+          }}
+        />
       )}
 
         </main>

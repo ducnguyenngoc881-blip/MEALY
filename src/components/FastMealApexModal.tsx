@@ -487,7 +487,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
       
       {/* Modal Container */}
       <div 
-        className={`relative w-full max-w-lg bg-slate-900 text-white rounded-3xl border ${modalScreen === 'opener' ? currentTierConfig.borderClass : 'border-white/15'} shadow-2xl overflow-hidden transition-colors duration-300`}
+        className={`relative w-full max-w-lg sm:max-w-xl md:max-w-2xl bg-slate-900 text-white rounded-3xl border ${modalScreen === 'opener' ? currentTierConfig.borderClass : 'border-white/15'} shadow-2xl overflow-hidden transition-colors duration-300`}
         style={{
           boxShadow: `0 0 55px ${modalOuterGlow}`
         }}

@@ -636,6 +636,7 @@ export const mockMealSets: VietnameseMealSet[] = RAW_MEAL_SETS.map(set => {
   const totalCal = (set.mainDish?.calories || 0) + (set.soupDish?.calories || 0) + (set.sideDish?.calories || 0);
   return {
     ...set,
+    imageUrl: set.mainDish?.imageUrl || set.imageUrl,
     totalCostVnd: totalCost,
     totalCalories: totalCal
   };
@@ -1482,6 +1483,7 @@ export const newMealSets: VietnameseMealSet[] = RAW_NEW_MEAL_SETS.map(set => {
   const totalCal = (set.mainDish?.calories || 0) + (set.soupDish?.calories || 0) + (set.sideDish?.calories || 0);
   return {
     ...set,
+    imageUrl: set.mainDish?.imageUrl || set.imageUrl,
     totalCostVnd: totalCost,
     totalCalories: totalCal
   };

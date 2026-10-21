@@ -33,8 +33,9 @@ import {
   loadUserPartition,
   saveUserPartition,
   updateGuestSession,
-  deleteUserAccountFromDatabase,
-  verifyUserPassword
+  getMemberCodeForEmail,
+  syncAccountPartitionWithServer,
+  fetchAccountFromServer
 } from '../services/userDatabase';
 import {
   checkLoginRateLimit,
@@ -80,6 +81,15 @@ import {
 } from '../utils/telemetryEngine';
 import { initScreenTimeTracker } from '../utils/screenTimeService';
 import { canonicalizeIngredientName, isGroceryItemMatch } from '../utils/ingredientNormalizer';
+import {
+  AdminRecipeImageOverride,
+  getAdminRecipeImageOverrides,
+  syncAdminRecipeImageOverridesFromServer,
+  applyAdminOverrideToRecipe,
+  applyAdminOverridesToRecipeList,
+  applyAdminOverridesToMealSet,
+  applyAdminOverridesToDailyPlan
+} from '../utils/dishImageResolver';
 
 export interface ExtraGroceryItem {
   name: string;
@@ -396,7 +406,27 @@ const loadCustomRecipesFromStorage = (email?: string | null): Recipe[] => {
 
 export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [customRecipes, setCustomRecipes] = useState<Recipe[]>(() => loadCustomRecipesFromStorage());
-  const recipes = useMemo(() => [...customRecipes, ...mockRecipes], [customRecipes]);
+  const [adminDishOverrides, setAdminDishOverrides] = useState<Record<string, AdminRecipeImageOverride>>(() =>
+    getAdminRecipeImageOverrides()
+  );
+
+  useEffect(() => {
+    syncAdminRecipeImageOverridesFromServer().then((synced) => {
+      setAdminDishOverrides({ ...synced });
+    });
+    const handleAdminDishUpdate = () => {
+      setAdminDishOverrides({ ...getAdminRecipeImageOverrides() });
+    };
+    window.addEventListener('mealwise:recipe_images_updated', handleAdminDishUpdate);
+    return () => {
+      window.removeEventListener('mealwise:recipe_images_updated', handleAdminDishUpdate);
+    };
+  }, []);
+
+  const recipes = useMemo(
+    () => applyAdminOverridesToRecipeList([...customRecipes, ...mockRecipes], adminDishOverrides),
+    [customRecipes, adminDishOverrides]
+  );
 
   const addCustomRecipe = useCallback((newRecipe: Recipe) => {
     const activeEmail = getStoredUserEmail();
@@ -539,7 +569,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [user, setUser] = useState<RegisteredUser | null>(() => {
     try {
       const saved = localStorage.getItem('mealwise_registered_user');
-      return saved ? JSON.parse(saved) : null;
+      if (!saved) return null;
+      const parsed = JSON.parse(saved);
+      const emailLower = (parsed?.email || '').trim().toLowerCase();
+      if (emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'mealwise@admin.com' || emailLower === 'admin') {
+        parsed.role = 'admin';
+      }
+      return parsed;
     } catch {
       return null;
     }
@@ -626,7 +662,31 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       localStorage.setItem('mealwise_welcome_onboarding_seen_v1', 'true');
     } catch {}
     setShowWelcomeModal(false);
-  }, []);
+
+    // Chain directly to Onboarding Preference (Step 2 of flow: App Onboarding -> Onboarding Preference -> Tutorial -> Explore App)
+    try {
+      let emailLower = user?.email?.toLowerCase().trim();
+      if (!emailLower) {
+        const savedUserStr = localStorage.getItem('mealwise_registered_user');
+        if (savedUserStr) {
+          const parsed = JSON.parse(savedUserStr);
+          emailLower = parsed.email?.toLowerCase().trim();
+        }
+      }
+      const userOnboardingKey = emailLower ? `mealwise_onboarding_completed_${emailLower}` : null;
+      const isUserOnboarded = userOnboardingKey
+        ? localStorage.getItem(userOnboardingKey) === 'true'
+        : localStorage.getItem('mealwise_onboarding_completed_guest') === 'true';
+
+      if (!onboardingData?.completed && !user?.onboardingCompleted && !isUserOnboarded) {
+        setShowOnboarding(true);
+      }
+    } catch {
+      if (!onboardingData?.completed) {
+        setShowOnboarding(true);
+      }
+    }
+  }, [user, onboardingData]);
 
 
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -1206,12 +1266,26 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }));
   };
 
+  // Helper to build a blank weekly plan for first-time app downloads
+  const buildEmptyWeeklyPlan = (): DailyMealPlan[] => {
+    return INITIAL_DAYS.map(d => ({
+      dayId: d.dayId,
+      dayName: d.dayName,
+      meals: {
+        breakfast: null,
+        lunch: null,
+        dinner: null
+      },
+      totalCost: 0
+    }));
+  };
+
   const hasAnyMealsInPlan = (plan: DailyMealPlan[] | null | undefined): boolean => {
     if (!Array.isArray(plan)) return false;
     return plan.some(d => Boolean(d?.meals?.breakfast || d?.meals?.lunch || d?.meals?.dinner));
   };
 
-  // Current Week Plan ('Tuần Này')
+  // Current Week Plan ('Tuần Này') — starts blank until user clicks "Gợi ý"
   const [currentWeekPlan, setCurrentWeekPlan] = useState<DailyMealPlan[]>(() => {
     try {
       const saved = localStorage.getItem('mealwise_weekly_plan');
@@ -1224,10 +1298,10 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch (e) {
       console.error('Failed to load mealwise_weekly_plan from localStorage', e);
     }
-    return buildDefaultWeeklyPlan();
+    return buildEmptyWeeklyPlan();
   });
 
-  // Next Week Plan ('Tuần Sau') — allows weekend grocery shopping & planning without overwriting This Weekend
+  // Next Week Plan ('Tuần Sau') — starts blank until user clicks "Gợi ý"
   const [nextWeekPlan, setNextWeekPlan] = useState<DailyMealPlan[]>(() => {
     try {
       const saved = localStorage.getItem('mealwise_next_weekly_plan');
@@ -1240,7 +1314,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch (e) {
       console.error('Failed to load mealwise_next_weekly_plan from localStorage', e);
     }
-    return buildDefaultWeeklyPlan(77777);
+    return buildEmptyWeeklyPlan();
   });
 
   // Active Plan Scope ('current' = Tuần Này, 'next' = Tuần Sau)
@@ -1331,7 +1405,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
     const promoted = JSON.parse(JSON.stringify(nextWeekPlan)) as DailyMealPlan[];
     setCurrentWeekPlan(promoted);
-    const freshNext = buildDefaultWeeklyPlan(Date.now() + 99999);
+    const freshNext = buildEmptyWeeklyPlan();
     setNextWeekPlan(freshNext);
     setActivePlanScope('current');
     try {
@@ -1416,10 +1490,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const loginUser = useCallback((profile: { name: string; email: string; password?: string; otpVerified?: boolean }, isNewRegistration?: boolean): boolean => {
     const rawEmail = sanitizeUserInput(profile.email, 120);
     const emailLower = rawEmail.toLowerCase();
-    const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
-    const cleanProfileName = sanitizeUserInput(profile.name, 80);
-    const defaultDisplayName = isAdmin ? 'Mealy Administrator' : (cleanProfileName || rawEmail.split('@')[0] || 'Thành Viên Mealy');
-    const displayName = cleanProfileName || defaultDisplayName;
+    const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'mealwise@admin.com' || emailLower === 'admin';
+    const defaultDisplayName = isAdmin ? 'Mealy Administrator' : (profile.name.trim() || rawEmail.split('@')[0] || 'Thành Viên Mealy');
+    const displayName = profile.name.trim() || defaultDisplayName;
 
     const isNew = Boolean(isNewRegistration);
     const userOnboardingKey = `mealwise_onboarding_completed_${emailLower}`;
@@ -1508,6 +1581,29 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           setServings(userPartition.onboardingData.familySize);
         }
       }
+
+      // Also pull latest account & partition from hosted server database for cross-device continuity
+      void fetchAccountFromServer(rawEmail).then(remote => {
+        if (remote.ok && remote.user) {
+          setUser(prev => prev ? { ...prev, name: remote.user!.name || prev.name, registeredAt: remote.user!.registeredAt || prev.registeredAt } : prev);
+          if (remote.partition?.weeklyPlan && Array.isArray(remote.partition.weeklyPlan) && remote.partition.weeklyPlan.length > 0) {
+            setWeeklyPlan(remote.partition.weeklyPlan);
+          }
+          if (remote.partition?.pantryItems && Array.isArray(remote.partition.pantryItems) && remote.partition.pantryItems.length > 0) {
+            setPantryItems(remote.partition.pantryItems);
+          }
+          if (remote.partition?.onboardingData) {
+            setOnboardingData(remote.partition.onboardingData);
+          }
+        }
+      });
+    } else if (isNew) {
+      void syncAccountPartitionWithServer(newProfile, {
+        weeklyPlan: weeklyPlan as any,
+        pantryItems,
+        onboardingData,
+        updatedAt: Date.now()
+      });
     }
 
     if (isAdmin) {
@@ -1541,8 +1637,21 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } else {
       showToast(isNew ? `🎉 Chào mừng ${displayName} gia nhập Mealy!` : `👋 Xin chào mừng trở lại, ${displayName}!`);
     }
-    return true;
-  }, [weeklyPlan, pantryItems, showToast]);
+  }, [weeklyPlan, pantryItems, onboardingData, showToast]);
+
+  // Background Auto-Sync to Hosted Server Database whenever logged-in user modifies meal plan, fridge, or onboarding
+  useEffect(() => {
+    if (!user?.email || !user?.isRegistered) return;
+    const timer = setTimeout(() => {
+      void syncAccountPartitionWithServer(user, {
+        weeklyPlan: currentWeekPlan as any,
+        pantryItems,
+        onboardingData,
+        updatedAt: Date.now()
+      });
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [user, currentWeekPlan, pantryItems, onboardingData]);
 
   const logoutUser = useCallback(() => {
     const actorName = user?.name || 'Người dùng';
@@ -1634,25 +1743,18 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [servings]);
 
   // Effective onboarding data:
-  // If user is an unregistered guest (!isRegistered), they do not have access to the onboarding screen,
-  // so their active settings are strictly the default settings of the app (INITIAL_ONBOARDING).
+  // Unlocked for both Guests and Registered users so guest preferences from OnboardingModal work seamlessly.
   const effectiveOnboardingData = useMemo<OnboardingData>(() => {
-    if (!isRegistered) {
-      return {
-        ...INITIAL_ONBOARDING,
-        familySize: Number.isFinite(servings) && servings > 0 ? Math.min(20, Math.max(1, Math.round(servings))) : 4
-      };
-    }
-    return onboardingData;
-  }, [isRegistered, onboardingData, servings]);
+    return {
+      ...INITIAL_ONBOARDING,
+      ...onboardingData,
+      familySize: Number.isFinite(servings) && servings > 0 ? Math.min(20, Math.max(1, Math.round(servings))) : (onboardingData?.familySize || 4)
+    };
+  }, [onboardingData, servings]);
 
   const setShowOnboardingSafe = useCallback((show: boolean) => {
-    if (show && !isRegistered) {
-      openAuthModal('register');
-      return;
-    }
     setShowOnboarding(show);
-  }, [isRegistered, openAuthModal]);
+  }, []);
 
   // Persistent grocery checked state
   const [groceryCheckedItems, setGroceryCheckedItems] = useState<Record<string, boolean>>(() => {
@@ -2268,7 +2370,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const isAlreadyOnboarded = Boolean(
       onboardingData?.completed ||
       user?.onboardingCompleted ||
-      (userOnboardingKey && localStorage.getItem(userOnboardingKey) === 'true')
+      (userOnboardingKey
+        ? localStorage.getItem(userOnboardingKey) === 'true'
+        : localStorage.getItem('mealwise_onboarding_completed_guest') === 'true')
     );
     const isFirstTimeOnboarding = !isAlreadyOnboarded;
 
@@ -2279,11 +2383,12 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
     try {
       localStorage.setItem('mealwise_onboarding', JSON.stringify(updated));
+      localStorage.setItem('mealwise_onboarding_completed_guest', 'true');
     } catch (e) {
       console.error('Failed to save onboardingData to localStorage', e);
     }
 
-    // Persist per-user onboarding completed flag
+    // Persist per-user or guest onboarding completed flag
     if (user?.email) {
       try {
         localStorage.setItem(`mealwise_onboarding_completed_${emailLower}`, 'true');
@@ -2308,17 +2413,24 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           { onboardingCompleted: true }
         );
       }
+    } else {
+      saveGuestPartition({
+        onboardingData: updated,
+        updatedAt: Date.now()
+      });
     }
 
     setShowOnboarding(false);
 
     const isSkipRoutine = updated.weekdayLunchRoutine === 'ban-tru-di-lam' || updated.weekdayLunchRoutine === 'hop-com-van-phong';
     const noteText = updated.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Mang cơm hộp văn phòng' : 'Con học bán trú • Bố mẹ ăn ngoài';
+    const hasCurrentMeals = hasAnyMealsInPlan(weeklyPlan);
 
-    // If regeneratePlan is not explicitly false, auto fill weekly menu with tailoring
-    if (options?.regeneratePlan !== false) {
+    // Keep weekly plan blank on first download until user clicks "Gợi ý";
+    // only auto-regenerate if the user already had meals and explicitly opted to regenerate
+    if (hasCurrentMeals && options?.regeneratePlan !== false) {
       autoFillWeeklyMenu(updated, { seed: Date.now() });
-    } else if (isSkipRoutine) {
+    } else if (hasCurrentMeals && isSkipRoutine) {
       // User kept their existing plan, but chose a lunch-skip routine:
       // Update weekday lunches to reflect the chosen routine immediately
       setWeeklyPlan(prev => {
@@ -2363,12 +2475,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const resetOnboarding = () => {
-    if (!isRegistered) {
-      openAuthModal('register');
-      return;
-    }
-    // Re-open onboarding for existing user to review/adjust preferences.
-    // Keep onboardingData and tutorial completion flags intact.
+    // Re-open onboarding for both Guest and Registered users to review/adjust preferences.
     setShowOnboarding(true);
     showToast('🔄 Đang mở lại khảo sát khẩu vị & mục tiêu!');
   };
@@ -2401,15 +2508,30 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     if (candidateRecipes.length === 0) {
       if (isVegetarian) {
-        candidateRecipes = recipes.filter(r => 
-          (r.category === 'mon-chay' || (r.tags && r.tags.some(t => /chay/i.test(t))) || r.category === targetCategory) &&
-          r.id !== mealSet[dishType]?.id &&
-          r.id !== mealSet.mainDish?.id &&
-          r.id !== mealSet.soupDish?.id &&
-          r.id !== mealSet.sideDish?.id
-        );
+        const isVegRecipe = (r: Recipe) =>
+          (r.category === 'mon-chay' || (r.tags && r.tags.some(t => /chay|thanh tịnh/i.test(t))) || r.category === 'mon-rau') &&
+          !(r.ingredients && r.ingredients.some(i => i.category === 'thit-ca'));
+
+        candidateRecipes = recipes.filter(r => {
+          if (!isVegRecipe(r)) return false;
+          if (
+            r.id === mealSet[dishType]?.id ||
+            r.id === mealSet.mainDish?.id ||
+            r.id === mealSet.soupDish?.id ||
+            r.id === mealSet.sideDish?.id
+          ) {
+            return false;
+          }
+          if (dishType === 'soupDish') {
+            return /canh|súp|soup|riêu/i.test(r.title) || r.category === 'mon-canh';
+          }
+          if (dishType === 'sideDish') {
+            return r.category === 'mon-rau' || /rau|luộc|xào|nộm|gỏi|củ/i.test(r.title);
+          }
+          return !/canh|súp|soup/i.test(r.title);
+        });
         if (candidateRecipes.length === 0) {
-          candidateRecipes = recipes.filter(r => r.category === 'mon-chay' && r.id !== mealSet[dishType]?.id);
+          candidateRecipes = recipes.filter(r => isVegRecipe(r) && r.id !== mealSet[dishType]?.id);
         }
       } else {
         candidateRecipes = recipes.filter(r => 
@@ -2473,9 +2595,12 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const updatedMealSet: VietnameseMealSet = {
       ...mealSet,
       [dishType]: chosenRecipe,
+      imageUrl: dishType === 'mainDish' && chosenRecipe?.imageUrl ? chosenRecipe.imageUrl : mealSet.imageUrl,
       totalCostVnd: newTotalCost,
       totalCalories: newTotalCalories,
     };
+
+    setMealSets(prev => prev.map(ms => (ms.id === updatedMealSet.id ? updatedMealSet : ms)));
 
     return updatedMealSet;
   }, [recipes]);
@@ -3266,19 +3391,44 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
+  const resolvedMealSets = useMemo(
+    () => mealSets.map(ms => applyAdminOverridesToMealSet(ms, adminDishOverrides)),
+    [mealSets, adminDishOverrides]
+  );
+  const resolvedCurrentWeekPlan = useMemo(
+    () => applyAdminOverridesToDailyPlan(currentWeekPlan, adminDishOverrides),
+    [currentWeekPlan, adminDishOverrides]
+  );
+  const resolvedNextWeekPlan = useMemo(
+    () => applyAdminOverridesToDailyPlan(nextWeekPlan, adminDishOverrides),
+    [nextWeekPlan, adminDishOverrides]
+  );
+  const resolvedWeeklyPlan = useMemo(
+    () => applyAdminOverridesToDailyPlan(weeklyPlan, adminDishOverrides),
+    [weeklyPlan, adminDishOverrides]
+  );
+  const resolvedSelectedRecipe = useMemo(
+    () => (selectedRecipe ? applyAdminOverrideToRecipe(selectedRecipe, adminDishOverrides) : null),
+    [selectedRecipe, adminDishOverrides]
+  );
+  const resolvedSelectedMealSet = useMemo(
+    () => (selectedMealSet ? applyAdminOverridesToMealSet(selectedMealSet, adminDishOverrides) : null),
+    [selectedMealSet, adminDishOverrides]
+  );
+
   const contextValue: MealWiseContextType = {
         guestSession,
         recipes,
         customRecipes,
         addCustomRecipe,
         deleteCustomRecipe,
-        mealSets,
-        weeklyPlan,
+        mealSets: resolvedMealSets,
+        weeklyPlan: resolvedWeeklyPlan,
         setWeeklyPlan,
         activePlanScope,
         setActivePlanScope,
-        currentWeekPlan,
-        nextWeekPlan,
+        currentWeekPlan: resolvedCurrentWeekPlan,
+        nextWeekPlan: resolvedNextWeekPlan,
         promoteNextWeekToCurrent,
         previousWeeklyPlan,
         previousPlanSavedAt,
@@ -3292,7 +3442,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         toggleTheme,
         onboardingData: effectiveOnboardingData,
         setOnboardingData,
-        showOnboarding: isRegistered ? showOnboarding : false,
+        showOnboarding,
         setShowOnboarding: setShowOnboardingSafe,
         completeOnboarding,
         resetOnboarding,
@@ -3303,9 +3453,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         isTutorialOpen,
         setIsTutorialOpen,
         startTutorial,
-        selectedRecipe,
+        selectedRecipe: resolvedSelectedRecipe,
         setSelectedRecipe,
-        selectedMealSet,
+        selectedMealSet: resolvedSelectedMealSet,
         setSelectedMealSet,
         addMealSetToSlot,
         assignMealSetToSlot,

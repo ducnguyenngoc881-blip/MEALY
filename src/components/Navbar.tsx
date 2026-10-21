@@ -63,7 +63,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 dark:bg-[#12161F]/90 backdrop-blur-xl border-b border-[#E2E8F0]/70 dark:border-[#2D3748]/70 shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
-      <div className="h-14 px-2 min-[360px]:px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-2 max-w-lg mx-auto">
+      <div className="h-14 md:h-16 px-3 sm:px-5 md:px-6 flex items-center justify-between gap-2 w-full mx-auto">
         
         {/* Left: Brand Logo & Wordmark (Mealy / MealWise • Mâm Cơm Việt) */}
         <button
@@ -73,14 +73,14 @@ export const Navbar: React.FC = () => {
               openDownloadAppModal('Mâm Cơm 3 Món Chuẩn Vị');
               return;
             }
-            setActiveTab('meal-sets');
+            setActiveTab('weekly');
           }} 
           className="flex items-center gap-2 cursor-pointer group shrink-0 text-left focus:outline-none"
-          title="Mealy • MealWise • Mâm Cơm Việt — Về trang Hôm Nay"
-          aria-label="Mealy - Về trang Hôm Nay"
+          title="Mealy • MealWise • Mâm Cơm Việt — Về Thực Đơn Tuần"
+          aria-label="Mealy - Về Thực Đơn Tuần"
         >
-          <div className="w-8 h-8 rounded-xl bg-[#0F172A] border border-slate-800 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs overflow-hidden">
-            <MealWiseLogoMark className="w-7 h-7" />
+          <div className="w-8 h-8 rounded-xl bg-[#171F2C] border border-slate-800 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 shadow-xs overflow-hidden">
+            <MealWiseLogoMark className="w-full h-full" />
           </div>
           <span className="text-[15px] font-black text-stone-900 dark:text-white tracking-tight whitespace-nowrap">
             Mealy
@@ -112,23 +112,16 @@ export const Navbar: React.FC = () => {
           )}
           {/* Authentication & Profile Control */}
           {!isRegistered ? (
-            activeTab !== 'account' ? (
-              <button
-                type="button"
-                onClick={() => openAuthModal('register')}
-                className="group relative flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white border border-blue-500/80 shadow-sm hover:shadow active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0"
-                title="Đăng ký hoặc đăng nhập tài khoản MealWise"
-                aria-label="Đăng ký hoặc đăng nhập tài khoản"
-              >
-                <div className="w-6 h-6 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center shadow-2xs shrink-0 group-hover:rotate-12 transition-transform duration-200">
-                  <UserPlus className="w-3 h-3 stroke-[2.5]" />
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="text-xs font-black tracking-tight whitespace-nowrap">Đăng Nhập</span>
-                  <span className="text-[10px] font-bold text-amber-300 dark:text-amber-700 hidden min-[360px]:inline">/ Đăng Ký</span>
-                </div>
-              </button>
-            ) : null
+            <button
+              type="button"
+              onClick={() => openAuthModal('register')}
+              className="group relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs shadow-xs active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0 whitespace-nowrap"
+              title="Đăng ký hoặc đăng nhập tài khoản Mealy"
+              aria-label="Đăng ký hoặc đăng nhập tài khoản"
+            >
+              <UserPlus className="w-3.5 h-3.5 shrink-0" />
+              <span>Đăng Ký / Đăng Nhập</span>
+            </button>
           ) : user?.role === 'admin' ? (
             <button
               type="button"

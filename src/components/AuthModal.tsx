@@ -1,32 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
-import {
-  X,
-  User,
-  Mail,
-  KeyRound,
-  Eye,
-  EyeOff,
-  UserCheck,
-  UserPlus,
-  Sparkles,
-  PartyPopper,
-  ShoppingCart,
+import { 
+  X, 
+  User, 
+  Mail, 
+  KeyRound, 
+  Eye, 
+  EyeOff, 
+  UserCheck, 
+  UserPlus, 
+  Sparkles, 
+  PartyPopper, 
+  ShoppingCart, 
   AlertCircle,
-  ShieldCheck,
-  RotateCcw,
-  Clock
+  ShieldCheck
 } from 'lucide-react';
 import { MealyLogoMark } from './icons/MealWiseLogo';
-import {
-  requestBackendEmailOtp,
-  verifyBackendEmailOtp,
-  resetUserPasswordWithBackendOtp,
-  evaluatePasswordStrength,
-  validateEmailOrPhone
-} from '../services/otpSecurityService';
-
-type AuthSubFlow = 'standard' | 'otp-verify' | 'forgot-password';
+import { getMemberCodeForEmail, saveUserPartition } from '../services/userDatabase';
 
 export const AuthModal: React.FC = () => {
   const {
@@ -45,44 +35,13 @@ export const AuthModal: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [subFlow, setSubFlow] = useState<AuthSubFlow>('standard');
-  const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
-  const [otpError, setOtpError] = useState<string | null>(null);
-  const [maskedTarget, setMaskedTarget] = useState<string>('');
-  const [cooldownSec, setCooldownSec] = useState<number>(0);
-  const [ttlRemainingSec, setTtlRemainingSec] = useState<number>(300);
-  const [requireOtpOnRegister, setRequireOtpOnRegister] = useState<boolean>(true);
-  const [isSendingOtp, setIsSendingOtp] = useState<boolean>(false);
-  const [isVerifyingOtp, setIsVerifyingOtp] = useState<boolean>(false);
-  const otpInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-
-  useEffect(() => {
-    if (cooldownSec <= 0) return;
-    const timer = setInterval(() => {
-      setCooldownSec(prev => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [cooldownSec]);
-
-  useEffect(() => {
-    if (subFlow === 'standard' || ttlRemainingSec <= 0) return;
-    const timer = setInterval(() => {
-      setTtlRemainingSec(prev => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [subFlow, ttlRemainingSec]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isAuthModalOpen) return null;
 
-  const passwordStrength = evaluatePasswordStrength(subFlow === 'forgot-password' ? newPassword : password);
+  const previewMemberCode = email.trim() ? getMemberCodeForEmail(email.trim()) : null;
 
-  const formatCountdown = (sec: number) => {
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-  };
-
-  const resetModalState = () => {
+  const handleClose = () => {
     setEmailError(null);
     setOtpError(null);
     setSubFlow('standard');
@@ -99,149 +58,7 @@ export const AuthModal: React.FC = () => {
     setAuthModalMode(mode);
   };
 
-  const handleSendOtp = async (purpose: 'login' | 'register' | 'reset-password') => {
-    const cleanEmail = email.trim();
-    const validation = validateEmailOrPhone(cleanEmail);
-    if (!validation.valid || (validation.type !== 'email' && validation.type !== 'admin')) {
-      const msg = 'Vui lòng nhập địa chỉ Email hợp lệ để nhận mã xác thực OTP.';
-      setEmailError(msg);
-      showToast(`⚠️ ${msg}`, 'warning');
-      return;
-    }
-
-    setEmailError(null);
-    setOtpError(null);
-    setIsSendingOtp(true);
-
-    try {
-      const res = await requestBackendEmailOtp(cleanEmail, purpose, subFlow === 'standard');
-      if (!res.ok) {
-        setOtpError(res.message);
-        if (res.cooldownRemainingSeconds) {
-          setCooldownSec(res.cooldownRemainingSeconds);
-        }
-        setSubFlow(purpose === 'reset-password' ? 'forgot-password' : 'otp-verify');
-        showToast(`⚠️ ${res.message}`, 'warning');
-        return;
-      }
-
-      setMaskedTarget(res.maskedTarget || cleanEmail);
-      setCooldownSec(res.cooldownRemainingSeconds || 60);
-      setTtlRemainingSec(res.expiresInSeconds || 300);
-      setOtpDigits(['', '', '', '', '', '']);
-      setSubFlow(purpose === 'reset-password' ? 'forgot-password' : 'otp-verify');
-      showToast(`📩 ${res.message}`);
-    } finally {
-      setIsSendingOtp(false);
-    }
-  };
-
-  const handleOtpDigitChange = (index: number, value: string) => {
-    const digitsOnly = value.replace(/\D/g, '');
-    if (!digitsOnly) {
-      const next = [...otpDigits];
-      next[index] = '';
-      setOtpDigits(next);
-      return;
-    }
-
-    // Handle multi-digit paste or autofill into a single input
-    if (digitsOnly.length > 1) {
-      const chars = digitsOnly.slice(0, 6).split('');
-      const next = [...otpDigits];
-      for (let i = 0; i < 6; i++) {
-        next[i] = chars[i] || '';
-      }
-      setOtpDigits(next);
-      setOtpError(null);
-      const focusIdx = Math.min(5, chars.length - 1);
-      otpInputRefs.current[focusIdx]?.focus();
-      return;
-    }
-
-    const next = [...otpDigits];
-    next[index] = digitsOnly[0];
-    setOtpDigits(next);
-    setOtpError(null);
-    if (index < 5) {
-      otpInputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
-      otpInputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handleVerifyOtpAndComplete = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const code = otpDigits.join('');
-    if (code.length < 6) {
-      setOtpError('Vui lòng nhập đủ 6 chữ số của mã xác thực.');
-      return;
-    }
-
-    setIsVerifyingOtp(true);
-    const cleanEmail = email.trim();
-    try {
-      if (subFlow === 'forgot-password') {
-        const resetRes = await resetUserPasswordWithBackendOtp(cleanEmail, code, newPassword);
-        if (!resetRes.success) {
-          setOtpError(resetRes.message);
-          showToast(`⚠️ ${resetRes.message}`, 'error');
-          return;
-        }
-
-        const displayName = name.trim() || cleanEmail.split('@')[0] || 'Thành Viên Mealy';
-        loginUser(
-          {
-            name: displayName,
-            email: cleanEmail,
-            password: newPassword.trim(),
-            otpVerified: true
-          },
-          false
-        );
-        showToast(`🔐 ${resetRes.message}`);
-        resetModalState();
-        setName('');
-        setEmail('');
-        setPassword('');
-        setNewPassword('');
-        return;
-      }
-
-      const verifyRes = await verifyBackendEmailOtp(cleanEmail, code);
-      if (!verifyRes.valid) {
-        setOtpError(verifyRes.message);
-        showToast(`⚠️ ${verifyRes.message}`, 'error');
-        return;
-      }
-
-      const displayName = name.trim() || cleanEmail.split('@')[0] || 'Thành Viên Mealy';
-      const ok = loginUser(
-        {
-          name: displayName,
-          email: cleanEmail,
-          password: password.trim() || undefined,
-          otpVerified: true
-        },
-        authModalMode === 'register'
-      );
-
-      if (ok !== false) {
-        resetModalState();
-        setName('');
-        setEmail('');
-        setPassword('');
-      }
-    } finally {
-      setIsVerifyingOtp(false);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanEmail = email.trim();
     if (!cleanEmail) {
@@ -265,7 +82,50 @@ export const AuthModal: React.FC = () => {
 
     setEmailError(null);
     const displayName = name.trim() || cleanEmail.split('@')[0] || 'Thành Viên Mealy';
-    const ok = loginUser({
+    const isRegister = authModalMode === 'register';
+
+    if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+      setIsSubmitting(true);
+      try {
+        const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: displayName,
+            email: cleanEmail,
+            password: password.trim()
+          })
+        });
+        const data = await res.json().catch(() => null);
+        if (res.status === 401 && data?.error) {
+          setIsSubmitting(false);
+          setEmailError(data.error);
+          showToast(`⚠️ ${data.error}`, 'warning');
+          return;
+        }
+        if (data?.ok && data.user) {
+          if (data.user.id && data.partition) {
+            saveUserPartition(data.user.id, data.partition);
+          }
+          setIsSubmitting(false);
+          loginUser({
+            name: data.user.name || displayName,
+            email: cleanEmail
+          }, isRegister);
+          setName('');
+          setEmail('');
+          setPassword('');
+          setEmailError(null);
+          return;
+        }
+      } catch {
+        // Fallback to local offline-first registration/login if server is unreachable
+      }
+      setIsSubmitting(false);
+    }
+
+    loginUser({
       name: displayName,
       email: email.trim(),
       password: password.trim() || undefined
@@ -284,8 +144,8 @@ export const AuthModal: React.FC = () => {
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={handleClose}
     >
-      <div
-        className="w-full max-w-md bg-white dark:bg-[#1A1918] rounded-3xl p-5 sm:p-6 shadow-2xl border border-[#E8E2D8] dark:border-[#252220] space-y-4 relative max-h-[92dvh] overflow-y-auto"
+      <div 
+        className="w-full max-w-md sm:max-w-lg bg-white dark:bg-[#1A1918] rounded-3xl p-5 sm:p-6 shadow-2xl border border-[#E8E2D8] dark:border-[#252220] space-y-4 relative max-h-[92dvh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -613,44 +473,21 @@ export const AuthModal: React.FC = () => {
                 </button>
               </div>
 
-              {/* Password Strength Meter when typing */}
-              {password.trim().length > 0 && (
-                <div className="mt-2 space-y-1">
-                  <div className="grid grid-cols-4 gap-1">
-                    {[1, 2, 3, 4].map(level => (
-                      <div
-                        key={level}
-                        className={`h-1 rounded-full transition-all ${
-                          passwordStrength.score >= level
-                            ? passwordStrength.colorClass
-                            : 'bg-stone-200 dark:bg-stone-800'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-stone-500 dark:text-stone-400 truncate pr-2">
-                      {passwordStrength.hint}
-                    </span>
-                    <span className="font-bold text-stone-700 dark:text-stone-300 shrink-0">
-                      Độ mạnh: {passwordStrength.label}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Optional Security Toggle: Verify with 6-digit OTP */}
-            <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-stone-50 dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220]">
-              <label className="flex items-center gap-2 text-[11px] font-bold text-stone-700 dark:text-stone-300 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={requireOtpOnRegister}
-                  onChange={e => setRequireOtpOnRegister(e.target.checked)}
-                  className="rounded border-stone-300 text-emerald-600 focus:ring-emerald-500"
-                />
-                <span>Bảo mật 2 lớp bằng mã OTP 6 số</span>
-              </label>
+          <div>
+            <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">
+              Mật khẩu
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                <KeyRound className="w-4 h-4" />
+              </div>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Nhập mật khẩu bảo vệ tài khoản"
+                className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20"
+              />
               <button
                 type="button"
                 onClick={() => handleSendOtp(authModalMode === 'register' ? 'register' : 'login')}
@@ -660,24 +497,26 @@ export const AuthModal: React.FC = () => {
               </button>
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-3 px-4 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
-            >
-              {authModalMode === 'register' ? (
-                <>
-                  <UserPlus className="w-4 h-4" />
-                  <span>Hoàn Tất Đăng Ký & Mở Khóa</span>
-                </>
-              ) : (
-                <>
-                  <UserCheck className="w-4 h-4" />
-                  <span>Đăng Nhập Ngay</span>
-                </>
-              )}
-            </button>
-          </form>
-        )}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full py-3 px-4 rounded-2xl bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+          >
+            {isSubmitting ? (
+              <span>Đang kết nối máy chủ Mealy...</span>
+            ) : authModalMode === 'register' ? (
+              <>
+                <UserPlus className="w-4 h-4" />
+                <span>Hoàn Tất Đăng Ký & Lưu Lên Máy Chủ</span>
+              </>
+            ) : (
+              <>
+                <UserCheck className="w-4 h-4" />
+                <span>Đăng Nhập & Tải Dữ Liệu Cá Nhân</span>
+              </>
+            )}
+          </button>
+        </form>
 
         <p className="text-[11px] text-center text-stone-500 dark:text-stone-400 flex items-center justify-center gap-1">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />

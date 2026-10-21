@@ -52,7 +52,9 @@ export const theme = {
     },
   },
   typography: {
-    fontSans: "'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
+    fontSans: "'Manrope', 'Inter', 'Be Vietnam Pro', system-ui, -apple-system, sans-serif",
+    fontHeading: "'Manrope', 'Inter', system-ui, -apple-system, sans-serif",
+    fontBody: "'Inter', system-ui, -apple-system, sans-serif",
     fontMono: "'JetBrains Mono', monospace",
     hierarchy: {
       displayHero: { size: '24px', rem: '1.50rem', weight: 900, lineHeight: 1.2, tracking: '-0.025em', tw: 'text-2xl font-black tracking-tight' },

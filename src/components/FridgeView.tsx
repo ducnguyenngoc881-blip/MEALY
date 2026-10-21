@@ -905,7 +905,7 @@ export const FridgeView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-3.5 animate-fadeIn">
+    <div className="space-y-3.5 pb-3 animate-fadeIn">
       {/* Top Banner & Header */}
       <div className="p-3 sm:p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2.5 sm:space-y-3 shadow-xs">
         <div>
@@ -1259,14 +1259,25 @@ export const FridgeView: React.FC = () => {
                     <span className="text-sm shrink-0">
                       {activeCompartment === 'freezer' ? '❄️' : activeCompartment === 'fridge' ? '🧊' : activeCompartment === 'crisper' ? '🥬' : '🗄️'}
                     </span>
-                    <h2 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white truncate">
-                      {activeCompartment === 'freezer'
-                        ? 'Ngăn Đá Đông Lạnh'
-                        : activeCompartment === 'fridge'
-                        ? 'Ngăn Mát & Đồ Thừa'
-                        : activeCompartment === 'crisper'
-                        ? 'Ngăn Rau Củ Tươi'
-                        : 'Toàn Bộ Tủ Lạnh'}
+                    <h2 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-tight">
+                      <span className="sm:hidden">
+                        {activeCompartment === 'freezer'
+                          ? 'Ngăn Đá'
+                          : activeCompartment === 'fridge'
+                          ? 'Ngăn Mát'
+                          : activeCompartment === 'crisper'
+                          ? 'Rau Củ'
+                          : 'Tủ Lạnh'}
+                      </span>
+                      <span className="hidden sm:inline">
+                        {activeCompartment === 'freezer'
+                          ? 'Ngăn Đá Đông Lạnh'
+                          : activeCompartment === 'fridge'
+                          ? 'Ngăn Mát & Đồ Thừa'
+                          : activeCompartment === 'crisper'
+                          ? 'Ngăn Rau Củ Tươi'
+                          : 'Toàn Bộ Tủ Lạnh'}
+                      </span>
                     </h2>
                     <span className="px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-black shrink-0">
                       {displayedItems.length}
@@ -1503,7 +1514,7 @@ export const FridgeView: React.FC = () => {
                     {isWholeFridgeComputing ? 'Đang phân tích...' : wholeFridgeData.totalEligible > 0 ? `${wholeFridgeData.totalEligible} món có thể nấu` : 'Bấm để tìm món'}
                   </span>
                 </h3>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">
                   Đối chiếu toàn bộ {pantryItems.length} thực phẩm sẵn có trong tủ với hơn 700 công thức
                 </p>
               </div>
@@ -1626,7 +1637,7 @@ export const FridgeView: React.FC = () => {
           <div
             ref={addFormRef}
             onClick={e => e.stopPropagation()}
-            className="w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-visible animate-fadeIn"
+            className="w-full max-w-md sm:max-w-lg md:max-w-xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-visible animate-fadeIn"
           >
             {/* Modal Header */}
             <div className="px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
@@ -1932,7 +1943,7 @@ export const FridgeView: React.FC = () => {
         >
           <div
             onClick={e => e.stopPropagation()}
-            className="w-full max-w-md h-[85vh] max-h-[85vh] rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col overflow-hidden animate-fadeIn"
+            className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl h-[85vh] max-h-[85vh] rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col overflow-hidden animate-fadeIn"
           >
             {/* Modal Header */}
             <div className="px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 shrink-0">
@@ -1988,9 +1999,9 @@ export const FridgeView: React.FC = () => {
               </div>
             </div>
 
-            {/* Quick Compartment Switcher (2x2 Grid so every label is 100% readable) & Search Bar */}
-            <div className="px-4 pt-3 pb-2.5 border-b border-slate-100 dark:border-slate-800 space-y-2 shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
-              <div className="grid grid-cols-2 gap-1.5">
+            {/* Quick Compartment Switcher (2x2 on Phone, 4-col on Tablet) & Search Bar */}
+            <div className="px-4 sm:px-5 pt-3 pb-2.5 border-b border-slate-100 dark:border-slate-800 space-y-2 shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-2">
                 {([
                   { id: 'all', label: 'Tất Cả', icon: '🗄️', count: compartmentCounts.all },
                   { id: 'freezer', label: 'Ngăn Đá', icon: '❄️', count: compartmentCounts.freezer },
@@ -2045,10 +2056,10 @@ export const FridgeView: React.FC = () => {
               </div>
             </div>
 
-            {/* Scrollable Full 2-Column Grid */}
-            <div className="p-3.5 overflow-y-auto flex-1">
+            {/* Scrollable Responsive Grid (2-col on phone, 3-col on tablet, 4-col on large tablet) */}
+            <div className="p-3.5 sm:p-5 overflow-y-auto flex-1">
               {displayedItems.length > 0 ? (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
                   {displayedItems.map(item => {
                     const isUrgent = item.daysLeft <= 2;
                     const isEmergency = item.daysLeft <= 1;
@@ -2067,14 +2078,14 @@ export const FridgeView: React.FC = () => {
                             handleSelectItemForRecipe(item);
                           }
                         }}
-                        className={`relative p-2.5 rounded-2xl border text-left transition-all cursor-pointer select-none active:scale-[0.98] flex flex-col justify-between gap-1.5 ${
+                        className={`relative p-2.5 md:p-3.5 rounded-2xl border text-left transition-all cursor-pointer select-none active:scale-[0.98] flex flex-col justify-between gap-1.5 md:gap-2 ${
                           isSelectedForRecipe
                             ? 'bg-blue-50/70 dark:bg-blue-950/40 border-[#1D4ED8] ring-1 ring-[#1D4ED8]/25 shadow-2xs'
                             : 'bg-slate-50/80 dark:bg-slate-800/50 border-slate-200/80 dark:border-slate-700/80 hover:border-blue-300 hover:bg-white dark:hover:bg-slate-800'
                         }`}
                       >
                         <div className="flex items-start justify-between gap-1">
-                          <div className="w-7 h-7 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 flex items-center justify-center text-sm shrink-0 shadow-2xs">
+                          <div className="w-7 h-7 md:w-8 md:h-8 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 flex items-center justify-center text-sm md:text-base shrink-0 shadow-2xs">
                             {itemIcon}
                           </div>
 
@@ -2093,11 +2104,11 @@ export const FridgeView: React.FC = () => {
                         </div>
 
                         <div className="min-w-0">
-                          <h4 className="text-xs font-black text-slate-900 dark:text-slate-100 line-clamp-1 leading-snug">
+                          <h4 className="text-xs md:text-sm font-black text-slate-900 dark:text-slate-100 line-clamp-1 leading-snug">
                             {item.name}
                           </h4>
                           <div className="flex items-center justify-between gap-1 mt-0.5">
-                            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate">
+                            <span className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 truncate">
                               {item.quantity}
                             </span>
                             {item.isLeftover && (
@@ -2181,7 +2192,7 @@ export const FridgeView: React.FC = () => {
           onClick={() => setIsItemSuggestionModalOpen(false)}
         >
           <div
-            className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+            className="w-full max-w-md sm:max-w-lg md:max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
             onClick={e => e.stopPropagation()}
           >
             {/* Modal Header */}

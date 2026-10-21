@@ -133,7 +133,8 @@ export default {
         'soft': '0 8px 24px -4px rgba(0, 0, 0, 0.04)',
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        sans: ['Inter', 'Manrope', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Manrope', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
       }
     },
   },

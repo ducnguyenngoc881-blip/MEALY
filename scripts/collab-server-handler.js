@@ -511,12 +511,75 @@ export function broadcastRoomUpdate(roomId, data) {
   }
 }
 
+const ACCOUNTS_DB_FILE = path.resolve(process.cwd(), 'node_modules', '.mealy-accounts-db.json');
+export const serverAccounts = new Map();
+
+export function computeMemberCode(emailOrId) {
+  const clean = String(emailOrId || 'mealy').trim().toLowerCase();
+  let hash = 2166136261;
+  for (let i = 0; i < clean.length; i++) {
+    hash ^= clean.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  const num = (Math.abs(hash) % 9000) + 1000;
+  return `ML-${num}`;
+}
+
+function loadServerAccounts() {
+  try {
+    if (fs.existsSync(ACCOUNTS_DB_FILE)) {
+      const data = JSON.parse(fs.readFileSync(ACCOUNTS_DB_FILE, 'utf-8'));
+      for (const [k, v] of Object.entries(data)) {
+        serverAccounts.set(k, v);
+      }
+    }
+  } catch {}
+}
+
+function saveServerAccounts() {
+  try {
+    const obj = {};
+    for (const [k, v] of serverAccounts.entries()) {
+      obj[k] = v;
+    }
+    fs.writeFileSync(ACCOUNTS_DB_FILE, JSON.stringify(obj, null, 2), 'utf-8');
+  } catch {}
+}
+
+loadServerAccounts();
+
+const RECIPE_IMAGES_DB_FILE = path.resolve(process.cwd(), 'node_modules', '.mealy-recipe-images-db.json');
+export const serverRecipeImages = new Map();
+
+function loadServerRecipeImages() {
+  try {
+    if (fs.existsSync(RECIPE_IMAGES_DB_FILE)) {
+      const data = JSON.parse(fs.readFileSync(RECIPE_IMAGES_DB_FILE, 'utf-8'));
+      for (const [k, v] of Object.entries(data)) {
+        serverRecipeImages.set(k, v);
+      }
+    }
+  } catch {}
+}
+
+function saveServerRecipeImages() {
+  try {
+    const obj = {};
+    for (const [k, v] of serverRecipeImages.entries()) {
+      obj[k] = v;
+    }
+    fs.writeFileSync(RECIPE_IMAGES_DB_FILE, JSON.stringify(obj, null, 2), 'utf-8');
+  } catch {}
+}
+
+loadServerRecipeImages();
+
 function parseJsonBody(req) {
   return new Promise((resolve) => {
     let body = '';
     req.on('data', (chunk) => {
       body += chunk;
-      if (body.length > 2 * 1024 * 1024) {
+      if (body.length > 5 * 1024 * 1024) {
         req.destroy();
       }
     });
@@ -535,597 +598,9 @@ export async function handleCollabRequest(req, res) {
   const urlObj = new URL(req.url, 'http://localhost');
   const pathname = urlObj.pathname;
 
-  if (pathname.startsWith('/api/auth/otp')) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    if (req.method === 'OPTIONS') {
-      res.writeHead(204);
-      res.end();
-      return true;
-    }
-
-    // 1. Check Backend SMTP Configuration Status: GET /api/auth/otp/status
-    if (req.method === 'GET' && pathname === '/api/auth/otp/status') {
-      const cfg = loadDotEnv();
-      const customSmtp = Boolean(cfg.gmailUser && cfg.gmailAppPassword);
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(
-        JSON.stringify({
-          ok: true,
-          smtpConfigured: true,
-          customGmailConfigured: customSmtp,
-          provider: customSmtp ? 'Gmail SMTP Relay' : 'Cloud SMTP Free Relay',
-          senderEmail: customSmtp ? maskEmailAddress(cfg.gmailUser) : 'no-reply@mealy.vn'
-        })
-      );
-      return true;
-    }
-
-    // 1b. Fetch Dispatched Email Letter in Cloud Webmail Inbox: GET /api/auth/otp/inbox?token=...
-    if (req.method === 'GET' && pathname === '/api/auth/otp/inbox') {
-      const token = String(urlObj.searchParams.get('token') || '').trim();
-      let foundChallenge = null;
-      for (const ch of serverOtpChallenges.values()) {
-        if (ch.inboxToken && ch.inboxToken === token && !ch.consumed && Date.now() <= ch.expiresAt) {
-          foundChallenge = ch;
-          break;
-        }
-      }
-      if (!foundChallenge || !foundChallenge.deliveredEnvelope) {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, message: 'Không tìm thấy thư OTP hoặc thư đã hết hạn 5 phút.' }));
-        return true;
-      }
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(
-        JSON.stringify({
-          ok: true,
-          envelope: foundChallenge.deliveredEnvelope
-        })
-      );
-      return true;
-    }
-
-    // 2. Save & Test Backend Gmail / Brevo Config: POST /api/auth/otp/config
-    if (req.method === 'POST' && pathname === '/api/auth/otp/config') {
-      const body = await parseJsonBody(req);
-      const gmailUser = String(body.gmailUser || '').trim();
-      const gmailAppPassword = String(body.gmailAppPassword || '').replace(/\s+/g, '').trim();
-      const brevoApiKey = String(body.brevoApiKey || '').trim();
-
-      if (brevoApiKey.startsWith('xkeysib-')) {
-        fs.writeFileSync(
-          SMTP_CONFIG_FILE,
-          JSON.stringify({ BREVO_API_KEY: brevoApiKey, GMAIL_USER: gmailUser || 'no-reply@mealy.vn' }, null, 2),
-          'utf-8'
-        );
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: true,
-            smtpConfigured: true,
-            provider: 'Brevo Cloud Email API',
-            message: 'Đã kết nối cổng gửi thư Brevo API thành công!'
-          })
-        );
-        return true;
-      }
-
-      if (!gmailUser.includes('@') || gmailAppPassword.length < 8) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: false,
-            message: 'Vui lòng nhập địa chỉ Gmail hợp lệ và Mật khẩu ứng dụng Google (16 ký tự) hoặc khóa Brevo API.'
-          })
-        );
-        return true;
-      }
-
-      try {
-        const transporter = nodemailer.createTransport({
-          host: 'smtp.gmail.com',
-          port: 465,
-          secure: true,
-          auth: {
-            user: gmailUser,
-            pass: gmailAppPassword
-          }
-        });
-        await transporter.verify();
-
-        fs.writeFileSync(
-          SMTP_CONFIG_FILE,
-          JSON.stringify({ GMAIL_USER: gmailUser, GMAIL_APP_PASSWORD: gmailAppPassword }, null, 2),
-          'utf-8'
-        );
-        fs.writeFileSync(
-          ENV_FILE,
-          `GMAIL_USER=${gmailUser}\nGMAIL_APP_PASSWORD=${gmailAppPassword}\nSMTP_HOST=smtp.gmail.com\nSMTP_PORT=465\n`,
-          'utf-8'
-        );
-
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: true,
-            smtpConfigured: true,
-            senderEmail: maskEmailAddress(gmailUser),
-            message: `Đã kết nối thành công máy chủ Gmail SMTP (${gmailUser})!`
-          })
-        );
-      } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: false,
-            smtpConfigured: false,
-            message: `Không thể đăng nhập SMTP Gmail: ${err?.message || 'Sai Mật khẩu ứng dụng (App Password) hoặc chưa bật Xác minh 2 bước.'}`
-          })
-        );
-      }
-      return true;
-    }
-
-    // 3. Request Server-Generated 6-Digit OTP via Email: POST /api/auth/otp/request (or /api/auth/otp)
-    if (req.method === 'POST' && (pathname === '/api/auth/otp/request' || pathname === '/api/auth/otp')) {
-      const body = await parseJsonBody(req);
-      const target = String(body.target || body.email || '').trim().toLowerCase();
-      const purpose = String(body.purpose || 'login').trim();
-      const bypassCooldown = Boolean(body.bypassCooldown);
-
-      if (!target || !target.includes('@')) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: false,
-            message: 'Vui lòng nhập địa chỉ Email hợp lệ để nhận mã OTP 6 số.'
-          })
-        );
-        return true;
-      }
-
-      const now = Date.now();
-      const existing = serverOtpChallenges.get(target);
-
-      if (existing && existing.lockedUntil && existing.lockedUntil > now && !bypassCooldown) {
-        const waitSec = Math.ceil((existing.lockedUntil - now) / 1000);
-        res.writeHead(429, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: false,
-            cooldownRemainingSeconds: waitSec,
-            message: `Tài khoản đang tạm khóa xác thực do nhập sai nhiều lần. Vui lòng thử lại sau ${waitSec} giây.`
-          })
-        );
-        return true;
-      }
-
-      if (existing && existing.cooldownUntil > now && !bypassCooldown) {
-        const waitSec = Math.ceil((existing.cooldownUntil - now) / 1000);
-        res.writeHead(429, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: false,
-            cooldownRemainingSeconds: waitSec,
-            maskedTarget: existing.maskedTarget,
-            inboxToken: existing.inboxToken,
-            webmailUrl: existing.deliveredEnvelope?.webmailUrl || null,
-            provider: existing.deliveredEnvelope?.provider || 'Cloud SMTP Free Relay',
-            message: `Vui lòng đợi ${waitSec} giây trước khi yêu cầu gửi lại mã OTP mới.`
-          })
-        );
-        return true;
-      }
-
-      const otpCode = String(crypto.randomInt(100000, 1000000));
-      const salt = crypto.randomBytes(16).toString('hex');
-      const inboxToken = crypto.randomBytes(20).toString('hex');
-      const codeHash = hashServerOtp(target, otpCode, salt);
-      const maskedTarget = maskEmailAddress(target);
-
-      try {
-        const mailRes = await sendRealOtpEmail(target, otpCode, purpose);
-        const deliveredEnvelope = {
-          messageId: `<otp.${now}.${salt.slice(0, 8)}@mealy.vn>`,
-          fromName: 'Mealy Bảo Mật',
-          fromEmail: mailRes.senderEmail || 'no-reply@mealy.vn',
-          toEmail: target,
-          subject: mailRes.letter.subject,
-          purposeTitle: mailRes.letter.purposeTitle,
-          otpCode,
-          sentAt: new Date(now).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' • ' + new Date(now).toLocaleDateString('vi-VN'),
-          provider: mailRes.provider || 'Cloud SMTP Free Relay (TLS 1.3)',
-          webmailUrl: mailRes.webmailUrl || null
-        };
-
-        serverOtpChallenges.set(target, {
-          target,
-          maskedTarget,
-          purpose,
-          codeHash,
-          salt,
-          inboxToken,
-          deliveredEnvelope,
-          createdAt: now,
-          expiresAt: now + OTP_TTL_MS,
-          cooldownUntil: now + OTP_COOLDOWN_MS,
-          attempts: 0,
-          maxAttempts: OTP_MAX_ATTEMPTS,
-          lockedUntil: 0,
-          consumed: false
-        });
-        saveServerOtpChallenges();
-
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: true,
-            emailSent: true,
-            smtpConfigured: true,
-            provider: deliveredEnvelope.provider,
-            senderEmail: deliveredEnvelope.fromEmail,
-            inboxToken,
-            webmailUrl: deliveredEnvelope.webmailUrl,
-            maskedTarget,
-            expiresInSeconds: Math.floor(OTP_TTL_MS / 1000),
-            cooldownRemainingSeconds: Math.floor(OTP_COOLDOWN_MS / 1000),
-            message: `Mã xác thực 6 số đã được gửi tới hộp thư ${maskedTarget}.`
-          })
-        );
-      } catch (err) {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            ok: false,
-            smtpConfigured: true,
-            message: `Lỗi kết nối cổng thư: ${err?.message || 'Vui lòng thử lại.'}`
-          })
-        );
-      }
-      return true;
-    }
-
-    // 4. Verify 6-Digit OTP on Backend Server: POST /api/auth/otp/verify
-    if (req.method === 'POST' && pathname === '/api/auth/otp/verify') {
-      const body = await parseJsonBody(req);
-      const target = String(body.target || body.email || '').trim().toLowerCase();
-      const cleanCode = String(body.code || '').replace(/\D/g, '').trim();
-
-      if (!target || cleanCode.length !== 6) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            valid: false,
-            message: 'Vui lòng nhập đủ 6 chữ số của mã xác thực OTP.'
-          })
-        );
-        return true;
-      }
-
-      const now = Date.now();
-      const challenge = serverOtpChallenges.get(target);
-
-      if (!challenge || challenge.consumed) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            valid: false,
-            message: 'Mã xác thực không tồn tại hoặc đã được sử dụng. Vui lòng bấm gửi mã mới.'
-          })
-        );
-        return true;
-      }
-
-      if (challenge.lockedUntil && challenge.lockedUntil > now) {
-        const lockedSec = Math.ceil((challenge.lockedUntil - now) / 1000);
-        res.writeHead(429, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            valid: false,
-            remainingAttempts: 0,
-            lockedRemainingSeconds: lockedSec,
-            message: `Tạm khóa xác thực bảo mật. Vui lòng thử lại sau ${lockedSec} giây.`
-          })
-        );
-        return true;
-      }
-
-      if (now > challenge.expiresAt) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            valid: false,
-            message: 'Mã xác thực OTP đã hết hạn (quá 5 phút). Vui lòng bấm gửi lại mã mới.'
-          })
-        );
-        return true;
-      }
-
-      const candidateHash = hashServerOtp(target, cleanCode, challenge.salt);
-      if (candidateHash !== challenge.codeHash) {
-        challenge.attempts += 1;
-        const remaining = Math.max(0, challenge.maxAttempts - challenge.attempts);
-
-        if (challenge.attempts >= challenge.maxAttempts) {
-          challenge.lockedUntil = now + OTP_LOCKOUT_MS;
-          serverOtpChallenges.set(target, challenge);
-          saveServerOtpChallenges();
-          res.writeHead(429, { 'Content-Type': 'application/json' });
-          res.end(
-            JSON.stringify({
-              valid: false,
-              remainingAttempts: 0,
-              lockedRemainingSeconds: Math.floor(OTP_LOCKOUT_MS / 1000),
-              message: 'Bạn đã nhập sai mã OTP quá 5 lần. Hệ thống tạm khóa 60 giây để bảo vệ tài khoản.'
-            })
-          );
-          return true;
-        }
-
-        serverOtpChallenges.set(target, challenge);
-        saveServerOtpChallenges();
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            valid: false,
-            remainingAttempts: remaining,
-            message: `Mã xác thực OTP không chính xác. Bạn còn ${remaining} lần thử.`
-          })
-        );
-        return true;
-      }
-
-      challenge.consumed = true;
-      serverOtpChallenges.set(target, challenge);
-      saveServerOtpChallenges();
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(
-        JSON.stringify({
-          valid: true,
-          verifiedAt: new Date(now).toISOString(),
-          message: 'Xác thực bảo mật OTP thành công!'
-        })
-      );
-      return true;
-    }
-  }
-
-  // Health Check Endpoint: GET /api/health
-  if (pathname === '/api/health') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(
-      JSON.stringify({
-        ok: true,
-        status: 'healthy',
-        database: 'connected',
-        smtpReady: true,
-        usersCount: serverUsers.size,
-        roomsCount: collabRooms.size,
-        timestamp: new Date().toISOString()
-      })
-    );
-    return true;
-  }
-
-  // Backend Auth & Database Endpoints: /api/auth/register, /api/auth/login, /api/auth/reset-password, /api/db/*
-  if (pathname.startsWith('/api/auth/') || pathname.startsWith('/api/db/')) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    if (req.method === 'OPTIONS') {
-      res.writeHead(204);
-      res.end();
-      return true;
-    }
-
-    // POST /api/auth/register
-    if (req.method === 'POST' && pathname === '/api/auth/register') {
-      const body = await parseJsonBody(req);
-      const email = String(body.email || '').trim().toLowerCase();
-      const name = String(body.name || '').trim() || email.split('@')[0];
-      const password = String(body.password || '');
-      const phone = String(body.phone || '').trim();
-      const authProvider = String(body.authProvider || 'email');
-
-      if (!email || !email.includes('@')) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, message: 'Địa chỉ email không hợp lệ.' }));
-        return true;
-      }
-
-      const salt = crypto.randomBytes(16).toString('hex');
-      const passwordHash = password ? hashServerPassword(password, salt) : '';
-      const now = Date.now();
-      const userRecord = {
-        id: serverUsers.get(email)?.id || `usr_${crypto.randomBytes(8).toString('hex')}`,
-        email,
-        name,
-        phone,
-        authProvider,
-        passwordHash,
-        salt,
-        verifiedAt: new Date(now).toISOString(),
-        createdAt: serverUsers.get(email)?.createdAt || new Date(now).toISOString(),
-        updatedAt: new Date(now).toISOString()
-      };
-
-      serverUsers.set(email, userRecord);
-      const sessionToken = `sess_${crypto.randomBytes(24).toString('hex')}`;
-      serverSessions.set(sessionToken, { email, createdAt: now, expiresAt: now + 30 * 24 * 3600 * 1000 });
-      saveServerDatabase();
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(
-        JSON.stringify({
-          ok: true,
-          sessionToken,
-          user: {
-            id: userRecord.id,
-            email: userRecord.email,
-            name: userRecord.name,
-            phone: userRecord.phone,
-            authProvider: userRecord.authProvider,
-            verifiedAt: userRecord.verifiedAt
-          }
-        })
-      );
-      return true;
-    }
-
-    // POST /api/auth/login
-    if (req.method === 'POST' && pathname === '/api/auth/login') {
-      const body = await parseJsonBody(req);
-      const email = String(body.email || '').trim().toLowerCase();
-      const password = String(body.password || '');
-
-      if (!email || !email.includes('@')) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, message: 'Địa chỉ email không hợp lệ.' }));
-        return true;
-      }
-
-      const existing = serverUsers.get(email);
-      if (existing && existing.passwordHash && password) {
-        const candidateHash = hashServerPassword(password, existing.salt);
-        if (candidateHash !== existing.passwordHash) {
-          res.writeHead(401, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ ok: false, message: 'Mật khẩu không chính xác.' }));
-          return true;
-        }
-      }
-
-      const now = Date.now();
-      const userRecord = existing || {
-        id: `usr_${crypto.randomBytes(8).toString('hex')}`,
-        email,
-        name: String(body.name || email.split('@')[0]),
-        phone: String(body.phone || ''),
-        authProvider: String(body.authProvider || 'email'),
-        passwordHash: password ? hashServerPassword(password, 'default_salt') : '',
-        salt: 'default_salt',
-        verifiedAt: new Date(now).toISOString(),
-        createdAt: new Date(now).toISOString(),
-        updatedAt: new Date(now).toISOString()
-      };
-      userRecord.lastLoginAt = new Date(now).toISOString();
-      serverUsers.set(email, userRecord);
-
-      const sessionToken = `sess_${crypto.randomBytes(24).toString('hex')}`;
-      serverSessions.set(sessionToken, { email, createdAt: now, expiresAt: now + 30 * 24 * 3600 * 1000 });
-      saveServerDatabase();
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(
-        JSON.stringify({
-          ok: true,
-          sessionToken,
-          user: {
-            id: userRecord.id,
-            email: userRecord.email,
-            name: userRecord.name,
-            phone: userRecord.phone,
-            authProvider: userRecord.authProvider,
-            lastLoginAt: userRecord.lastLoginAt
-          }
-        })
-      );
-      return true;
-    }
-
-    // POST /api/auth/reset-password
-    if (req.method === 'POST' && pathname === '/api/auth/reset-password') {
-      const body = await parseJsonBody(req);
-      const email = String(body.email || '').trim().toLowerCase();
-      const newPassword = String(body.newPassword || body.password || '');
-
-      if (!email || !newPassword || newPassword.length < 6) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, message: 'Email hoặc mật khẩu mới không hợp lệ.' }));
-        return true;
-      }
-
-      const existing = serverUsers.get(email) || {
-        id: `usr_${crypto.randomBytes(8).toString('hex')}`,
-        email,
-        name: email.split('@')[0],
-        createdAt: new Date().toISOString()
-      };
-      const salt = crypto.randomBytes(16).toString('hex');
-      existing.salt = salt;
-      existing.passwordHash = hashServerPassword(newPassword, salt);
-      existing.updatedAt = new Date().toISOString();
-      serverUsers.set(email, existing);
-      saveServerDatabase();
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ ok: true, message: 'Đã cập nhật mật khẩu mới thành công.' }));
-      return true;
-    }
-
-    // GET /api/db/profile?email=...
-    if (req.method === 'GET' && pathname === '/api/db/profile') {
-      const email = String(urlObj.searchParams.get('email') || '').trim().toLowerCase();
-      if (!email) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, message: 'Thiếu email truy vấn.' }));
-        return true;
-      }
-      const user = serverUsers.get(email) || null;
-      const profile = serverProfiles.get(email) || null;
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(
-        JSON.stringify({
-          ok: true,
-          user: user
-            ? {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                phone: user.phone,
-                authProvider: user.authProvider,
-                verifiedAt: user.verifiedAt
-              }
-            : null,
-          profile
-        })
-      );
-      return true;
-    }
-
-    // POST /api/db/sync
-    if (req.method === 'POST' && pathname === '/api/db/sync') {
-      const body = await parseJsonBody(req);
-      const email = String(body.email || '').trim().toLowerCase();
-      if (!email) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, message: 'Thiếu email đồng bộ.' }));
-        return true;
-      }
-      const existingProfile = serverProfiles.get(email) || {};
-      const updatedProfile = {
-        ...existingProfile,
-        ...(body.profile || {}),
-        mealPlan: body.mealPlan !== undefined ? body.mealPlan : existingProfile.mealPlan,
-        favorites: body.favorites !== undefined ? body.favorites : existingProfile.favorites,
-        updatedAt: new Date().toISOString()
-      };
-      serverProfiles.set(email, updatedProfile);
-      saveServerDatabase();
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ ok: true, profile: updatedProfile }));
-      return true;
-    }
-  }
-
-  if (!pathname.startsWith('/api/collab/')) {
+  if (!pathname.startsWith('/api/collab/') && !pathname.startsWith('/api/auth/') && !pathname.startsWith('/api/admin/')) {
     return false;
   }
-
 
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -1136,6 +611,303 @@ export async function handleCollabRequest(req, res) {
     res.writeHead(204);
     res.end();
     return true;
+  }
+
+  // ==========================================================================
+  // PERSISTENT ADMIN RECIPE & DISH OVERRIDES (/api/admin/recipe-images)
+  // ==========================================================================
+  if (pathname === '/api/admin/recipe-images' || pathname === '/api/admin/recipes') {
+    if (req.method === 'GET') {
+      const overrides = {};
+      for (const [k, v] of serverRecipeImages.entries()) {
+        overrides[k] = v;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ ok: true, overrides }));
+      return true;
+    }
+
+    if (req.method === 'POST') {
+      const body = await parseJsonBody(req);
+      const key = String(body.key || body.originalTitle || body.title || '').trim().toLowerCase();
+      if (!key) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ ok: false, error: 'Missing recipe key or title' }));
+        return true;
+      }
+
+      if (body.action === 'delete') {
+        serverRecipeImages.delete(key);
+        if (body.recipeId) {
+          serverRecipeImages.delete(String(body.recipeId).trim().toLowerCase());
+        }
+        if (body.originalTitle) {
+          serverRecipeImages.delete(String(body.originalTitle).trim().toLowerCase());
+        }
+        if (body.title) {
+          serverRecipeImages.delete(String(body.title).trim().toLowerCase());
+        }
+      } else {
+        const existing = serverRecipeImages.get(key) || {};
+        const entry = {
+          ...existing,
+          ...body,
+          key,
+          recipeId: body.recipeId ?? existing.recipeId ?? '',
+          originalTitle: body.originalTitle ?? existing.originalTitle ?? body.title ?? key,
+          title: String(body.title ?? existing.title ?? key).trim(),
+          imageUrl: body.imageUrl !== undefined ? String(body.imageUrl).trim() : (existing.imageUrl || ''),
+          updatedAt: new Date().toLocaleString('vi-VN')
+        };
+        delete entry.action;
+        serverRecipeImages.set(key, entry);
+        if (entry.recipeId) {
+          serverRecipeImages.set(String(entry.recipeId).trim().toLowerCase(), entry);
+        }
+        if (entry.title) {
+          serverRecipeImages.set(String(entry.title).trim().toLowerCase(), entry);
+        }
+      }
+      saveServerRecipeImages();
+
+      const overrides = {};
+      for (const [k, v] of serverRecipeImages.entries()) {
+        overrides[k] = v;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ ok: true, overrides }));
+      return true;
+    }
+  }
+
+  // ==========================================================================
+  // PERSISTENT SERVER-SIDE USER & ACCOUNT DATABASE (/api/auth/*)
+  // ==========================================================================
+  if (pathname.startsWith('/api/auth/')) {
+    // 1. Register or Update Account: POST /api/auth/register
+    if (req.method === 'POST' && pathname === '/api/auth/register') {
+      const body = await parseJsonBody(req);
+      const rawEmail = String(body.email || '').trim();
+      if (!rawEmail) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ ok: false, error: 'Vui lòng nhập Email hoặc Số điện thoại!' }));
+        return true;
+      }
+
+      const emailKey = rawEmail.toLowerCase();
+      const existing = serverAccounts.get(emailKey);
+      const nowStr = new Date().toLocaleDateString('vi-VN');
+      const isAdmin = emailKey === 'admin@mealwise.vn' || emailKey === 'admin@mealwise.com' || emailKey === 'admin';
+      const memberCode = existing?.user?.memberCode || computeMemberCode(emailKey);
+      const userId = existing?.user?.id || body.user?.id || `usr_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+      const displayName = String(body.name || existing?.user?.name || rawEmail.split('@')[0] || 'Thành Viên Mealy').trim();
+
+      const userProfile = {
+        id: userId,
+        memberCode,
+        name: displayName,
+        email: rawEmail,
+        isRegistered: true,
+        role: isAdmin ? 'admin' : 'user',
+        registeredAt: existing?.user?.registeredAt || nowStr,
+        lastLoginAt: nowStr,
+        onboardingCompleted: body.onboardingCompleted ?? existing?.user?.onboardingCompleted ?? false
+      };
+
+      const mergedPartition = {
+        ...(existing?.partition || {}),
+        ...(body.partition || {}),
+        updatedAt: Date.now()
+      };
+
+      const record = {
+        user: userProfile,
+        password: body.password ? String(body.password) : (existing?.password || ''),
+        partition: mergedPartition,
+        updatedAt: Date.now()
+      };
+
+      serverAccounts.set(emailKey, record);
+      saveServerAccounts();
+
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({
+        ok: true,
+        user: userProfile,
+        memberCode,
+        partition: mergedPartition,
+        isExisting: Boolean(existing)
+      }));
+      return true;
+    }
+
+    // 2. Login & Verify Account: POST /api/auth/login
+    if (req.method === 'POST' && pathname === '/api/auth/login') {
+      const body = await parseJsonBody(req);
+      const rawEmail = String(body.email || '').trim();
+      if (!rawEmail) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ ok: false, error: 'Vui lòng nhập Email hoặc Số điện thoại!' }));
+        return true;
+      }
+
+      const emailKey = rawEmail.toLowerCase();
+      const existing = serverAccounts.get(emailKey);
+      const nowStr = new Date().toLocaleDateString('vi-VN');
+
+      if (existing) {
+        if (existing.password && body.password && String(body.password) !== existing.password) {
+          res.writeHead(401, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify({
+            ok: false,
+            error: 'Mật khẩu không chính xác cho tài khoản này. Vui lòng kiểm tra lại!'
+          }));
+          return true;
+        }
+
+        existing.user.lastLoginAt = nowStr;
+        if (body.name && String(body.name).trim()) {
+          existing.user.name = String(body.name).trim();
+        }
+        if (!existing.user.memberCode) {
+          existing.user.memberCode = computeMemberCode(emailKey);
+        }
+        existing.updatedAt = Date.now();
+        serverAccounts.set(emailKey, existing);
+        saveServerAccounts();
+
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({
+          ok: true,
+          user: existing.user,
+          memberCode: existing.user.memberCode,
+          partition: existing.partition || null,
+          restoredFromServer: true
+        }));
+        return true;
+      }
+
+      // Account did not exist on server yet — auto-register on server so existing device accounts migrate seamlessly
+      const isAdmin = emailKey === 'admin@mealwise.vn' || emailKey === 'admin@mealwise.com' || emailKey === 'admin';
+      const memberCode = computeMemberCode(emailKey);
+      const userId = body.user?.id || `usr_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+      const displayName = String(body.name || rawEmail.split('@')[0] || 'Thành Viên Mealy').trim();
+
+      const userProfile = {
+        id: userId,
+        memberCode,
+        name: displayName,
+        email: rawEmail,
+        isRegistered: true,
+        role: isAdmin ? 'admin' : 'user',
+        registeredAt: nowStr,
+        lastLoginAt: nowStr,
+        onboardingCompleted: true
+      };
+
+      const record = {
+        user: userProfile,
+        password: body.password ? String(body.password) : '',
+        partition: body.partition || { updatedAt: Date.now() },
+        updatedAt: Date.now()
+      };
+
+      serverAccounts.set(emailKey, record);
+      saveServerAccounts();
+
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({
+        ok: true,
+        user: userProfile,
+        memberCode,
+        partition: record.partition,
+        restoredFromServer: false
+      }));
+      return true;
+    }
+
+    // 3. Sync Account Partition to Server DB: POST /api/auth/sync
+    if (req.method === 'POST' && pathname === '/api/auth/sync') {
+      const body = await parseJsonBody(req);
+      const rawEmail = String(body.email || body.user?.email || '').trim();
+      if (!rawEmail) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ ok: false, error: 'Missing email' }));
+        return true;
+      }
+
+      const emailKey = rawEmail.toLowerCase();
+      const existing = serverAccounts.get(emailKey);
+      const nowStr = new Date().toLocaleDateString('vi-VN');
+      const memberCode = existing?.user?.memberCode || computeMemberCode(emailKey);
+
+      const userProfile = {
+        ...(existing?.user || {}),
+        ...(body.user || {}),
+        email: rawEmail,
+        memberCode,
+        isRegistered: true,
+        lastLoginAt: nowStr
+      };
+
+      const mergedPartition = {
+        ...(existing?.partition || {}),
+        ...(body.partition || {}),
+        updatedAt: Date.now()
+      };
+
+      serverAccounts.set(emailKey, {
+        user: userProfile,
+        password: existing?.password || (body.password ? String(body.password) : ''),
+        partition: mergedPartition,
+        updatedAt: Date.now()
+      });
+      saveServerAccounts();
+
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({
+        ok: true,
+        memberCode,
+        user: userProfile,
+        syncedAt: new Date().toISOString()
+      }));
+      return true;
+    }
+
+    // 4. Fetch Account Profile & Partition by Email: GET /api/auth/me?email=...
+    if (req.method === 'GET' && pathname === '/api/auth/me') {
+      const rawEmail = String(urlObj.searchParams.get('email') || '').trim();
+      const emailKey = rawEmail.toLowerCase();
+      const existing = serverAccounts.get(emailKey);
+      if (!existing) {
+        res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ ok: false, notFound: true }));
+        return true;
+      }
+
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({
+        ok: true,
+        user: existing.user,
+        memberCode: existing.user.memberCode || computeMemberCode(emailKey),
+        partition: existing.partition || null
+      }));
+      return true;
+    }
+
+    // 5. List All Server Registered Accounts: GET /api/auth/accounts
+    if (req.method === 'GET' && pathname === '/api/auth/accounts') {
+      const list = Array.from(serverAccounts.values()).map(rec => ({
+        ...rec.user,
+        memberCode: rec.user?.memberCode || computeMemberCode(rec.user?.email),
+        hasSavedPlan: Boolean(rec.partition?.weeklyPlan?.length),
+        fridgeCount: Array.isArray(rec.partition?.pantryItems) ? rec.partition.pantryItems.length : 0,
+        updatedAt: rec.updatedAt
+      }));
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ ok: true, total: list.length, accounts: list }));
+      return true;
+    }
   }
 
   // 1. Create or Sync Room: POST /api/collab/room

@@ -57,7 +57,8 @@ export const WelcomeOnboardingModal: React.FC<WelcomeOnboardingModalProps> = ({
 }) => {
   const {
     showWelcomeModal,
-    completeWelcomeModal
+    completeWelcomeModal,
+    activeTab
   } = useMealWise();
 
   const [currentSlide, setCurrentSlide] = useState<number>(initialSlide);
@@ -196,7 +197,7 @@ export const WelcomeOnboardingModal: React.FC<WelcomeOnboardingModalProps> = ({
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
-        className="w-full sm:max-w-md md:max-w-lg min-h-[100dvh] sm:min-h-[680px] sm:max-h-[90dvh] sm:rounded-[36px] flex flex-col justify-between bg-[#FAF8F5] dark:bg-[#0F1420] sm:border sm:border-slate-200/80 sm:dark:border-slate-800 shadow-2xl overflow-hidden relative select-none"
+        className="w-full sm:max-w-xl md:max-w-2xl min-h-[100dvh] sm:min-h-[680px] sm:max-h-[90dvh] sm:rounded-[36px] flex flex-col justify-between bg-[#FAF8F5] dark:bg-[#0F1420] sm:border sm:border-slate-200/80 sm:dark:border-slate-800 shadow-2xl overflow-hidden relative select-none"
       >
         {/* Subtle Editorial Radial Glow */}
         <div

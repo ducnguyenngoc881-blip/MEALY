@@ -324,6 +324,18 @@ describe('Unit: Individual Dish Swap in 3-Dish Meal Sets', () => {
     expect(pool[0].estimatedCostVnd).toBe(minCostInAll);
   });
 
+  it('SWAP-DISH-15: MealSetDetailModal renders individual Đổi món buttons for Món Mặn, Món Canh, and Món Rau', async () => {
+    const fs = await import('fs');
+    const path = await import('path');
+    const modalSrc = fs.readFileSync(path.join(process.cwd(), 'src/components/MealSetDetailModal.tsx'), 'utf-8');
+    expect(modalSrc).toContain('data-testid="swap-main-dish-btn"');
+    expect(modalSrc).toContain('data-testid="swap-soup-dish-btn"');
+    expect(modalSrc).toContain('data-testid="swap-side-dish-btn"');
+    expect(modalSrc).toContain("handleSwapSpecificDish('mainDish', e)");
+    expect(modalSrc).toContain("handleSwapSpecificDish('soupDish', e)");
+    expect(modalSrc).toContain("handleSwapSpecificDish('sideDish', e)");
+  });
+
 });
 
 

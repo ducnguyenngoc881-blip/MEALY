@@ -108,7 +108,7 @@ export const Sidebar: React.FC = () => {
         <div className="relative flex items-center justify-center">
           <Icon 
             active={active} 
-            className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 ease-out ${
+            className={`w-4 h-4 sm:w-5 sm:h-5 md:w-5.5 md:h-5.5 transition-transform duration-300 ease-out ${
               active 
                 ? 'scale-110 -translate-y-0.5 text-blue-600 dark:text-blue-400' 
                 : 'scale-100 translate-y-0 text-stone-500 dark:text-stone-400'
@@ -120,7 +120,7 @@ export const Sidebar: React.FC = () => {
             </span>
           )}
         </div>
-        <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-tight mt-0.5 leading-none whitespace-nowrap transition-colors duration-200 ${
+        <span className={`text-[9px] min-[390px]:text-[9.5px] sm:text-[10.5px] md:text-xs tracking-tight mt-0.5 leading-none whitespace-nowrap transition-colors duration-200 ${
           active ? 'font-black text-blue-600 dark:text-blue-400' : 'font-semibold'
         }`}>
           {getBadgeLabel(item)}
@@ -132,9 +132,9 @@ export const Sidebar: React.FC = () => {
   return (
     <nav 
       aria-label="Điều hướng chính"
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-40 bg-[#F8FAFC]/95 dark:bg-[#12161F]/95 backdrop-blur-xl border-t sm:border-x border-[#E2E8F0] dark:border-[#2D3748] shadow-sm transition-colors duration-200 select-none pb-[env(safe-area-inset-bottom,0px)]"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:max-w-xl md:max-w-3xl lg:max-w-4xl z-40 bg-[#F8FAFC]/95 dark:bg-[#12161F]/95 backdrop-blur-xl border-t sm:border-x border-[#E2E8F0] dark:border-[#2D3748] shadow-sm transition-colors duration-200 select-none pb-[env(safe-area-inset-bottom,0px)]"
     >
-      <div className="relative h-16 flex items-center justify-between px-1.5">
+      <div className="relative h-16 md:h-[70px] flex items-center justify-between px-1.5 md:px-4">
         
         {/* Animated Sliding Active Indicator Pill for standard tabs */}
         {activeIndex !== -1 && activeTab !== 'pantry' && (
