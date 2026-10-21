@@ -18,6 +18,7 @@ import {
 import { Recipe } from '../types';
 import { useMealWise } from '../context/MealWiseContext';
 import { SafeImage } from './SafeImage';
+import { hasUserProvidedRecipeImage } from '../utils/dishImageResolver';
 
 export function buildSharedDishUrl(recipe: Recipe, chefNameOverride?: string): string {
   try {
@@ -513,7 +514,7 @@ export const ShareRecipeSocialModal: React.FC = () => {
     >
       <div
         onClick={e => e.stopPropagation()}
-        className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl max-h-[92vh] flex flex-col overflow-hidden animate-slide-up"
+        className="w-full max-w-lg sm:max-w-xl md:max-w-2xl bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl max-h-[92vh] flex flex-col overflow-hidden animate-slide-up"
       >
         {/* Top Modal Header */}
         <div className="px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 shrink-0">
@@ -626,15 +627,19 @@ export const ShareRecipeSocialModal: React.FC = () => {
               </span>
             </div>
 
-            {/* Hero Dish Photo */}
-            <div className="relative h-44 rounded-2xl overflow-hidden border border-black/5">
-              <SafeImage
-                src={targetRecipe.imageUrl}
-                alt={targetRecipe.title}
-                category={targetRecipe.category}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-transparent" />
+            {/* Hero Dish Photo (Only shown if user provided an image) */}
+            <div className={`relative ${hasUserProvidedRecipeImage(targetRecipe) ? 'h-44' : 'py-5 px-3 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950'} rounded-2xl overflow-hidden border border-black/5`}>
+              {hasUserProvidedRecipeImage(targetRecipe) && (
+                <>
+                  <SafeImage
+                    src={targetRecipe.imageUrl}
+                    alt={targetRecipe.title}
+                    category={targetRecipe.category}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-transparent" />
+                </>
+              )}
 
               {targetRecipe.authorVoiceUrl && (
                 <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black flex items-center gap-1 shadow-xs">
@@ -643,7 +648,7 @@ export const ShareRecipeSocialModal: React.FC = () => {
                 </div>
               )}
 
-              <div className="absolute bottom-2.5 left-3 right-3 text-white">
+              <div className={`${hasUserProvidedRecipeImage(targetRecipe) ? 'absolute bottom-2.5 left-3 right-3' : ''} text-white`}>
                 <h4 className="text-base font-black leading-tight drop-shadow-xs truncate">
                   {targetRecipe.title}
                 </h4>

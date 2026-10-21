@@ -235,7 +235,7 @@ export const SchedulePartyModal: React.FC<SchedulePartyModalProps> = ({
       onClick={onClose}
     >
       <div 
-        className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up"
+        className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-lg sm:max-w-xl md:max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up"
         onClick={e => e.stopPropagation()}
       >
         {/* Modal Header */}

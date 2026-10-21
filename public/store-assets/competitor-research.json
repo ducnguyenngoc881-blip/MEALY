@@ -1,0 +1,360 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-10-19T10:15:00Z",
+  "marketScope": "Apple App Store & Google Play Store",
+  "executiveSummary": "Nghiên cứu chuyên sâu về các ứng dụng hàng đầu trong mảng lên thực đơn, nấu ăn gia đình và đi chợ thông minh gồm Mealime, Yummly, Mob Kitchen, Samsung Food, Cookpad, Lifesum, Cooklist. Báo cáo thiết lập tiêu chuẩn hình ảnh quảng bá kho ứng dụng, cấu trúc chuỗi 6 áp phích theo hành trình tâm lý người dùng, chuẩn nhận diện Feature Graphic và App Icon, cùng 6 bộ tiêu đề và phụ đề thuần Việt 100% không chứa tiếng Anh trong ngoặc đơn.",
+  "competitors": [
+    {
+      "id": "mealime",
+      "name": "Mealime - Meal Planner & Grocery List",
+      "platforms": ["Apple App Store", "Google Play Store"],
+      "ratings": {
+        "appStore": 4.8,
+        "googlePlay": 4.7
+      },
+      "downloads": "5M+",
+      "primaryAudience": "Người bận rộn, cặp đôi trẻ, người muốn nấu bữa tối lành mạnh dưới 30 phút",
+      "coreValueProposition": "Lên thực đơn lành mạnh trong 30 phút với danh sách đi chợ tự động phân theo quầy và không lãng phí thực phẩm.",
+      "screenshotSequence": [
+        "Áp phích 1: Nấu ăn ngon lành mạnh dưới 30 phút với hình ảnh món ăn bắt mắt kèm thời gian nấu",
+        "Áp phích 2: Thực đơn cá nhân hóa theo khẩu vị và kiêng khem",
+        "Áp phích 3: Danh sách đi chợ tự động gom theo quầy hàng siêu thị giúp tiết kiệm thời gian",
+        "Áp phích 4: Chế độ nấu ăn từng bước rảnh tay với chữ to, hẹn giờ tự động và màn hình luôn sáng",
+        "Áp phích 5: Chống lãng phí thực phẩm qua việc tối ưu nguyên liệu dùng chung giữa các món"
+      ],
+      "visualConventions": {
+        "deviceFraming": "Khung máy iPhone thẳng đứng, bóng đổ mềm mại, cắt bớt 15% đáy để tăng không gian chữ",
+        "colorScheme": "Xanh ngọc lục bảo #10B981 kết hợp nền trắng và thẻ xám trung tính",
+        "badgeTreatment": "Thẻ nhỏ hình viên thuốc bo tròn kèm biểu tượng cảm xúc",
+        "typographyHierarchy": "Tiêu đề 3-4 từ in đậm nổi bật ở 25% phía trên, phụ đề 1 câu giải thích lợi ích"
+      },
+      "strengths": [
+        "Trải nghiệm lên thực đơn đơn giản, mượt mà",
+        "Danh sách đi chợ gom theo quầy siêu thị cực kỳ hữu ích"
+      ],
+      "weaknesses": [
+        "Thiếu cấu trúc mâm cơm 3 món truyền thống của gia đình châu Á",
+        "Không có tính năng phòng đi chợ chung thời gian thực giữa các thành viên"
+      ]
+    },
+    {
+      "id": "yummly",
+      "name": "Yummly Recipes & Cooking Tools",
+      "platforms": ["Apple App Store", "Google Play Store"],
+      "ratings": {
+        "appStore": 4.8,
+        "googlePlay": 4.6
+      },
+      "downloads": "10M+",
+      "primaryAudience": "Người yêu thích khám phá ẩm thực quốc tế, thiết bị nhà bếp thông minh và gợi ý theo tủ lạnh",
+      "coreValueProposition": "Kho hơn 2 triệu công thức nấu ăn, gợi ý món từ nguyên liệu có sẵn trong tủ lạnh và công cụ nấu ăn thông minh.",
+      "screenshotSequence": [
+        "Áp phích 1: Khám phá hàng triệu công thức từ các đầu bếp hàng đầu với lưới ảnh món ăn chất lượng cao",
+        "Áp phích 2: Tìm món từ nguyên liệu có sẵn trong tủ lạnh bằng cách nhập nguyên liệu nhận gợi ý ngay",
+        "Áp phích 3: Hướng dẫn nấu ăn từng bước kèm video và hẹn giờ chính xác",
+        "Áp phích 4: Lập danh sách đi chợ và kết nối giao hàng tận nhà 1 chạm",
+        "Áp phích 5: Theo dõi dinh dưỡng, đạm và calo cá nhân hóa"
+      ],
+      "visualConventions": {
+        "deviceFraming": "Khung máy nghiêng nhẹ 3D từ 3 đến 5 độ trên nền bếp hiện đại ấm cúng, tạo chiều sâu thị giác",
+        "colorScheme": "Cam san hô ấm áp #F97316 kết hợp nền trắng ngà và xám đen",
+        "badgeTreatment": "Huy hiệu nổi hiển thị điểm đánh giá sao, thời gian chuẩn bị và biểu tượng dinh dưỡng",
+        "typographyHierarchy": "Tiêu đề đậm nét hiện đại, nhấn mạnh số lượng công thức và tính năng thông minh"
+      },
+      "strengths": [
+        "Khả năng gợi ý công thức dựa trên nguyên liệu trong tủ lạnh rất tốt",
+        "Tích hợp đo lường nhiệt độ và hẹn giờ nấu ăn chuyên nghiệp"
+      ],
+      "weaknesses": [
+        "Tập trung nhiều vào món Âu Mỹ, ít món ăn thuần Việt",
+        "Giao diện nhiều tính năng phụ có thể gây rối cho người dùng lớn tuổi"
+      ]
+    },
+    {
+      "id": "mob_kitchen",
+      "name": "Mob - Recipes & Meal Planning",
+      "platforms": ["Apple App Store", "Google Play Store"],
+      "ratings": {
+        "appStore": 4.7,
+        "googlePlay": 4.5
+      },
+      "downloads": "500K+",
+      "primaryAudience": "Giới trẻ, sinh viên, các gia đình trẻ thích món ăn ngon miệng, đậm đà và tiết kiệm chi phí",
+      "coreValueProposition": "Món ăn ngon thực tế với chi phí tối ưu, bảng lên thực đơn kéo thả và danh sách đi chợ gom nguyên liệu thông minh.",
+      "screenshotSequence": [
+        "Áp phích 1: Món ăn ngon bạn thực sự muốn nấu mỗi ngày với góc chụp cận cảnh màu sắc rực rỡ",
+        "Áp phích 2: Bảng lên thực đơn tuần trực quan cho phép kéo thả món ăn và tính toán ngân sách",
+        "Áp phích 3: Tự động gom nguyên liệu đi chợ để không bao giờ mua thừa hành tỏi gia vị",
+        "Áp phích 4: Bộ lọc món nhanh dưới 20 phút và món ăn tiết kiệm chi phí",
+        "Áp phích 5: Video hướng dẫn nấu nướng truyền cảm hứng từ các đầu bếp sáng tạo"
+      ],
+      "visualConventions": {
+        "deviceFraming": "Khung máy phẳng hiện đại, viền mỏng, kết hợp nhãn dán đồ họa vui nhộn",
+        "colorScheme": "Vàng bơ ấm #FACC15, xanh ô liu và đen than cá tính",
+        "badgeTreatment": "Nhãn dán phong cách tem cổ điển gồm Dưới 30 Phút, Bữa Cơm Tiết Kiệm, Nấu 1 Nồi",
+        "typographyHierarchy": "Phông chữ không chân đậm phong cách tạp chí thời trang, câu từ ngắn gọn truyền cảm hứng"
+      },
+      "strengths": [
+        "Hình ảnh món ăn và thiết kế đồ họa cực kỳ hấp dẫn giới trẻ",
+        "Rất chú trọng vào yếu tố chi phí cho từng khẩu phần ăn"
+      ],
+      "weaknesses": [
+        "Chủ yếu là thực đơn phương Tây",
+        "Chưa tối ưu cho văn hóa mâm cơm chia sẻ nhiều món của gia đình Việt"
+      ]
+    },
+    {
+      "id": "samsung_food",
+      "name": "Samsung Food: Meal Planning & Recipes",
+      "platforms": ["Apple App Store", "Google Play Store"],
+      "ratings": {
+        "appStore": 4.7,
+        "googlePlay": 4.6
+      },
+      "downloads": "10M+",
+      "primaryAudience": "Gia đình muốn số hóa toàn bộ quy trình ăn uống từ lưu công thức, lên lịch đến quản lý tủ lạnh",
+      "coreValueProposition": "Nền tảng ẩm thực tất cả trong một: lưu công thức từ mọi trang web, lên thực đơn tuần, đi chợ chung và quản lý hạn dùng tủ lạnh.",
+      "screenshotSequence": [
+        "Áp phích 1: Nền tảng ẩm thực tất cả trong một cho cả gia đình",
+        "Áp phích 2: Lên lịch thực đơn cả tuần trên một màn hình lịch thông minh",
+        "Áp phích 3: Danh sách đi chợ chia sẻ theo thời gian thực giữa vợ chồng",
+        "Áp phích 4: Quản lý tủ lạnh và cảnh báo hạn dùng trước khi hết hạn",
+        "Áp phích 5: Bảng phân tích dinh dưỡng và lượng calo chi tiết từng khẩu phần"
+      ],
+      "visualConventions": {
+        "deviceFraming": "Khung máy công nghệ cao tinh tế, giao diện thẻ trắng trên nền màu xanh coban thương hiệu",
+        "colorScheme": "Xanh coban #1877F2, xanh lục bảo và trắng xám sạch sẽ",
+        "badgeTreatment": "Thẻ phân loại phẳng, bo góc mềm mại, hiển thị số thành viên và trạng thái đồng bộ",
+        "typographyHierarchy": "Tiêu đề cấu trúc rõ ràng giữa lợi ích lớn và giải pháp cụ thể"
+      },
+      "strengths": [
+        "Tính năng đồng bộ danh sách đi chợ và quản lý tủ lạnh rất hoàn chỉnh",
+        "Khả năng kết nối nhiều thành viên trong gia đình"
+      ],
+      "weaknesses": [
+        "Công thức ẩm thực Việt Nam còn hạn chế, chưa có logic mâm cơm 3 món",
+        "Không có các tiện ích bàn tiệc, trò chơi bàn ăn gắn kết gia đình"
+      ]
+    },
+    {
+      "id": "cookpad",
+      "name": "Cookpad: Chia Sẻ Công Thức Nấu Ăn",
+      "platforms": ["Apple App Store", "Google Play Store"],
+      "ratings": {
+        "appStore": 4.7,
+        "googlePlay": 4.6
+      },
+      "downloads": "10M+",
+      "primaryAudience": "Các bà nội trợ, người yêu bếp gia đình Việt Nam tìm kiếm món ngon bình dị mỗi ngày",
+      "coreValueProposition": "Cộng đồng hàng triệu người nấu bếp chia sẻ món ăn gia đình thực tế chuẩn vị ba miền Bắc - Trung - Nam.",
+      "screenshotSequence": [
+        "Áp phích 1: Món ngon mỗi ngày từ hàng triệu gian bếp nhà thân thương",
+        "Áp phích 2: Tìm món theo nguyên liệu có sẵn trong tủ lạnh gia đình",
+        "Áp phích 3: Hướng dẫn nấu ăn với hình ảnh thực tế từ người nấu thật",
+        "Áp phích 4: Sổ tay lưu giữ bí quyết nấu nướng gia truyền của mẹ",
+        "Áp phích 5: Nhật ký nấu nướng và chia sẻ cảm nhận sau khi nấu"
+      ],
+      "visualConventions": {
+        "deviceFraming": "Khung máy đơn giản, thân thiện, đặt trên nền mặt bàn gỗ mộc mạc và mâm cơm gia đình",
+        "colorScheme": "Cam đất ấm áp #F26522, trắng kem và màu gỗ tự nhiên",
+        "badgeTreatment": "Thẻ ghi nhận công thức được yêu thích, huy hiệu bếp trưởng gia đình",
+        "typographyHierarchy": "Từ ngữ gần gũi, ấm cúng, đậm chất tình cảm gia đình Việt"
+      },
+      "strengths": [
+        "Kho dữ liệu món ăn Việt Nam vô cùng phong phú và gần gũi",
+        "Cảm giác ấm cúng, không tạo áp lực hay xa cách với người nội trợ"
+      ],
+      "weaknesses": [
+        "Thiếu công cụ lên thực đơn tự động cân đối dinh dưỡng và ngân sách",
+        "Không có danh sách đi chợ gom theo quầy và không có phòng mua chung trực tiếp"
+      ]
+    }
+  ],
+  "screenshotStorytellingPattern": {
+    "framework": "Chuỗi 6 Áp Phích Tiếp Thị Trực Quan",
+    "corePsychology": {
+      "firstImpressionRule": "Người dùng cửa hàng ứng dụng chỉ dành 3 giây cho ảnh đầu tiên. Áp phích 1 phải giải quyết ngay cơn đau đầu lớn nhất mỗi ngày: Hôm nay ăn gì?",
+      "progressionFlow": "Từ Cơn Đau Hàng Ngày tại Mâm Cơm 3 Món chuyển sang Giải Pháp Dài Hạn ở Thực Đơn Tuần, tiếp nối Hành Động Thực Tế khi Đi Chợ Chung, Tối Ưu Bếp Nhà cùng Tủ Lạnh, Nâng Cao Kỹ Năng Nấu Nướng qua Công Thức Từng Bước, và thăng hoa với Niềm Vui Gắn Kết ở Mâm Cỗ Tiệc cùng Lưu Trữ Đám Mây."
+    },
+    "posters": [
+      {
+        "slideIndex": 1,
+        "role": "Móc Câu Cốt Lõi và Giải Pháp Bữa Ăn Hàng Ngày",
+        "targetScreen": "TodayMealSetPlanner",
+        "categoryPill": "MÂM CƠM HÔM NAY",
+        "headline": "Hôm Nay Ăn Gì? Mâm Cơm 3 Món Chuẩn Vị",
+        "subtitle": "Tự động gợi ý bộ 3 món Mặn - Canh - Rau đủ chất, ngon miệng và tiết kiệm chi phí mỗi ngày.",
+        "badges": [
+          "Cân đối dinh dưỡng tự động",
+          "Tiết kiệm 45 phút chuẩn bị"
+        ],
+        "accentColor": "#1D4ED8",
+        "backgroundColor": "#0F172A",
+        "keyVisualElements": [
+          "Mâm cơm 3 món chuẩn vị gia đình Việt gồm Món Mặn, Món Canh và Món Rau",
+          "Thẻ chỉ số dinh dưỡng gồm Đạm, Chất xơ và Năng lượng",
+          "Thẻ tính toán chi phí trung bình một khẩu phần"
+        ]
+      },
+      {
+        "slideIndex": 2,
+        "role": "Tổ Chức Lâu Dài và Kiểm Soát Ngân Sách Gia Đình",
+        "targetScreen": "WeeklyBoard",
+        "categoryPill": "THỰC ĐƠN CẢ TUẦN",
+        "headline": "Lên Lịch 7 Ngày Trong 1 Lần Chạm",
+        "subtitle": "Tối ưu thực đơn theo khẩu vị vùng miền Bắc - Trung - Nam, không lo trùng món và kiểm soát trọn vẹn ngân sách.",
+        "badges": [
+          "0 ngày lo nghĩ thực đơn",
+          "Khớp ngân sách gia đình"
+        ],
+        "accentColor": "#2563EB",
+        "backgroundColor": "#0F172A",
+        "keyVisualElements": [
+          "Lịch 7 ngày trực quan từ Thứ Hai đến Chủ Nhật",
+          "Cột mốc mục tiêu dinh dưỡng và ngân sách tuần",
+          "Bộ chuyển đổi khẩu vị vùng miền Bắc - Trung - Nam"
+        ]
+      },
+      {
+        "slideIndex": 3,
+        "role": "Hành Động Thực Tế và Hợp Tác Không Ma Sát",
+        "targetScreen": "GroceryList",
+        "categoryPill": "ĐI CHỢ THÔNG MINH",
+        "headline": "Đi Chợ Chung Cùng Cả Nhà Thời Gian Thực",
+        "subtitle": "Tự động gom nguyên liệu theo từng quầy hàng tại chợ, đồng bộ tức thì giỏ hàng giữa các thành viên.",
+        "badges": [
+          "Phòng mua chung trực tiếp",
+          "Tự động phân loại theo quầy"
+        ],
+        "accentColor": "#10B981",
+        "backgroundColor": "#0F172A",
+        "keyVisualElements": [
+          "Các nhóm nguyên liệu tự động phân bổ gồm Quầy Rau Củ, Quầy Thịt Cá, Quầy Gia Vị",
+          "Huy hiệu phòng mua chung với hình đại diện thành viên trong gia đình",
+          "Ô tích chọn hoàn thành trực quan có đồng bộ tức thời"
+        ]
+      },
+      {
+        "slideIndex": 4,
+        "role": "Chống Lãng Phí Thực Phẩm và Tiết Kiệm Chi Phí",
+        "targetScreen": "PantryTracker",
+        "categoryPill": "TỦ LẠNH THÔNG MINH",
+        "headline": "Tủ Lạnh Chống Lãng Phí, Nấu Ngay Đồ Có Sẵn",
+        "subtitle": "Quản lý hạn dùng thực phẩm, nhận cảnh báo trước khi ôi thiu và gợi ý món ngon vét sạch tủ lạnh.",
+        "badges": [
+          "Cảnh báo hạn dùng thông minh",
+          "Tiết kiệm hàng triệu đồng mỗi tháng"
+        ],
+        "accentColor": "#F59E0B",
+        "backgroundColor": "#0F172A",
+        "keyVisualElements": [
+          "Danh mục thực phẩm trong ngăn mát và ngăn đông kèm ngày hết hạn",
+          "Thẻ cảnh báo màu sắc gồm Đỏ là Cần dùng ngay, Vàng là Sắp hết hạn, Xanh là Tươi ngon",
+          "Nút tạo món ăn tức thì từ các nguyên liệu sắp hết hạn"
+        ]
+      },
+      {
+        "slideIndex": 5,
+        "role": "Tự Tin Nấu Nướng và Bí Quyết Chuẩn Vị Mẹ Nấu",
+        "targetScreen": "RecipeDetailModal",
+        "categoryPill": "CÔNG THỨC CHUẨN VỊ",
+        "headline": "Hướng Dẫn Từng Bước Kèm Hẹn Giờ Thông Minh",
+        "subtitle": "Định lượng chính xác từng muỗng thìa, kỹ thuật canh lửa chuẩn đầu bếp và mẹo nhỏ cho món ăn đậm đà.",
+        "badges": [
+          "Định lượng thìa muỗng chuẩn gia đình",
+          "Bí quyết đầu bếp truyền tay"
+        ],
+        "accentColor": "#1D4ED8",
+        "backgroundColor": "#0F172A",
+        "keyVisualElements": [
+          "Cấu trúc 4 bước rõ ràng: Sơ chế và khử tanh, Ướp vị chuẩn, Chế biến và canh lửa, Nêm nếm hoàn thiện",
+          "Thanh trượt điều chỉnh khẩu phần tự động tính toán nguyên liệu",
+          "Đồng hồ đếm ngược hẹn giờ nấu ăn tích hợp ngay trong bước làm"
+        ]
+      },
+      {
+        "slideIndex": 6,
+        "role": "Niềm Vui Bàn Tiệc và Cá Nhân Hóa Dài Hạn",
+        "targetScreen": "CateringPartyPlanner",
+        "categoryPill": "TIỆC VUI SUM VẦY",
+        "headline": "Thực Đơn Đãi Tiệc & Gắn Kết Bữa Cơm Nhà",
+        "subtitle": "Hơn 50 bộ thực đơn liên hoan, minigame giải trí rộn ràng và lưu trữ đồng bộ đám mây với mã định danh gia đình.",
+        "badges": [
+          "50+ thực đơn đãi tiệc phong phú",
+          "Đồng bộ đám mây tức thì"
+        ],
+        "accentColor": "#DC2626",
+        "backgroundColor": "#0F172A",
+        "keyVisualElements": [
+          "Bộ sưu tập thực đơn tiệc gia đình, cúng giỗ, sinh nhật, họp mặt cuối tuần",
+          "Các trò chơi giải trí bàn ăn gồm Vòng quay món ăn và Mở hòm bữa cơm",
+          "Mã định danh thành viên cá nhân hóa và đồng bộ đa thiết bị"
+        ]
+      }
+    ]
+  },
+  "designStandards": {
+    "posterCanvas": {
+      "dimensions": "1290 x 2796 pixels",
+      "aspectRatio": "9:19.5 chuẩn màn hình Apple iPhone 16 Pro Max và Android cao cấp",
+      "format": "PNG 24-bit sắc nét, không vỡ hạt",
+      "goldenRatioSplit": {
+        "headerZone": {
+          "verticalCoverage": "22% đến 25% chiều cao từ 0 đến 650 pixel",
+          "elements": [
+            "Viên thuốc phân loại: chiều cao 56 đến 64 pixel, chữ in hoa, bo góc tròn",
+            "Tiêu đề lợi ích: 3 đến 5 từ, phông chữ 900 Black cực đậm, cỡ chữ 68 đến 76 pixel, tương phản cao",
+            "Phụ đề giải thích: 1 đến 2 dòng, cỡ chữ 34 đến 38 pixel, độ đậm 500 đến 600, màu sáng trên nền tối"
+          ]
+        },
+        "deviceZone": {
+          "verticalCoverage": "75% đến 78% chiều cao từ 650 đến 2796 pixel",
+          "elements": [
+            "Khung máy điện thoại flagship viền đen titan siêu mỏng, bo góc 42 pixel",
+            "Bóng đổ đa tầng tạo độ nổi",
+            "Vết cắt 15% phần chân máy tạo cảm giác tràn viền và chiều sâu",
+            "Hai huy hiệu nổi góc chéo bổ trợ thông điệp chính"
+          ]
+        }
+      }
+    },
+    "featureGraphic": {
+      "dimensions": "1024 x 500 pixels",
+      "aspectRatio": "Tỷ lệ 2:1 chuẩn biểu ngữ Google Play Store",
+      "format": "PNG hoặc JPG 24-bit, dung lượng dưới 15MB, không kênh trong suốt",
+      "safeZone": "Vùng an toàn 800 x 400 pixel ở chính giữa, cách lề ngang 112 pixel và lề dọc 50 pixel",
+      "composition": {
+        "leftThird": "Khối thương hiệu Mealy nổi bật: Logo biểu tượng, Tên ứng dụng Mealy, Khẩu hiệu Trợ Lý Bếp Nhà & Mâm Cơm Chuẩn Vị",
+        "centerAndRight": "Hình ảnh mâm cơm gia đình ấm cúng gồm Thịt kho tộ, Canh chua thanh mát, Rau xào xanh mướt trên nền gỗ mộc mạc",
+        "floatingChips": "Ba nhãn tính năng nổi bật: Mâm Cơm 3 Món, Đi Chợ Chung, Tủ Lạnh Thông Minh",
+        "lightingAndTone": "Ánh sáng vàng ấm của gian bếp Việt kết hợp điểm nhấn xanh coban #1D4ED8 và xanh lục #10B981"
+      }
+    },
+    "appIcon": {
+      "resolutions": [
+        {
+          "target": "Apple App Store",
+          "size": "1024 x 1024 pixels",
+          "format": "PNG 24-bit không có kênh trong suốt"
+        },
+        {
+          "target": "Google Play Store",
+          "size": "512 x 512 pixels",
+          "format": "PNG 32-bit có kênh trong suốt, dung lượng tối đa 1024KB"
+        }
+      ],
+      "safeZone": "Vùng an toàn hình tròn tâm 75% đường kính đảm bảo không bị cắt phạm khi bo góc",
+      "visualDesign": {
+        "background": "Nền đen đá phiến #0F172A sâu lắng hoặc Xanh coban #1D4ED8 chuyển sắc nhẹ",
+        "symbol": "Mũ đầu bếp cách điệu kết hợp mầm cây xanh tươi mát và đường cong bát gốm ấm áp",
+        "colors": "Xanh ngọc #10B981 kết hợp Vàng ấm #F59E0B và Trắng ngọc #FFFFFF",
+        "scalability": "Nhận diện rõ nét tuyệt đối ở mọi kích thước từ 16x16 pixel thông báo đến 1024x1024 pixel trên trang chủ cửa hàng"
+      }
+    },
+    "workspaceRulesCompliance": {
+      "bilingualCleanliness": "Tuân thủ nghiêm ngặt quy tắc Không giải thích tiếng Anh trong ngoặc đơn. 100% tiêu đề, nhãn phụ, mô tả và huy hiệu sử dụng tiếng Việt tự nhiên, trong sáng, gãy gọn.",
+      "colorPalette": "Hệ màu Gundam Exia Repair III 60-30-10: 60% Bề mặt xám than trung tính, 30% Xanh coban nhận diện, 10% Nhấn xanh lục, vàng ấm, đỏ tươi. Tuyệt đối không dùng ánh kim loại hoặc gradient bóng kim loại.",
+      "foodPhotographyPurity": "100% hình ảnh ẩm thực ngon miệng, chân thực, nguyên liệu tươi sạch, không có mặt người hay chủ thể phi ẩm thực."
+    }
+  }
+}

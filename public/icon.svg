@@ -1,48 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="512" height="512">
-  <!-- Dark Navy Squircle Background -->
-  <rect width="160" height="160" rx="36" fill="#0F172A" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" fill="none">
+  <!-- App Store / Play Store Full-Bleed Dark Slate Square (#171F2C) -->
+  <rect x="0" y="0" width="1024" height="1024" fill="#171F2C" />
 
-  <!-- Top-Right Fresh Green Leaf -->
+  <!-- Fresh GN Emerald Herb Leaf (#18BA7F) -->
   <path
-    d="M 94 38 C 93 21 105 11 121 11 C 122 27 110 38 94 38 Z"
-    fill="#10B981"
+    d="M 672 248 C 668 172, 716 124, 796 126 C 802 204, 752 252, 672 248 Z"
+    fill="#18BA7F"
   />
 
-  <!-- Upper Chopstick (Tapered left-to-right, angled slightly downward) -->
+  <!-- Royal Cobalt Blue Top & Bottom Tapered Chopsticks (#255ED2) -->
+  <g fill="#255ED2">
+    <path
+      d="M 150 196 L 892 325 C 900 326.5, 903 333, 901 341 C 899 348, 892 351, 884 350 L 142 252 C 131 250.5, 125 241, 127 229 L 130 211 C 132 200, 140 194.5, 150 196 Z"
+    />
+    <path
+      d="M 140 310 L 552 345 L 538 386 L 136 369 C 125 368.5, 119 360, 120 348 L 122 326 C 123 315, 130 309, 140 310 Z"
+    />
+    <path
+      d="M 728 360 L 885 373 C 893 374, 897 380, 896 387 C 895 394, 889 398, 881 397 L 735 391 Z"
+    />
+  </g>
+
+  <!-- Pure Matte White 'M' Noodle Wave (#FFFFFF) -->
   <path
-    d="M 24 29 C 21 29 20 38 24 39 L 136 50 C 138 50 138 46 136 45 Z"
-    fill="#2563EB"
+    d="M 292 694
+       L 310 520
+       C 316 456, 352 426, 400 426
+       C 448 426, 478 456, 492 522
+       L 510 604
+       C 513 617, 518 622, 524 622
+       C 530 622, 535 616, 538 598
+       L 562 424
+       C 572 350, 604 316, 652 316
+       C 700 316, 732 350, 740 426
+       L 756 694
+       L 682 694
+       L 668 430
+       C 665 392, 659 382, 650 382
+       C 641 382, 635 392, 630 430
+       L 606 604
+       C 596 666, 566 694, 520 694
+       C 474 694, 446 666, 434 606
+       L 416 520
+       C 411 495, 405 488, 397 488
+       C 389 488, 383 495, 380 522
+       L 366 694
+       Z"
+    fill="#FFFFFF"
   />
 
-  <!-- Lower Chopstick (Tapered left-to-right, horizontal) -->
+  <!-- Royal Cobalt Blue Crescent Rice Bowl Silhouette (#255ED2) -->
   <path
-    d="M 22 46 C 19 46 19 56 23 56 L 135 60 C 137 60 137 56 135 55 Z"
-    fill="#2563EB"
-  />
-
-  <!-- Royal Blue Bowl Silhouette with Footed Base -->
-  <path
-    d="M 27 76 C 27 112 48 132 58 136 L 59 144 C 59 146 61 148 64 148 L 96 148 C 99 148 101 146 101 144 L 102 136 C 112 132 133 112 133 76 L 126 76 C 124 106 105 125 80 125 C 55 125 36 106 34 76 Z"
-    fill="#2563EB"
-  />
-
-  <!-- Dark Navy Outline Separation around Noodle M over Lower Chopstick -->
-  <path
-    d="M 52 114 L 55 82 C 56 68 70 68 72 82 L 75 104 C 76 112 83 112 84 104 L 90 60 C 92 43 107 43 108 60 L 111 114"
-    stroke="#0F172A"
-    stroke-width="18"
-    stroke-linecap="square"
-    stroke-linejoin="round"
-    fill="none"
-  />
-
-  <!-- White Noodle "M" Monogram -->
-  <path
-    d="M 52 114 L 55 82 C 56 68 70 68 72 82 L 75 104 C 76 112 83 112 84 104 L 90 60 C 92 43 107 43 108 60 L 111 114"
-    stroke="#FFFFFF"
-    stroke-width="12.5"
-    stroke-linecap="butt"
-    stroke-linejoin="round"
-    fill="none"
+    d="M 168 520
+       C 175 520, 180 525, 182 534
+       C 208 708, 346 840, 524 840
+       C 702 840, 840 708, 866 534
+       C 868 525, 873 520, 880 520
+       C 887 520, 892 526, 891 536
+       C 872 708, 766 812, 686 850
+       L 678 874
+       C 674 888, 662 898, 646 898
+       L 402 898
+       C 386 898, 374 888, 370 874
+       L 362 850
+       C 282 812, 176 708, 157 536
+       C 156 526, 161 520, 168 520
+       Z"
+    fill="#255ED2"
   />
 </svg>

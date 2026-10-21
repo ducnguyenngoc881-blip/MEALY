@@ -361,7 +361,8 @@ export const CateringPartyPlanner: React.FC = () => {
     setSelectedRecipe, 
     showToast,
     isRegistered,
-    openAuthModal
+    openAuthModal,
+    navigateWithUnsavedGuard
   } = useMealWise();
 
   const [activeMode, setActiveMode] = useState<'builder' | 'calendar' | 'presets'>('builder');
@@ -707,7 +708,7 @@ export const CateringPartyPlanner: React.FC = () => {
 
   if (!isRegistered) {
     return (
-      <div className="space-y-4 max-w-lg mx-auto animate-in fade-in duration-300">
+      <div className="space-y-4 max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto animate-in fade-in duration-300">
         <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-600/5 dark:from-[#1A1918] dark:via-amber-950/20 dark:to-[#1A1918] border border-amber-500/30 text-center shadow-lg relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
           
@@ -779,7 +780,7 @@ export const CateringPartyPlanner: React.FC = () => {
           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
             <button
               type="button"
-              onClick={() => setActiveTab('account')}
+              onClick={() => navigateWithUnsavedGuard('account')}
               className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-850 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 text-[11px] font-extrabold transition-all border border-stone-200/80 dark:border-stone-700/60 cursor-pointer active:scale-95 shadow-2xs"
               title="Quay lại cài đặt tài khoản"
             >
@@ -2112,7 +2113,7 @@ export const CateringPartyPlanner: React.FC = () => {
       )}
 
       {/* FIXED BOTTOM ACTION BAR FOR ZALO QUOTATION, SAVE PRESET & GROCERY SYNC */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full sm:max-w-md md:max-w-lg z-30 px-3 py-2.5 bg-[#FAF8F5]/95 dark:bg-[#121110]/95 backdrop-blur-xl border-t sm:border-x border-[#E8E2D8] dark:border-[#252220] shadow-lg flex items-center justify-between gap-2 pb-[calc(0.625rem+env(safe-area-inset-bottom,0px))]">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full sm:max-w-xl md:max-w-3xl lg:max-w-4xl z-30 px-3 sm:px-5 md:px-6 py-2.5 bg-[#FAF8F5]/95 dark:bg-[#121110]/95 backdrop-blur-xl border-t sm:border-x border-[#E8E2D8] dark:border-[#252220] shadow-lg flex items-center justify-between gap-2 pb-[calc(0.625rem+env(safe-area-inset-bottom,0px))]">
         <div className="min-w-0 flex-1">
           <span className="text-[10px] text-stone-600 dark:text-stone-400 font-bold block uppercase tracking-wider leading-tight truncate">
             <span className="hidden sm:inline">{guestCount} khách • {numTables} bàn • ⏱️ ~{kitchenWorkload.formattedTotalTime}</span>
@@ -2185,7 +2186,7 @@ export const CateringPartyPlanner: React.FC = () => {
           onClick={() => setShowSavePresetModal(false)}
         >
           <div 
-            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-scale-up"
+            className="bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl max-w-lg sm:max-w-xl md:max-w-2xl w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-scale-up"
             onClick={e => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -2401,7 +2402,7 @@ export const CateringPartyPlanner: React.FC = () => {
               transform: dishModalDragY > 0 ? `translateY(${dishModalDragY}px)` : undefined,
               transition: dishModalDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
             }}
-            className="bg-white dark:bg-[#1A1918] border-t border-[#E8E2D8] dark:border-[#252220] rounded-t-3xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-slide-up"
+            className="bg-white dark:bg-[#1A1918] border-t border-[#E8E2D8] dark:border-[#252220] rounded-t-3xl sm:max-w-xl md:max-w-3xl lg:max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-slide-up"
           >
             {/* Swipe Handle Bar & Drag Zone */}
             <div 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getOfflineFoodPlaceholder } from '../utils/offlineImage';
-import { getDishImageUrl, FOOD_IMAGE_POOLS } from '../utils/dishImageResolver';
+import { getDishImageUrl, getStepFallbackImageUrl, FOOD_IMAGE_POOLS } from '../utils/dishImageResolver';
 
 export interface SafeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackTitle?: string;
@@ -21,12 +21,23 @@ export const SafeImage: React.FC<SafeImageProps> = ({
 }) => {
   // Error fallback stage: 0 = primary/pre-flight, 1 = cluster fallback, 2 = guaranteed food pool fallback, 3 = offline cloche
   const [errorStage, setErrorStage] = useState(0);
+  const [overrideRevision, setOverrideRevision] = useState(0);
   const title = dishTitle || fallbackTitle || alt || 'Món Ăn';
 
   // Invariant: React Rules of Hooks placed unconditionally at top of component body
   useEffect(() => {
     setErrorStage(0);
-  }, [src, title, category]);
+  }, [src, title, category, overrideRevision]);
+
+  useEffect(() => {
+    const handleOverrideChange = () => {
+      setOverrideRevision(r => r + 1);
+    };
+    window.addEventListener('mealwise:recipe_images_updated', handleOverrideChange);
+    return () => {
+      window.removeEventListener('mealwise:recipe_images_updated', handleOverrideChange);
+    };
+  }, []);
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     if (errorStage < 3) {
@@ -43,8 +54,12 @@ export const SafeImage: React.FC<SafeImageProps> = ({
     // Stage 0: Pre-flight sanitized resolution using provided src if valid
     currentSrc = getDishImageUrl(title, category, src);
   } else if (errorStage === 1) {
-    // Stage 1: Explicit semantic cluster resolution ignoring failing src
-    currentSrc = getDishImageUrl(title, category);
+    // Stage 1: Step-specific culinary fallback if src is a step image, otherwise semantic cluster resolution
+    if (src && typeof src === 'string' && src.trim().startsWith('/step-images/')) {
+      currentSrc = getStepFallbackImageUrl(src.trim(), title, category);
+    } else {
+      currentSrc = getDishImageUrl(title, category);
+    }
   } else if (errorStage === 2) {
     // Stage 2: Guaranteed high-definition food pool fallback (pure food photo)
     const guaranteedPool = FOOD_IMAGE_POOLS['com_tam'] || FOOD_IMAGE_POOLS['banh_mi'] || [];
@@ -61,6 +76,7 @@ export const SafeImage: React.FC<SafeImageProps> = ({
       className={className}
       onError={handleError}
       loading={loading}
+      decoding="async"
       {...rest}
     />
   );

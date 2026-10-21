@@ -13,7 +13,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 450,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Thit_rang_chay_canh.jpg/960px-Thit_rang_chay_canh.jpg?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-thit-rang-chay-canh.jpg',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Thịt ba chỉ rút sườn', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -71,7 +71,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 180,
     estimatedCostVnd: 50000,
-    imageUrl: 'https://images.unsplash.com/photo-1659603667872-915f2b953cb7?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-canh-cua-mong-toi.jpg',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cua đồng xay nguyên chất', amount: 350, unit: 'g', category: 'thit-ca' },
@@ -128,7 +128,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 80,
     estimatedCostVnd: 15000,
-    imageUrl: 'https://images.unsplash.com/photo-1680676066605-08566beed799?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-rau-muong-luoc-sau.jpg',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Rau muống ngọn non cọng nhỏ', amount: 1, unit: 'bó (500g)', category: 'rau-cu' },
@@ -186,7 +186,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 520,
     estimatedCostVnd: 95000,
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Caramelized_Pork_and_Eggs.jpg?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-thit-kho-tau.jpg',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Thịt ba chỉ rút sườn (hoặc thịt nách bì mỏng)', amount: 600, unit: 'g', category: 'thit-ca' },
@@ -246,7 +246,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 230,
     estimatedCostVnd: 75000,
-    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg/960px-Canh_chua_c%C3%A1_di%C3%AAu_h%E1%BB%93ng.jpg?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-canh-chua-ca.jpg',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cá hú (hoặc cá lóc) cắt khúc dày', amount: 450, unit: 'g', category: 'thit-ca' },
@@ -308,7 +308,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 45,
     estimatedCostVnd: 12000,
-    imageUrl: 'https://images.unsplash.com/photo-1592578630143-fac65cda7a67?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-dua-gia-goi-nom.jpg',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Giá đỗ tươi thân mập', amount: 350, unit: 'g', category: 'rau-cu' },
@@ -368,7 +368,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 380,
     estimatedCostVnd: 65000,
-    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg/960px-C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-ca-kho-to.jpg',
     difficulty: 'Trung bình',
     ingredients: [
       { name: 'Cá nục chuối tươi làm sạch', amount: 500, unit: 'g', category: 'thit-ca' },
@@ -427,7 +427,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 160,
     estimatedCostVnd: 45000,
-    imageUrl: 'https://images.unsplash.com/photo-1763470260582-894ae15f43bb?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-canh-suon-nau-sau.jpg',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Ngao (nghêu) sống sạch cát', amount: 1, unit: 'kg', category: 'thit-ca' },
@@ -485,7 +485,7 @@ export const INITIAL_RECIPES: Recipe[] = [
     servings: 4,
     calories: 110,
     estimatedCostVnd: 18000,
-    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg/960px-Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi%2C_th%C3%A1ng_4_n%C4%83m_2018.jpg?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '/dish-images/dish-rau-muong-xao-toi.jpg',
     difficulty: 'Dễ',
     ingredients: [
       { name: 'Đọt rau lang non tươi', amount: 1, unit: 'bó (400g)', category: 'rau-cu' },
@@ -2681,8 +2681,17 @@ import { recipesDatabase } from './recipesDatabase';
 import { westernDishes500 } from './westernDishes500';
 import { vietnameseDishesPart1 } from './vietnameseDishesPart1';
 import { vietnameseDishesPart2 } from './vietnameseDishesPart2';
+import { getDishImageUrl } from '../utils/dishImageResolver';
 
 export { westernDishes500, recipesDatabase, vietnameseDishesPart1, vietnameseDishesPart2 };
+
+for (const r of INITIAL_RECIPES) {
+  r.imageUrl = getDishImageUrl(r.title, r.category, r.imageUrl, true);
+}
+for (const r of AUTHENTIC_REGIONAL_RECIPES) {
+  r.imageUrl = getDishImageUrl(r.title, r.category, r.imageUrl, true);
+}
+
 export const mockRecipes: Recipe[] = [
   ...INITIAL_RECIPES,
   ...LEFTOVER_RECIPES,
@@ -2691,4 +2700,7 @@ export const mockRecipes: Recipe[] = [
   ...recipesDatabase,
   ...vietnameseDishesPart1,
   ...vietnameseDishesPart2
-];
+].map(r => ({
+  ...r,
+  imageUrl: getDishImageUrl(r.title, r.category, r.imageUrl, true)
+}));

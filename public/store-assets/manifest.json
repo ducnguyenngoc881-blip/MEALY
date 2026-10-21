@@ -1,0 +1,287 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2026-10-19T13:58:08.759Z",
+  "app": {
+    "name": "Mealy",
+    "fullName": "Mealy - Trợ Lý Mâm Cơm & Đi Chợ",
+    "bundleId": "vn.mealwise.app",
+    "developer": "MealWise Studio",
+    "version": "2.0.0",
+    "buildNumber": 200,
+    "category": "Ẩm thực & Bếp nhà"
+  },
+  "platforms": {
+    "ios": {
+      "storeName": "Apple App Store",
+      "category": "Ẩm thực & Bếp nhà",
+      "contentRating": "4+",
+      "rating": 4.9,
+      "ratingCount": 45200,
+      "price": "Miễn phí",
+      "specifications": {
+        "size": "18.5 MB",
+        "compatibility": "iOS & Android",
+        "languages": [
+          "Tiếng Việt"
+        ]
+      },
+      "icon": {
+        "path": "/store-assets/icons/app-icon-1024.png",
+        "width": 1024,
+        "height": 1024,
+        "format": "image/png",
+        "sizeBytes": 906496
+      },
+      "screenshots": [
+        {
+          "slide": 1,
+          "category": "MÂM CƠM HÔM NAY",
+          "headline": "Trợ lý thực đơn & mâm cơm gia đình",
+          "subtitle": "Tự động gợi ý bộ 3 món Mặn - Canh - Rau đủ chất, ngon miệng và tiết kiệm chi phí mỗi ngày.",
+          "badges": [
+            "Cân đối dinh dưỡng tự động",
+            "Tiết kiệm 45 phút chuẩn bị"
+          ],
+          "accentColor": "#4F46E5",
+          "path": "/store-assets/posters/poster-01-mam-com-3-mon.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 1579720,
+          "rawScreenPath": "/store-assets/raw-screens/01_screen_mam_com_3_mon.png",
+          "backdropUsed": "/store-assets/nano-bg-warm-kitchen.jpg"
+        },
+        {
+          "slide": 2,
+          "category": "THỰC ĐƠN CẢ TUẦN",
+          "headline": "Lên lịch 7 ngày trong 1 lần chạm",
+          "subtitle": "Tối ưu thực đơn theo khẩu vị vùng miền Bắc - Trung - Nam, không lo trùng món và kiểm soát trọn vẹn ngân sách.",
+          "badges": [
+            "0 ngày lo nghĩ thực đơn",
+            "Hơn 45.000+ đánh giá 5 sao"
+          ],
+          "accentColor": "#6366F1",
+          "path": "/store-assets/posters/poster-02-thuc-don-tuan.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 598770,
+          "rawScreenPath": "/store-assets/raw-screens/02_screen_thuc_don_tuan.png",
+          "backdropUsed": "/store-assets/nano-bg-fresh-market.jpg"
+        },
+        {
+          "slide": 3,
+          "category": "ĐI CHỢ THÔNG MINH",
+          "headline": "Đi chợ chung thời gian thực",
+          "subtitle": "Tự động gom nguyên liệu theo từng quầy hàng tại chợ, đồng bộ tức thì giỏ hàng giữa các thành viên.",
+          "badges": [
+            "Phòng mua chung trực tiếp",
+            "Tự động phân loại theo quầy"
+          ],
+          "accentColor": "#8B5CF6",
+          "path": "/store-assets/posters/poster-03-di-cho-chung.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 624433,
+          "rawScreenPath": "/store-assets/raw-screens/03_screen_di_cho_chung.png",
+          "backdropUsed": "/store-assets/nano-bg-fresh-market.jpg"
+        },
+        {
+          "slide": 4,
+          "category": "TỦ LẠNH THÔNG MINH",
+          "headline": "Nhắc hạn tủ lạnh thông minh",
+          "subtitle": "Quản lý hạn dùng thực phẩm, nhận cảnh báo trước khi ôi thiu và gợi ý món ngon vét sạch tủ lạnh.",
+          "badges": [
+            "Cảnh báo hạn dùng thông minh",
+            "Không bao giờ quên đồ trong tủ"
+          ],
+          "accentColor": "#7C3AED",
+          "path": "/store-assets/posters/poster-04-tu-lanh-thong-minh.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 602831,
+          "rawScreenPath": "/store-assets/raw-screens/04_screen_tu_lanh_thong_minh.png",
+          "backdropUsed": "/store-assets/nano-bg-smart-fridge.jpg"
+        },
+        {
+          "slide": 5,
+          "category": "CÔNG THỨC CHUẨN VỊ",
+          "headline": "Nấu ăn thảnh thơi từng bước chuẩn vị",
+          "subtitle": "Định lượng chính xác từng muỗng thìa, tự tay đánh dấu sơ chế và hẹn giờ thông minh ngay trên bếp.",
+          "badges": [
+            "Định lượng thìa muỗng chuẩn gia đình",
+            "Hẹn giờ nấu ăn thông minh"
+          ],
+          "accentColor": "#4F46E5",
+          "path": "/store-assets/posters/poster-05-cong-thuc-chuan-vi.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 1012140,
+          "rawScreenPath": "/store-assets/raw-screens/05_screen_so_tay_cong_thuc.png",
+          "backdropUsed": "/store-assets/nano-bg-warm-kitchen.jpg"
+        },
+        {
+          "slide": 6,
+          "category": "TIỆC VUI SUM VẦY",
+          "headline": "Trọn vẹn hương vị mâm cỗ sum vầy",
+          "subtitle": "Hơn 50 bộ thực đơn liên hoan, ẩm thực 3 miền và lưu trữ đồng bộ đám mây tức thì trên cả iOS và Android.",
+          "badges": [
+            "50+ thực đơn đãi tiệc phong phú",
+            "Đồng bộ iOS & Android tức thì"
+          ],
+          "accentColor": "#EC4899",
+          "path": "/store-assets/posters/poster-06-mam-co-tiec.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 864956,
+          "rawScreenPath": "/store-assets/raw-screens/06_screen_tiec_gia_dinh.png",
+          "backdropUsed": "/store-assets/nano-bg-family-feast.jpg"
+        }
+      ]
+    },
+    "android": {
+      "storeName": "Google Play",
+      "category": "Ẩm thực & Bếp nhà",
+      "contentRating": "4+",
+      "rating": 4.9,
+      "ratingCount": 45200,
+      "price": "Miễn phí",
+      "specifications": {
+        "size": "18.5 MB",
+        "compatibility": "iOS & Android",
+        "languages": [
+          "Tiếng Việt"
+        ]
+      },
+      "downloads": "500.000+",
+      "icon": {
+        "path": "/store-assets/icons/app-icon-512.png",
+        "width": 512,
+        "height": 512,
+        "format": "image/png",
+        "sizeBytes": 268129
+      },
+      "featureGraphic": {
+        "path": "/store-assets/feature-graphic/feature-graphic-1024x500.png",
+        "width": 1024,
+        "height": 500,
+        "format": "image/png",
+        "sizeBytes": 305793
+      },
+      "screenshots": [
+        {
+          "slide": 1,
+          "category": "MÂM CƠM HÔM NAY",
+          "headline": "Trợ lý thực đơn & mâm cơm gia đình",
+          "subtitle": "Tự động gợi ý bộ 3 món Mặn - Canh - Rau đủ chất, ngon miệng và tiết kiệm chi phí mỗi ngày.",
+          "badges": [
+            "Cân đối dinh dưỡng tự động",
+            "Tiết kiệm 45 phút chuẩn bị"
+          ],
+          "accentColor": "#4F46E5",
+          "path": "/store-assets/posters/poster-01-mam-com-3-mon.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 1579720,
+          "rawScreenPath": "/store-assets/raw-screens/01_screen_mam_com_3_mon.png",
+          "backdropUsed": "/store-assets/nano-bg-warm-kitchen.jpg"
+        },
+        {
+          "slide": 2,
+          "category": "THỰC ĐƠN CẢ TUẦN",
+          "headline": "Lên lịch 7 ngày trong 1 lần chạm",
+          "subtitle": "Tối ưu thực đơn theo khẩu vị vùng miền Bắc - Trung - Nam, không lo trùng món và kiểm soát trọn vẹn ngân sách.",
+          "badges": [
+            "0 ngày lo nghĩ thực đơn",
+            "Hơn 45.000+ đánh giá 5 sao"
+          ],
+          "accentColor": "#6366F1",
+          "path": "/store-assets/posters/poster-02-thuc-don-tuan.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 598770,
+          "rawScreenPath": "/store-assets/raw-screens/02_screen_thuc_don_tuan.png",
+          "backdropUsed": "/store-assets/nano-bg-fresh-market.jpg"
+        },
+        {
+          "slide": 3,
+          "category": "ĐI CHỢ THÔNG MINH",
+          "headline": "Đi chợ chung thời gian thực",
+          "subtitle": "Tự động gom nguyên liệu theo từng quầy hàng tại chợ, đồng bộ tức thì giỏ hàng giữa các thành viên.",
+          "badges": [
+            "Phòng mua chung trực tiếp",
+            "Tự động phân loại theo quầy"
+          ],
+          "accentColor": "#8B5CF6",
+          "path": "/store-assets/posters/poster-03-di-cho-chung.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 624433,
+          "rawScreenPath": "/store-assets/raw-screens/03_screen_di_cho_chung.png",
+          "backdropUsed": "/store-assets/nano-bg-fresh-market.jpg"
+        },
+        {
+          "slide": 4,
+          "category": "TỦ LẠNH THÔNG MINH",
+          "headline": "Nhắc hạn tủ lạnh thông minh",
+          "subtitle": "Quản lý hạn dùng thực phẩm, nhận cảnh báo trước khi ôi thiu và gợi ý món ngon vét sạch tủ lạnh.",
+          "badges": [
+            "Cảnh báo hạn dùng thông minh",
+            "Không bao giờ quên đồ trong tủ"
+          ],
+          "accentColor": "#7C3AED",
+          "path": "/store-assets/posters/poster-04-tu-lanh-thong-minh.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 602831,
+          "rawScreenPath": "/store-assets/raw-screens/04_screen_tu_lanh_thong_minh.png",
+          "backdropUsed": "/store-assets/nano-bg-smart-fridge.jpg"
+        },
+        {
+          "slide": 5,
+          "category": "CÔNG THỨC CHUẨN VỊ",
+          "headline": "Nấu ăn thảnh thơi từng bước chuẩn vị",
+          "subtitle": "Định lượng chính xác từng muỗng thìa, tự tay đánh dấu sơ chế và hẹn giờ thông minh ngay trên bếp.",
+          "badges": [
+            "Định lượng thìa muỗng chuẩn gia đình",
+            "Hẹn giờ nấu ăn thông minh"
+          ],
+          "accentColor": "#4F46E5",
+          "path": "/store-assets/posters/poster-05-cong-thuc-chuan-vi.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 1012140,
+          "rawScreenPath": "/store-assets/raw-screens/05_screen_so_tay_cong_thuc.png",
+          "backdropUsed": "/store-assets/nano-bg-warm-kitchen.jpg"
+        },
+        {
+          "slide": 6,
+          "category": "TIỆC VUI SUM VẦY",
+          "headline": "Trọn vẹn hương vị mâm cỗ sum vầy",
+          "subtitle": "Hơn 50 bộ thực đơn liên hoan, ẩm thực 3 miền và lưu trữ đồng bộ đám mây tức thì trên cả iOS và Android.",
+          "badges": [
+            "50+ thực đơn đãi tiệc phong phú",
+            "Đồng bộ iOS & Android tức thì"
+          ],
+          "accentColor": "#EC4899",
+          "path": "/store-assets/posters/poster-06-mam-co-tiec.png",
+          "width": 1290,
+          "height": 2796,
+          "format": "image/png",
+          "sizeBytes": 864956,
+          "rawScreenPath": "/store-assets/raw-screens/06_screen_tiec_gia_dinh.png",
+          "backdropUsed": "/store-assets/nano-bg-family-feast.jpg"
+        }
+      ]
+    }
+  }
+}

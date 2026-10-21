@@ -12,9 +12,11 @@ import {
   Sparkles, 
   PartyPopper, 
   ShoppingCart, 
-  AlertCircle
+  AlertCircle,
+  ShieldCheck
 } from 'lucide-react';
 import { MealyLogoMark } from './icons/MealWiseLogo';
+import { getMemberCodeForEmail, saveUserPartition } from '../services/userDatabase';
 
 export const AuthModal: React.FC = () => {
   const { 
@@ -31,8 +33,11 @@ export const AuthModal: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isAuthModalOpen) return null;
+
+  const previewMemberCode = email.trim() ? getMemberCodeForEmail(email.trim()) : null;
 
   const handleClose = () => {
     setEmailError(null);
@@ -44,7 +49,7 @@ export const AuthModal: React.FC = () => {
     setAuthModalMode(mode);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanEmail = email.trim();
     if (!cleanEmail) {
@@ -55,6 +60,49 @@ export const AuthModal: React.FC = () => {
 
     setEmailError(null);
     const displayName = name.trim() || cleanEmail.split('@')[0] || 'Thành Viên Mealy';
+    const isRegister = authModalMode === 'register';
+
+    if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+      setIsSubmitting(true);
+      try {
+        const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: displayName,
+            email: cleanEmail,
+            password: password.trim()
+          })
+        });
+        const data = await res.json().catch(() => null);
+        if (res.status === 401 && data?.error) {
+          setIsSubmitting(false);
+          setEmailError(data.error);
+          showToast(`⚠️ ${data.error}`, 'warning');
+          return;
+        }
+        if (data?.ok && data.user) {
+          if (data.user.id && data.partition) {
+            saveUserPartition(data.user.id, data.partition);
+          }
+          setIsSubmitting(false);
+          loginUser({
+            name: data.user.name || displayName,
+            email: cleanEmail
+          }, isRegister);
+          setName('');
+          setEmail('');
+          setPassword('');
+          setEmailError(null);
+          return;
+        }
+      } catch {
+        // Fallback to local offline-first registration/login if server is unreachable
+      }
+      setIsSubmitting(false);
+    }
+
     loginUser({
       name: displayName,
       email: cleanEmail
@@ -73,7 +121,7 @@ export const AuthModal: React.FC = () => {
       onClick={handleClose}
     >
       <div 
-        className="w-full max-w-md bg-white dark:bg-[#1A1918] rounded-3xl p-5 sm:p-6 shadow-2xl border border-[#E8E2D8] dark:border-[#252220] space-y-4 relative max-h-[92dvh] overflow-y-auto"
+        className="w-full max-w-md sm:max-w-lg bg-white dark:bg-[#1A1918] rounded-3xl p-5 sm:p-6 shadow-2xl border border-[#E8E2D8] dark:border-[#252220] space-y-4 relative max-h-[92dvh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -230,7 +278,7 @@ export const AuthModal: React.FC = () => {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Nhập mật khẩu của bạn"
+                placeholder="Nhập mật khẩu bảo vệ tài khoản"
                 className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white dark:bg-[#121110] border border-[#E8E2D8] dark:border-[#252220] text-stone-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20"
               />
               <button
@@ -245,17 +293,20 @@ export const AuthModal: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-3 px-4 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+            disabled={isSubmitting}
+            className="w-full py-3 px-4 rounded-2xl bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
           >
-            {authModalMode === 'register' ? (
+            {isSubmitting ? (
+              <span>Đang kết nối máy chủ Mealy...</span>
+            ) : authModalMode === 'register' ? (
               <>
                 <UserPlus className="w-4 h-4" />
-                <span>Hoàn Tất Đăng Ký & Mở Khóa</span>
+                <span>Hoàn Tất Đăng Ký & Lưu Lên Máy Chủ</span>
               </>
             ) : (
               <>
                 <UserCheck className="w-4 h-4" />
-                <span>Đăng Nhập Ngay</span>
+                <span>Đăng Nhập & Tải Dữ Liệu Cá Nhân</span>
               </>
             )}
           </button>

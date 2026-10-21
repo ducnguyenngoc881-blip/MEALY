@@ -103,13 +103,13 @@ const AppShell: React.FC = () => {
     );
   }
 
-  // PURE MOBILE APP SHELL (STRICTLY MOBILE PHONE CONTAINER)
+  // MOBILE & TABLET RESPONSIVE APP SHELL
   return (
     <div className="min-h-screen bg-[#F1F5F9] dark:bg-[#0B0E14] text-[#1E293B] dark:text-[#F8FAFC] font-sans selection:bg-[#2563EB] selection:text-white transition-colors duration-200">
-      {/* Mobile-first natural container: 100% on real phone, centered max-w-lg on desktop */}
-      <div className="w-full sm:max-w-md md:max-w-lg mx-auto min-h-[100dvh] bg-[#F8FAFC] dark:bg-[#12161F] shadow-2xl relative flex flex-col sm:border-x sm:border-[#E2E8F0] sm:dark:border-[#2D3748]">
+      {/* Mobile & Tablet natural container: 100% on phone & 768px tablet, centered max-w-4xl on large tablet/desktop */}
+      <div className="w-full sm:max-w-xl md:max-w-3xl lg:max-w-4xl mx-auto min-h-[100dvh] bg-[#F8FAFC] dark:bg-[#12161F] shadow-2xl relative flex flex-col sm:border-x sm:border-[#E2E8F0] sm:dark:border-[#2D3748]">
         <Navbar />
-        <main className="flex-1 px-3 sm:px-4 pt-3 pb-[76px]">
+        <main className="flex-1 px-3 sm:px-5 md:px-6 pt-3 md:pt-4 pb-[calc(84px+env(safe-area-inset-bottom,0px))]">
           <MainContent />
         </main>
         <Sidebar />

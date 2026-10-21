@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mealy — Official Logo & PNG Exporter Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --slate-bg: #12161F;
+      --slate-card: #171F2C;
+      --slate-border: #2D3748;
+      --cobalt: #255ED2;
+      --cobalt-hover: #1D4ED8;
+      --emerald: #18BA7F;
+      --white: #F8FAFC;
+      --muted: #94A3B8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--slate-bg);
+      color: var(--white);
+      padding: 40px 24px 80px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(37, 94, 210, 0.15);
+      border: 1px solid rgba(37, 94, 210, 0.4);
+      color: #60A5FA;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: var(--slate-card);
+      border: 1px solid var(--slate-border);
+      padding: 18px 24px;
+      border-radius: 16px;
+      margin-bottom: 32px;
+    }
+
+    .controls-bar label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #CBD5E1;
+    }
+
+    select {
+      background: #0F172A;
+      color: var(--white);
+      border: 1px solid var(--slate-border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--slate-card);
+      border: 1px solid var(--slate-border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .preview-box {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      border: 1px solid var(--slate-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Checkerboard for transparency preview */
+    .checkerboard {
+      background-color: #1E293B;
+      background-image:
+        linear-gradient(45deg, #0F172A 25%, transparent 25%),
+        linear-gradient(-45deg, #0F172A 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #0F172A 75%),
+        linear-gradient(-45deg, transparent 75%, #0F172A 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    }
+
+    .checkerboard-light {
+      background-color: #F8FAFC;
+      background-image:
+        linear-gradient(45deg, #E2E8F0 25%, transparent 25%),
+        linear-gradient(-45deg, #E2E8F0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #E2E8F0 75%),
+        linear-gradient(-45deg, transparent 75%, #E2E8F0 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    }
+
+    .preview-box svg {
+      width: 100%;
+      height: 100%;
+      max-width: 210px;
+      max-height: 210px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      flex: 1;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--cobalt);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: var(--cobalt-hover);
+    }
+
+    .btn-secondary {
+      background: #0F172A;
+      color: #E2E8F0;
+      border: 1px solid var(--slate-border);
+    }
+
+    .btn-secondary:hover {
+      border-color: #60A5FA;
+      color: #FFFFFF;
+    }
+
+    .palette-strip {
+      margin-top: 40px;
+      background: var(--slate-card);
+      border: 1px solid var(--slate-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .swatch-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .swatch-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Mealy Brand Identity — Style 33 Official Master
+      </div>
+      <h1>Mealy Logo &amp; PNG Exporter Studio</h1>
+      <p class="subtitle">
+        Chopsticks Lifting a Bold "M" Noodle Wave over a Ceramic Rice Bowl &amp; Fresh Emerald Herb Leaf. Click any button below to export high-resolution PNG or SVG files.
+      </p>
+    </header>
+
+    <div class="controls-bar">
+      <label for="pngSize">Select PNG Export Resolution:</label>
+      <select id="pngSize">
+        <option value="512">512 × 512 px (Standard Icon)</option>
+        <option value="1024" selected>1024 × 1024 px (App Store / Master HD)</option>
+        <option value="2048">2048 × 2048 px (2K Print / Retina)</option>
+        <option value="4096">4096 × 4096 px (4K Ultra Master)</option>
+        <option value="180">180 × 180 px (apple-touch-icon)</option>
+        <option value="64">64 × 64 px (Favicon)</option>
+      </select>
+    </div>
+
+    <div class="grid">
+      <!-- Variant 1: Squircle App Icon -->
+      <div class="card">
+        <div class="preview-box checkerboard">
+          <svg id="svg-squircle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" fill="none">
+            <rect x="0" y="0" width="1024" height="1024" rx="228" fill="#171F2C" />
+            <path d="M 672 248 C 668 172, 716 124, 796 126 C 802 204, 752 252, 672 248 Z" fill="#18BA7F" />
+            <g fill="#255ED2">
+              <path d="M 150 196 L 892 325 C 900 326.5, 903 333, 901 341 C 899 348, 892 351, 884 350 L 142 252 C 131 250.5, 125 241, 127 229 L 130 211 C 132 200, 140 194.5, 150 196 Z" />
+              <path d="M 140 310 L 552 345 L 538 386 L 136 369 C 125 368.5, 119 360, 120 348 L 122 326 C 123 315, 130 309, 140 310 Z" />
+              <path d="M 728 360 L 885 373 C 893 374, 897 380, 896 387 C 895 394, 889 398, 881 397 L 735 391 Z" />
+            </g>
+            <path d="M 292 694 L 310 520 C 316 456, 352 426, 400 426 C 448 426, 478 456, 492 522 L 510 604 C 513 617, 518 622, 524 622 C 530 622, 535 616, 538 598 L 562 424 C 572 350, 604 316, 652 316 C 700 316, 732 350, 740 426 L 756 694 L 682 694 L 668 430 C 665 392, 659 382, 650 382 C 641 382, 635 392, 630 430 L 606 604 C 596 666, 566 694, 520 694 C 474 694, 446 666, 434 606 L 416 520 C 411 495, 405 488, 397 488 C 389 488, 383 495, 380 522 L 366 694 Z" fill="#FFFFFF" />
+            <path d="M 168 520 C 175 520, 180 525, 182 534 C 208 708, 346 840, 524 840 C 702 840, 840 708, 866 534 C 868 525, 873 520, 880 520 C 887 520, 892 526, 891 536 C 872 708, 766 812, 686 850 L 678 874 C 674 888, 662 898, 646 898 L 402 898 C 386 898, 374 888, 370 874 L 362 850 C 282 812, 176 708, 157 536 C 156 526, 161 520, 168 520 Z" fill="#255ED2" />
+          </svg>
+        </div>
+        <div class="card-title">1. Squircle App Icon</div>
+        <div class="card-desc">Rounded iOS/Mobile squircle tile (#171F2C) with transparent outer corners. Ready for web, UI headers, and presentations.</div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="downloadPNG('svg-squircle', 'mealy-icon-squircle')">⬇ Download PNG</button>
+          <button class="btn btn-secondary" onclick="downloadSVG('svg-squircle', 'mealy-icon-squircle.svg')">SVG</button>
+        </div>
+      </div>
+
+      <!-- Variant 2: Transparent Mark Only (Dark Mode / White M) -->
+      <div class="card">
+        <div class="preview-box checkerboard">
+          <svg id="svg-mark-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" fill="none">
+            <path d="M 672 248 C 668 172, 716 124, 796 126 C 802 204, 752 252, 672 248 Z" fill="#18BA7F" />
+            <g fill="#255ED2">
+              <path d="M 150 196 L 892 325 C 900 326.5, 903 333, 901 341 C 899 348, 892 351, 884 350 L 142 252 C 131 250.5, 125 241, 127 229 L 130 211 C 132 200, 140 194.5, 150 196 Z" />
+              <path d="M 140 310 L 552 345 L 538 386 L 136 369 C 125 368.5, 119 360, 120 348 L 122 326 C 123 315, 130 309, 140 310 Z" />
+              <path d="M 728 360 L 885 373 C 893 374, 897 380, 896 387 C 895 394, 889 398, 881 397 L 735 391 Z" />
+            </g>
+            <path d="M 292 694 L 310 520 C 316 456, 352 426, 400 426 C 448 426, 478 456, 492 522 L 510 604 C 513 617, 518 622, 524 622 C 530 622, 535 616, 538 598 L 562 424 C 572 350, 604 316, 652 316 C 700 316, 732 350, 740 426 L 756 694 L 682 694 L 668 430 C 665 392, 659 382, 650 382 C 641 382, 635 392, 630 430 L 606 604 C 596 666, 566 694, 520 694 C 474 694, 446 666, 434 606 L 416 520 C 411 495, 405 488, 397 488 C 389 488, 383 495, 380 522 L 366 694 Z" fill="#FFFFFF" />
+            <path d="M 168 520 C 175 520, 180 525, 182 534 C 208 708, 346 840, 524 840 C 702 840, 840 708, 866 534 C 868 525, 873 520, 880 520 C 887 520, 892 526, 891 536 C 872 708, 766 812, 686 850 L 678 874 C 674 888, 662 898, 646 898 L 402 898 C 386 898, 374 888, 370 874 L 362 850 C 282 812, 176 708, 157 536 C 156 526, 161 520, 168 520 Z" fill="#255ED2" />
+          </svg>
+        </div>
+        <div class="card-title">2. Transparent Mark (White "M")</div>
+        <div class="card-desc">100% transparent background with no squircle box. Ideal for dark backgrounds, splash screens, and navbar badges.</div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="downloadPNG('svg-mark-dark', 'mealy-mark-transparent-white')">⬇ Download PNG</button>
+          <button class="btn btn-secondary" onclick="downloadSVG('svg-mark-dark', 'mealy-mark-transparent-white.svg')">SVG</button>
+        </div>
+      </div>
+
+      <!-- Variant 3: Transparent Mark Only (Light Mode / Slate M) -->
+      <div class="card">
+        <div class="preview-box checkerboard-light">
+          <svg id="svg-mark-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" fill="none">
+            <path d="M 672 248 C 668 172, 716 124, 796 126 C 802 204, 752 252, 672 248 Z" fill="#18BA7F" />
+            <g fill="#255ED2">
+              <path d="M 150 196 L 892 325 C 900 326.5, 903 333, 901 341 C 899 348, 892 351, 884 350 L 142 252 C 131 250.5, 125 241, 127 229 L 130 211 C 132 200, 140 194.5, 150 196 Z" />
+              <path d="M 140 310 L 552 345 L 538 386 L 136 369 C 125 368.5, 119 360, 120 348 L 122 326 C 123 315, 130 309, 140 310 Z" />
+              <path d="M 728 360 L 885 373 C 893 374, 897 380, 896 387 C 895 394, 889 398, 881 397 L 735 391 Z" />
+            </g>
+            <path d="M 292 694 L 310 520 C 316 456, 352 426, 400 426 C 448 426, 478 456, 492 522 L 510 604 C 513 617, 518 622, 524 622 C 530 622, 535 616, 538 598 L 562 424 C 572 350, 604 316, 652 316 C 700 316, 732 350, 740 426 L 756 694 L 682 694 L 668 430 C 665 392, 659 382, 650 382 C 641 382, 635 392, 630 430 L 606 604 C 596 666, 566 694, 520 694 C 474 694, 446 666, 434 606 L 416 520 C 411 495, 405 488, 397 488 C 389 488, 383 495, 380 522 L 366 694 Z" fill="#171F2C" />
+            <path d="M 168 520 C 175 520, 180 525, 182 534 C 208 708, 346 840, 524 840 C 702 840, 840 708, 866 534 C 868 525, 873 520, 880 520 C 887 520, 892 526, 891 536 C 872 708, 766 812, 686 850 L 678 874 C 674 888, 662 898, 646 898 L 402 898 C 386 898, 374 888, 370 874 L 362 850 C 282 812, 176 708, 157 536 C 156 526, 161 520, 168 520 Z" fill="#255ED2" />
+          </svg>
+        </div>
+        <div class="card-title">3. Transparent Mark (Light BG)</div>
+        <div class="card-desc">100% transparent background with Deep Slate (#171F2C) "M" noodle for use on white or light-mode surfaces.</div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="downloadPNG('svg-mark-light', 'mealy-mark-transparent-dark')">⬇ Download PNG</button>
+          <button class="btn btn-secondary" onclick="downloadSVG('svg-mark-light', 'mealy-mark-transparent-dark.svg')">SVG</button>
+        </div>
+      </div>
+
+      <!-- Variant 4: Full-Bleed Square App Store Icon -->
+      <div class="card">
+        <div class="preview-box checkerboard">
+          <svg id="svg-fullbleed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" fill="none">
+            <rect x="0" y="0" width="1024" height="1024" fill="#171F2C" />
+            <path d="M 672 248 C 668 172, 716 124, 796 126 C 802 204, 752 252, 672 248 Z" fill="#18BA7F" />
+            <g fill="#255ED2">
+              <path d="M 150 196 L 892 325 C 900 326.5, 903 333, 901 341 C 899 348, 892 351, 884 350 L 142 252 C 131 250.5, 125 241, 127 229 L 130 211 C 132 200, 140 194.5, 150 196 Z" />
+              <path d="M 140 310 L 552 345 L 538 386 L 136 369 C 125 368.5, 119 360, 120 348 L 122 326 C 123 315, 130 309, 140 310 Z" />
+              <path d="M 728 360 L 885 373 C 893 374, 897 380, 896 387 C 895 394, 889 398, 881 397 L 735 391 Z" />
+            </g>
+            <path d="M 292 694 L 310 520 C 316 456, 352 426, 400 426 C 448 426, 478 456, 492 522 L 510 604 C 513 617, 518 622, 524 622 C 530 622, 535 616, 538 598 L 562 424 C 572 350, 604 316, 652 316 C 700 316, 732 350, 740 426 L 756 694 L 682 694 L 668 430 C 665 392, 659 382, 650 382 C 641 382, 635 392, 630 430 L 606 604 C 596 666, 566 694, 520 694 C 474 694, 446 666, 434 606 L 416 520 C 411 495, 405 488, 397 488 C 389 488, 383 495, 380 522 L 366 694 Z" fill="#FFFFFF" />
+            <path d="M 168 520 C 175 520, 180 525, 182 534 C 208 708, 346 840, 524 840 C 702 840, 840 708, 866 534 C 868 525, 873 520, 880 520 C 887 520, 892 526, 891 536 C 872 708, 766 812, 686 850 L 678 874 C 674 888, 662 898, 646 898 L 402 898 C 386 898, 374 888, 370 874 L 362 850 C 282 812, 176 708, 157 536 C 156 526, 161 520, 168 520 Z" fill="#255ED2" />
+          </svg>
+        </div>
+        <div class="card-title">4. App Store Full-Bleed Square</div>
+        <div class="card-desc">Full square (#171F2C) without pre-cut corners — required by Apple App Store &amp; Google Play Store (where the OS masks the corners).</div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="downloadPNG('svg-fullbleed', 'mealy-icon-appstore-fullbleed')">⬇ Download PNG</button>
+          <button class="btn btn-secondary" onclick="downloadSVG('svg-fullbleed', 'mealy-icon-appstore-fullbleed.svg')">SVG</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-strip">
+      <div style="font-weight: 800; font-size: 14px;">Official Mealy Icon Color Tokens:</div>
+      <div class="swatch-list">
+        <div class="swatch">
+          <span class="swatch-box" style="background: #171F2C;"></span>
+          <span>Deep Slate Tile <code>#171F2C</code></span>
+        </div>
+        <div class="swatch">
+          <span class="swatch-box" style="background: #255ED2;"></span>
+          <span>Royal Cobalt Bowl &amp; Chopsticks <code>#255ED2</code></span>
+        </div>
+        <div class="swatch">
+          <span class="swatch-box" style="background: #FFFFFF;"></span>
+          <span>Pure Matte White "M" Noodle <code>#FFFFFF</code></span>
+        </div>
+        <div class="swatch">
+          <span class="swatch-box" style="background: #18BA7F;"></span>
+          <span>Fresh GN Emerald Leaf <code>#18BA7F</code></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function downloadSVG(svgId, filename) {
+      const svgEl = document.getElementById(svgId);
+      const serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svgEl);
+      if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+      }
+      const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadPNG(svgId, baseFilename) {
+      const size = parseInt(document.getElementById('pngSize').value, 10) || 1024;
+      const svgEl = document.getElementById(svgId);
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(svgEl);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      const img = new Image();
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, size, size);
+        ctx.drawImage(img, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+
+        canvas.toBlob(function (pngBlob) {
+          const pngUrl = URL.createObjectURL(pngBlob);
+          const a = document.createElement('a');
+          a.href = pngUrl;
+          a.download = `${baseFilename}-${size}x${size}.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(pngUrl);
+        }, 'image/png');
+      };
+      img.src = url;
+    }
+  </script>
+</body>
+</html>

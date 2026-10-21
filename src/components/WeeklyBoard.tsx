@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { matchesSearchTerm, matchesMealSetSearch, matchesRecipeSearch, isHotpotOrFeast } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
+import { hasUserProvidedRecipeImage } from '../utils/dishImageResolver';
 import { roundToThousand, scaleCost, getDailyBudgetTarget } from '../utils/currency';
 import { estimateRecipeProtein, estimateMealSetProtein, calculateGymProteinTarget } from '../utils/nutritionMath';
 import { decomposeBundledIngredients, normalizeIngredientUnitAndAmount, isCommonPantryStaple, isGroceryItemMatch } from '../utils/ingredientNormalizer';
@@ -1280,59 +1281,17 @@ export const WeeklyBoard: React.FC = () => {
 
                   {/* 3 Dishes Details */}
                   <div className="space-y-1.5 text-[11px] text-stone-700 dark:text-stone-300">
-                    <div className="flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
-                        <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).mainDish.title}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSwapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'mainDish');
-                        }}
-                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                        title="Đổi riêng món mặn này"
-                      >
-                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                        <span>Đổi</span>
-                      </button>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
+                      <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).mainDish.title.replace(/^Mâm Cơm[:\s-]+/i, '').trim()}</span>
                     </div>
-                    <div className="flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
-                        <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).soupDish.title}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSwapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'soupDish');
-                        }}
-                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                        title="Đổi riêng món canh này"
-                      >
-                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                        <span>Đổi</span>
-                      </button>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
+                      <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).soupDish.title}</span>
                     </div>
-                    <div className="flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
-                        <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).sideDish.title}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSwapDishInWeeklySlot(activeDay.dayId, 'breakfast', 'sideDish');
-                        }}
-                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                        title="Đổi riêng món rau này"
-                      >
-                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                        <span>Đổi</span>
-                      </button>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
+                      <span className="truncate text-stone-800 dark:text-stone-200">{(activeDay.meals.breakfast as VietnameseMealSet).sideDish.title}</span>
                     </div>
                   </div>
 
@@ -1350,13 +1309,15 @@ export const WeeklyBoard: React.FC = () => {
                   className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <SafeImage 
-                      src={(activeDay.meals.breakfast as Recipe).imageUrl} 
-                      alt={(activeDay.meals.breakfast as Recipe).title} 
-                      fallbackTitle={(activeDay.meals.breakfast as Recipe).title}
-                      category="Bữa Sáng"
-                      className="w-11 h-11 rounded-lg object-cover shrink-0"
-                    />
+                    {hasUserProvidedRecipeImage(activeDay.meals.breakfast as Recipe) && (
+                      <SafeImage 
+                        src={(activeDay.meals.breakfast as Recipe).imageUrl} 
+                        alt={(activeDay.meals.breakfast as Recipe).title} 
+                        fallbackTitle={(activeDay.meals.breakfast as Recipe).title}
+                        category="Bữa Sáng"
+                        className="w-11 h-11 rounded-lg object-cover shrink-0"
+                      />
+                    )}
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                         {(activeDay.meals.breakfast as Recipe).title}
@@ -1385,7 +1346,7 @@ export const WeeklyBoard: React.FC = () => {
             const isWkday = ['mon', 'tue', 'wed', 'thu', 'fri'].includes(activeDay.dayId);
             const isUserSkipLunch = onboardingData?.weekdayLunchRoutine === 'ban-tru-di-lam' || onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong';
             const hasMeal = Boolean(activeDay.meals.lunch);
-            const isBantruSlot = activeDay.skippedSlots?.lunch === true || (isUserSkipLunch && isWkday && (!hasMeal || activeDay.skippedSlots?.lunch !== false));
+            const isBantruSlot = activeDay.skippedSlots?.lunch === true || (totalWeeklyMeals > 0 && isUserSkipLunch && isWkday && (!hasMeal || activeDay.skippedSlots?.lunch !== false));
             const isLunchRevealed = Boolean(revealedLunchDays[activeDay.dayId]);
             const shouldShowBantruCompact = isBantruSlot && (!hasMeal || !isLunchRevealed);
             const routineIcon = onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong' ? '🍱' : '🏫';
@@ -1519,61 +1480,19 @@ export const WeeklyBoard: React.FC = () => {
 
                       {/* 3 Dishes Details */}
                       <div className="space-y-1.5 text-[11px] text-stone-700 dark:text-stone-300">
-                        <div className="flex items-center justify-between gap-1.5">
-                          <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                            <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
-                            <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.mainDish.title}</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleSwapDishInWeeklySlot(activeDay.dayId, 'lunch', 'mainDish');
-                            }}
-                            className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                            title="Đổi riêng món mặn này (luôn chuẩn ngân sách)"
-                          >
-                            <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                            <span>Đổi</span>
-                          </button>
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
+                          <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.mainDish.title.replace(/^Mâm Cơm[:\s-]+/i, '').trim()}</span>
                         </div>
 
-                        <div className="flex items-center justify-between gap-1.5">
-                          <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                            <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
-                            <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.soupDish.title}</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleSwapDishInWeeklySlot(activeDay.dayId, 'lunch', 'soupDish');
-                            }}
-                            className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                            title="Đổi riêng món canh này (luôn chuẩn ngân sách)"
-                          >
-                            <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                            <span>Đổi</span>
-                          </button>
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
+                          <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.soupDish.title}</span>
                         </div>
 
-                        <div className="flex items-center justify-between gap-1.5">
-                          <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                            <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
-                            <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.sideDish.title}</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleSwapDishInWeeklySlot(activeDay.dayId, 'lunch', 'sideDish');
-                            }}
-                            className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                            title="Đổi riêng món rau này (luôn chuẩn ngân sách)"
-                          >
-                            <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                            <span>Đổi</span>
-                          </button>
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
+                          <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.lunch.sideDish.title}</span>
                         </div>
                       </div>
 
@@ -1607,13 +1526,15 @@ export const WeeklyBoard: React.FC = () => {
                         className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
                       >
                       <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <SafeImage 
-                          src={(activeDay.meals.lunch as Recipe).imageUrl} 
-                          alt={(activeDay.meals.lunch as Recipe).title} 
-                          fallbackTitle={(activeDay.meals.lunch as Recipe).title}
-                          category="Bữa Trưa"
-                          className="w-11 h-11 rounded-lg object-cover shrink-0"
-                        />
+                        {hasUserProvidedRecipeImage(activeDay.meals.lunch as Recipe) && (
+                          <SafeImage 
+                            src={(activeDay.meals.lunch as Recipe).imageUrl} 
+                            alt={(activeDay.meals.lunch as Recipe).title} 
+                            fallbackTitle={(activeDay.meals.lunch as Recipe).title}
+                            category="Bữa Trưa"
+                            className="w-11 h-11 rounded-lg object-cover shrink-0"
+                          />
+                        )}
                         <div className="min-w-0 flex-1">
                           <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                             {(activeDay.meals.lunch as Recipe).title}
@@ -1691,59 +1612,17 @@ export const WeeklyBoard: React.FC = () => {
 
                   {/* 3 Dishes Details */}
                   <div className="space-y-1.5 text-[11px] text-stone-700 dark:text-stone-300">
-                    <div className="flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
-                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.mainDish.title}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSwapDishInWeeklySlot(activeDay.dayId, 'dinner', 'mainDish');
-                        }}
-                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                        title="Đổi riêng món mặn này"
-                      >
-                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                        <span>Đổi</span>
-                      </button>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/40">Mặn</span>
+                      <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.mainDish.title.replace(/^Mâm Cơm[:\s-]+/i, '').trim()}</span>
                     </div>
-                    <div className="flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
-                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.soupDish.title}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSwapDishInWeeklySlot(activeDay.dayId, 'dinner', 'soupDish');
-                        }}
-                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                        title="Đổi riêng món canh này"
-                      >
-                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                        <span>Đổi</span>
-                      </button>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-900/40">Canh</span>
+                      <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.soupDish.title}</span>
                     </div>
-                    <div className="flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                        <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
-                        <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.sideDish.title}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSwapDishInWeeklySlot(activeDay.dayId, 'dinner', 'sideDish');
-                        }}
-                        className="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 hover:text-stone-900 dark:bg-stone-800/80 dark:text-stone-400 dark:hover:text-stone-200 text-[10px] font-bold flex items-center gap-0.5 shrink-0 border border-stone-200/60 dark:border-stone-700/60 transition-colors"
-                        title="Đổi riêng món rau này"
-                      >
-                        <RefreshCw className="w-2.5 h-2.5 shrink-0" />
-                        <span>Đổi</span>
-                      </button>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="w-14 shrink-0 font-extrabold text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/40">Rau</span>
+                      <span className="truncate text-stone-800 dark:text-stone-200">{activeDay.meals.dinner.sideDish.title}</span>
                     </div>
                   </div>
 
@@ -1761,13 +1640,15 @@ export const WeeklyBoard: React.FC = () => {
                   className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <SafeImage 
-                      src={(activeDay.meals.dinner as Recipe).imageUrl} 
-                      alt={(activeDay.meals.dinner as Recipe).title} 
-                      fallbackTitle={(activeDay.meals.dinner as Recipe).title}
-                      category="Bữa Tối"
-                      className="w-11 h-11 rounded-lg object-cover shrink-0"
-                    />
+                    {hasUserProvidedRecipeImage(activeDay.meals.dinner as Recipe) && (
+                      <SafeImage 
+                        src={(activeDay.meals.dinner as Recipe).imageUrl} 
+                        alt={(activeDay.meals.dinner as Recipe).title} 
+                        fallbackTitle={(activeDay.meals.dinner as Recipe).title}
+                        category="Bữa Tối"
+                        className="w-11 h-11 rounded-lg object-cover shrink-0"
+                      />
+                    )}
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                         {(activeDay.meals.dinner as Recipe).title}
@@ -1827,13 +1708,15 @@ export const WeeklyBoard: React.FC = () => {
                 className="p-2.5 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 cursor-pointer flex items-center justify-between gap-3 shadow-xs transition-all"
               >
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <SafeImage 
-                    src={(activeDay.meals.snack as Recipe).imageUrl} 
-                    alt={(activeDay.meals.snack as Recipe).title} 
-                    fallbackTitle={(activeDay.meals.snack as Recipe).title}
-                    category="Tráng Miệng"
-                    className="w-11 h-11 rounded-lg object-cover shrink-0"
-                  />
+                  {hasUserProvidedRecipeImage(activeDay.meals.snack as Recipe) && (
+                    <SafeImage 
+                      src={(activeDay.meals.snack as Recipe).imageUrl} 
+                      alt={(activeDay.meals.snack as Recipe).title} 
+                      fallbackTitle={(activeDay.meals.snack as Recipe).title}
+                      category="Tráng Miệng"
+                      className="w-11 h-11 rounded-lg object-cover shrink-0"
+                    />
+                  )}
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-extrabold text-stone-900 dark:text-white leading-tight truncate">
                       {(activeDay.meals.snack as Recipe).title}
@@ -1846,7 +1729,7 @@ export const WeeklyBoard: React.FC = () => {
                 <ChevronRight className="w-4 h-4 text-stone-400 shrink-0" />
               </div>
             </div>
-          ) : (
+          ) : totalWeeklyMeals > 0 ? (
             <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0 flex-1">
@@ -1967,7 +1850,7 @@ export const WeeklyBoard: React.FC = () => {
                 })}
               </div>
             </div>
-          )}
+          ) : null}
 
         </div>
 
@@ -2048,7 +1931,7 @@ export const WeeklyBoard: React.FC = () => {
                 transform: pickerDragY > 0 ? `translateY(${pickerDragY}px)` : undefined,
                 transition: pickerDragY === 0 ? 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
               }}
-              className="w-full max-w-lg bg-white dark:bg-[#1A1918] rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col animate-slide-up border-t border-[#E8E2D8] dark:border-[#252220]"
+              className="w-full sm:max-w-xl md:max-w-3xl lg:max-w-4xl bg-white dark:bg-[#1A1918] rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col animate-slide-up border-t border-[#E8E2D8] dark:border-[#252220]"
             >
               {/* Swipe Handle Bar & Drag Zone */}
               <div 
@@ -2184,7 +2067,7 @@ export const WeeklyBoard: React.FC = () => {
               </div>
 
               {/* Scrollable list of items with diacritic-insensitive search */}
-              <div className="overflow-y-auto p-3 space-y-2 flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
+              <div className="overflow-y-auto p-3 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-2.5 content-start flex-1 pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
                 {showMealSetsTab && pickerTab === 'meal-sets' ? (
                   filteredMealSets.length === 0 ? (
                     onlyWithinBudget && availableBudgetRoom > 0 && affordableMealSets.length === 0 ? (
@@ -2340,7 +2223,7 @@ export const WeeklyBoard: React.FC = () => {
           >
             <div 
               onClick={(e) => e.stopPropagation()}
-              className="w-full sm:max-w-md bg-white dark:bg-[#1E1C1A] rounded-t-3xl sm:rounded-3xl border border-stone-200 dark:border-stone-800 p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto"
+              className="w-full sm:max-w-lg md:max-w-xl bg-white dark:bg-[#1E1C1A] rounded-t-3xl sm:rounded-3xl border border-stone-200 dark:border-stone-800 p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto"
             >
               {/* Header */}
               <div className="flex items-start justify-between gap-3">
@@ -2448,7 +2331,7 @@ export const WeeklyBoard: React.FC = () => {
           onClick={() => setIsCurrentWeekendPeekOpen(false)}
         >
           <div
-            className="w-full max-w-md max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col"
+            className="w-full max-w-md sm:max-w-lg md:max-w-2xl max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 bg-emerald-50/60 dark:bg-emerald-950/30">
@@ -2559,7 +2442,7 @@ export const WeeklyBoard: React.FC = () => {
           onClick={() => setIsPreviousPlanModalOpen(false)}
         >
           <div
-            className="w-full max-w-md max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col"
+            className="w-full max-w-md sm:max-w-lg md:max-w-2xl max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 bg-amber-50/70 dark:bg-amber-950/30">

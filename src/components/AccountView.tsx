@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useMealWise } from '../context/MealWiseContext';
-import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock, LayoutDashboard, ArrowRight, Gamepad2, ShoppingCart, PartyPopper, ChevronRight, HelpCircle } from 'lucide-react';
+import { User, RotateCcw, Sun, Moon, CheckCircle2, PlayCircle, UserPlus, LogOut, ShieldCheck, Sparkles, KeyRound, Mail, UserCheck, Eye, EyeOff, X, Clock, Tv, Lock, LayoutDashboard, ArrowRight, Gamepad2, ShoppingCart, PartyPopper, ChevronRight, HelpCircle, RefreshCw, Smartphone } from 'lucide-react';
 import { VolunteerAdSequenceModal } from './VolunteerAdSequenceModal';
 import { getDailyBudgetTarget } from '../utils/currency';
+import { getMemberCodeForEmail, syncAccountPartitionWithServer } from '../services/userDatabase';
 import { 
   loadAdTrackingState, 
   recordVolunteerAdWatched, 
@@ -221,10 +222,54 @@ export const AccountView: React.FC = () => {
     setActiveTab,
     openMinigameHub,
     startTutorial,
-    openWelcomeModal
+    openWelcomeModal,
+    weeklyPlan,
+    pantryItems
   } = useMealWise();
   const [isAdSequenceOpen, setIsAdSequenceOpen] = useState(false);
+  const [isSyncingServer, setIsSyncingServer] = useState(false);
+  const [lastSyncedLabel, setLastSyncedLabel] = useState<string>('Vừa xong');
   const isLight = theme === 'light';
+
+  const memberCode = user?.email ? (user.memberCode || getMemberCodeForEmail(user.email)) : null;
+
+  // Count how many meals are in the user's personal weekly plan
+  const savedMealsCount = React.useMemo(() => {
+    if (!weeklyPlan || typeof weeklyPlan !== 'object') return 0;
+    let total = 0;
+    Object.values(weeklyPlan).forEach((daySlots: any) => {
+      if (daySlots && typeof daySlots === 'object') {
+        ['breakfast', 'lunch', 'dinner'].forEach((slot) => {
+          const val = daySlots[slot];
+          if (Array.isArray(val)) total += val.length;
+          else if (val) total += 1;
+        });
+      }
+    });
+    return total;
+  }, [weeklyPlan]);
+
+  const handleManualServerSync = async () => {
+    if (!user?.email || isSyncingServer) return;
+    setIsSyncingServer(true);
+    try {
+      const ok = await syncAccountPartitionWithServer(user.email, {
+        weeklyPlan,
+        pantryItems,
+        onboardingData,
+        name: user.name
+      });
+      if (ok) {
+        const now = new Date();
+        setLastSyncedLabel(`${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`);
+        showToast(`Đã lưu dữ liệu tài khoản #${memberCode} lên máy chủ Mealy!`, 'success');
+      } else {
+        showToast('Đã lưu dữ liệu vào bộ nhớ bảo mật trên thiết bị', 'info');
+      }
+    } finally {
+      setIsSyncingServer(false);
+    }
+  };
 
   // Volunteer Ads & Ad-Free Tracking State
   const [adTracking, setAdTracking] = useState<AdTrackingState>(loadAdTrackingState);
@@ -247,65 +292,65 @@ export const AccountView: React.FC = () => {
   return (
     <div className="space-y-3 max-w-3xl mx-auto">
       
-      {/* Profile Header */}
-      <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shadow-2xs shrink-0">
-            <User className="w-5 h-5 text-slate-700 dark:text-slate-300" />
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <h1 className="text-base font-black text-slate-900 dark:text-white truncate">
-                {user?.name || 'Tài Khoản Khách'}
-              </h1>
+      {/* Profile Header & Personal Account Verification Card */}
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center shadow-2xs shrink-0 ${
+              isRegistered
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60'
+                : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700'
+            }`}>
               {isRegistered ? (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Đã Đăng Ký
-                </span>
+                <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               ) : (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
-                  <Lock className="w-3 h-3 text-slate-500" /> Khách
-                </span>
+                <User className="w-5 h-5 text-slate-700 dark:text-slate-300" />
               )}
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium truncate">
-              {user?.email 
-                ? `${user.email}` 
-                : `Phiên dùng thử (${guestSession?.guestId.slice(0, 10) || 'guest'}...)`}
-            </p>
-          </div>
-        </div>
 
-        {/* Sign In / Sign Up Button in Header */}
-        {isRegistered ? (
-          <button
-            type="button"
-            onClick={() => {
-              openConfirmModal({
-                title: 'Đăng Xuất Tài Khoản',
-                message: 'Bạn có chắc chắn muốn đăng xuất? Thiết bị này sẽ chuyển về chế độ khách.',
-                confirmLabel: 'Đăng Xuất',
-                cancelLabel: 'Hủy',
-                onConfirm: logoutUser
-              });
-            }}
-            className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 font-bold text-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
-          >
-            <LogOut className="w-3.5 h-3.5 shrink-0" />
-            <span>Đăng Xuất</span>
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => openAuthModal('register')}
-            title="Đăng Nhập / Đăng Ký"
-            className="px-3.5 py-2 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
-          >
-            <UserPlus className="w-3.5 h-3.5 shrink-0" />
-            <span>Đăng Nhập</span>
-          </button>
-        )}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <h1 className="text-base font-black text-slate-900 dark:text-white truncate">
+                  {user?.name || 'Tài Khoản Khách'}
+                </h1>
+                {isRegistered ? (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Tài Khoản Chính Chủ
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
+                    <Lock className="w-3 h-3 text-slate-500" /> Khách
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium truncate">
+                {user?.email 
+                  ? `${user.email}` 
+                  : `Phiên dùng thử (${guestSession?.guestId.slice(0, 10) || 'guest'}...)`}
+              </p>
+            </div>
+          </div>
+
+          {/* Sign Out Button in Header (only when registered; Sign Up / Login is in top Navbar) */}
+          {isRegistered && (
+            <button
+              type="button"
+              onClick={() => {
+                openConfirmModal({
+                  title: 'Đăng Xuất Tài Khoản',
+                  message: 'Bạn có chắc chắn muốn đăng xuất? Dữ liệu thực đơn và tủ lạnh của bạn đã được lưu an toàn trên máy chủ.',
+                  confirmLabel: 'Đăng Xuất',
+                  cancelLabel: 'Hủy',
+                  onConfirm: logoutUser
+                });
+              }}
+              className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 font-bold text-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+            >
+              <LogOut className="w-3.5 h-3.5 shrink-0" />
+              <span>Đăng Xuất</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Admin Portal Gateway for Administrator Account */}
@@ -444,8 +489,122 @@ export const AccountView: React.FC = () => {
         </button>
       </div>
 
-      {/* Preferences Overview for Members vs Locked Features Showcase for Guests */}
-      {!isRegistered ? (
+      {/* Preferences Overview + Quick Actions Card for both Guests and Registered Users */}
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+          <h2 className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+            Cấu Hình & Hướng Dẫn
+          </h2>
+          <span className="text-[10.5px] text-slate-400 font-medium">
+            Tùy chỉnh nhanh
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+            <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Khẩu vị vùng miền</span>
+            <p className="text-xs font-extrabold text-emerald-700 dark:text-emerald-400 mt-0.5 truncate">
+              {onboardingData.regionPreference === 'bac' && 'Miền Bắc'}
+              {onboardingData.regionPreference === 'nam' && 'Miền Nam'}
+              {onboardingData.regionPreference === 'trung' && 'Miền Trung'}
+              {onboardingData.regionPreference === 'toan-quoc' && 'Đa Dạng 3 Miền'}
+            </p>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+            <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Khẩu phần gia đình</span>
+            <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
+              {onboardingData.familySize === 1 
+                ? (onboardingData.singleMealFormat === 'meal-set' ? '1 người (Mâm 3 món)' : '1 người (Món đơn)') 
+                : `${onboardingData.familySize} người ăn`}
+            </p>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+            <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">LỊCH BỮA TRƯA NGÀY THƯỜNG</span>
+            <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
+              {onboardingData.weekdayLunchRoutine === 'nau-ca-ngay'
+                ? '🏠 Nấu đủ cả ngày'
+                : onboardingData.weekdayLunchRoutine === 'hop-com-van-phong'
+                ? '🍱 Mang cơm hộp văn phòng'
+                : '🏫 Bán trú & Đi làm (T2 - T6 ăn ngoài)'}
+            </p>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+            <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Ngân sách ngày</span>
+            <p className="text-xs font-extrabold text-amber-700 dark:text-amber-400 mt-0.5 truncate">
+              {onboardingData.budgetLevel === 'tiet-kiem' && `Tiết kiệm (~${(getDailyBudgetTarget('tiet-kiem', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
+              {onboardingData.budgetLevel === 'vua-phai' && `Vừa phải (~${(getDailyBudgetTarget('vua-phai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
+              {onboardingData.budgetLevel === 'thoai-mai' && `Thoải mái (~${(getDailyBudgetTarget('thoai-mai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
+            </p>
+          </div>
+        </div>
+
+        {onboardingData.specialNeeds && onboardingData.specialNeeds.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
+            {onboardingData.specialNeeds.map(need => {
+              const labelMap: Record<string, string> = {
+                'gym-protein': '🏋️ Tập Gym / Giàu Đạm',
+                'eat-clean': '🥗 Eat Clean / Ăn Healthy',
+                'western-food': '🥩 Món Âu / Kiểu Tây',
+                'single-prep': '🍱 Meal Prep 1 Người',
+                'nhieu-rau': 'Nhiều rau xanh',
+                'it-cay': 'Ít cay / Không ớt',
+                'chay': 'Mâm cơm ăn chay',
+                'nhanh-gon': 'Nấu nhanh < 30 phút'
+              };
+              return (
+                <span
+                  key={need}
+                  className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10.5px] font-bold flex items-center gap-1"
+                >
+                  <CheckCircle2 className="w-3 h-3 text-[#1D4ED8] dark:text-blue-400" />
+                  <span>{labelMap[need] || need}</span>
+                </span>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Compact Side-by-Side Action Buttons for Onboarding Reset & Tutorial Replay */}
+        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+          <button
+            type="button"
+            onClick={resetOnboarding}
+            className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            title="Xem Lại Khảo Sát Khẩu Vị"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="truncate">Đổi Khẩu Vị</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={startTutorial}
+            className="py-2 px-2.5 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs shadow-2xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            title="Xem Lại Hướng Dẫn"
+          >
+            <HelpCircle className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">Hướng Dẫn</span>
+          </button>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            onClick={openWelcomeModal}
+            title="Giới Thiệu Ứng Dụng"
+            className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
+            <span>Giới Thiệu Ứng Dụng</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Locked Features Showcase for Guests */}
+      {!isRegistered && (
         <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -500,130 +659,6 @@ export const AccountView: React.FC = () => {
               </button>
             </div>
           </div>
-
-          <div className="pt-1 border-t border-slate-100 dark:border-slate-800">
-            <button
-              type="button"
-              onClick={openWelcomeModal}
-              title="Giới Thiệu Ứng Dụng"
-              className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
-              <span>Giới Thiệu Ứng Dụng</span>
-            </button>
-          </div>
-        </div>
-      ) : (
-        /* Compact Preferences + Quick Actions Card for Registered Users */
-        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
-          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
-            <h2 className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              Cấu Hình & Hướng Dẫn
-            </h2>
-            <span className="text-[10.5px] text-slate-400 font-medium">
-              Tùy chỉnh nhanh
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
-              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Khẩu vị vùng miền</span>
-              <p className="text-xs font-extrabold text-emerald-700 dark:text-emerald-400 mt-0.5 truncate">
-                {onboardingData.regionPreference === 'bac' && 'Miền Bắc'}
-                {onboardingData.regionPreference === 'nam' && 'Miền Nam'}
-                {onboardingData.regionPreference === 'trung' && 'Miền Trung'}
-                {onboardingData.regionPreference === 'toan-quoc' && 'Đa Dạng 3 Miền'}
-              </p>
-            </div>
-
-            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
-              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Khẩu phần gia đình</span>
-              <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
-                {onboardingData.familySize === 1 
-                  ? (onboardingData.singleMealFormat === 'meal-set' ? '1 người (Mâm 3 món)' : '1 người (Món đơn)') 
-                  : `${onboardingData.familySize} người ăn`}
-              </p>
-            </div>
-
-            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
-              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">LỊCH BỮA TRƯA NGÀY THƯỜNG</span>
-              <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
-                {onboardingData.weekdayLunchRoutine === 'nau-ca-ngay'
-                  ? '🏠 Nấu đủ cả ngày'
-                  : onboardingData.weekdayLunchRoutine === 'hop-com-van-phong'
-                  ? '🍱 Mang cơm hộp văn phòng'
-                  : '🏫 Bán trú & Đi làm (T2 - T6 ăn ngoài)'}
-              </p>
-            </div>
-
-            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
-              <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Ngân sách ngày</span>
-              <p className="text-xs font-extrabold text-amber-700 dark:text-amber-400 mt-0.5 truncate">
-                {onboardingData.budgetLevel === 'tiet-kiem' && `Tiết kiệm (~${(getDailyBudgetTarget('tiet-kiem', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
-                {onboardingData.budgetLevel === 'vua-phai' && `Vừa phải (~${(getDailyBudgetTarget('vua-phai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
-                {onboardingData.budgetLevel === 'thoai-mai' && `Thoải mái (~${(getDailyBudgetTarget('thoai-mai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
-              </p>
-            </div>
-          </div>
-
-          {onboardingData.specialNeeds && onboardingData.specialNeeds.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 pt-0.5">
-              {onboardingData.specialNeeds.map(need => {
-                const labelMap: Record<string, string> = {
-                  'gym-protein': '🏋️ Tập Gym / Giàu Đạm',
-                  'eat-clean': '🥗 Eat Clean / Ăn Healthy',
-                  'western-food': '🥩 Món Âu / Kiểu Tây',
-                  'single-prep': '🍱 Meal Prep 1 Người',
-                  'nhieu-rau': 'Nhiều rau xanh',
-                  'it-cay': 'Ít cay / Không ớt',
-                  'chay': 'Mâm cơm ăn chay',
-                  'nhanh-gon': 'Nấu nhanh < 30 phút'
-                };
-                return (
-                  <span
-                    key={need}
-                    className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10.5px] font-bold flex items-center gap-1"
-                  >
-                    <CheckCircle2 className="w-3 h-3 text-[#1D4ED8] dark:text-blue-400" />
-                    <span>{labelMap[need] || need}</span>
-                  </span>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Compact Side-by-Side Action Buttons for Onboarding Reset & Tutorial Replay */}
-          <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
-            <button
-              type="button"
-              onClick={resetOnboarding}
-              className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
-              title="Xem Lại Khảo Sát Khẩu Vị"
-            >
-              <RotateCcw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <span className="truncate">Đổi Khẩu Vị</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={startTutorial}
-              className="py-2 px-2.5 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs shadow-2xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
-              title="Xem Lại Hướng Dẫn"
-            >
-              <HelpCircle className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate">Hướng Dẫn</span>
-            </button>
-          </div>
-
-          <button
-            type="button"
-            onClick={openWelcomeModal}
-            title="Giới Thiệu Ứng Dụng"
-            className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
-            <span>Giới Thiệu Ứng Dụng</span>
-          </button>
         </div>
       )}
 

@@ -394,7 +394,7 @@ export const DrinkRouletteModal: React.FC<DrinkRouletteModalProps> = ({
       }}
     >
       <div 
-        className="relative w-full max-w-md bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
+        className="relative w-full max-w-md sm:max-w-lg md:max-w-xl bg-white dark:bg-[#1A1918] border border-[#E8E2D8] dark:border-[#252220] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER BAR */}

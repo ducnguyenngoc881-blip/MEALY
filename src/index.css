@@ -24,12 +24,20 @@
   }
   body {
     @apply bg-[#F8FAFC] text-[#1E293B] dark:bg-[#12161F] dark:text-[#F8FAFC] overflow-x-hidden min-h-[100dvh] transition-colors duration-200;
-    font-family: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     overscroll-behavior-y: contain;
+  }
+  h1, h2, h3, h4, h5, h6,
+  .font-extrabold,
+  .font-black,
+  .tabular-nums {
+    font-family: 'Manrope', 'Inter', system-ui, -apple-system, sans-serif;
+    font-variant-numeric: tabular-nums;
   }
   button, a, select, input {
     touch-action: manipulation;
