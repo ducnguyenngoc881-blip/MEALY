@@ -75,7 +75,7 @@ export default defineConfig({
     strictPort: true,
     allowedHosts: true,
     watch: {
-      ignored: ['**/*.apk', '**/*.ipa', '**/*.zip', '**/*.pdf', '**/docs/**', '**/MealWise-Portable-PC/**', '**/NexsVideo/**', '**/android/**', '**/ios/**', '**/tools/**']
+      ignored: ['**/*.apk', '**/*.ipa', '**/*.zip', '**/*.pdf', '**/docs/**', '**/MealWise-Portable-PC/**', '**/NexsVideo/**', '**/android/**', '**/ios/**', '**/tools/**', '**/.server-data/**']
     },
     hmr: {
       port: 5173

@@ -14,8 +14,12 @@ import {
   getRegisteredUserByEmail,
   getAllRegisteredUsers,
   USERS_DB_KEY,
-  hashUserPassword
+  hashUserPassword,
+  sanitizeUserInput,
+  normalizeIdentifier
 } from './userDatabase';
+
+export { sanitizeUserInput, normalizeIdentifier };
 
 export const OTP_CHALLENGE_STORAGE_KEY = 'mealwise_otp_challenges_v1';
 export const LOGIN_RATE_LIMIT_STORAGE_KEY = 'mealwise_login_ratelimit_v1';
@@ -75,36 +79,6 @@ export const OTP_TTL_MS = 5 * 60 * 1000; // 5 minutes
 export const OTP_RESEND_COOLDOWN_MS = 60 * 1000; // 60 seconds
 export const OTP_MAX_ATTEMPTS = 5;
 export const OTP_LOCKOUT_MS = 60 * 1000; // 60 seconds lockout after 5 wrong tries
-
-/**
- * Sanitize user input against XSS / HTML script injection and control characters
- */
-export function sanitizeUserInput(input: string, maxLength = 200): string {
-  if (!input || typeof input !== 'string') return '';
-  return input
-    .replace(/<\s*script[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
-    .replace(/<\s*\/?\s*(script|iframe|object|embed|svg|link|style|meta)[^>]*>/gi, '')
-    .replace(/javascript\s*:/gi, '')
-    .replace(/on[a-z]+\s*=\s*(['"][^'"]*['"]|[^\s>]+)/gi, '')
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
-    .trim()
-    .slice(0, maxLength);
-}
-
-/**
- * Normalize email or Vietnamese phone number identifier
- */
-export function normalizeIdentifier(emailOrPhone: string): string {
-  const clean = sanitizeUserInput(emailOrPhone, 120).toLowerCase();
-  // Convert +84xxxxxxxxx to 0xxxxxxxxx for consistent Vietnamese phone matching
-  if (/^\+84\d{8,10}$/.test(clean.replace(/[\s.-]/g, ''))) {
-    return '0' + clean.replace(/[\s.-]/g, '').slice(3);
-  }
-  if (/^\d[\d\s.-]{7,13}$/.test(clean)) {
-    return clean.replace(/[\s.-]/g, '');
-  }
-  return clean;
-}
 
 /**
  * Validate whether input is a valid Email or Vietnamese Phone Number
@@ -644,6 +618,7 @@ export interface DeliveredOtpEnvelope {
 export interface BackendOtpRequestResponse {
   ok: boolean;
   emailSent?: boolean;
+  smsSent?: boolean;
   smtpConfigured?: boolean;
   provider?: string;
   senderEmail?: string;
@@ -652,6 +627,7 @@ export interface BackendOtpRequestResponse {
   maskedTarget?: string;
   expiresInSeconds?: number;
   cooldownRemainingSeconds?: number;
+  simulatedPushOtpCode?: string;
   message: string;
 }
 
@@ -907,45 +883,56 @@ export async function requestBackendEmailOtp(
       })
     });
     const data = await res.json();
+    const isPhoneTarget = validation.type === 'phone';
+    const maskedTargetVal = data.maskedTarget || maskIdentifier(validation.normalized);
+    const pushCode = data.otpCode || localReq.simulatedPushOtpCode;
     recordSecurityAuditEvent({
       type: 'OTP_DISPATCHED',
       email: validation.normalized,
-      title: 'Chuyển phát mã OTP 6 số qua Email',
-      detail: `Đã gửi thư xác thực tới ${data.maskedTarget || maskIdentifier(validation.normalized)} qua ${data.provider || 'Cloud SMTP Free Relay'}.`,
+      title: isPhoneTarget ? 'Chuyển phát mã OTP 6 số qua tin nhắn thiết bị' : 'Chuyển phát mã OTP 6 số qua Email',
+      detail: `Đã gửi mã xác thực tới ${maskedTargetVal} qua ${data.provider || (isPhoneTarget ? 'Tin nhắn thiết bị' : 'Cloud SMTP Free Relay')}.`,
       severity: 'info'
     });
     return {
       ok: Boolean(data.ok),
       emailSent: Boolean(data.emailSent),
+      smsSent: Boolean(data.smsSent || isPhoneTarget),
       smtpConfigured: true,
       provider: data.provider || 'Cloud Mailer',
       senderEmail: data.senderEmail || 'no-reply@mealy.vn',
       inboxToken: data.inboxToken || localToken,
       webmailUrl: data.webmailUrl || null,
-      maskedTarget: data.maskedTarget || maskIdentifier(validation.normalized),
+      maskedTarget: maskedTargetVal,
       expiresInSeconds: data.expiresInSeconds || 300,
       cooldownRemainingSeconds: data.cooldownRemainingSeconds || 60,
-      message: `Mã xác thực 6 số đã được gửi tới ${data.maskedTarget || maskIdentifier(validation.normalized)}. Vui lòng kiểm tra hộp thư đến của bạn.`
+      simulatedPushOtpCode: pushCode,
+      message: isPhoneTarget
+        ? `Mã xác thực 6 số đã được gửi tới số điện thoại ${maskedTargetVal}.`
+        : `Mã xác thực 6 số đã được gửi tới ${maskedTargetVal}. Vui lòng kiểm tra hộp thư đến của bạn.`
     };
   } catch {
+    const isPhoneTarget = validation.type === 'phone';
+    const maskedTargetVal = localReq.maskedTarget || maskIdentifier(validation.normalized);
     recordSecurityAuditEvent({
       type: 'OTP_DISPATCHED',
       email: validation.normalized,
       title: 'Chuyển phát mã OTP 6 số',
-      detail: `Đã gửi thư xác thực tới ${maskIdentifier(validation.normalized)} qua Cloud Mailer.`,
+      detail: `Đã gửi mã xác thực tới ${maskedTargetVal}.`,
       severity: 'info'
     });
     return {
       ok: localReq.success,
-      emailSent: true,
+      emailSent: !isPhoneTarget,
+      smsSent: isPhoneTarget,
       smtpConfigured: true,
       provider: 'Cloud Mailer',
       senderEmail: 'no-reply@mealy.vn',
       inboxToken: localToken,
       webmailUrl: null,
-      maskedTarget: localReq.maskedTarget || maskIdentifier(validation.normalized),
+      maskedTarget: maskedTargetVal,
       expiresInSeconds: localReq.expiresInSeconds || 300,
       cooldownRemainingSeconds: localReq.cooldownRemainingSeconds || 60,
+      simulatedPushOtpCode: localReq.simulatedPushOtpCode,
       message: localReq.message
     };
   }

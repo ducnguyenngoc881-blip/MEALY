@@ -41,7 +41,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
     playSpeedWhoosh();
     setTransitioningGame({
       id: 'apex',
-      title: 'MỞ HÒM BỮA CƠM (APEX PACK)',
+      title: 'MỞ HÒM BỮA CƠM',
       badge: 'GACHA BỮA TRƯA',
       color: 'amber'
     });
@@ -58,7 +58,7 @@ export const MinigameHubModal: React.FC<MinigameHubModalProps> = ({
     playSpeedWhoosh();
     setTransitioningGame({
       id: 'drink',
-      title: 'VÒNG QUAY BÀN NHẬU (DRINK ROULETTE)',
+      title: 'VÒNG QUAY BÀN NHẬU',
       badge: 'TIỆC TÙNG 2 VÒNG QUAY',
       color: 'rose'
     });

@@ -115,7 +115,7 @@ export const Navbar: React.FC = () => {
             activeTab !== 'account' ? (
               <button
                 type="button"
-                onClick={() => openAuthModal('register')}
+                onClick={() => openAuthModal('login')}
                 className="group relative flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white border border-blue-500/80 shadow-sm hover:shadow active:scale-95 transition-all duration-200 cursor-pointer select-none shrink-0"
                 title="Đăng ký hoặc đăng nhập tài khoản MealWise"
                 aria-label="Đăng ký hoặc đăng nhập tài khoản"
@@ -146,7 +146,9 @@ export const Navbar: React.FC = () => {
               type="button"
               onClick={() => {
                 if (activeTab === 'account') {
-                  openAuthModal('login');
+                  if (typeof window !== 'undefined') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
                 } else {
                   setActiveTab('account');
                 }

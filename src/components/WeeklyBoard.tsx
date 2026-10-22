@@ -1393,7 +1393,7 @@ export const WeeklyBoard: React.FC = () => {
                 className="w-full py-2.5 px-3 rounded-xl border border-dashed border-stone-300 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-600 text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <Plus className="w-4 h-4" />
-                <span>Thêm món ăn sáng (Phở, Bún chả, Xôi...)</span>
+                <span>Thêm món ăn sáng</span>
               </button>
             )}
           </div>
@@ -1408,14 +1408,17 @@ export const WeeklyBoard: React.FC = () => {
             const shouldShowBantruCompact = isBantruSlot && (!hasMeal || !isLunchRevealed);
             const routineIcon = onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong' ? '🍱' : '🏫';
             const defaultRoutineNote = onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Mang cơm hộp văn phòng' : 'Bán trú • Ăn ngoài';
-            const routineSlotTitle = onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Bữa Trưa (Cơm Hộp)' : 'Bữa Trưa (Bán Trú)';
+            const routineSlotTitle = onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Bữa Trưa Cơm Hộp' : 'Bữa Trưa Bán Trú';
 
             return (
               <div className="p-3 rounded-2xl bg-stone-50 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 space-y-2">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 min-w-0">
                     <Sun className="w-4 h-4 text-amber-500 shrink-0" />
-                    <span className="text-xs font-extrabold text-stone-900 dark:text-stone-100">
+                    <span 
+                      title={onboardingData?.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Bữa Trưa (Cơm Hộp)' : 'Bữa Trưa (Bán Trú)'}
+                      className="text-xs font-extrabold text-stone-900 dark:text-stone-100"
+                    >
                       {isBantruSlot 
                         ? routineSlotTitle 
                         : (isSingleDishMode ? 'Bữa Trưa Gọn Nhẹ' : 'Bữa Trưa Tròn Vị')}
@@ -1666,7 +1669,7 @@ export const WeeklyBoard: React.FC = () => {
               <div className="flex items-center gap-1.5">
                 <Moon className="w-4 h-4 text-indigo-500" />
                 <span className="text-xs font-extrabold text-stone-900 dark:text-stone-100">
-                  {isSingleDishMode ? 'Bữa Tối Gọn Nhẹ (Món Đơn)' : 'Bữa Tối Sum Họp (3 Món)'}
+                  {isSingleDishMode ? 'Bữa Tối Gọn Nhẹ' : 'Bữa Tối Sum Họp'}
                 </span>
               </div>
               {activeDay.meals.dinner && (
@@ -2556,7 +2559,7 @@ export const WeeklyBoard: React.FC = () => {
                 }}
                 className="flex-1 py-2.5 px-3 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white text-xs font-black transition-colors cursor-pointer"
               >
-                Mở Bảng Tuần Này (Thứ 7 & CN)
+                Mở Bảng Cuối Tuần Này
               </button>
               <button
                 type="button"
@@ -2667,7 +2670,7 @@ export const WeeklyBoard: React.FC = () => {
               {/* Weekday Section (Thứ Hai -> Thứ Sáu) */}
               <div className="space-y-2.5">
                 <span className="text-xs font-black text-slate-700 dark:text-slate-300 block">
-                  Các Ngày Trong Tuần (Thứ 2 – Thứ 6)
+                  Các Ngày Trong Tuần: Thứ 2 – Thứ 6
                 </span>
                 {previousWeeklyPlan
                   .filter(d => d.dayId !== 'sat' && d.dayId !== 'sun')

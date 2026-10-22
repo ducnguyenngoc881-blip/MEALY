@@ -19,12 +19,20 @@ import {
 import { VietnameseMealSet, MealSlot } from '../types';
 import { matchesMealSetSearch } from '../utils/textUtils';
 import { SafeImage } from './SafeImage';
+import { NativeAdCard } from './NativeAdCard';
 import {
   fetchLiveWeatherMealAdvice,
   getFallbackWeatherAdvice,
   VIETNAM_CITIES,
   WeatherMealAdvice
 } from '../services/freePublicApis';
+import {
+  getActiveCampaign,
+  hasClaimedNewUserGift,
+  claimNewUserGift,
+  trackMmpEvent,
+  CppCslCampaignConfig
+} from '../services/mmpTrackingService';
 
 export const POPULAR_TAGS = ['Tất Cả', 'Giàu Đạm', 'Eat Clean', '1 Người', 'Yêu Thích', 'Tiết Kiệm', 'Đổi Vị', 'Đồng Quê', 'Ăn Chay', 'Thanh Tịnh', 'Đậm Đà', 'Cay Nồng'];
 
@@ -107,7 +115,10 @@ export const MealSetExplorer: React.FC = () => {
     weeklyPlan, 
     setSelectedMealSet,
     openMinigameHub,
-    openWelcomeModal
+    openWelcomeModal,
+    setActiveTab,
+    showToast,
+    user
   } = useMealWise();
 
   const [regionFilter, setRegionFilter] = useState<'all' | 'bac' | 'trung' | 'nam' | 'chay' | 'western'>('all');
@@ -122,8 +133,29 @@ export const MealSetExplorer: React.FC = () => {
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState<boolean>(false);
   const [weatherCityId, setWeatherCityId] = useState<string>('hanoi');
   const [weatherAdvice, setWeatherAdvice] = useState<WeatherMealAdvice>(() => getFallbackWeatherAdvice('hanoi'));
+  const [activeCampaign, setActiveCampaign] = useState<CppCslCampaignConfig>(() => getActiveCampaign());
+  const [isGiftClaimed, setIsGiftClaimed] = useState<boolean>(() => hasClaimedNewUserGift(user?.email));
+  const [isCampaignBannerDismissed, setIsCampaignBannerDismissed] = useState<boolean>(false);
   const assignTouchStartY = useRef<number | null>(null);
   const tagDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setIsGiftClaimed(hasClaimedNewUserGift(user?.email));
+  }, [user?.email]);
+
+  useEffect(() => {
+    const handleCampaignChange = (e: Event) => {
+      const custom = e as CustomEvent<CppCslCampaignConfig>;
+      if (custom.detail) {
+        setActiveCampaign(custom.detail);
+        setIsCampaignBannerDismissed(false);
+      } else {
+        setActiveCampaign(getActiveCampaign());
+      }
+    };
+    window.addEventListener('mealwise:campaign_changed', handleCampaignChange);
+    return () => window.removeEventListener('mealwise:campaign_changed', handleCampaignChange);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -359,6 +391,81 @@ export const MealSetExplorer: React.FC = () => {
   return (
     <div className="space-y-5 max-w-lg mx-auto">
       
+      {/* 0. MATCHED CAMPAIGN / CUSTOM PRODUCT PAGE & NEW USER GIFT BANNER */}
+      {!searchQuery.trim() && !isCampaignBannerDismissed && (
+        <div
+          data-testid="cpp-csl-campaign-banner"
+          className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-600/10 via-amber-500/10 to-emerald-500/10 dark:from-blue-950/60 dark:via-slate-900 dark:to-emerald-950/50 border border-blue-200/80 dark:border-blue-800/60 shadow-2xs flex flex-col gap-2"
+        >
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wide shrink-0">
+                  {activeCampaign.inAppBannerBadgeVi}
+                </span>
+                {activeCampaign.grantsNewUserGift && isGiftClaimed && (
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold shrink-0">
+                    Đã Nhận 24h Không Quảng Cáo
+                  </span>
+                )}
+              </div>
+              <h3 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white mt-1 leading-snug break-words">
+                {activeCampaign.inAppBannerTitleVi}
+              </h3>
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">
+                {activeCampaign.inAppBannerSubtitleVi}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsCampaignBannerDismissed(true)}
+              aria-label="Đóng thông báo ưu đãi"
+              className="w-7 h-7 rounded-full bg-white/80 dark:bg-slate-800/80 text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center justify-center shrink-0 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between gap-2 pt-0.5">
+            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate min-w-0">
+              {activeCampaign.nameVi}
+            </span>
+
+            <button
+              type="button"
+              data-testid="cpp-campaign-cta-btn"
+              onClick={() => {
+                if (activeCampaign.grantsNewUserGift) {
+                  claimNewUserGift(user?.email, user?.name || 'Thành viên mới', user?.role);
+                  setIsGiftClaimed(true);
+                  if (activeCampaign.recommendedTag) {
+                    setSelectedTag(activeCampaign.recommendedTag);
+                  }
+                  showToast('🎁 Chúc mừng! Bạn đã nhận Quà Tặng Người Mới: Mở khóa 24h Không Quảng Cáo & Bộ Thực Đơn Đặc Quyền!');
+                } else {
+                  if (activeCampaign.recommendedTag) {
+                    setSelectedTag(activeCampaign.recommendedTag);
+                  }
+                  if (activeCampaign.targetTab && activeCampaign.targetTab !== 'meal-sets') {
+                    setActiveTab(activeCampaign.targetTab);
+                  }
+                  showToast(`✨ Đã mở trải nghiệm chiến dịch: ${activeCampaign.nameVi}`);
+                }
+              }}
+              className="px-3.5 py-2 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-black text-xs shadow-2xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+            >
+              <Sparkles className="w-3.5 h-3.5 shrink-0" />
+              <span>
+                {activeCampaign.grantsNewUserGift && isGiftClaimed
+                  ? 'Xem Thực Đơn Đặc Quyền'
+                  : activeCampaign.inAppCtaLabelVi}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* 1. HERO CARD: "HÔM NAY ĂN GÌ?" (WITH COLLAPSIBLE ACCORDION / TOGGLE) */}
       {featuredSet && !searchQuery.trim() && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs hover:shadow-sm transition-all">
@@ -630,7 +737,14 @@ export const MealSetExplorer: React.FC = () => {
         )}
 
         {/* Strict matches */}
-        {strictMatches.map((set, idx) => renderMealSetCard(set, false, idx))}
+        {strictMatches.map((set, idx) => (
+          <React.Fragment key={set.id}>
+            {renderMealSetCard(set, false, idx)}
+            {(idx + 1) % 6 === 0 && (
+              <NativeAdCard slotIndex={Math.floor((idx + 1) / 6) - 1} />
+            )}
+          </React.Fragment>
+        ))}
 
         {/* Graceful divider if backfill suggestions are shown alongside strict matches */}
         {strictMatches.length > 0 && fallbackMatches.length > 0 && !searchQuery.trim() && (

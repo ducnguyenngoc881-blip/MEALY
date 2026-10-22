@@ -3,9 +3,11 @@ import { useMealWise } from '../context/MealWiseContext';
 import { X, Copy, Check, Users, Share2, Sparkles, MessageCircle, ExternalLink, QrCode, Palette } from 'lucide-react';
 import { encodeRoomDataForUrl, SHOPPER_PALETTE, formatTtlRemaining } from '../services/collabGroceryService';
 import { generateVietQrBillUrl, VIETQR_SUPPORTED_BANKS } from '../services/freePublicApis';
+import { grantBonusAdFreePass } from '../utils/adTrackingService';
 
 export const ShareCollabCartModal: React.FC = () => {
   const { 
+    user,
     isShareModalOpen, 
     setIsShareModalOpen, 
     collabRoom, 
@@ -18,6 +20,7 @@ export const ShareCollabCartModal: React.FC = () => {
 
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [copiedZalo, setCopiedZalo] = useState<boolean>(false);
+  const [referralClaimed, setReferralClaimed] = useState<boolean>(false);
   const [showQr, setShowQr] = useState<boolean>(true);
   const [showVietQrSplit, setShowVietQrSplit] = useState<boolean>(false);
   const [bankBin, setBankBin] = useState<string>(VIETQR_SUPPORTED_BANKS[0].bin);
@@ -42,6 +45,14 @@ export const ShareCollabCartModal: React.FC = () => {
   const shareUrl = `${origin}${pathname}?collab_cart=${encodeURIComponent(collabRoom.roomId)}${encodedPayload}`;
   const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(shareUrl)}`;
 
+  const unlockReferralBonus = () => {
+    if (referralClaimed) return;
+    setReferralClaimed(true);
+    if (user?.role !== 'admin') {
+      grantBonusAdFreePass(24);
+    }
+  };
+
   const handleCopyLink = async () => {
     try {
       if (navigator.clipboard) {
@@ -55,7 +66,8 @@ export const ShareCollabCartModal: React.FC = () => {
         document.body.removeChild(input);
       }
       setCopiedLink(true);
-      showToast('✓ Đã sao chép liên kết mua chung!');
+      unlockReferralBonus();
+      showToast('✓ Đã sao chép liên kết mua chung & mở khóa +24h Miễn Quảng Cáo!');
       setTimeout(() => setCopiedLink(false), 2500);
     } catch {
       showToast('Không thể sao chép tự động, vui lòng chọn và chép thủ công.');
@@ -81,7 +93,8 @@ export const ShareCollabCartModal: React.FC = () => {
         document.body.removeChild(input);
       }
       setCopiedZalo(true);
-      showToast('✓ Đã chép lời mời gửi Zalo/Tin nhắn!');
+      unlockReferralBonus();
+      showToast('✓ Đã chép lời mời gửi Zalo & nhận +24h Miễn Quảng Cáo!');
       setTimeout(() => setCopiedZalo(false), 2500);
     } catch {
       showToast('Không thể sao chép tự động.');
@@ -143,6 +156,24 @@ export const ShareCollabCartModal: React.FC = () => {
           >
             <X className="w-4 h-4" />
           </button>
+        </div>
+
+        {/* Bilateral Referral Bonus Banner */}
+        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-emerald-50/90 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-xs text-emerald-900 dark:text-emerald-200">
+          <div className="flex items-center gap-2 min-w-0">
+            <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <div className="min-w-0">
+              <p className="font-extrabold text-[11.5px] leading-tight">
+                {referralClaimed ? '🎉 Đã mở khóa +24h Miễn Quảng Cáo!' : 'Quà Tặng Đi Chợ Chung (+24h Miễn Quảng Cáo)'}
+              </p>
+              <p className="text-[10px] text-emerald-700 dark:text-emerald-400 truncate">
+                Gửi link Phòng Mua Chung cho người thân hoặc bạn cùng phòng để nhận thưởng
+              </p>
+            </div>
+          </div>
+          <span className="px-2 py-0.5 rounded-lg bg-emerald-600 text-white font-black text-[10px] shrink-0">
+            {referralClaimed ? 'ĐÃ NHẬN' : '+24 GIỜ'}
+          </span>
         </div>
 
         {/* TTL Security & Auto-Expire Notice */}

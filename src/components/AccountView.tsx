@@ -11,11 +11,19 @@ import {
   AdTrackingState 
 } from '../utils/adTrackingService';
 import {
-  calculateAccountSecurityScore,
-  getSecurityAuditEvents,
-  clearSecurityAuditEvents,
-  SecurityAuditEvent
-} from '../services/otpSecurityService';
+  getAttConsentStatus,
+  requestAttPermission,
+  AttConsentStatus,
+  getSkanConversionState,
+  SkanConversionState,
+  CPP_CSL_CAMPAIGNS,
+  getActiveCampaign,
+  setActiveCampaignBySlug,
+  hasClaimedNewUserGift,
+  claimNewUserGift,
+  trackMmpEvent,
+  CppCslCampaignConfig
+} from '../services/mmpTrackingService';
 
 export interface MealWiseStateBackup {
   version: 1;
@@ -232,26 +240,36 @@ export const AccountView: React.FC = () => {
   } = useMealWise();
   const [isAdSequenceOpen, setIsAdSequenceOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
-  const [isSecurityAuditOpen, setIsSecurityAuditOpen] = useState(false);
-  const [auditLogs, setAuditLogs] = useState<SecurityAuditEvent[]>(() => getSecurityAuditEvents(user?.email));
   const isLight = theme === 'light';
-
-  const securityReport = calculateAccountSecurityScore({
-    email: user?.email,
-    otpVerified: user?.otpVerified,
-    hasPassword: isRegistered,
-    isRegistered
-  });
-
-  useEffect(() => {
-    setAuditLogs(getSecurityAuditEvents(user?.email));
-  }, [user?.email, user?.otpVerified, isSecurityAuditOpen]);
 
   // Volunteer Ads & Ad-Free Tracking State
   const [adTracking, setAdTracking] = useState<AdTrackingState>(loadAdTrackingState);
   const [adFreeRemainingMs, setAdFreeRemainingMs] = useState<number>(() =>
     getAdFreeRemainingMs(adTracking.adFreeUntilTimestamp)
   );
+  const [attStatus, setAttStatus] = useState<AttConsentStatus>(() => getAttConsentStatus());
+  const [skanState, setSkanState] = useState<SkanConversionState>(() => getSkanConversionState());
+  const [activeCampaign, setActiveCampaignState] = useState<CppCslCampaignConfig>(() => getActiveCampaign());
+  const [giftClaimed, setGiftClaimed] = useState<boolean>(() => hasClaimedNewUserGift(user?.email));
+
+  useEffect(() => {
+    setGiftClaimed(hasClaimedNewUserGift(user?.email));
+    setSkanState(getSkanConversionState());
+  }, [user?.email]);
+
+  useEffect(() => {
+    const handleAttChanged = (e: Event) => {
+      const custom = e as CustomEvent<{ status?: AttConsentStatus }>;
+      if (custom.detail?.status) {
+        setAttStatus(custom.detail.status);
+      } else {
+        setAttStatus(getAttConsentStatus());
+      }
+      setSkanState(getSkanConversionState());
+    };
+    window.addEventListener('mealwise:att_status_changed', handleAttChanged);
+    return () => window.removeEventListener('mealwise:att_status_changed', handleAttChanged);
+  }, []);
 
   // Live real-time countdown timer tick
   useEffect(() => {
@@ -281,16 +299,9 @@ export const AccountView: React.FC = () => {
                 {user?.name || 'Tài Khoản Khách'}
               </h1>
               {isRegistered ? (
-                <>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Đã Đăng Ký
-                  </span>
-                  {user?.otpVerified && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Bảo Mật OTP
-                    </span>
-                  )}
-                </>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Đã Đăng Ký
+                </span>
               ) : (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
                   <Lock className="w-3 h-3 text-slate-500" /> Khách
@@ -326,7 +337,7 @@ export const AccountView: React.FC = () => {
         ) : (
           <button
             type="button"
-            onClick={() => openAuthModal('register')}
+            onClick={() => openAuthModal('login')}
             title="Đăng Nhập / Đăng Ký"
             className="px-3.5 py-2 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 text-white font-bold text-xs shadow-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
           >
@@ -568,7 +579,7 @@ export const AccountView: React.FC = () => {
               <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Khẩu phần gia đình</span>
               <p className="text-xs font-extrabold text-slate-900 dark:text-white mt-0.5 truncate">
                 {onboardingData.familySize === 1 
-                  ? (onboardingData.singleMealFormat === 'meal-set' ? '1 người (Mâm 3 món)' : '1 người (Món đơn)') 
+                  ? (onboardingData.singleMealFormat === 'meal-set' ? '1 người • Mâm 3 món' : '1 người • Món đơn') 
                   : `${onboardingData.familySize} người ăn`}
               </p>
             </div>
@@ -587,9 +598,9 @@ export const AccountView: React.FC = () => {
             <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
               <span className="text-[9.5px] font-bold text-slate-500 dark:text-slate-400 uppercase block">Ngân sách ngày</span>
               <p className="text-xs font-extrabold text-amber-700 dark:text-amber-400 mt-0.5 truncate">
-                {onboardingData.budgetLevel === 'tiet-kiem' && `Tiết kiệm (~${(getDailyBudgetTarget('tiet-kiem', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
-                {onboardingData.budgetLevel === 'vua-phai' && `Vừa phải (~${(getDailyBudgetTarget('vua-phai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
-                {onboardingData.budgetLevel === 'thoai-mai' && `Thoải mái (~${(getDailyBudgetTarget('thoai-mai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày)`}
+                {onboardingData.budgetLevel === 'tiet-kiem' && `Tiết kiệm • ~${(getDailyBudgetTarget('tiet-kiem', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày`}
+                {onboardingData.budgetLevel === 'vua-phai' && `Vừa phải • ~${(getDailyBudgetTarget('vua-phai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày`}
+                {onboardingData.budgetLevel === 'thoai-mai' && `Thoải mái • ~${(getDailyBudgetTarget('thoai-mai', onboardingData.familySize || 4, onboardingData.specialNeeds) / 1000).toFixed(0)}k/ngày`}
               </p>
             </div>
           </div>
@@ -770,11 +781,6 @@ export const AccountView: React.FC = () => {
               Bảo Mật & Quyền Riêng Tư
             </span>
           </div>
-          {user?.otpVerified && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 text-[10px] font-black shrink-0">
-              <span>Đã xác thực Email</span>
-            </span>
-          )}
         </div>
 
         <div className={`grid gap-2 ${isRegistered && user?.role !== 'admin' ? 'grid-cols-3' : 'grid-cols-2'}`}>
@@ -785,7 +791,7 @@ export const AccountView: React.FC = () => {
           >
             <KeyRound className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span className="truncate">
-              {isRegistered ? 'Đổi Mật Khẩu' : 'Xác Thực OTP'}
+              {isRegistered ? 'Đổi Mật Khẩu' : 'Đăng Ký Tài Khoản'}
             </span>
           </button>
 
@@ -817,6 +823,115 @@ export const AccountView: React.FC = () => {
               <span className="truncate">Xóa Tài Khoản</span>
             </button>
           )}
+        </div>
+
+        {/* iOS ATT & Privacy-Safe Personalization Control */}
+        <div
+          data-testid="account-att-privacy-row"
+          className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2"
+        >
+          <div className="min-w-0 flex-1">
+            <span className="text-[11px] font-extrabold text-slate-800 dark:text-slate-200 block truncate">
+              Quyền Cá Nhân Hóa Ưu Đãi
+            </span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate">
+              {attStatus === 'authorized'
+                ? 'Đã bật cá nhân hóa mâm cơm & quà tặng theo vùng miền'
+                : 'Đang bật chế độ bảo vệ ẩn danh tuyệt đối trên thiết bị'}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            data-testid="toggle-att-consent-btn"
+            onClick={() => {
+              const nextChoice = attStatus === 'authorized' ? 'denied' : 'authorized';
+              const updatedStatus = requestAttPermission(nextChoice);
+              setAttStatus(updatedStatus);
+              setSkanState(getSkanConversionState());
+              showToast(
+                updatedStatus === 'authorized'
+                  ? '✅ Đã bật quyền cá nhân hóa thực đơn và ưu đãi!'
+                  : '🛡️ Đã chuyển sang chế độ đo lường ẩn danh bảo vệ quyền riêng tư!'
+              );
+            }}
+            className={`px-3 py-1.5 rounded-xl text-[11px] font-extrabold border transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap ${
+              attStatus === 'authorized'
+                ? 'bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-500/30'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+            }`}
+          >
+            {attStatus === 'authorized' ? 'Đang Cho Phép' : 'Chế Độ Ẩn Danh'}
+          </button>
+        </div>
+      </div>
+
+      {/* Quà Tặng Người Mới & Đồng Bộ Trang Tải Tùy Chỉnh */}
+      <div
+        data-testid="account-cpp-campaign-hub"
+        className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5"
+      >
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Sparkles className="w-4 h-4 text-[#1D4ED8] dark:text-blue-400 shrink-0" />
+            <span className="text-xs font-extrabold text-slate-900 dark:text-white truncate">
+              Quà Tặng & Thông Điệp Trang Tải
+            </span>
+          </div>
+          <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#1D4ED8] dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-[10px] font-black shrink-0">
+            Điểm Chuyển Đổi: {skanState.fineValue}/63 • {skanState.coarseLabelVi}
+          </span>
+        </div>
+
+        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+          Đồng bộ giao diện ứng dụng khớp với từng thông điệp trang tải trên kho ứng dụng.
+        </p>
+
+        <div className="flex flex-wrap gap-1.5">
+          {CPP_CSL_CAMPAIGNS.map(camp => {
+            const isSelected = activeCampaign.slug === camp.slug;
+            return (
+              <button
+                key={camp.id}
+                type="button"
+                onClick={() => {
+                  const next = setActiveCampaignBySlug(camp.slug, user?.email, user?.role);
+                  setActiveCampaignState(next);
+                  showToast(`🎯 Đã đồng bộ thông điệp: ${next.nameVi}`);
+                }}
+                className={`px-2.5 py-1.5 rounded-xl text-[10.5px] font-bold border transition-all cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#1D4ED8] text-white border-[#1D4ED8] font-extrabold shadow-2xs'
+                    : 'bg-slate-50 dark:bg-slate-800/70 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                }`}
+              >
+                {camp.nameVi}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="pt-1 flex items-center justify-between gap-2">
+          <span className="text-[10.5px] font-bold text-slate-500 dark:text-slate-400 truncate min-w-0">
+            {giftClaimed ? '🎁 Đã mở khóa Quà Tặng Người Mới (24h Không Quảng Cáo)' : '🎁 Quà Tặng Người Mới đang sẵn sàng'}
+          </span>
+
+          <button
+            type="button"
+            data-testid="account-claim-gift-btn"
+            onClick={() => {
+              claimNewUserGift(user?.email, user?.name || 'Thành viên mới', user?.role);
+              const refreshedAd = loadAdTrackingState();
+              setAdTracking(refreshedAd);
+              setAdFreeRemainingMs(getAdFreeRemainingMs(refreshedAd.adFreeUntilTimestamp));
+              setGiftClaimed(true);
+              setSkanState(getSkanConversionState());
+              showToast('🎁 Đã kích hoạt Quà Tặng Người Mới: 24 Giờ Không Quảng Cáo & Bộ Thực Đơn Đặc Quyền!');
+            }}
+            className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-[11px] shrink-0 whitespace-nowrap cursor-pointer transition-all active:scale-95"
+          >
+            {giftClaimed ? 'Đã Nhận Quà' : 'Nhận Quà Ngay'}
+          </button>
         </div>
       </div>
 
@@ -881,6 +996,14 @@ export const AccountView: React.FC = () => {
           const updated = recordVolunteerAdWatched(3);
           setAdTracking(updated);
           setAdFreeRemainingMs(getAdFreeRemainingMs(updated.adFreeUntilTimestamp));
+          trackMmpEvent(
+            'complete_rewarded_ad_sequence',
+            { videos_watched: 3, reward_hours: 24 },
+            user?.name || 'Thành viên',
+            user?.email,
+            user?.role
+          );
+          setSkanState(getSkanConversionState());
           showToast('👑 Chúc mừng! Bạn đã hoàn thành 3 video và mở khóa trải nghiệm không quảng cáo đến hết ngày hôm nay.');
         }}
       />

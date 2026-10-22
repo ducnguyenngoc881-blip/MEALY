@@ -65,6 +65,23 @@ import {
   TimeframeFilter
 } from '../utils/screenTimeService';
 import { getUserDatabaseStats } from '../services/userDatabase';
+import {
+  SKAN_BIT_SCHEMA,
+  CPP_CSL_CAMPAIGNS,
+  OFFICIAL_SKADNETWORK_IDS,
+  getAttConsentStatus,
+  getSkanConversionState,
+  resetSkanConversionState,
+  getRecentMmpEvents,
+  clearMmpEventLogs,
+  trackMmpEvent,
+  getActiveCampaign,
+  setActiveCampaignBySlug,
+  getCampaignAttributionStats,
+  SkanConversionState,
+  DispatchedMmpEventRecord,
+  CppCslCampaignConfig
+} from '../services/mmpTrackingService';
 
 export const AdminDashboard: React.FC = () => {
   const { 
@@ -83,7 +100,7 @@ export const AdminDashboard: React.FC = () => {
   } = useMealWise();
 
   // Active view tab inside Admin Telemetry
-  const [adminTab, setAdminTab] = useState<'overview' | 'collab' | 'ads_screentime' | 'accounts' | 'events'>('overview');
+  const [adminTab, setAdminTab] = useState<'overview' | 'collab' | 'ads_screentime' | 'accounts' | 'events' | 'mmp_attribution'>('overview');
 
   // Ad & Screen Time Timeframe Filter: 'day' | 'month' | 'year' | 'lifetime'
   const [adTimeframe, setAdTimeframe] = useState<AdTimeframe>('day');
@@ -94,6 +111,10 @@ export const AdminDashboard: React.FC = () => {
   const [registeredAccounts, setRegisteredAccounts] = useState<RegisteredUserRecord[]>([]);
   const [dbStats, setDbStats] = useState(() => getUserDatabaseStats());
   const [events, setEvents] = useState<TelemetryEvent[]>([]);
+  const [skanState, setSkanState] = useState<SkanConversionState>(() => getSkanConversionState());
+  const [mmpEvents, setMmpEvents] = useState<DispatchedMmpEventRecord[]>(() => getRecentMmpEvents(30));
+  const [activeCpp, setActiveCpp] = useState<CppCslCampaignConfig>(() => getActiveCampaign());
+  const [campaignStats, setCampaignStats] = useState(() => getCampaignAttributionStats());
   const [hoveredPoint, setHoveredPoint] = useState<{ hour: string; count: number; note: string } | null>(null);
   const [simulationStatus, setSimulationStatus] = useState<string | null>(null);
 
@@ -104,6 +125,10 @@ export const AdminDashboard: React.FC = () => {
     setRegisteredAccounts(getRegisteredAccounts());
     setDbStats(getUserDatabaseStats());
     setEvents(getRecentTelemetryEvents(40));
+    setSkanState(getSkanConversionState());
+    setMmpEvents(getRecentMmpEvents(30));
+    setActiveCpp(getActiveCampaign());
+    setCampaignStats(getCampaignAttributionStats());
   }, []);
 
   // Poll heartbeat and event updates every 2 seconds
@@ -475,6 +500,27 @@ export const AdminDashboard: React.FC = () => {
                 {events.length}
               </span>
             </button>
+
+            <button
+              type="button"
+              data-testid="admin-tab-mmp-attribution"
+              onClick={() => setAdminTab('mmp_attribution')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                adminTab === 'mmp_attribution'
+                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-black'
+                  : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Globe className="w-4 h-4 shrink-0" />
+                <span>Đo Lường & Chiến Dịch</span>
+              </div>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                adminTab === 'mmp_attribution' ? 'bg-stone-950/20 text-stone-950' : 'bg-stone-800 text-stone-300'
+              }`}>
+                CV {skanState.fineValue}/63
+              </span>
+            </button>
           </div>
 
           {/* Teammate Simulator in Sidebar */}
@@ -571,6 +617,7 @@ export const AdminDashboard: React.FC = () => {
               {adminTab === 'ads_screentime' && 'Quảng Cáo & Thời Lượng'}
               {adminTab === 'accounts' && 'Quản Lý Tài Khoản'}
               {adminTab === 'events' && 'Nhật Ký Realtime'}
+              {adminTab === 'mmp_attribution' && 'Đo Lường Đa Kênh & Chiến Dịch'}
             </span>
           </div>
 
@@ -1758,6 +1805,278 @@ export const AdminDashboard: React.FC = () => {
                 Chưa có sự kiện nào. Hãy thực hiện một thao tác trên app hoặc nhấn "Kiểm Tra Đồng Đội".
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: MMP, MULTI-SDK ATTRIBUTION, iOS SKADNETWORK 4.0 & CPP/CSL CAMPAIGNS */}
+      {adminTab === 'mmp_attribution' && (
+        <div className="space-y-5" data-testid="admin-mmp-attribution-panel">
+          {/* Top Summary Cards: AppsFlyer MMP, Firebase GA4, Meta SDK, TikTok SDK, SKAN 4.0 */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Điểm Chuyển Đổi SKAdNetwork 4.0
+              </span>
+              <span className="text-xl font-black text-emerald-400 mt-1 block font-mono">
+                CV {skanState.fineValue}/63 ({skanState.binaryMask})
+              </span>
+              <span className="text-[10px] text-stone-400 mt-0.5 block">
+                Mức thô: <strong className="text-amber-300">{skanState.coarseLabelVi}</strong> • {skanState.lockWindow ? 'Đã khóa Window 1' : 'Đang mở Window 1'}
+              </span>
+            </div>
+
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Trạng Thái Quyền Riêng Tư iOS ATT
+              </span>
+              <span className="text-xl font-black text-blue-400 mt-1 block font-mono">
+                {getAttConsentStatus() === 'authorized' ? 'Đã Cho Phép' : 'Bảo Vệ Ẩn Danh'}
+              </span>
+              <span className="text-[10px] text-stone-400 mt-0.5 block">
+                {OFFICIAL_SKADNETWORK_IDS.length} mạng SKAdNetwork trong Info.plist
+              </span>
+            </div>
+
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Đồng Bộ 4 SDK Đo Lường
+              </span>
+              <span className="text-xl font-black text-amber-400 mt-1 block font-mono">
+                AppsFlyer • GA4 • Meta • TikTok
+              </span>
+              <span className="text-[10px] text-emerald-400 mt-0.5 block">
+                ● Miễn trừ 100% tài khoản Admin
+              </span>
+            </div>
+
+            <div className="p-4 rounded-3xl bg-stone-900 border border-stone-800 shadow-md">
+              <span className="text-[10px] uppercase font-mono font-bold text-stone-400 block">
+                Chiến Dịch Trang Tải Đang Bật
+              </span>
+              <span className="text-base font-black text-purple-300 mt-1 block truncate">
+                {activeCpp.id} / {activeCpp.cslId}: {activeCpp.nameVi}
+              </span>
+              <span className="text-[10px] text-stone-400 mt-0.5 block truncate">
+                Ad Group: {activeCpp.googleAcAdGroup}
+              </span>
+            </div>
+          </div>
+
+          {/* SKAdNetwork 4.0 6-Bit Conversion Value Matrix & Simulator */}
+          <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-800 pb-3">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  Ma Trận 6-Bit SKAdNetwork 4.0 (Giá Trị Chuyển Đổi 0–63)
+                </h3>
+                <p className="text-xs text-stone-400 mt-0.5">
+                  Đảm bảo nguyên tắc đơn điệu không giảm của Apple: mỗi cột mốc người dùng đạt được sẽ bật bit tương ứng.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackMmpEvent('claim_new_user_gift', { simulated: true }, 'Thành viên thử nghiệm', 'user.test@gmail.com', 'user');
+                    trackMmpEvent('generate_weekly_plan', { simulated: true }, 'Thành viên thử nghiệm', 'user.test@gmail.com', 'user');
+                    trackMmpEvent('register_otp_verified', { simulated: true }, 'Thành viên thử nghiệm', 'user.test@gmail.com', 'user');
+                    setSimulationStatus('🚀 Đã mô phỏng người dùng mới nhận quà, tạo thực đơn 7 ngày và xác thực OTP!');
+                    refreshTelemetry();
+                    setTimeout(() => setSimulationStatus(null), 4000);
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-stone-950 font-black text-xs cursor-pointer"
+                >
+                  Mô Phỏng Chuyển Đổi Người Dùng
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    resetSkanConversionState();
+                    refreshTelemetry();
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700 font-bold text-xs cursor-pointer"
+                >
+                  Đặt Lại CV Về 1
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {SKAN_BIT_SCHEMA.map(bit => {
+                const isUnlocked = (skanState.fineValue & bit.bitMask) === bit.bitMask;
+                return (
+                  <div
+                    key={bit.bitIndex}
+                    className={`p-3.5 rounded-2xl border flex flex-col justify-between gap-2 ${
+                      isUnlocked
+                        ? 'bg-emerald-500/10 border-emerald-500/40'
+                        : 'bg-stone-950/70 border-stone-800'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-black text-white">{bit.titleVi}</span>
+                        <span
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-bold ${
+                            isUnlocked
+                              ? 'bg-emerald-500 text-stone-950'
+                              : 'bg-stone-800 text-stone-400'
+                          }`}
+                        >
+                          {isUnlocked ? 'ĐÃ BẬT' : 'CHƯA BẬT'}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-stone-400 mt-1 leading-snug">
+                        {bit.descriptionVi}
+                      </p>
+                    </div>
+                    <div className="text-[10px] font-mono text-stone-400 pt-1 border-t border-stone-800/80">
+                      Sự kiện: {bit.mappedEvents.join(', ')}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 6 Custom Product Pages (CPP) & Custom Store Listings (CSL) + Google AC & ASA Table */}
+          <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl space-y-4">
+            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-amber-400" />
+                  Nhịp 2: 6 Trang Chi Tiết Tùy Chỉnh (CPP App Store & CSL Google Play) + Google AC & ASA
+                </h3>
+                <p className="text-xs text-stone-400 mt-0.5">
+                  Khớp 100% thông điệp quảng cáo, hình ảnh Poster 1–6 và banner chào đón bên trong ứng dụng.
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-stone-800 text-stone-400 font-mono text-[11px]">
+                    <th className="py-2.5 px-3">Mã CPP / CSL</th>
+                    <th className="py-2.5 px-3">Tên Chiến Dịch & Poster</th>
+                    <th className="py-2.5 px-3">Thông Điệp Quảng Cáo & Banner App</th>
+                    <th className="py-2.5 px-3">Google AC & Từ Khóa ASA</th>
+                    <th className="py-2.5 px-3 text-right">Lượt Tải / Chuyển Đổi</th>
+                    <th className="py-2.5 px-3 text-right">Thao Tác</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-800/60">
+                  {CPP_CSL_CAMPAIGNS.map(camp => {
+                    const stats = campaignStats[camp.slug] || { installs: 150, conversions: 65 };
+                    const isCurrent = activeCpp.slug === camp.slug;
+                    return (
+                      <tr key={camp.id} className="hover:bg-stone-800/40 transition-colors">
+                        <td className="py-3 px-3 font-mono font-bold text-amber-400 whitespace-nowrap">
+                          {camp.id} / {camp.cslId}
+                        </td>
+                        <td className="py-3 px-3">
+                          <div className="font-bold text-white">{camp.nameVi}</div>
+                          <div className="text-[10px] font-mono text-stone-400">{camp.posterFile}</div>
+                        </td>
+                        <td className="py-3 px-3 max-w-xs">
+                          <div className="text-stone-200 font-medium line-clamp-1">{camp.inAppBannerTitleVi}</div>
+                          <div className="text-[10px] text-emerald-400 font-mono truncate">{camp.deepLinkUri}</div>
+                        </td>
+                        <td className="py-3 px-3">
+                          <div className="text-[11px] font-mono text-blue-300">{camp.googleAcAdGroup}</div>
+                          <div className="text-[10px] text-stone-400 truncate max-w-[200px]">
+                            ASA: {camp.appleSearchAdsKeywords.slice(0, 3).join(', ')}
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono">
+                          <span className="text-white font-bold">{stats.installs}</span>
+                          <span className="text-stone-500"> / </span>
+                          <span className="text-emerald-400 font-bold">{stats.conversions}</span>
+                        </td>
+                        <td className="py-3 px-3 text-right whitespace-nowrap">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveCampaignBySlug(camp.slug, 'khach.hang@gmail.com', 'user');
+                              refreshTelemetry();
+                              setSimulationStatus(`🎯 Đã kích hoạt trang tải tùy chỉnh ${camp.id}: ${camp.nameVi}`);
+                              setTimeout(() => setSimulationStatus(null), 4000);
+                            }}
+                            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold cursor-pointer ${
+                              isCurrent
+                                ? 'bg-emerald-500 text-stone-950 font-black'
+                                : 'bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700'
+                            }`}
+                          >
+                            {isCurrent ? 'Đang Áp Dụng' : 'Kích Hoạt'}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Live Multi-SDK Event Dispatch Log */}
+          <div className="p-5 rounded-3xl bg-stone-900 border border-stone-800 text-white shadow-xl space-y-3.5">
+            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-blue-400" />
+                  Nhật Ký Đồng Bộ Sự Kiện Đa SDK ({mmpEvents.length} Sự Kiện)
+                </h3>
+                <p className="text-xs text-stone-400 mt-0.5">
+                  Đối chiếu tên sự kiện chuẩn hóa gửi đồng thời tới AppsFlyer, Firebase GA4, Meta SDK và TikTok SDK.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  clearMmpEventLogs();
+                  refreshTelemetry();
+                }}
+                className="p-1.5 rounded-xl bg-stone-800 hover:bg-rose-500/20 text-stone-400 hover:text-rose-300 transition-colors cursor-pointer"
+                title="Làm mới nhật ký MMP"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-stone-800 text-stone-400 font-mono text-[11px]">
+                    <th className="py-2 px-2.5">Thời Gian</th>
+                    <th className="py-2 px-2.5">Sự Kiện Trong App</th>
+                    <th className="py-2 px-2.5">AppsFlyer</th>
+                    <th className="py-2 px-2.5">Firebase GA4</th>
+                    <th className="py-2 px-2.5">Meta SDK</th>
+                    <th className="py-2 px-2.5">TikTok SDK</th>
+                    <th className="py-2 px-2.5 text-right">SKAN CV</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-800/60">
+                  {mmpEvents.map(ev => (
+                    <tr key={ev.id} className="hover:bg-stone-800/40">
+                      <td className="py-2.5 px-2.5 font-mono text-[11px] text-stone-400">{ev.timeStr}</td>
+                      <td className="py-2.5 px-2.5 font-bold text-white">{ev.titleVi}</td>
+                      <td className="py-2.5 px-2.5 font-mono text-emerald-400">{ev.appsFlyerEvent}</td>
+                      <td className="py-2.5 px-2.5 font-mono text-amber-300">{ev.firebaseGa4Event}</td>
+                      <td className="py-2.5 px-2.5 font-mono text-blue-400">{ev.metaSdkEvent}</td>
+                      <td className="py-2.5 px-2.5 font-mono text-rose-300">{ev.tiktokSdkEvent}</td>
+                      <td className="py-2.5 px-2.5 text-right font-mono font-bold text-purple-300">
+                        CV={ev.skanFineValueAfter} ({ev.skanCoarseValueAfter.toUpperCase()})
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

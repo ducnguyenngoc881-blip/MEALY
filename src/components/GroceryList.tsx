@@ -42,6 +42,7 @@ import { FridgeLeftoverModal } from './FridgeLeftoverModal';
 import { inferItemCompartment } from './FridgeView';
 import { SHOPPER_PALETTE, getShopperStyle, formatTtlRemaining } from '../services/collabGroceryService';
 import { CollabBasketIcon, GroceryScrollIcon } from './icons/NavIcons';
+import { recordAdImpression } from '../utils/adTrackingService';
 
 // Store Channel Configuration for the 4 Vietnamese retail channels
 export interface StoreChannelConfig {
@@ -1594,7 +1595,7 @@ export const GroceryList: React.FC = () => {
                   ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border-emerald-500/40'
                   : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700'
               }`}
-              title="Đánh dấu thêm người mua món này (nhiều người cùng mua)"
+              title="Đánh dấu thêm người mua món này"
             >
               <Plus className="w-3.5 h-3.5 stroke-[3]" />
               {checkInfo.buyerCount > 1 && (
@@ -1982,7 +1983,7 @@ export const GroceryList: React.FC = () => {
                     <div className="col-span-1">
                       <input
                         type="text"
-                        placeholder="Đơn vị (chai, gói...)"
+                        placeholder="Đơn vị: chai, gói, quả..."
                         value={customItemUnit}
                         onChange={(e) => setCustomItemUnit(e.target.value)}
                         className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-hidden focus:border-[#1D4ED8] text-slate-900 dark:text-white text-center shadow-2xs"
@@ -2005,7 +2006,7 @@ export const GroceryList: React.FC = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between px-0.5">
                   <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                    <span>⚡</span> Nhu yếu phẩm & gia vị hay hết (1 chạm):
+                    <span>⚡</span> Nhu yếu phẩm & gia vị thường dùng:
                   </span>
                   <span className="text-[10px] text-[#1D4ED8] dark:text-blue-400 font-bold">
                     Chạm để thêm / bỏ
@@ -2201,7 +2202,7 @@ export const GroceryList: React.FC = () => {
                 type="button"
                 onClick={() => setIsLobbyOpen(false)}
                 className="p-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
-                title="Đóng sảnh mua chung (Thu gọn)"
+                title="Đóng sảnh mua chung"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -2768,7 +2769,7 @@ export const GroceryList: React.FC = () => {
             <span>
               {overallCheckedCount > 0
                 ? `Cất Vào Tủ Lạnh (${overallCheckedCount} món đã mua)`
-                : 'Cất Vào Tủ Lạnh (Tích chọn món đã mua)'}
+                : 'Cất Vào Tủ Lạnh • Chọn Món Đã Mua'}
             </span>
             <ArrowRight className="w-4 h-4 ml-1 opacity-75" />
           </button>
@@ -2776,11 +2777,16 @@ export const GroceryList: React.FC = () => {
 
         {/* Collaborative Share & Zalo Export Buttons Grid */}
         <div className="grid grid-cols-2 gap-2">
-          {/* Button 1: Collaborative Live Share (Unlocked for all users) */}
+          {/* Button 1: Collaborative Live Share (Gated for guests) */}
           <button
             type="button"
             data-tutorial-target="collab-lobby-btn"
             onClick={async () => {
+              if (!isRegistered) {
+                showToast('⚠️ Vui lòng đăng nhập hoặc đăng ký tài khoản để sử dụng tính năng Đi Chợ Chung!', 'info');
+                openAuthModal('register');
+                return;
+              }
               if (collabRoom) {
                 const nextState = !isLobbyOpen;
                 setIsLobbyOpen(nextState);
@@ -2798,14 +2804,16 @@ export const GroceryList: React.FC = () => {
               }
             }}
             className="py-2.5 px-2 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all min-h-[44px] cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-            title={collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng đi chợ chung'}
+            title={!isRegistered ? 'Tính năng chỉ dành cho thành viên' : (collabRoom ? (isLobbyOpen ? 'Đóng sảnh mua chung' : 'Mở sảnh mua chung') : 'Tạo phòng đi chợ chung')}
             aria-label="Chia Sẻ Mua Chung"
           >
             <Users className="w-4 h-4 shrink-0" />
             <span className="truncate">
-              {collabRoom
-                ? (isLobbyOpen ? 'Đóng Sảnh' : 'Mua Chung')
-                : 'Đi Chợ Chung'}
+              {!isRegistered
+                ? 'Đi Chợ Chung 🔒'
+                : (collabRoom
+                  ? (isLobbyOpen ? 'Đóng Sảnh' : 'Mua Chung')
+                  : 'Đi Chợ Chung')}
             </span>
             {collabRoom && (
               <span className="relative flex h-2 w-2 shrink-0">
@@ -2837,6 +2845,57 @@ export const GroceryList: React.FC = () => {
             </span>
           </button>
         </div>
+
+        {/* E-Grocery Affiliate & Sponsored FMCG Quick-Order Bar */}
+        {allList.length > 0 && (
+          <div className="p-3 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <Truck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span className="text-[11px] font-black text-stone-900 dark:text-stone-100 truncate">
+                  Đặt Mua Nguyên Liệu Online • Nhận Voucher Gia Vị Việt
+                </span>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[9px] font-extrabold shrink-0">
+                Giao 2h
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5">
+              {[
+                { name: 'Bách Hóa Xanh', voucher: 'MEALYBHX30', label: 'Bách Hóa Xanh (-30k)' },
+                { name: 'Shopee Mart', voucher: 'MEALYMART20', label: 'Shopee Mart (-20k)' },
+                { name: 'GrabMart', voucher: 'MEALYGRAB25', label: 'GrabMart (-25k)' }
+              ].map(partner => (
+                <button
+                  key={partner.name}
+                  type="button"
+                  onClick={async () => {
+                    const uncheckedNames = allList
+                      .filter(it => !isItemChecked(it))
+                      .map(it => `${it.name} (${it.amount})`)
+                      .join(', ');
+                    await copyTextToClipboard(uncheckedNames || allList.map(it => it.name).join(', '));
+                    recordAdImpression(
+                      'affiliate_click',
+                      `Đặt nguyên liệu qua ${partner.name} (${partner.voucher})`,
+                      5,
+                      0,
+                      user?.name || 'Người dùng Mealy'
+                    );
+                    showToast(
+                      `🛒 Đã chép giỏ hàng & áp mã "${partner.voucher}" cho ${partner.name}!`,
+                      'success'
+                    );
+                  }}
+                  className="py-2 px-2 rounded-xl bg-white hover:bg-amber-100/60 dark:bg-stone-900 dark:hover:bg-stone-800 border border-amber-200 dark:border-amber-800/60 text-[10.5px] font-extrabold text-stone-800 dark:text-stone-200 flex items-center justify-center gap-1 transition-all cursor-pointer active:scale-95 min-h-[38px]"
+                >
+                  <ShoppingBag className="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <span className="truncate">{partner.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
       </div>
 
@@ -3016,7 +3075,7 @@ export const GroceryList: React.FC = () => {
                 return (
                   <div className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200/60 dark:border-sky-800/40 space-y-1.5">
                     <div className="flex items-center justify-between text-xs font-black text-sky-800 dark:text-sky-300">
-                      <span className="flex items-center gap-1.5">❄️ Ngăn Đông (Bảo quản ~30 ngày)</span>
+                      <span className="flex items-center gap-1.5">❄️ Ngăn Đông • Bảo quản ~30 ngày</span>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-sky-200 dark:bg-sky-900 text-sky-900 dark:text-sky-200">{freezerItems.length} món</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 pt-1">
@@ -3043,7 +3102,7 @@ export const GroceryList: React.FC = () => {
                 return (
                   <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 space-y-1.5">
                     <div className="flex items-center justify-between text-xs font-black text-amber-800 dark:text-amber-300">
-                      <span className="flex items-center gap-1.5">🧊 Ngăn Mát (Bảo quản ~3 ngày)</span>
+                      <span className="flex items-center gap-1.5">🧊 Ngăn Mát • Bảo quản ~3 ngày</span>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200">{fridgeItems.length} món</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 pt-1">
@@ -3070,7 +3129,7 @@ export const GroceryList: React.FC = () => {
                 return (
                   <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/40 space-y-1.5">
                     <div className="flex items-center justify-between text-xs font-black text-emerald-800 dark:text-emerald-300">
-                      <span className="flex items-center gap-1.5">🥦 Ngăn Rau Củ Quả (Bảo quản ~5 ngày)</span>
+                      <span className="flex items-center gap-1.5">🥦 Ngăn Rau Củ Quả • Bảo quản ~5 ngày</span>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200">{crisperItems.length} món</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 pt-1">

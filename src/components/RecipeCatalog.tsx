@@ -1119,7 +1119,7 @@ export const RecipeCatalog: React.FC = () => {
                       autoFocus
                       value={newSecretTips}
                       onChange={e => setNewSecretTips(e.target.value)}
-                      placeholder="Ghi lại các bước nấu hoặc mẹo riêng (Ví dụ: Ướp cá với nước mắm nhỉ và tiêu 15 phút, kho 2 lửa liu riu đến khi nước kho kẹo lại...)" 
+                      placeholder="Ghi lại các bước nấu hoặc mẹo riêng cho món ăn..." 
                       className="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1D4ED8] leading-relaxed"
                     />
 
@@ -1155,7 +1155,7 @@ export const RecipeCatalog: React.FC = () => {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
                       <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
-                        Dấu Ấn Bếp Nhà (Kỷ niệm / Lời nhắn người nấu)
+                        Dấu Ấn Bếp Nhà • Lời Nhắn Yêu Thương
                       </label>
                       <button
                         type="button"
@@ -1317,7 +1317,7 @@ export const RecipeCatalog: React.FC = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
                       <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 block">
-                        Chi Phí Đi Chợ (VNĐ)
+                        Chi Phí Đi Chợ (đ)
                       </label>
                       <input 
                         type="number" 
@@ -1348,7 +1348,7 @@ export const RecipeCatalog: React.FC = () => {
 
                     <div className="space-y-2">
                       <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 block">
-                        Thời Gian Nấu (Phút)
+                        Thời gian nấu
                       </label>
                       <input 
                         type="number" 

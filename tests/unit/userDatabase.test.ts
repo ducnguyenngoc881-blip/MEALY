@@ -12,6 +12,9 @@ import {
   saveUserPartition,
   migrateGuestDataToUser,
   getUserDatabaseStats,
+  normalizeIdentifier,
+  verifyUserPassword,
+  hashUserPassword,
   USERS_DB_KEY,
   GUEST_SESSION_KEY,
   GUEST_PARTITION_KEY,
@@ -284,3 +287,168 @@ describe('Unit: User Database - Dual-Track Guest and Registered Users', () => {
   });
 
 });
+
+describe('Unit: User Database - Phone & Email Normalization and Credential Security', () => {
+
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('normalizes Vietnamese phone numbers across all formats to 0-prefix 10-digit format', () => {
+    // International format (+84)
+    expect(normalizeIdentifier('+84966592831')).toBe('0966592831');
+    // International format with spaces
+    expect(normalizeIdentifier('+84 966 592 831')).toBe('0966592831');
+    // Local format with spaces
+    expect(normalizeIdentifier('0966 592 831')).toBe('0966592831');
+    // Local format with dots
+    expect(normalizeIdentifier('0966.592.831')).toBe('0966592831');
+    // Local format with hyphens
+    expect(normalizeIdentifier('0966-592-831')).toBe('0966592831');
+    // International format with leading 0 after +84
+    expect(normalizeIdentifier('+840966592831')).toBe('0966592831');
+  });
+
+  it('normalizes and lowercases email addresses while stripping surrounding whitespace', () => {
+    expect(normalizeIdentifier('User@MealWise.vn')).toBe('user@mealwise.vn');
+    expect(normalizeIdentifier('   User@MealWise.vn   ')).toBe('user@mealwise.vn');
+    expect(normalizeIdentifier('TEST.ACCOUNT@GMAIL.COM')).toBe('test.account@gmail.com');
+  });
+
+  it('cross-format user lookup finds exact registered user between +84 and 0-prefix', () => {
+    // Register with +84 international phone format
+    const { user: registered } = registerUserInDatabase({
+      name: 'Nguyễn Văn Đạt',
+      email: '+84966592831',
+      password: 'Password123'
+    });
+
+    expect(registered.email).toBe('0966592831');
+
+    // Look up with 0-prefix format
+    const foundWithZero = getRegisteredUserByEmail('0966592831');
+    expect(foundWithZero).toBeTruthy();
+    expect(foundWithZero?.id).toBe(registered.id);
+    expect(foundWithZero?.name).toBe('Nguyễn Văn Đạt');
+    expect(foundWithZero?.email).toBe('0966592831');
+
+    // Look up with spaced format
+    const foundWithSpaces = getRegisteredUserByEmail('0966 592 831');
+    expect(foundWithSpaces).toBeTruthy();
+    expect(foundWithSpaces?.id).toBe(registered.id);
+
+    // Look up with dotted format
+    const foundWithDots = getRegisteredUserByEmail('0966.592.831');
+    expect(foundWithDots).toBeTruthy();
+    expect(foundWithDots?.id).toBe(registered.id);
+
+    // Look up with +84 format
+    const foundWithPlus84 = getRegisteredUserByEmail('+84966592831');
+    expect(foundWithPlus84).toBeTruthy();
+    expect(foundWithPlus84?.id).toBe(registered.id);
+  });
+
+  it('verifyUserPassword returns { valid: false, user: null } for non-existent users', () => {
+    // Non-existent email
+    const resEmail = verifyUserPassword('nonexistent.user@mealwise.vn', 'AnyPassword123');
+    expect(resEmail.valid).toBe(false);
+    expect(resEmail.user).toBeNull();
+
+    // Non-existent phone number
+    const resPhone = verifyUserPassword('0988777666', 'AnyPassword123');
+    expect(resPhone.valid).toBe(false);
+    expect(resPhone.user).toBeNull();
+  });
+
+  it('verifyUserPassword returns { valid: false, user: existing } for empty or undefined password when passwordHash exists', () => {
+    const { user } = registerUserInDatabase({
+      name: 'Lê Hoàng Nam',
+      email: '0966592831',
+      password: 'MySecretPassword123'
+    });
+    expect(user.passwordHash).toBeTruthy();
+
+    // Empty string password
+    const resEmpty = verifyUserPassword('0966592831', '');
+    expect(resEmpty.valid).toBe(false);
+    expect(resEmpty.user).toBeTruthy();
+    expect(resEmpty.user?.id).toBe(user.id);
+
+    // Whitespace-only password
+    const resSpaces = verifyUserPassword('0966592831', '   ');
+    expect(resSpaces.valid).toBe(false);
+    expect(resSpaces.user).toBeTruthy();
+    expect(resSpaces.user?.id).toBe(user.id);
+
+    // Undefined password
+    const resUndefined = verifyUserPassword('0966592831', undefined);
+    expect(resUndefined.valid).toBe(false);
+    expect(resUndefined.user).toBeTruthy();
+    expect(resUndefined.user?.id).toBe(user.id);
+
+    // Wrong password
+    const resWrong = verifyUserPassword('0966592831', 'WrongPassword');
+    expect(resWrong.valid).toBe(false);
+    expect(resWrong.user).toBeTruthy();
+    expect(resWrong.user?.id).toBe(user.id);
+
+    // Correct password
+    const resCorrect = verifyUserPassword('0966592831', 'MySecretPassword123');
+    expect(resCorrect.valid).toBe(true);
+    expect(resCorrect.user).toBeTruthy();
+    expect(resCorrect.user?.id).toBe(user.id);
+  });
+
+  it('preserves existing display name when calling registerUserInDatabase on login with phone or email prefix', () => {
+    // 1. Initial registration with custom Vietnamese full name
+    const { user: initialUser } = registerUserInDatabase({
+      name: 'Trần Thị Thu Trang',
+      email: '0966592831',
+      password: 'Password123'
+    });
+    expect(initialUser.name).toBe('Trần Thị Thu Trang');
+
+    // 2. Returning login with phone number as name
+    const { user: loginWithPhoneName } = registerUserInDatabase({
+      name: '0966592831',
+      email: '0966592831'
+    });
+    expect(loginWithPhoneName.name).toBe('Trần Thị Thu Trang');
+
+    // 3. Returning login with +84 format as name
+    const { user: loginWithPlus84Name } = registerUserInDatabase({
+      name: '+84966592831',
+      email: '+84966592831'
+    });
+    expect(loginWithPlus84Name.name).toBe('Trần Thị Thu Trang');
+
+    // 4. Returning login with empty name or generic placeholder
+    const { user: loginWithEmptyName } = registerUserInDatabase({
+      name: '',
+      email: '0966592831'
+    });
+    expect(loginWithEmptyName.name).toBe('Trần Thị Thu Trang');
+
+    const { user: loginWithPlaceholder } = registerUserInDatabase({
+      name: 'Thành Viên Mealy',
+      email: '0966592831'
+    });
+    expect(loginWithPlaceholder.name).toBe('Trần Thị Thu Trang');
+
+    // 5. Preserves display name for email accounts when passing email prefix as name on login
+    const { user: emailUser } = registerUserInDatabase({
+      name: 'Phạm Minh Khôi',
+      email: 'khoi.pham@mealwise.vn',
+      password: 'Password123'
+    });
+    expect(emailUser.name).toBe('Phạm Minh Khôi');
+
+    const { user: emailLoginPrefix } = registerUserInDatabase({
+      name: 'khoi.pham',
+      email: 'khoi.pham@mealwise.vn'
+    });
+    expect(emailLoginPrefix.name).toBe('Phạm Minh Khôi');
+  });
+
+});
+

@@ -53,6 +53,56 @@ interface FastMealApexModalProps {
   onClose: () => void;
 }
 
+function getTodayIsoDate(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function getYesterdayIsoDate(): string {
+  const d = new Date(Date.now() - 86400000);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function loadApexStreak(accountKey: string): number {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return 1;
+  try {
+    const raw = localStorage.getItem(`mealwise_apex_streak_v1_${accountKey}`);
+    if (!raw) return 1;
+    const parsed = JSON.parse(raw);
+    const today = getTodayIsoDate();
+    const yesterday = getYesterdayIsoDate();
+    if (parsed.lastDate === today || parsed.lastDate === yesterday) {
+      return Math.max(1, Number(parsed.streak) || 1);
+    }
+    return 1;
+  } catch {
+    return 1;
+  }
+}
+
+function bumpApexStreakOnOpen(accountKey: string): number {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return 1;
+  try {
+    const key = `mealwise_apex_streak_v1_${accountKey}`;
+    const today = getTodayIsoDate();
+    const yesterday = getYesterdayIsoDate();
+    const raw = localStorage.getItem(key);
+    let nextStreak = 1;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.lastDate === today) {
+        nextStreak = Math.max(1, Number(parsed.streak) || 1);
+      } else if (parsed.lastDate === yesterday) {
+        nextStreak = Math.max(1, Number(parsed.streak) || 1) + 1;
+      }
+    }
+    localStorage.setItem(key, JSON.stringify({ lastDate: today, streak: nextStreak }));
+    return nextStreak;
+  } catch {
+    return 1;
+  }
+}
+
 interface Particle {
   x: number;
   y: number;
@@ -68,7 +118,8 @@ interface Particle {
 }
 
 export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, onClose }) => {
-  const { weeklyPlan, addRecipeToSlot, showToast, openConfirmModal, openMinigameHub } = useMealWise();
+  const { user, weeklyPlan, addRecipeToSlot, showToast, openConfirmModal, openMinigameHub } = useMealWise();
+  const streakAccountKey = (user?.email || 'guest').trim().toLowerCase();
   
   const handleBackToMinigames = () => {
     onClose();
@@ -85,7 +136,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
   const [copiedZalo, setCopiedZalo] = useState(false);
   const [isMuted, setIsMutedState] = useState(getApexMuted());
   const [equippedToday, setEquippedToday] = useState(false);
-  const [dailyStreak, setDailyStreak] = useState(3);
+  const [dailyStreak, setDailyStreak] = useState<number>(() => loadApexStreak(streakAccountKey));
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryFilter, setGalleryFilter] = useState<'all' | FastMealPreferenceMode>('all');
   const [gallerySearch, setGallerySearch] = useState('');
@@ -312,6 +363,7 @@ export const FastMealApexModal: React.FC<FastMealApexModalProps> = ({ isOpen, on
     // Prepare fresh drop according to both tier and preference mode
     const drop = generateApexLootDrop(selectedTier, selectedMode);
     setLootDrop(drop);
+    setDailyStreak(bumpApexStreakOnOpen(streakAccountKey));
 
     // STAGE 1: CHARGING (1400ms of escalating tension)
     setOpeningState('charging');

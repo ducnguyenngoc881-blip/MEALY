@@ -34,7 +34,8 @@ import {
   saveUserPartition,
   updateGuestSession,
   deleteUserAccountFromDatabase,
-  verifyUserPassword
+  verifyUserPassword,
+  normalizeIdentifier
 } from '../services/userDatabase';
 import {
   checkLoginRateLimit,
@@ -80,6 +81,7 @@ import {
 } from '../utils/telemetryEngine';
 import { initScreenTimeTracker } from '../utils/screenTimeService';
 import { canonicalizeIngredientName, isGroceryItemMatch } from '../utils/ingredientNormalizer';
+import { trackMmpEvent } from '../services/mmpTrackingService';
 
 export interface ExtraGroceryItem {
   name: string;
@@ -855,6 +857,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
     setPantryItems(prev => [newItem, ...prev]);
     recordTelemetryEvent('fridge', `Lưu "${newItem.name}" vào tủ lạnh (Hạn ${newItem.daysLeft} ngày)`, user?.name || 'Người dùng');
+    trackMmpEvent(
+      'add_fridge_barcode',
+      { item_name: newItem.name, days_left: newItem.daysLeft, category: newItem.category },
+      user?.name || 'Người dùng',
+      user?.email,
+      user?.role
+    );
     showToast(`Đã lưu "${newItem.name}" vào tủ lạnh!`);
   }, [user, showToast]);
 
@@ -964,6 +973,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       staffNotes: `Áp dụng mẫu tiệc: ${preset.title}. Chuẩn bị theo tiêu chuẩn catering chuyên nghiệp.`
     });
 
+    trackMmpEvent(
+      'plan_catering_party',
+      { preset_id: presetId, guests: preset.defaultGuestCount },
+      user?.name || 'Khách',
+      user?.email,
+      user?.role
+    );
     showToast(`✨ Đã áp dụng mẫu "${preset.title}" vào kế hoạch tiệc!`);
   };
 
@@ -1128,6 +1144,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       equipmentChecklist: preset.equipmentChecklist.map(e => ({ ...e })),
       staffNotes: preset.staffNotes || `Áp dụng mẫu tiệc của tôi: ${preset.title}`
     });
+    trackMmpEvent(
+      'plan_catering_party',
+      { preset_id: preset.id, guests: preset.guestCount },
+      user?.name || 'Khách',
+      user?.email,
+      user?.role
+    );
     showToast(`✨ Đã áp dụng mẫu "${preset.title}" vào kế hoạch tiệc!`);
   };
 
@@ -1414,35 +1437,53 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [onboardingData?.weekdayLunchRoutine]);
 
   const loginUser = useCallback((profile: { name: string; email: string; password?: string; otpVerified?: boolean }, isNewRegistration?: boolean): boolean => {
-    const rawEmail = sanitizeUserInput(profile.email, 120);
-    const emailLower = rawEmail.toLowerCase();
-    const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
+    const normIdentifier = normalizeIdentifier(profile.email);
+    const isAdmin = normIdentifier === 'admin@mealwise.vn' || normIdentifier === 'admin@mealwise.com' || normIdentifier === 'admin';
     const cleanProfileName = sanitizeUserInput(profile.name, 80);
-    const defaultDisplayName = isAdmin ? 'Mealy Administrator' : (cleanProfileName || rawEmail.split('@')[0] || 'Thành Viên Mealy');
-    const displayName = cleanProfileName || defaultDisplayName;
-
     const isNew = Boolean(isNewRegistration);
-    const userOnboardingKey = `mealwise_onboarding_completed_${emailLower}`;
+    const userOnboardingKey = `mealwise_onboarding_completed_${normIdentifier}`;
+
+    // Check if user already exists in DB
+    const existingDbUser = getRegisteredUserByEmail(normIdentifier);
+
+    // Reject login if account is not registered
+    if (!isNew && !existingDbUser) {
+      showToast('⚠️ Tài khoản chưa được đăng ký. Vui lòng chọn Đăng Ký để tạo tài khoản mới!', 'warning');
+      return false;
+    }
 
     // Enforce brute-force login rate limiting on returning password logins
     if (!isNew) {
-      const rateLimit = checkLoginRateLimit(emailLower);
+      const rateLimit = checkLoginRateLimit(normIdentifier);
       if (!rateLimit.allowed) {
-        showToast(`🔒 Tài khoản tạm khóa ${rateLimit.lockedRemainingSeconds} giây do nhập sai mật khẩu quá 5 lần. Hãy thử đăng nhập bằng Mã OTP!`, 'error');
+        showToast(`🔒 Tài khoản tạm khóa ${rateLimit.lockedRemainingSeconds} giây do nhập sai mật khẩu quá 5 lần. Bạn có thể bấm Quên mật khẩu để đặt lại ngay!`, 'error');
         return false;
       }
     }
 
-    // Verify password on returning login if the account has a stored passwordHash
-    if (!isNew && profile.password !== undefined && !profile.otpVerified) {
-      const check = verifyUserPassword(emailLower, profile.password);
-      if (!check.valid) {
-        recordLoginAttempt(emailLower, false);
-        showToast('❌ Mật khẩu không chính xác. Vui lòng kiểm tra lại hoặc dùng Mã OTP!', 'error');
+    // Enforce password verification on login: require non-empty password and verify hash
+    if (!isNew && !profile.otpVerified) {
+      if (!profile.password || !profile.password.trim()) {
+        recordLoginAttempt(normIdentifier, false);
+        showToast('❌ Vui lòng nhập mật khẩu để đăng nhập!', 'error');
         return false;
       }
-      recordLoginAttempt(emailLower, true);
+      const check = verifyUserPassword(normIdentifier, profile.password);
+      if (!check.valid) {
+        recordLoginAttempt(normIdentifier, false);
+        showToast('❌ Mật khẩu không chính xác. Vui lòng kiểm tra lại hoặc bấm Quên mật khẩu để đặt lại!', 'error');
+        return false;
+      }
+      recordLoginAttempt(normIdentifier, true);
     }
+
+    // Preserve display name: keep existing user's registered name on returning login
+    const resolvedDisplayName = isAdmin
+      ? 'Mealy Administrator'
+      : ((!isNew && existingDbUser?.name)
+        ? existingDbUser.name
+        : (cleanProfileName || normIdentifier.split('@')[0] || 'Thành Viên Mealy'));
+    const displayName = resolvedDisplayName;
 
     // Admin never gets onboarding. For members, onboarding is ONLY triggered on first-time registration!
     const needsOnboarding = !isAdmin && isNew;
@@ -1451,12 +1492,11 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const guestHadData = hasCustomGuestData();
 
     // Check if user already exists in DB to preserve their onboarding status if returning
-    const existingDbUser = getRegisteredUserByEmail(emailLower);
     const existingOnboardingCompleted = existingDbUser?.onboardingCompleted ?? true;
 
     // Register or retrieve in user database
     const { user: dbUser, migrated } = registerUserInDatabase(
-      { name: displayName, email: rawEmail, role: isAdmin ? 'admin' : 'user', password: profile.password },
+      { name: displayName, email: normIdentifier, role: isAdmin ? 'admin' : 'user', password: profile.password },
       { 
         migrateGuestData: Boolean(isNew && guestHadData),
         guestData: {
@@ -1471,7 +1511,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const newProfile: RegisteredUser = {
       id: dbUser.id,
       name: displayName,
-      email: rawEmail,
+      email: normIdentifier,
       isRegistered: true,
       role: isAdmin ? 'admin' : 'user',
       registeredAt: dbUser.registeredAt || new Date().toLocaleDateString('vi-VN'),
@@ -1488,6 +1528,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     if (!isAdmin) {
       recordTelemetryEvent('auth', isNew ? 'Đăng ký thành viên mới thành công' : 'Đăng nhập thành viên thành công', displayName);
+      trackMmpEvent(
+        'register_otp_verified',
+        { is_new_registration: isNew, otp_verified: Boolean(newProfile.otpVerified) },
+        displayName,
+        normIdentifier,
+        'user'
+      );
     }
     setUser(newProfile);
     setIsWebGuestViewer(false);
@@ -1522,6 +1569,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setOnboardingData(prev => ({ ...prev, completed: false }));
       try {
         localStorage.setItem(userOnboardingKey, 'false');
+        const emailLower = normIdentifier;
         if (emailLower) {
           localStorage.removeItem(`mealwise_tutorial_completed_${emailLower}`);
         }
@@ -1549,7 +1597,8 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (user?.id) {
       saveUserPartition(user.id, {
         weeklyPlan: weeklyPlan as any,
-        pantryItems
+        pantryItems,
+        onboardingData
       });
     }
 
@@ -1577,10 +1626,10 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     setActiveTab('meal-sets');
     showToast('Đã đăng xuất tài khoản. Dữ liệu thành viên được lưu an toàn; chuyển về chế độ khách.');
-  }, [user, weeklyPlan, pantryItems, showToast]);
+  }, [user, weeklyPlan, pantryItems, onboardingData, showToast]);
 
   const deleteAccount = useCallback(() => {
-    const emailLower = user?.email?.toLowerCase().trim() || '';
+    const normIdentifier = user?.email ? normalizeIdentifier(user.email) : '';
     if (user?.id) {
       deleteUserAccountFromDatabase(user.id);
     }
@@ -1588,10 +1637,16 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       localStorage.removeItem('mealwise_registered_user');
       localStorage.removeItem('mealwise_collab_room');
       localStorage.removeItem('mealwise_collab_checked');
-      if (emailLower) {
-        localStorage.removeItem(`mealwise_onboarding_completed_${emailLower}`);
-        localStorage.removeItem(`mealwise_tutorial_completed_${emailLower}`);
-        localStorage.removeItem(`mealwise_custom_recipes_${emailLower}`);
+      if (normIdentifier) {
+        localStorage.removeItem(`mealwise_onboarding_completed_${normIdentifier}`);
+        localStorage.removeItem(`mealwise_tutorial_completed_${normIdentifier}`);
+        localStorage.removeItem(`mealwise_custom_recipes_${normIdentifier}`);
+      }
+      const rawLower = user?.email?.toLowerCase().trim();
+      if (rawLower && rawLower !== normIdentifier) {
+        localStorage.removeItem(`mealwise_onboarding_completed_${rawLower}`);
+        localStorage.removeItem(`mealwise_tutorial_completed_${rawLower}`);
+        localStorage.removeItem(`mealwise_custom_recipes_${rawLower}`);
       }
     } catch {}
 
@@ -1721,6 +1776,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           ...b,
           [key]: 1
         }));
+        trackMmpEvent(
+          'check_grocery_item',
+          { item_key: key },
+          user?.name || 'Người dùng',
+          user?.email,
+          user?.role
+        );
       }
       return {
         ...prev,
@@ -1961,8 +2023,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => clearInterval(interval);
   }, [collabRoom, showToast]);
 
-  // Start a new collaborative room (unlocked for both guests and registered members)
+  // Start a new collaborative room (strictly gated for registered members per GEMINI.md)
   const startCollabRoom = useCallback(async (items: CollabCartItem[], title?: string): Promise<string> => {
+    if (!isRegistered) {
+      showToast('⚠️ Vui lòng đăng nhập hoặc đăng ký tài khoản để tạo phòng Đi Chợ Chung!', 'info');
+      openAuthModal('register');
+      return '';
+    }
     const roomId = generateCollabRoomId();
     const initialChecked: Record<string, CollabCheckState> = {};
 
@@ -2013,6 +2080,13 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCollabParticipants(synced.participants || initialParticipants);
     setIsShareModalOpen(true);
     recordTelemetryEvent('collab', `Tạo phòng mua chung #${roomId} (${items.length} món)`, hostProfile.name);
+    trackMmpEvent(
+      'start_or_join_collab_room',
+      { room_id: roomId, items_count: items.length, role: 'host' },
+      hostProfile.name,
+      user?.email,
+      user?.role
+    );
     showToast(`🎉 Đã tạo phòng mua chung #${roomId}!`);
     return roomId;
   }, [isRegistered, openAuthModal, user?.name, collabUser, groceryCheckedItems, showToast]);
@@ -2254,17 +2328,19 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   const completeOnboarding = (data: Partial<OnboardingData>, options?: { regeneratePlan?: boolean }) => {
-    let emailLower = user?.email?.toLowerCase().trim();
-    if (!emailLower) {
+    let normIdentifier = user?.email ? normalizeIdentifier(user.email) : '';
+    if (!normIdentifier) {
       const savedUserStr = localStorage.getItem('mealwise_registered_user');
       if (savedUserStr) {
         try {
           const parsed = JSON.parse(savedUserStr);
-          emailLower = parsed.email?.toLowerCase().trim();
+          if (parsed.email) {
+            normIdentifier = normalizeIdentifier(parsed.email);
+          }
         } catch {}
       }
     }
-    const userOnboardingKey = emailLower ? `mealwise_onboarding_completed_${emailLower}` : null;
+    const userOnboardingKey = normIdentifier ? `mealwise_onboarding_completed_${normIdentifier}` : null;
     const isAlreadyOnboarded = Boolean(
       onboardingData?.completed ||
       user?.onboardingCompleted ||
@@ -2286,7 +2362,9 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Persist per-user onboarding completed flag
     if (user?.email) {
       try {
-        localStorage.setItem(`mealwise_onboarding_completed_${emailLower}`, 'true');
+        if (normIdentifier) {
+          localStorage.setItem(`mealwise_onboarding_completed_${normIdentifier}`, 'true');
+        }
       } catch {}
       setUser(prev => prev ? { ...prev, onboardingCompleted: true } : prev);
       try {
@@ -2304,13 +2382,24 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           updatedAt: Date.now()
         });
         registerUserInDatabase(
-          { name: user.name, email: user.email, role: user.role },
+          { name: user.name, email: normIdentifier || user.email, role: user.role },
           { onboardingCompleted: true }
         );
       }
     }
 
     setShowOnboarding(false);
+    trackMmpEvent(
+      'complete_onboarding',
+      {
+        region: updated.regionPreference,
+        family_size: updated.familySize,
+        budget_level: updated.budgetLevel
+      },
+      user?.name || 'Khách',
+      user?.email,
+      user?.role
+    );
 
     const isSkipRoutine = updated.weekdayLunchRoutine === 'ban-tru-di-lam' || updated.weekdayLunchRoutine === 'hop-com-van-phong';
     const noteText = updated.weekdayLunchRoutine === 'hop-com-van-phong' ? 'Mang cơm hộp văn phòng' : 'Con học bán trú • Bố mẹ ăn ngoài';
@@ -2348,7 +2437,7 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // When existing users change/update their configuration, the tutorial must NEVER trigger.
     if (isFirstTimeOnboarding) {
       try {
-        const userTutorialKey = emailLower ? `mealwise_tutorial_completed_${emailLower}` : null;
+        const userTutorialKey = normIdentifier ? `mealwise_tutorial_completed_${normIdentifier}` : null;
         const isUserTutorialDone = userTutorialKey
           ? localStorage.getItem(userTutorialKey) === 'true'
           : (localStorage.getItem('mealwise_tutorial_completed') === 'true');
@@ -2668,6 +2757,16 @@ export const MealWiseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     const nextCount = (options?.cycleIndex ?? generationCount) + 1;
     setGenerationCount(nextCount);
+    trackMmpEvent(
+      'generate_weekly_plan',
+      {
+        variation_index: nextCount,
+        region: (customPreferences || onboardingData)?.regionPreference || 'toan-quoc'
+      },
+      user?.name || 'Khách',
+      user?.email,
+      user?.role
+    );
 
     const dynamicSeed = options?.seed ?? (Date.now() ^ (nextCount * 2654435761));
 

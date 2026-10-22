@@ -30,6 +30,42 @@ function randomString(len = 6): string {
   return Math.random().toString(36).substring(2, 2 + len);
 }
 
+/**
+ * Sanitize user input against XSS / HTML script injection and control characters
+ */
+export function sanitizeUserInput(input: string, maxLength = 200): string {
+  if (!input || typeof input !== 'string') return '';
+  return input
+    .replace(/<\s*script[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
+    .replace(/<\s*\/?\s*(script|iframe|object|embed|svg|link|style|meta)[^>]*>/gi, '')
+    .replace(/javascript\s*:/gi, '')
+    .replace(/on[a-z]+\s*=\s*(['"][^'"]*['"]|[^\s>]+)/gi, '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .trim()
+    .slice(0, maxLength);
+}
+
+/**
+ * Normalize email or Vietnamese phone number identifier.
+ * Strips +84 prefix and prefixes with 0. Strips spaces, hyphens, dots.
+ * Trims and lowercases emails.
+ */
+export function normalizeIdentifier(emailOrPhone: string): string {
+  if (!emailOrPhone || typeof emailOrPhone !== 'string') return '';
+  const clean = sanitizeUserInput(emailOrPhone, 120).toLowerCase();
+  const stripped = clean.replace(/[\s.-]/g, '');
+  if (/^\+840\d{8,10}$/.test(stripped)) {
+    return '0' + stripped.slice(4);
+  }
+  if (/^\+84\d{8,10}$/.test(stripped)) {
+    return '0' + stripped.slice(3);
+  }
+  if (/^\d[\d\s.-]{7,13}$/.test(clean)) {
+    return clean.replace(/[\s.-]/g, '');
+  }
+  return clean;
+}
+
 // ============================================================================
 // GUEST (NON-REGISTERED) USER ENGINE
 // ============================================================================
@@ -199,13 +235,14 @@ export function getAllRegisteredUsers(): RegisteredUser[] {
 }
 
 /**
- * Find registered user by email
+ * Find registered user by email or phone number
  */
 export function getRegisteredUserByEmail(email: string): RegisteredUser | null {
   if (!email) return null;
   const list = getAllRegisteredUsers();
-  const target = email.trim().toLowerCase();
-  return list.find(u => u.email.trim().toLowerCase() === target) || null;
+  const target = normalizeIdentifier(email);
+  if (!target) return null;
+  return list.find(u => normalizeIdentifier(u.email) === target) || null;
 }
 
 /**
@@ -246,7 +283,7 @@ export function saveUserPartition(userId: string, data: Partial<UserAppDataParti
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: owner.email,
+            email: normalizeIdentifier(owner.email),
             profile: next,
             mealPlan: next.weeklyPlan,
             favorites: next.favoriteRecipeIds
@@ -277,12 +314,18 @@ export function hashUserPassword(password: string): string {
 /**
  * Verify a user's password against their stored hash (if set)
  */
-export function verifyUserPassword(email: string, password?: string): { valid: boolean; user: RegisteredUser | null } {
+export function verifyUserPassword(
+  email: string,
+  password?: string
+): { valid: boolean; user: RegisteredUser | null } {
   const existing = getRegisteredUserByEmail(email);
   if (!existing) {
-    return { valid: true, user: null };
+    return { valid: false, user: null };
   }
-  if (existing.passwordHash && password !== undefined && password.trim().length > 0) {
+  if (existing.passwordHash) {
+    if (!password || !password.trim()) {
+      return { valid: false, user: existing };
+    }
     const hashed = hashUserPassword(password);
     if (hashed !== existing.passwordHash) {
       return { valid: false, user: existing };
@@ -302,14 +345,14 @@ export function registerUserInDatabase(
     onboardingCompleted?: boolean;
   }
 ): { user: RegisteredUser; migrated: boolean } {
-  const emailLower = profile.email.trim().toLowerCase();
-  const isAdmin = emailLower === 'admin@mealwise.vn' || emailLower === 'admin@mealwise.com' || emailLower === 'admin';
+  const normIdentifier = normalizeIdentifier(profile.email);
+  const isAdmin = normIdentifier === 'admin@mealwise.vn' || normIdentifier === 'admin@mealwise.com' || normIdentifier === 'admin';
   const role: 'user' | 'admin' = isAdmin ? 'admin' : (profile.role || 'user');
   const nowStr = new Date().toLocaleDateString('vi-VN');
   const passwordHash = profile.password && profile.password.trim() ? hashUserPassword(profile.password) : undefined;
 
   const users = getAllRegisteredUsers();
-  const existingIdx = users.findIndex(u => u.email.trim().toLowerCase() === emailLower);
+  const existingIdx = users.findIndex(u => normalizeIdentifier(u.email) === normIdentifier);
 
   let user: RegisteredUser;
   let userId: string;
@@ -317,10 +360,28 @@ export function registerUserInDatabase(
   if (existingIdx >= 0) {
     // Existing user account update
     userId = users[existingIdx].id || `usr_${Date.now()}_${randomString()}`;
+    const cleanName = profile.name ? sanitizeUserInput(profile.name, 80) : '';
+    const rawEmailOrPhone = profile.email ? sanitizeUserInput(profile.email, 120) : '';
+    const isNameDefaultOrIdentifier =
+      !cleanName ||
+      cleanName === normIdentifier ||
+      cleanName === rawEmailOrPhone ||
+      normalizeIdentifier(cleanName) === normIdentifier ||
+      cleanName === normIdentifier.split('@')[0] ||
+      cleanName === rawEmailOrPhone.split('@')[0] ||
+      cleanName === 'Thành Viên Mealy' ||
+      cleanName === 'Người dùng';
+
+    const existingName = users[existingIdx].name;
+    const resolvedName = (existingName && isNameDefaultOrIdentifier)
+      ? existingName
+      : (cleanName || existingName || normIdentifier.split('@')[0] || 'Thành Viên Mealy');
+
     user = {
       ...users[existingIdx],
       id: userId,
-      name: profile.name.trim() || users[existingIdx].name,
+      name: resolvedName,
+      email: normIdentifier,
       role,
       lastLoginAt: nowStr,
       ...(passwordHash ? { passwordHash } : {})
@@ -332,10 +393,11 @@ export function registerUserInDatabase(
   } else {
     // New user registration
     userId = `usr_${Date.now()}_${randomString()}`;
+    const cleanName = profile.name ? sanitizeUserInput(profile.name, 80) : '';
     user = {
       id: userId,
-      name: profile.name.trim() || emailLower.split('@')[0],
-      email: profile.email.trim(),
+      name: cleanName || normIdentifier.split('@')[0] || 'Thành Viên Mealy',
+      email: normIdentifier,
       isRegistered: true,
       role,
       registeredAt: nowStr,
@@ -351,14 +413,18 @@ export function registerUserInDatabase(
   } catch {}
 
   if (typeof window !== 'undefined' && typeof fetch === 'function') {
-    fetch(existingIdx >= 0 ? '/api/auth/login' : '/api/auth/register', {
+    const hasPasswordToSync = Boolean(profile.password && profile.password.trim());
+    const isRegisterFlow = existingIdx < 0 || options?.onboardingCompleted === false || hasPasswordToSync;
+    fetch(isRegisterFlow ? '/api/auth/register' : '/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        identifier: user.email,
         email: user.email,
         name: user.name,
         password: profile.password || '',
-        authProvider: 'email'
+        authProvider: user.email.includes('@') ? 'email' : 'phone',
+        clientSync: true
       })
     }).catch(() => {});
   }

@@ -2291,7 +2291,7 @@ export const AUTHENTIC_REGIONAL_RECIPES: Recipe[] = [
   },
   {
     id: 'canh-sup-khoai-tay',
-    title: 'Canh Súp Khoai Tây Cà Rốt Sườn Heo',
+    title: 'Súp Khoai Tây Cà Rốt Sườn Heo',
     description: 'Khoai tây bở tơi ngọt bùi, cà rốt thơm ngọt ninh nhừ cùng sườn non heo béo ngậy, món canh gia đình thân thương ngày lạnh.',
     category: 'mon-canh',
     region: 'bac',

@@ -40,6 +40,8 @@ import './unit/weekdayLunchRoutine.test';
 import './unit/moodboardAndDesignLanguage.test';
 import './unit/welcomeOnboarding.test';
 import './unit/otpAndFreeApis.test';
+import './unit/backendAuthEndpoints.test';
+import './unit/mmpSkadnetworkAndCppCsl.test';
 
 // 2. Comprehensive 1000+ Scenario Matrices (Screens 1 to 9)
 import './unit/scenarioMatrixScreens1to3.test';

@@ -423,7 +423,7 @@ export const ShareRecipeSocialModal: React.FC = () => {
     ctx.font = '800 20px Inter, sans-serif';
     ctx.fillText('#Mealy   #CongDongDauBep   #YeuBep   #MamComViet', imgX, footerY + 108);
 
-    // Draw QR Matrix on Bottom Right
+    // Draw Scannable QR Code on Bottom Right (with offline matrix fallback)
     const qrBoxSize = 116;
     const qrX = imgX + imgW - qrBoxSize;
     const qrY = footerY + 4;
@@ -434,12 +434,18 @@ export const ShareRecipeSocialModal: React.FC = () => {
     ctx.strokeStyle = '#CBD5E1';
     ctx.stroke();
 
-    const cell = (qrBoxSize - 16) / 21;
-    ctx.fillStyle = '#0F172A';
-    for (let r = 0; r < 21; r++) {
-      for (let c = 0; c < 21; c++) {
-        if (qrMatrix[r][c]) {
-          ctx.fillRect(qrX + 8 + c * cell, qrY + 8 + r * cell, Math.ceil(cell), Math.ceil(cell));
+    const realQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=1&data=${encodeURIComponent(shareUrl)}`;
+    const qrImg = await loadImageSafe(realQrUrl);
+    if (qrImg) {
+      ctx.drawImage(qrImg, qrX + 8, qrY + 8, qrBoxSize - 16, qrBoxSize - 16);
+    } else {
+      const cell = (qrBoxSize - 16) / 21;
+      ctx.fillStyle = '#0F172A';
+      for (let r = 0; r < 21; r++) {
+        for (let c = 0; c < 21; c++) {
+          if (qrMatrix[r][c]) {
+            ctx.fillRect(qrX + 8 + c * cell, qrY + 8 + r * cell, Math.ceil(cell), Math.ceil(cell));
+          }
         }
       }
     }
@@ -755,7 +761,12 @@ export const ShareRecipeSocialModal: React.FC = () => {
               </div>
 
               <div className="p-1.5 rounded-xl bg-white border border-slate-200 shrink-0 shadow-2xs flex items-center justify-center">
-                <QrCode className="w-10 h-10 text-slate-900" />
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=1&data=${encodeURIComponent(shareUrl)}`}
+                  alt="Mã QR Công Thức"
+                  className="w-11 h-11 rounded object-contain"
+                  loading="lazy"
+                />
               </div>
             </div>
           </div>

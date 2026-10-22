@@ -19,3 +19,11 @@ NexsVideo/out/
 screenshots/
 
 ios/build/
+
+# Server persistence data
+.server-data/
+*.server-database.json
+.otp-challenges.json
+.collab-rooms.json
+.smtp-dkim-identity.json
+.vercel

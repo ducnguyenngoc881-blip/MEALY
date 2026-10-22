@@ -16,7 +16,7 @@ export interface AdWatchRecord {
   id: string;
   timestamp: number;
   date: string; // 'YYYY-MM-DD'
-  adType: 'rewarded_video' | 'interstitial' | 'banner';
+  adType: 'rewarded_video' | 'interstitial' | 'banner' | 'native_infeed' | 'sponsored_fmcg' | 'affiliate_click';
   adTitle: string;
   durationSeconds: number;
   rewardHours: number;
@@ -251,6 +251,25 @@ export function recordVolunteerAdWatched(adsCount = 3): AdTrackingState {
 }
 
 /**
+ * Grant bonus Ad-Free hours (e.g., Welcome Gift or Collaborative Room Referral)
+ * without fabricating fake video ad impressions in telemetry.
+ */
+export function grantBonusAdFreePass(hours = 24): AdTrackingState {
+  const current = loadAdTrackingState();
+  const bonusUntil = Date.now() + hours * 3600 * 1000;
+  const midnightTonight = getMidnightTonightTimestamp();
+  const newExpiration = Math.max(midnightTonight, bonusUntil, current.adFreeUntilTimestamp);
+
+  const updated: AdTrackingState = {
+    ...current,
+    adFreeUntilTimestamp: newExpiration
+  };
+
+  saveAdTrackingState(updated);
+  return updated;
+}
+
+/**
  * Get comprehensive ad metrics filtered by timeframe: 'day' | 'month' | 'year' | 'lifetime'
  */
 export function getAdMetricsByTimeframe(timeframe: AdTimeframe) {
@@ -286,18 +305,31 @@ export function getAdMetricsByTimeframe(timeframe: AdTimeframe) {
   let rewardedVideoAds = 0;
   let interstitialAds = 0;
   let bannerImpressions = 0;
+  let nativeInfeedAds = 0;
+  let sponsoredFmcgImpressions = 0;
+  let affiliateClicks = 0;
 
   filtered.forEach(r => {
-    totalDurationSeconds += (r.durationSeconds || 30);
+    totalDurationSeconds += (r.durationSeconds || 0);
     if (r.adType === 'rewarded_video') rewardedVideoAds++;
     else if (r.adType === 'interstitial') interstitialAds++;
+    else if (r.adType === 'native_infeed') nativeInfeedAds++;
+    else if (r.adType === 'sponsored_fmcg') sponsoredFmcgImpressions++;
+    else if (r.adType === 'affiliate_click') affiliateClicks++;
     else bannerImpressions++;
   });
 
-  // Estimated ad revenue generated (eCPM around ~250 VND per rewarded video)
-  const estimatedRevenueVnd = Math.round(rewardedVideoAds * 250 + interstitialAds * 120 + bannerImpressions * 25);
+  // Estimated Vietnam hybrid ad + retail media revenue (VND)
+  const estimatedRevenueVnd = Math.round(
+    rewardedVideoAds * 250 +
+    interstitialAds * 120 +
+    nativeInfeedAds * 45 +
+    sponsoredFmcgImpressions * 320 +
+    affiliateClicks * 850 +
+    bannerImpressions * 25
+  );
   // Total ad-free hours unlocked by watching volunteer ads
-  const totalAdFreeHours = Math.round(totalAds * 8);
+  const totalAdFreeHours = Math.round(rewardedVideoAds * 8);
 
   const labels: Record<AdTimeframe, string> = {
     day: 'Hôm Nay (24 Giờ)',
@@ -313,6 +345,9 @@ export function getAdMetricsByTimeframe(timeframe: AdTimeframe) {
     rewardedVideoAds,
     interstitialAds,
     bannerImpressions,
+    nativeInfeedAds,
+    sponsoredFmcgImpressions,
+    affiliateClicks,
     totalDurationSeconds,
     totalDurationMinutes: Math.round(totalDurationSeconds / 60),
     totalAdFreeHours,

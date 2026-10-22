@@ -1,4 +1,5 @@
 import { Recipe } from '../types';
+import { normalizeIdentifier } from './userDatabase';
 
 /**
  * MealWise Cloud & Account-Scoped Recipe Sync Framework
@@ -35,7 +36,8 @@ const LEGACY_GLOBAL_KEY = 'mealwise_custom_recipes';
 const GUEST_SESSION_KEY = 'mealwise_custom_recipes_guest';
 
 export function normalizeAccountEmail(email?: string | null): string {
-  return (email || '').trim().toLowerCase();
+  if (!email) return '';
+  return normalizeIdentifier(email);
 }
 
 export function getAccountRecipesStorageKey(email?: string | null): string {
